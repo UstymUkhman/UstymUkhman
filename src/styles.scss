@@ -1,0 +1,23 @@
+@import "bourbon";
+@import "breakpoint";
+
+@import "./globals/fonts.scss";
+@import "./globals/variables.scss";
+@import "./globals/functions.scss";
+@import "./globals/mixins.scss";
+
+@import "./components/app/app.component.scss";
+@import "./components/preloader/preloader.component.scss";
+@import "./components/screen-overlay/screen-overlay.component.scss";
+@import "./components/written-message/written-message.component.scss";
+
+@import "./components/console/console.component.scss";
+@import "./components/matrix-code/matrix-code.component.scss";
+@import "./components/matrix-rain/matrix-rain.component.scss";
+
+@import "./components/menu/menu.component.scss";
+@import "./components/back-button/back-button.component.scss";
+
+@import "./components/about-me/about-me.component.scss";
+@import "./components/my-works/my-works.component.scss";
+@import "./components/contact-me/contact-me.component.scss";

@@ -1,0 +1,13 @@
+{
+  "extends": "airbnb-base",
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 7,
+    "sourceType": "module"
+  },
+  "rules": {
+    "new-cap": ["error", { "capIsNew": false }],
+    "import/prefer-default-export": "off",
+    "class-methods-use-this": "off"
+  }
+}

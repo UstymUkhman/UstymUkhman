@@ -1,0 +1,12 @@
+<div id="about-message">
+  <p class="about-text" [class.fadeOut]='fadeOut'
+     [textContent]='aboutDescription'>
+  </p>
+
+  <back-button
+    (matrixCodeRemoved)='returnToMenu()'
+    [showBackButton]='showBackButton'
+    [active]='activeBackButton'
+    [backToMenu]='goToMenu'>
+  </back-button>
+</div>

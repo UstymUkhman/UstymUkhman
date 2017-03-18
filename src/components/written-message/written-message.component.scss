@@ -1,0 +1,25 @@
+div#written-message {
+  display: block;
+  z-index: $z-message;
+
+  @include size($max);
+  @include position(relative, $null);
+
+  p.message-text {
+    position: absolute;
+    @include white-rabbit;
+    @include transition(transform 5s ease-out, opacity 2s ease-out);
+
+    &.scale-message {
+      @include transform(translate(68em, 10em) scale(25));
+    }
+
+    &.dissolve-text {
+      opacity: 0;
+    }
+  }
+
+  &.hidden-message {
+    visibility: hidden;
+  }
+}

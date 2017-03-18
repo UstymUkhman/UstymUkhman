@@ -1,0 +1,138 @@
+$button-border-size: -3px;
+
+div#back-button-section {
+  @include position(absolute, $null);
+  @include size($max);
+
+  margin: auto;
+
+  div.back-button-container {
+    @include position(absolute, null $null $null);
+    @include transition(opacity .5s ease-out);
+    @include size(150px 50px);
+
+    margin: 0 auto 25px;
+
+    &.fadeOut {
+      opacity: 0;
+    }
+
+    div.button-border {
+      @include transition(width .25s ease-out, height .25s ease-out);
+      @include transform(translateY(38%));
+      @include visible-element;
+
+      cursor: pointer;
+      height: $null;
+
+      &:before {
+        @include position(absolute, $button-border-size null null $null);
+        @include border-animation(width, 3);
+        @include size($null 3px);
+
+        background: $light-green;
+        content: '';
+      }
+
+      &:after {
+        @include position(absolute, $null $null null null);
+        @include border-animation(height, 2);
+        @include size(3px $null);
+
+        background: $light-green;
+        content: '';
+      }
+
+      div.button-box {
+        text-align: center;
+        width: 150px;
+
+        &:before {
+          @include border-animation(height, $null);
+          @include size(3px $null);
+
+          position: absolute;
+          left: $null;
+
+          background: $light-green;
+          content: '';
+        }
+
+        &:after {
+          @include position(absolute, 50px $null $button-border-size null);
+          @include border-animation(width, 1);
+          @include size($null 3px);
+
+          background: $light-green;
+          content: '';
+        }
+
+        div.button-background {
+          @include transition(background-color .25s ease .5s);
+          @include position(absolute, $null);
+          @include size(150px 50px);
+
+          background-color: transparent;
+          z-index: -1;
+        }
+
+        p.button {
+          @include transition(color .5s ease);
+          @include hidden-element;
+          @include white-rabbit;
+
+          margin: 0 -25px auto 0;
+          line-height: 50px;
+          font-size: 25px;
+          padding: $null;
+          color: $green;
+
+          span:first-child {
+            @include transition(transform .3s ease-out .5s);
+            @include transform(translateX(-25px));
+
+            position: absolute;
+          }
+        }
+      }
+
+      &.active {
+        border-color: transparent;
+
+        &:before {
+          @include border-animation(width, 0);
+          width: 150px;
+        }
+
+        &:after {
+          @include border-animation(height, 1);
+          height: 50px;
+        }
+
+        div.button-box {
+          &:before {
+            @include border-animation(height, 3);
+            height: 50px;
+          }
+
+          &:after {
+            @include border-animation(width, 2);
+            width: 150px;
+          }
+
+          div.button-background {
+            background-color: $dark-green;
+          }
+
+          p.button {
+            color: $fade-green;
+
+            span:first-child {
+              @include transform(translateX(-35px));
+            }
+          }
+        }
+      }
+    }
+  }
+}

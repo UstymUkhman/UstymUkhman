@@ -1,0 +1,25 @@
+<div id="my-works">
+  <div class="works-area" [class.fadeOut]='fadeOut'>
+    <div *ngFor="let work of worksList; let i = index;"
+          class="project-source hidden-source">
+
+      <div class="selected-project" [class.active]='i === currentActive'>//</div>
+      <p class="project" [class.active]='i === currentActive'>{{ work.name }}</p>
+
+    </div>
+  </div>
+
+  <div class="works-area matrix-rain">
+    <matrix-rain
+      [removeRain]='removeMatrixRain'
+      [raining]='startRaining'>
+    </matrix-rain>
+  </div>
+
+  <back-button
+    (matrixCodeRemoved)='returnToMenu()'
+    [showBackButton]='showBackButton'
+    [active]='activeBackButton'
+    [backToMenu]='goToMenu'>
+  </back-button>
+</div>

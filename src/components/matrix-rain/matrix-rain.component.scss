@@ -1,0 +1,122 @@
+div#matrix-rain {
+  @include martix-code-nfi;
+  @include middle-align;
+  @include size(110%);
+
+  top: -5%;
+  left: -5%;
+
+  background-color: transparent;
+  background: transparent;
+  z-index: $z-code;
+
+  div.rain-layout {
+    @include size($max);
+
+    p.rain-column {
+      $code-sizes: (12, 25, 60);
+
+      @include size(40px auto);
+      position: absolute;
+
+      text-align: center;
+      line-height: 25px;
+
+      span {
+        display: block;
+        width: auto;
+
+        margin: 0;
+        padding: 0;
+
+        text-shadow: 0 -12px 10px $green;
+
+        &:nth-child(-n+5) {
+          opacity: .3;
+        }
+
+        &:nth-child(n+6):nth-child(-n+10) {
+          opacity: .42;
+        }
+
+        &:nth-child(n+11):nth-child(-n+15) {
+          opacity: .54;
+        }
+
+        &:nth-child(n+16):nth-child(-n+25) {
+          opacity: .66;
+        }
+
+        &:nth-child(n+26):nth-child(-n+35) {
+          opacity: .78;
+        }
+
+        &:nth-child(n+36):nth-child(-n+40) {
+          opacity: .9;
+        }
+
+        &:nth-child(n+41) {
+          opacity: 1;
+        }
+
+        &:nth-last-child(3) {
+          color: $fade-green;
+        }
+
+        &:nth-last-child(2) {
+          color: $light-green;          
+        }
+
+        &:nth-last-child(1) {
+          color: $energy-green;
+        }
+
+        @for $i from 1 through 3 {
+          $current-size: #{nth($code-sizes, $i)};
+
+          &.rain-size-#{$current-size} {
+            $size: #{$current-size}px;
+
+            height: $size;
+            font-size: $size;
+          }
+        }
+      }
+
+      @for $i from 1 through 3 {
+        $z: 1;
+        $margin: -0.5%;
+        $current-size: #{nth($code-sizes, $i)};
+
+        @if $i == 2 {
+          $z: 2;
+          $margin: 0%;
+        } @else if $i == 3 {
+          $z: 3;
+          $margin: -0.75%;
+        }
+
+        &.column-size-#{$current-size} {
+          @include transform(translateY(-3000px));
+          margin-left: $margin;
+          z-index: $z;
+        }
+      }
+
+      &.slide-down {
+        @include transform(translateY(3000px));
+      }
+    }
+
+    @for $i from 0 through 9 {
+      p.rain-#{$i} {
+        $left: $i * 11;
+        position: absolute;
+        left: unquote("#{$left}%");
+
+        @include transition-property(transform);
+        @include transition-timing-function(linear);
+      }
+    }
+  }
+}

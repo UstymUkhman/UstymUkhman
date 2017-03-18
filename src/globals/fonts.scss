@@ -1,0 +1,30 @@
+/*
+ * Global Fonts
+ */
+
+@font-face {
+  font-family: 'White Rabbit';
+  font-variant: normal;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 14px;
+
+  src: url('fonts/White Rabbit/White Rabbit.eot?') format('eot'),
+       url('fonts/White Rabbit/White Rabbit.woff') format('woff'),
+       url('fonts/White Rabbit/White Rabbit.ttf') format('truetype'),
+       url('fonts/White Rabbit/White Rabbit.svg#WhiteRabbit') format('svg');
+}
+
+@font-face {
+  font-family: 'Martix Code NFI';
+  font-variant: normal;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 14px;
+
+  src: url("https://raw.githubusercontent.com/UstymUkhman/my_secret_project/master/src/fonts/Matrix%20Code%20NFI/Martix%20Code%20NFI.otf") format("opentype"),
+       url("https://raw.githubusercontent.com/UstymUkhman/my_secret_project/master/src/fonts/Matrix%20Code%20NFI/Martix%20Code%20NFI.ttf") format("truetype");
+
+  // src: url('fonts/Martix Code NFI/Martix Code NFI.otf') format('opentype'),
+  //     url('fonts/Martix Code NFI/Martix Code NFI.ttf') format('truetype');
+}

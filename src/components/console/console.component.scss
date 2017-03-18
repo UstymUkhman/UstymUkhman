@@ -1,0 +1,17 @@
+div.main-window {
+  @include size($max);
+  @include position(absolute, $null);
+}
+
+div.console {
+  @include size(100%);
+
+  padding-top: 75px;
+  padding-left: 50px;
+
+  z-index: $z-console;
+
+  &.ready {
+    background-color: $black;
+  }
+}

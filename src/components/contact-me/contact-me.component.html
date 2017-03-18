@@ -1,0 +1,27 @@
+<div id="contact-me">
+  <div class="contacts-area" [class.fadeOut]='fadeOut'>
+
+    <div *ngFor="let contact of contactsList; let i = index;"
+          class="contact-source hidden-source">
+
+      <div class="selected-contact" [class.active]='i === currentActive'>></div>
+      <p class="contact" [class.active]='i === currentActive'>{{ contact }}</p>
+      <span *ngIf="i === 2" class="e-mail"> - ustym.ukhman@gmail.com</span>
+
+    </div>
+  </div>
+
+  <div class="contacts-area matrix-rain">
+    <matrix-rain
+      [removeRain]='removeMatrixRain'
+      [raining]='startRaining'>
+    </matrix-rain>
+  </div>
+
+  <back-button
+    (matrixCodeRemoved)='returnToMenu()'
+    [showBackButton]='showBackButton'
+    [active]='activeBackButton'
+    [backToMenu]='goToMenu'>
+  </back-button>
+</div>

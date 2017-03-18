@@ -1,0 +1,24 @@
+div#about-message {
+  display: block;
+  z-index: $z-message;
+
+  @include size($max);
+  @include hidden-element;
+  @include position(absolute, $null);
+
+  p.about-text {
+    @include transition(opacity .5s ease-out);
+    @include position(absolute, $null);
+    @include size(1050px 395px);
+    @include white-rabbit;
+
+    line-height: 28px;
+    font-size: 18px;
+    margin: auto;
+    opacity: 1;
+
+    &.fadeOut {
+      opacity: 0;
+    }
+  }
+}

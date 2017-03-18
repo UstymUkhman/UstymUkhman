@@ -1,0 +1,26 @@
+div.fullscreen {
+  @include size($max);
+  @include position(absolute, $null);
+
+  overflow: hidden;
+  z-index: $z-preloader;
+
+  &.done:before {
+    @include size($null);
+  }
+}
+
+div.fullscreen:before {
+  $list:       'width', ', height';
+  $shadow:     multiplyValues($null, 2);
+  $background: multiplyValues($null, 3);
+  $transition: concatRules($list, '.5s #{$ease-out-expo}');
+
+  @include size($_4K);
+  @include middle-translate;
+  @include transition($transition);
+
+  content: $void;
+  border-radius: $half;
+  box-shadow: $black $background $_4K, inset $shadow 25px $black;
+}

@@ -1,0 +1,49 @@
+/*
+ * Global Variables
+ */
+
+
+// Generic:
+
+$null: 0;
+$void: '';
+
+
+// Sizes:
+
+$none: 0%;
+$half: 50%;
+$max:  100%;
+
+$_4K: 4096px;
+$_2K: 2048px;
+$_HD: 1920px;
+
+
+// Breakpoints:
+
+$phone:  0 767px;
+$tablet: 768px 991px;
+$mobile: 0 991px;
+
+
+// Colors:
+
+$black:             rgba(  0,   0,   0, 1);
+$green:             rgba(  0, 204,   0, 1);
+$white:             rgba(255, 255, 255, 1);
+
+$fade-green:        rgba(136, 255, 136, 1);
+$light-green:       rgba(187, 255, 187, 1);
+$energy-green:      rgba(221, 255, 221, 1);
+
+$transparent-green: rgba(136, 255, 136, 0);
+$dark-green:        rgba(  0,  68,   0, .5);
+
+// Z-indexes:
+
+$z-console:   1;
+$z-preloader: 2;
+$z-message:   3;
+$z-code:      9;
+$z-screen:   25;

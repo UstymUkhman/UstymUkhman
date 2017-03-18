@@ -1,0 +1,9 @@
+node_modules/
+public/
+.git/
+
+src/assets/music.mp3
+gulpfile.old.js
+.editorconfig
+robots.txt
+*.log

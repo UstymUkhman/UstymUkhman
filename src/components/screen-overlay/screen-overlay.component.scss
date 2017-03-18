@@ -1,0 +1,14 @@
+div#screen-overlay {
+  @include position(absolute, 0);
+
+  background-image: url(../assets/overlay.png);
+  background-position: top left;
+  background-repeat: repeat;
+
+  z-index: $z-screen;
+  display: none;
+
+  &.console-ready {
+    display: block;
+  }
+}

@@ -1,0 +1,21 @@
+html, body {
+  @include size($max);
+  @include touch-callout;
+  @include text-size-adjust;
+  @include prevent-selection;
+  @include font-smoothing(antialiased);
+
+  min-width:  $max;
+  min-height: $max;
+  max-width:  $max;
+  max-height: $max;
+
+  margin:     $null;
+  padding:    $null;
+  overflow:   hidden;
+}
+
+label, span, p {
+  margin:  $null;
+  padding: $null;
+}

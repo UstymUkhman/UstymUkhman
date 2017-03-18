@@ -1,0 +1,145 @@
+/*
+ * Cross-Browser Rules:
+ */
+
+@mixin display($value) {
+  @if $value == "flex" {
+    display: -webkit-box;
+    display: -moz-box;
+    display: box;
+
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flexbox;
+    display: flex;
+
+  } @else if $value == "inline-flex" {
+    display: -webkit-inline-box;
+    display: -moz-inline-box;
+    display: inline-box;
+
+    display: -webkit-inline-flex;
+    display: -moz-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+
+  } @else {
+    display: $value;
+  }
+}
+
+@mixin transform($animation...) {
+  -webkit-transform: $animation;
+  -moz-transform: $animation;
+  -ms-transform: $animation;
+  transform: $animation;
+}
+
+@mixin transition($animation...) {
+  -webkit-transition: $animation;
+  -moz-transition: $animation;
+  -ms-transition: $animation;
+  transition: $animation;
+}
+
+@mixin transition-property($property) {
+  $webkit-property: stringReplace("#{-webkit-$property}");
+  $moz-property: stringReplace("#{-moz-$property}");
+
+  -webkit-transition-property: $webkit-property;
+  -moz-transition-property: $moz-property;
+  transition-property: $property;
+}
+
+@mixin transition-timing-function($function) {
+  -webkit-transition-timing-function: $function;
+  -moz-transition-timing-function: $function;
+  transition-timing-function: $function;
+}
+
+@mixin transition-delay($delay) {
+  -webkit-transition-delay: $delay;
+  -moz-transition-delay: $delay;
+  -o-transition-delay: $delay;
+  transition-delay: $delay;
+}
+
+@mixin transform-origin($origin) {
+  -webkit-transform-origin: $origin;
+  -moz-transform-origin: $origin;
+  -ms-transform-origin: $origin;
+  -o-transform-origin: $origin;
+  transform-origin: $origin;
+}
+
+@mixin prevent-selection($mode: none) {
+  -webkit-user-select: $mode;
+  -moz-user-select: $mode;
+  -ms-user-select: $mode;
+  user-select: $mode;
+}
+
+@mixin touch-callout($mode: none) {
+  -webkit-touch-callout: $mode;
+  -moz-touch-callout: $mode;
+  -ms-touch-callout: $mode;
+  -o-touch-callout: $mode;
+  touch-callout: $mode;
+}
+
+@mixin text-size-adjust($mode: none) {
+  -webkit-text-size-adjust: $mode;
+  -moz-text-size-adjust: $mode;
+  -ms-text-size-adjust: $mode;
+  -o-text-size-adjust: $mode;
+  text-size-adjust: $mode;
+}
+
+@mixin font-smoothing($mode) {
+  -moz-osx-font-smoothing: $mode;
+  -webkit-font-smoothing: $mode;
+}
+
+
+/*
+ * Custom Mixins:
+ */
+
+@mixin white-rabbit {
+  font-family: 'White Rabbit';
+  font-size: 18px;
+  color: $green;
+}
+
+@mixin martix-code-nfi {
+  font-family: 'Martix Code NFI';
+  font-size: 30px;
+  color: $green;
+}
+
+@mixin middle-translate {
+  @include position(absolute, $half null null $half);
+  @include transform(translate(-$half, -$half));
+}
+
+@mixin middle-align {
+  @include position(absolute, $null);
+  margin: auto;
+}
+
+@mixin border-animation($prop, $side) {
+  $delay: .125s * $side;
+  @include transition(.125s $prop ease-out $delay);
+}
+
+@mixin remove-element {
+  display: none;
+}
+
+@mixin hidden-element {
+  visibility: hidden;
+}
+
+@mixin visible-element {
+  visibility: visible;
+}
