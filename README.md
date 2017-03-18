@@ -1,1 +1,3 @@
-# my-secret-project
+# personal-website #
+
+*My personal website in matrix style.* 😏
