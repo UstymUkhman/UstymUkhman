@@ -18,14 +18,13 @@ export class LetteringService {
     }
 
     this.getLetters();
-    this.setAnimationFrame();
 
     while(this.message.firstChild) {
       this.message.removeChild(this.message.firstChild);
     }
 
     this.lastLetter  = this.letters[this.letters.length - 1];
-    this.letteringID = this.requestAnimationFrame(this.lettersAnimation.bind(this));
+    this.letteringID = requestAnimationFrame(this.lettersAnimation.bind(this));
   }
 
   getLetters() {
@@ -62,29 +61,11 @@ export class LetteringService {
       this.nextTiming = Date.now() + 150;
     }
 
-    this.cancelAnimationFrame(this.letteringID);
+    cancelAnimationFrame(this.letteringID);
 
     if (this.last === this.lastLetter && this.hasCallback)
       return setTimeout(this.callback, 1000);
 
-    this.letteringID = this.requestAnimationFrame(this.lettersAnimation.bind(this));
-  }
-
-  setAnimationFrame() {
-    this.requestAnimationFrame = (() => {
-      return window.requestAnimationFrame    ||
-             window.oRequestAnimationFrame   ||
-             window.msRequestAnimationFrame  ||
-             window.mozRequestAnimationFrame ||
-             window.webkitRequestAnimationFrame;
-    })();
-
-    this.cancelAnimationFrame = (() => {
-      return window.cancelAnimationFrame    ||
-             window.oCancelAnimationFrame   ||
-             window.msCancelAnimationFrame  ||
-             window.mozCancelAnimationFrame ||
-             window.webkitCancelAnimationFrame;
-    })();
+    this.letteringID = requestAnimationFrame(this.lettersAnimation.bind(this));
   }
 }

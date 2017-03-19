@@ -1,0 +1,11 @@
+div.more-component {
+  @include size($max);
+  @include position(absolute, $null);
+
+  margin: auto;
+
+  &-background {
+    @include size($max);
+    background-color: $black;
+  }
+}

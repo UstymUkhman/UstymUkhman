@@ -15,6 +15,14 @@ html, body {
   overflow:   hidden;
 }
 
+canvas {
+  top:      $null;
+  left:     $null;
+  position: absolute;
+
+  z-index:  10;
+}
+
 label, span, p {
   margin:  $null;
   padding: $null;
