@@ -113,9 +113,7 @@ export class MyWorksComponent {
     lastProject[0].classList.remove('active');
     lastProject[1].classList.remove('active');
 
-    if (this.activeBackButton) {
-      return;
-    }
+    if (this.activeBackButton) return;
 
     currentProject[0].classList.add('active');
     currentProject[1].classList.add('active');

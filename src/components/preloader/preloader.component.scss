@@ -1,26 +1,29 @@
-div.fullscreen {
-  @include size($max);
-  @include position(absolute, $null);
+$ease-out-expo: cubic-bezier(.2, 1, .2, 1);
 
+div.fullscreen {
+  @include transform(translate(-$half, -$half));
+  @include size(100vw);
+
+  top: 50%;
+  left: 50%;
+
+  margin: auto;
   overflow: hidden;
+  position: absolute;
   z-index: $z-preloader;
 
-  &.done:before {
-    @include size($null);
+  &:before {
+    @include transition(transform .25s $ease-out-expo);
+    @include transform(scale(1.2));
+    @include size(100vw);
+
+    content: $void;
+    position: absolute;
+    border-radius: $half;
+    box-shadow: $black 0 0 0 6000vw, inset 0 0 0 $black;
   }
-}
 
-div.fullscreen:before {
-  $list:       'width', ', height';
-  $shadow:     multiplyValues($null, 2);
-  $background: multiplyValues($null, 3);
-  $transition: concatRules($list, '.5s #{$ease-out-expo}');
-
-  @include size($_4K);
-  @include middle-translate;
-  @include transition($transition);
-
-  content: $void;
-  border-radius: $half;
-  box-shadow: $black $background $_4K, inset $shadow 25px $black;
+  &.close:before {
+    @include transform(scale($null));
+  }
 }

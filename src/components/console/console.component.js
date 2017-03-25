@@ -15,11 +15,6 @@ export class ConsoleComponent {
     this.overlayReady   = false;
     this.updateStatus   = false;
     this.consoleIsReady = false;
-
-    this.consoleStyle = {
-      console: true,
-      show: false
-    }
   }
 
   consoleGotReady(ready) {
@@ -45,10 +40,6 @@ export class ConsoleComponent {
   ngAfterViewInit() {
     setTimeout(() => {
       this.showConsole = true;
-
-      setTimeout(() => {
-        this.consoleStyle.show = true;
-      }, 500);
     });
   }
 }

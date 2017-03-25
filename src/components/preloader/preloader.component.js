@@ -4,19 +4,16 @@ import {Component} from '@angular/core';
 @Component({
   inputs:   ['start'],
   selector: 'preloader',
-  template: `<div [ngClass]="style"></div>`
+  template: `<div class="fullscreen" [ngClass]="{'close': done}"></div>`
 })
 
 
 export class PreloaderComponent {
   constructor() {
-    this.style = {
-      fullscreen: true,
-      done: false
-    };
+    this.done = false;
   }
 
   ngOnChanges() {
-    this.style.done = this.start;
+    this.done = this.start;
   }
 }

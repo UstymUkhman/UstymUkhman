@@ -9,14 +9,16 @@ import { AboutMeComponent   } from '../about-me/about-me.component';
 import { MyWorksComponent   } from '../my-works/my-works.component';
 import { ContactMeComponent } from '../contact-me/contact-me.component';
 
+import { LoadingService     } from '../../services/loading.service';
+
 
 const routes = [
-  { path: '',        component: ConsoleComponent   },
-  { path: 'about',   component: AboutMeComponent   },
-  { path: 'works',   component: MyWorksComponent   },
-  { path: 'contact', component: ContactMeComponent },
-  { path: 'more',    component: MoreComponent      },
-  { path: '**',      redirectTo: ''                }
+  { path: '',        component: ConsoleComponent,  canActivate: [LoadingService] },
+  { path: 'about',   component: AboutMeComponent                                 },
+  { path: 'works',   component: MyWorksComponent                                 },
+  { path: 'contact', component: ContactMeComponent                               },
+  { path: 'more',    component: MoreComponent                                    },
+  { path: '**',      redirectTo: ''                                              }
 ];
 
 
@@ -27,7 +29,9 @@ const routes = [
       useHash: true
     })
   ],
-  exports: [RouterModule]
+
+  providers: [LoadingService],
+  exports  : [RouterModule]
 })
 
 

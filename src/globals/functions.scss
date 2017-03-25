@@ -1,34 +1,34 @@
 $empty: ' ';
 
 $bourbon-timing: (
-  ease                ,
-  ease-in             ,
-  ease-out            ,
-  ease-in-out         ,
-  $ease-in-quad       ,
-  $ease-out-quad      ,
-  $ease-in-out-quad   ,
-  $ease-in-cubic      ,
-  $ease-out-cubic     ,
-  $ease-in-out-cubic  ,
-  $ease-in-quart      ,
-  $ease-out-quart     ,
-  $ease-in-out-quart  ,
-  $ease-in-quint      ,
-  $ease-out-quint     ,
-  $ease-in-out-quint  ,
-  $ease-in-sine       ,
-  $ease-out-sine      ,
-  $ease-in-out-sine   ,
-  $ease-in-expo       ,
-  $ease-out-expo      ,
-  $ease-in-out-expo   ,
-  $ease-in-circ       ,
-  $ease-out-circ      ,
-  $ease-in-out-circ   ,
-  $ease-in-back       ,
-  $ease-out-back      ,
-  $ease-in-out-back   ,
+  ease              ,
+  ease-in           ,
+  ease-out          ,
+  ease-in-out       ,
+  $ease-in-quad     ,
+  $ease-out-quad    ,
+  $ease-in-out-quad ,
+  $ease-in-cubic    ,
+  $ease-out-cubic   ,
+  $ease-in-out-cubic,
+  $ease-in-quart    ,
+  $ease-out-quart   ,
+  $ease-in-out-quart,
+  $ease-in-quint    ,
+  $ease-out-quint   ,
+  $ease-in-out-quint,
+  $ease-in-sine     ,
+  $ease-out-sine    ,
+  $ease-in-out-sine ,
+  $ease-in-expo     ,
+  $ease-out-expo    ,
+  $ease-in-out-expo ,
+  $ease-in-circ     ,
+  $ease-out-circ    ,
+  $ease-in-out-circ ,
+  $ease-in-back     ,
+  $ease-out-back    ,
+  $ease-in-out-back ,
   linear
 );
 
@@ -46,25 +46,25 @@ $bourbon-timing: (
   @return unquote($string);
 }
 
-@function multiplyValues($variable, $multiple: 1) {
-  $string: $void;
+// @function multiplyValues($variable, $multiple: 1) {
+//   $string: $void;
 
-  @for $i from 1 through $multiple {
-    $string: #{$string}#{$variable}#{$empty};
-  }
-  
-  @return $string;
-}
+//   @for $i from 1 through $multiple {
+//     $string: #{$string}#{$variable}#{$empty};
+//   }
 
-@function concatRules($list, $constant: $void) {
-  $string: $void;
+//   @return $string;
+// }
 
-  @each $el in $list {
-    $string: #{$string}#{$el} #{$constant};
-  }
+// @function concatRules($list, $constant: $void) {
+//   $string: $void;
 
-  @return $string;
-}
+//   @each $el in $list {
+//     $string: #{$string}#{$el} #{$constant};
+//   }
+
+//   @return $string;
+// }
 
 @function getRandomValue($max: 3) {
   @return random($max);
