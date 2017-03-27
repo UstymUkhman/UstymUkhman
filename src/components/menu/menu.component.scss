@@ -1,4 +1,7 @@
-$item-border-size: -5px;
+$scale-complete: scale3d(1, 1, 1);
+$animaiton-duration: .2s;
+$animaiton-delay: .25s;
+$border-size: 5px;
 
 div#menu-container {
   @include position(absolute, $null);
@@ -22,130 +25,111 @@ div#menu-container {
     div.menu-item {
       @include display(flex);
       margin: auto;
-
-      line-height: 25vh;
       height: 25vh;
 
-      div.item-border {
-        @include transition(width .25s ease-out, height .25s ease-out);
-        @include transform(translateY(38%));
-        @include visible-element;
+      div.item-box {
+        @include transform(translateY(-50%));
+        @include size(500px 130px);
 
-        cursor: pointer;
-        height: $null;
+        text-align: center;
+        position: relative;
+        top: 50%;
+
+        &:before, &:after,
+        p.item:before,
+        p.item:after {
+          @include transition-timing-function(cubic-bezier(1, .75, .15, .9));
+          @include transition(transform $animaiton-duration);
+
+          background-color: $light-green;
+          visibility: visible;
+          position: absolute;
+          content: '';
+        }
+
+        &:before, &:after {
+          @include transform(scale3d(1, 0, 1));
+          @include size($border-size $max);
+          top: $null;
+        }
 
         &:before {
-          @include position(absolute, $item-border-size null null $item-border-size);
-          @include border-animation(width, 3);
-          @include size($null 5px);
-
-          $a: 25vh / 2;
-          $b: 130px / 2;
-          top: calc(#{$a} - #{$b});
-
-          background: $light-green;
-          content: '';
-          left: 0;
+          @include transform-origin($half $max);
+          @include transition-delay(0s);
+          left: $null;
         }
 
         &:after {
-          @include position(absolute, $item-border-size $item-border-size null null);
-          @include border-animation(height, 2);
-          @include size(5px $null);
-
-          $a: 25vh / 2;
-          $b: 130px / 2;
-          top: calc(#{$a} - #{$b});
-
-          background: $light-green;
-          content: '';
-          left: 495px;
+          @include transition-delay($animaiton-delay * 2);
+          @include transform-origin($half $none);
+          right: $null;
         }
 
-        div.item-box {
-          text-align: center;
-          width: 500px;
+        div.item-background {
+          @include transition(background-color .25s ease .5s);
+          @include position(absolute, $null);
+          @include size(100%);
+
+          background-color: transparent;
+          z-index: -1;
+        }
+
+        p.item {
+          @include transition(color .5s ease);
+          @include white-rabbit;
+
+          line-height: 130px;
+          font-size: 50px;
+          color: $green;
+
+          &:before, &:after {
+            @include transform(scale3d(0, 1, 1));
+            @include size($max $border-size);
+            left: $null;
+          }
 
           &:before {
-            @include border-animation(height, 0);
-            @include size(5px $null);
-
-            $a: 25vh / -2;
-            $b: 130px / -2;
-            bottom: calc(#{$a} + #{$b});
-
-            position: absolute;
-            left: $null;
-
-            background: $light-green;
-            content: '';
+            @include transition-delay($animaiton-delay * 3);
+            @include transform-origin($none $half);
+            top: $null;
           }
 
           &:after {
-            @include position(absolute, null $null $item-border-size null);
-            @include border-animation(width, 1);
-            @include size($null 5px);
-
-            $a: 25vh / 2;
-            $b: 130px / 2;
-            top: calc(#{$a} - #{$b} + 125px);
-
-            background: $light-green;
-            content: '';
-          }
-
-          div.item-background {
-            @include transition(background-color .25s ease .5s);
-            @include position(absolute, $null);
-            @include size(500px 130px);
-
-            $a: 25vh / 2;
-            $b: 130px / 2;
-            margin-top: calc(#{$a} - #{$b});
-
-            background-color: transparent;
-            z-index: -1;
-          }
-
-          p.item {
-            @include transition(color .5s ease);
-            @include white-rabbit;
-
-            font-size: 50px;
-            color: $green;
+            @include transition-delay($animaiton-delay);
+            @include transform-origin($max $half);
+            bottom: $null;
           }
         }
 
         &.active-item {
-          border-color: transparent;
-
           &:before {
-            @include border-animation(width, 0);
-            width: 500px;
+            @include transition-delay($animaiton-delay * 3);
+            @include transform($scale-complete);
           }
 
           &:after {
-            @include border-animation(height, 1);
-            height: 130px;
+            @include transition-delay($animaiton-delay);
+            @include transform($scale-complete);
           }
 
-          div.item-box {
+          div.item-background {
+            background-color: $dark-green;
+          }
+
+          p.item {
+            -webkit-margin-before: 0;
+            -webkit-margin-after: 0;
+            visibility: visible;
+            color: $fade-green;
+
             &:before {
-              @include border-animation(height, 3);
-              height: 130px;
+              @include transform($scale-complete);
+              @include transition-delay(0s);
             }
 
             &:after {
-              @include border-animation(width, 2);
-              width: 500px;
-            }
-
-            div.item-background {
-              background-color: $dark-green;
-            }
-
-            p.item {
-              color: $fade-green;
+              @include transition-delay($animaiton-delay * 2);
+              @include transform($scale-complete);
             }
           }
         }
@@ -176,92 +160,3 @@ div#menu-container {
     }
   }
 }
-
-
-// BUTTON ANIMATION:
-
-// .button-box::before,
-// .button-box::after,
-// .button::before,
-// .button::after {
-//   @include transition-timing-function(cubic-bezier(1, .75, .15, .9));
-//   @include transition(transform $animaiton-duration);
-
-//   background-color: $light-green;
-//   visibility: visible;
-//   position: absolute;
-//   content: '';
-// }
-
-// .button-box::before,
-// .button-box::after {
-//   @include transform(scale3d(1, 0, 1));
-//   @include size($border-size $max);
-//   top: $null;
-// }
-
-// .button-box::before {
-//   @include transform-origin($half $max);
-//   left: $null;
-// }
-
-// .button-box::after {
-//   @include transform-origin($half $none);
-//   right: $null;
-// }
-
-// .button::before,
-// .button::after {
-//   @include transform(scale3d(0, 1, 1));
-//   @include size($max $border-size);
-//   left: $null;
-// }
-
-// .button::before {
-//   @include transform-origin($none $half);
-//   top: $null;
-// }
-
-// .button::after {
-//   @include transform-origin($max $half);
-//   bottom: $null;
-// }
-
-// .button-box .button::after {
-//   @include transition-delay($animaiton-delay);
-// }
-
-// .button-box.active .button::after {
-//   @include transition-delay($animaiton-delay * 2);
-// }
-
-// .button-box::before {
-//   @include transition-delay(0s);
-// }
-
-// .button-box.active::before {
-//   @include transition-delay($animaiton-delay * 3);
-// }
-
-// .button-box .button::before {
-//   @include transition-delay($animaiton-delay * 3);
-// }
-
-// .button-box.active .button::before {
-//   @include transition-delay(0s);
-// }
-
-// .button-box::after {
-//   @include transition-delay($animaiton-delay * 2);
-// }
-
-// .button-box.active::after {
-//   @include transition-delay($animaiton-delay);
-// }
-
-// .button-box.active::before,
-// .button-box.active::after,
-// .button-box.active .button::before,
-// .button-box.active .button::after {
-//   @include transform(scale3d(1, 1, 1));
-// }

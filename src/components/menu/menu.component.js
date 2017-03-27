@@ -41,7 +41,7 @@ export class MenuComponent {
 
       setTimeout(() => {
         document.removeEventListener('keydown', this.menuNavigation, false);
-        this.itemBorders[section].classList.remove('active-item');
+        this.itemBoxes[section].classList.remove('active-item');
         this.activeSection[section] = true;
         this.stopRaining = true;
       }, 3000);
@@ -61,8 +61,8 @@ export class MenuComponent {
     else if (code === 40)
       this.currentItem = (this.currentItem === 3) ? 0 : this.currentItem + 1;
 
-    this.itemBorders[item].classList.remove('active-item');
-    this.itemBorders[this.currentItem].classList.add('active-item');
+    this.itemBoxes[item].classList.remove('active-item');
+    this.itemBoxes[this.currentItem].classList.add('active-item');
   }
 
   showMenuItems() {
@@ -79,11 +79,10 @@ export class MenuComponent {
       this.startRaining   = true;
       this.hideMatrixCode = false;
       this.currentItem    = this.currentItem || 0;
-      this.itemBorders    = Array.from(this.menuItems, (item) => item.children[0]);
       this.menuNavigation = this.setMenuNavigation.bind(this);
 
       document.addEventListener('keydown', this.menuNavigation, false);
-      this.itemBorders[this.currentItem].classList.add('active-item');
+      this.itemBoxes[this.currentItem].classList.add('active-item');
     }
   }
 

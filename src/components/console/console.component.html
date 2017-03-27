@@ -1,4 +1,4 @@
-<screen-overlay [ready]='showConsole'></screen-overlay>
+<screen-overlay [ready]='hiddenLoading'></screen-overlay>
 
 <matrix-code
   (codeReady)='codeGotReady($event)'
@@ -8,12 +8,12 @@
 </matrix-code>
 
 <div class="main-window">
-  <preloader [start]='showConsole'></preloader>
+  <preloader [start]='hiddenLoading'></preloader>
 
   <div class="console" [ngClass]="{'ready': showConsole}">
     <written-message
       (consoleReady)='consoleGotReady($event)'
-      [start]='showConsole'>
+      [start]='hiddenLoading'>
     </written-message>
 
     <menu [showMenu]='menuReady'></menu>

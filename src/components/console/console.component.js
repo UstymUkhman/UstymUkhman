@@ -10,11 +10,12 @@ import { Component } from '@angular/core';
 export class ConsoleComponent {
   constructor() {
     this.menuReady      = false;
-    this.showConsole    = false;
     this.codeIsReady    = false;
     this.overlayReady   = false;
-    this.updateStatus   = false;
     this.consoleIsReady = false;
+
+    this.showConsole    = false;
+    this.hiddenLoading  = false;
   }
 
   consoleGotReady(ready) {
@@ -38,8 +39,10 @@ export class ConsoleComponent {
   }
 
   ngAfterViewInit() {
+    this.showConsole = true;
+
     setTimeout(() => {
-      this.showConsole = true;
-    });
+      this.hiddenLoading = true;
+    }, 100);
   }
 }

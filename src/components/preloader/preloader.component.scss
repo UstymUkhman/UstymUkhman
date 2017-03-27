@@ -1,7 +1,8 @@
 $ease-out-expo: cubic-bezier(.2, 1, .2, 1);
 
 div.fullscreen {
-  @include transform(translate(-$half, -$half));
+  @include transform(translate(-$half, -$half) scale(1.2));
+  @include transition(transform .5s $ease-out-expo .5s);
   @include size(100vw);
 
   top: 50%;
@@ -10,20 +11,12 @@ div.fullscreen {
   margin: auto;
   overflow: hidden;
   position: absolute;
+
+  border-radius: $half;
   z-index: $z-preloader;
+  background-color: $white;
 
-  &:before {
-    @include transition(transform .25s $ease-out-expo);
-    @include transform(scale(1.2));
-    @include size(100vw);
-
-    content: $void;
-    position: absolute;
-    border-radius: $half;
-    box-shadow: $black 0 0 0 6000vw, inset 0 0 0 $black;
-  }
-
-  &.close:before {
-    @include transform(scale($null));
+  &.close {
+    @include transform(translate(-$half, -$half) scale($null));
   }
 }

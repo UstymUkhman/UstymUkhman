@@ -76,7 +76,7 @@ div#back-button-section {
           line-height: 50px;
           font-size: 25px;
           color: $green;
-          margin: 0;
+          margin: $null;
 
           &:before, &:after {
             @include transform(scale3d(0, 1, 1));
@@ -132,7 +132,7 @@ div#back-button-section {
 
             &:after {
               @include transition-delay($animaiton-delay * 2);
-            @include transform($scale-complete);
+              @include transform($scale-complete);
             }
 
             span:first-child {

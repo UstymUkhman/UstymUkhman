@@ -25,7 +25,7 @@ export class WrittenMessageComponent {
 
   prepareMessage() {
     if (this.start && this.messageList[++this.currentIndex]) {
-      setTimeout(this.showMessage.bind(this));
+      setTimeout(this.showMessage.bind(this), 1500);
 
     } else if (this.currentIndex === this.messageList.length) {
       this.currentIndex--;
