@@ -152,7 +152,6 @@ div#menu-container {
 
   div.matrix-code {
     @include position(absolute, $null);
-
     margin: auto;
 
     &.hidden {

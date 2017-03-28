@@ -12,7 +12,7 @@
     </div>
 
     <div class="menu-area matrix-rain" [ngClass]="{'fade-out': fadeOutArea}">
-      <matrix-rain [raining]='startRaining'></matrix-rain>
+      <matrix-rain [removeRain]='stopRaining' [raining]='startRaining'></matrix-rain>
     </div>
 
     <div class="matrix-code" [class.hidden]='hideMatrixCode'>
@@ -22,11 +22,4 @@
       </matrix-code>
     </div>
   </div>
-
-  <!-- <div id="menu-voices">
-    <about-me (backToMenu)='resetMenu()'></about-me>
-    <my-works (backToMenu)='resetMenu()'></my-works>
-    <contact-me (backToMenu)='resetMenu()'</contact-me>
-    <more></more>
-  </div> -->
 </div>

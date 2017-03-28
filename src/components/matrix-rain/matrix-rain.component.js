@@ -3,7 +3,7 @@ import {Component, ElementRef} from '@angular/core';
 
 @Component({
   selector: 'matrix-rain',
-  inputs: ['raining', 'removeRain'],
+  inputs: ['drops', 'raining', 'removeRain'],
   templateUrl: 'components/matrix-rain/matrix-rain.component.html'
 })
 
@@ -12,7 +12,6 @@ export class MatrixRainComponent {
   constructor(matrixRain) {
     this.initialized = false;
     this.rain        = new Array(5);
-    this.lastCode    = this.rain.length - 1;
     this.matrixRain  = matrixRain.nativeElement;
   }
 
@@ -75,6 +74,10 @@ export class MatrixRainComponent {
   }
 
   ngOnChanges() {
+    if (this.drops) {
+      this.rain = new Array(this.drops);
+    }
+
     if (this.raining) {
       this.generateCharCodes();
       this.initialized = true;

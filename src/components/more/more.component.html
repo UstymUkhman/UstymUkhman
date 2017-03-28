@@ -1,5 +1,9 @@
 <div class="more-component">
   <div class="more-component-background">
-    <matrix-rain [raining]='true'></matrix-rain>
+    <matrix-rain
+      [removeRain]='raining === false'
+      [raining]='raining === true'
+      [drops]='25'>
+    </matrix-rain>
   </div>
 </div>

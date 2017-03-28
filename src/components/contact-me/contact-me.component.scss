@@ -2,6 +2,7 @@ div#contact-me {
   @include position(absolute, $null);
   @include size($max);
 
+  background-color: $black;
   padding-left: 100px;
   z-index: 2;
 

@@ -12,8 +12,9 @@ import { LetteringService      } from '../../services/lettering.service';
 
 export class MenuComponent {
   constructor(menu, loading, lettering) {
-    this.fadeOutArea   = false;
     this.startRaining  = false;
+    this.stopRaining   = false;
+    this.fadeOutArea   = false;
     this.settedSection = false;
 
     this.pages = [
@@ -86,28 +87,6 @@ export class MenuComponent {
       this.itemBoxes[this.currentItem].classList.add('active-item');
       document.addEventListener('keydown', this.menuNavigation, false);
     }
-  }
-
-  resetMenu() {
-    for (let i = 0; i < this.menuItems.length; i++)
-      this.menuItems[i].classList.add('hidden-item');
-
-    for (let i = 0; i < this.itemBoxes.length; i++) {
-      let menuItem = this.itemBoxes[i].children[1].children;
-
-      for (let j = 0; j < menuItem.length; j++)
-        menuItem[j].style.visibility = 'hidden';
-    }
-
-    this.itemIndex       = -1;
-    this.hideMatrixCode  = true;
-    this.resetMatrixCode = true;
-
-    this.fadeOutArea     = false;
-    this.startRaining    = false;
-    this.settedSection   = false;
-
-    this.showMenuItems();
   }
 
   ngOnChanges() {

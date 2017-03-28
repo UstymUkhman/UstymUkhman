@@ -10,19 +10,10 @@ import { LetteringService } from '../../services/lettering.service';
 import { MatrixCodeModule } from '../matrix-code/matrix-code.module';
 import { MatrixRainModule } from '../matrix-rain/matrix-rain.module';
 
-import { MoreModule       } from '../more/more.module';
-import { AboutMeModule    } from '../about-me/about-me.module';
-import { MyWorksModule    } from '../my-works/my-works.module';
-import { ContactMeModule  } from '../contact-me/contact-me.module';
-
 
 @NgModule({
   imports : [
-    MoreModule,
     CommonModule,
-    AboutMeModule,
-    MyWorksModule,
-    ContactMeModule,
     MatrixCodeModule,
     MatrixRainModule
   ],

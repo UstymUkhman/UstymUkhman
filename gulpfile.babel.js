@@ -5,7 +5,6 @@ import concat     from 'gulp-concat';
 import buffer     from 'vinyl-buffer';
 import sourcemaps from 'gulp-sourcemaps';
 import source     from 'vinyl-source-stream';
-
 import minify     from 'gulp-minify-css';
 import assign     from 'object-assign';
 import plumber    from 'gulp-plumber';
@@ -18,7 +17,7 @@ import del        from 'del';
 
 let bundle = (b) => {
   return b.bundle().on('error', (e) => {
-      console.error(e.stack);
+      console.error(e);
     })
     .pipe(source('bundle.js'))
     .pipe(buffer())

@@ -1,10 +1,11 @@
 div#about-message {
-  display: block;
-  z-index: $z-message;
-
-  @include size($max);
-  @include hidden-element;
   @include position(absolute, $null);
+  @include hidden-element;
+  @include size($max);
+
+  background-color: $black;
+  z-index: $z-message;
+  display: block;
 
   p.about-text {
     @include transition(opacity .5s ease-out);
