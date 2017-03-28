@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component      } from '@angular/core';
+import { LoadingService } from '../../services/loading.service';
 
 
 @Component({
@@ -8,14 +9,15 @@ import { Component } from '@angular/core';
 
 
 export class ConsoleComponent {
-  constructor() {
+  constructor(loading) {
     this.menuReady      = false;
     this.codeIsReady    = false;
     this.overlayReady   = false;
     this.consoleIsReady = false;
 
-    this.showConsole    = false;
     this.hiddenLoading  = false;
+    this.showConsole    = false;
+    this.lastActiveItem = loading.getLastItem();
   }
 
   consoleGotReady(ready) {
@@ -41,8 +43,16 @@ export class ConsoleComponent {
   ngAfterViewInit() {
     this.showConsole = true;
 
-    setTimeout(() => {
-      this.hiddenLoading = true;
-    }, 100);
+    if (this.lastActiveItem !== null)
+      this.codeGotRuned(true);
+
+    else
+      setTimeout(() => {
+        this.hiddenLoading = true;
+      }, 100);
+  }
+
+  static get parameters() {
+    return [[LoadingService]];
   }
 }

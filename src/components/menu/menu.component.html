@@ -1,16 +1,17 @@
 <div id="menu-section">
   <div id="menu-container">
-    <div class="menu-area menu-items">
+    <div class="menu-area menu-items" [ngClass]="{'fade-out': fadeOutArea}">
+      <div *ngFor="let page of pages" class="menu-item hidden-item">
 
-      <div *ngFor="let item of items" class="menu-item hidden-item">
         <div class="item-box">
           <div class="item-background"></div>
-          <p class="item">{{ item }}</p>
+          <p class="item">{{ page.title }}</p>
         </div>
+
       </div>
     </div>
 
-    <div class="menu-area matrix-rain">
+    <div class="menu-area matrix-rain" [ngClass]="{'fade-out': fadeOutArea}">
       <matrix-rain [raining]='startRaining'></matrix-rain>
     </div>
 
@@ -22,22 +23,10 @@
     </div>
   </div>
 
-  <div id="menu-voices">
-    <about-me
-      (backToMenu)='resetMenu()'
-      *ngIf="activeSection[0]">
-    </about-me>
-
-    <my-works
-      (backToMenu)='resetMenu()'
-      *ngIf="activeSection[1]">
-    </my-works>
-
-    <contact-me
-      (backToMenu)='resetMenu()'
-      *ngIf="activeSection[2]">
-    </contact-me>
-
-    <more *ngIf="activeSection[3]"></more>
-  </div>
+  <!-- <div id="menu-voices">
+    <about-me (backToMenu)='resetMenu()'></about-me>
+    <my-works (backToMenu)='resetMenu()'></my-works>
+    <contact-me (backToMenu)='resetMenu()'</contact-me>
+    <more></more>
+  </div> -->
 </div>

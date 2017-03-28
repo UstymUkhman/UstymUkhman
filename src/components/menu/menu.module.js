@@ -4,6 +4,7 @@ import { NgModule         } from '@angular/core';
 import { CommonModule     } from '@angular/common';
 
 import { MenuComponent    } from './menu.component';
+import { LoadingService   } from '../../services/loading.service';
 import { LetteringService } from '../../services/lettering.service';
 
 import { MatrixCodeModule } from '../matrix-code/matrix-code.module';
@@ -26,9 +27,14 @@ import { ContactMeModule  } from '../contact-me/contact-me.module';
     MatrixRainModule
   ],
 
-  providers    : [LetteringService],
   exports      : [MenuComponent],
-  declarations : [MenuComponent]
+  declarations : [MenuComponent],
+
+  providers : [
+    LoadingService,
+    LetteringService
+  ]
 })
+
 
 export class MenuModule { }
