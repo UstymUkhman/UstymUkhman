@@ -5,4 +5,4 @@ public/
 !node_modules/three/src/constants.js
 src/assets/music.mp3
 .editorconfig
-*.log
+*.log.*

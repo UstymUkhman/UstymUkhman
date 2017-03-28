@@ -1,25 +1,23 @@
-<div id="menu-section">
-  <div id="menu-container">
-    <div class="menu-area menu-items" [ngClass]="{'fade-out': fadeOutArea}">
-      <div *ngFor="let page of pages" class="menu-item hidden-item">
+<div id="menu-section" [ngClass]="{'menu-section-background': activeItem !== null}">
+  <div class="menu-area menu-items" [ngClass]="{'fade-out': fadeOutArea}">
+    <div *ngFor="let page of pages" class="menu-item hidden-item">
 
-        <div class="item-box">
-          <div class="item-background"></div>
-          <p class="item">{{ page.title }}</p>
-        </div>
-
+      <div class="item-box">
+        <div class="item-background"></div>
+        <p class="item">{{ page.title }}</p>
       </div>
-    </div>
 
-    <div class="menu-area matrix-rain" [ngClass]="{'fade-out': fadeOutArea}">
-      <matrix-rain [removeRain]='stopRaining' [raining]='startRaining'></matrix-rain>
     </div>
+  </div>
 
-    <div class="matrix-code" [class.hidden]='hideMatrixCode'>
-      <matrix-code
-        [resetCode]='resetMatrixCode'
-        [runOverlay]='settedSection'>
-      </matrix-code>
-    </div>
+  <div class="menu-area matrix-rain" [ngClass]="{'fade-out': fadeOutArea}">
+    <matrix-rain [removeRain]='stopRaining' [raining]='startRaining'></matrix-rain>
+  </div>
+
+  <div class="matrix-code" [class.hidden]='hideMatrixCode'>
+    <matrix-code
+      [resetCode]='resetMatrixCode'
+      [runOverlay]='settedSection'>
+    </matrix-code>
   </div>
 </div>

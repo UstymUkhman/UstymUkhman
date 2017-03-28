@@ -3,12 +3,16 @@ $animaiton-duration: .2s;
 $animaiton-delay: .25s;
 $border-size: 5px;
 
-div#menu-container {
+div#menu-section {
   @include position(absolute, $null);
   @include size($max);
 
   margin-left: 50px;
   z-index: 12;
+
+  &-background {
+    background-color: $black;
+  }
 
   div.menu-area {
     @include transition(opacity .3s ease-out);

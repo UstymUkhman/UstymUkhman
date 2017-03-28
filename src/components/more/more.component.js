@@ -151,11 +151,10 @@ export class MoreComponent {
   }
 
   faceChosenPill() {
-    if (!this.choice) window.close();
-    else {
-      document.removeEventListener('keydown', this.pillChoice, false);
-      this.raining = false;
-    }
+    document.removeEventListener('keydown', this.pillChoice, false);
+    this.raining = false;
+
+    if (!this.choice) history.back();
   }
 
   animate() {
