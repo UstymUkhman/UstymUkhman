@@ -1,18 +1,17 @@
-// import {
-//   Mesh                  ,
-//   Scene                 ,
-//   SpotLight             ,
-//   JSONLoader            ,
-//   AmbientLight          ,
-//   WebGLRenderer         ,
-//   DirectionalLight      ,
-//   PerspectiveCamera     ,
-//   MeshStandardMaterial  ,
-// } from 'three/src/Three';
+import {
+  Mesh                  ,
+  Scene                 ,
+  SpotLight             ,
+  JSONLoader            ,
+  AmbientLight          ,
+  WebGLRenderer         ,
+  DirectionalLight      ,
+  PerspectiveCamera     ,
+  MeshStandardMaterial  ,
+} from 'three';
 
-import * as THREE                from 'three';
 import { Component, ElementRef } from '@angular/core';
-// import { SmoothShading         } from 'three/src/constants.js';
+import { SmoothShading         } from 'three/src/constants.js';
 
 
 @Component({
@@ -53,29 +52,29 @@ export class MoreComponent {
   }
 
   createScene() {
-    this.scene = new THREE.Scene();
+    this.scene = new Scene();
   }
 
   createCamera() {
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+    this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
     this.camera.position.z = 7.5;
   }
 
   createLights() {
-    this.scene.add(new THREE.AmbientLight(this.GRAY));
+    this.scene.add(new AmbientLight(this.GRAY));
 
-    let light = new THREE.DirectionalLight(this.WHITE, 0.5);
+    let light = new DirectionalLight(this.WHITE, 0.5);
     light.position.set(25, 50, -50);
     light.castShadow = true;
     this.scene.add(light);
 
-    light = new THREE.SpotLight(this.WHITE, 1, 100, 1, 0, 1);
+    light = new SpotLight(this.WHITE, 1, 100, 1, 0, 1);
     light.position.set(-25, 25, 5);
     this.scene.add(light);
   }
 
   createRenderer() {
-    this.renderer = new THREE.WebGLRenderer({ alpha: true });
+    this.renderer = new WebGLRenderer({ alpha: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setClearColor(this.BLACK, 0);
 
@@ -83,7 +82,7 @@ export class MoreComponent {
   }
 
   loadPill(color) {
-    const jsonLoader = new THREE.JSONLoader();
+    const jsonLoader = new JSONLoader();
 
     let pillMaterial = {
       shading           : SmoothShading,
@@ -101,7 +100,7 @@ export class MoreComponent {
     };
 
     jsonLoader.load('assets/pill.json', (geometry) => {
-      let pill = new THREE.Mesh(geometry, new THREE.MeshStandardMaterial(pillMaterial));
+      let pill = new Mesh(geometry, new MeshStandardMaterial(pillMaterial));
 
       if (color === this.BLUE) {
         pill.rotation.set(0, -1.5, -0.4);
