@@ -46,6 +46,8 @@ export class MoreComponent {
     this.createLights();
     this.createRenderer();
 
+    this.playPillsSpeech();
+
     this.loadPill(this.BLUE);
     this.loadPill(this.RED);
     this.animate();
@@ -81,6 +83,13 @@ export class MoreComponent {
     this.more.appendChild(this.renderer.domElement);
   }
 
+  playPillsSpeech() {
+    let speech = new Audio('assets/speech.wav');
+    speech.autoplay = true;
+    speech.volume = 0.5;
+    speech.load();
+  }
+
   loadPill(color) {
     const jsonLoader = new JSONLoader();
 
@@ -106,10 +115,7 @@ export class MoreComponent {
         pill.rotation.set(0, -1.5, -0.4);
         pill.position.set(2.5, 0, 2);
         this.bluePill = pill;
-
-        setTimeout(() => {
-          this.showBlue = true;
-        }, 500);
+        this.showBlue = true;
 
       } else {
         pill.rotation.set(-0.05, 1.3, 0.4);
@@ -118,8 +124,8 @@ export class MoreComponent {
 
         setTimeout(() => {
           this.showRed = true;
-          setTimeout(this.createChoice.bind(this), 2000);
-        }, 2500);
+          setTimeout(this.createChoice.bind(this), 8500);
+        }, 7500);
       }
 
       pill.scale.set(0.2, 0.2, 0.2);
@@ -133,8 +139,8 @@ export class MoreComponent {
     this.showBlue = false;
 
     setTimeout(() => {
-      this.raining  = true;      
-    }, 2000);
+      this.raining  = true;
+    }, 1000);
 
     this.pillChoice = this.setChosenPill.bind(this);
     document.addEventListener('keydown', this.pillChoice, false);
