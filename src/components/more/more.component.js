@@ -37,6 +37,7 @@ export class MoreComponent {
     this.RED      = 0xB40000;
 
     this.raining  = null;
+    this.goToMenu = false;
     this.showRed  = false;
     this.showBlue = false;
     this.more     = more.nativeElement;
@@ -158,9 +159,13 @@ export class MoreComponent {
 
   faceChosenPill() {
     document.removeEventListener('keydown', this.pillChoice, false);
-    this.raining = false;
 
-    if (!this.choice) history.back();
+    this.goToMenu = true;
+    this.raining  = false;
+
+    setTimeout(() => {
+      if (!this.choice) history.back();
+    }, 5500);
   }
 
   animate() {

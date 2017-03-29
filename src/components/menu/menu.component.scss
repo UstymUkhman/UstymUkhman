@@ -3,11 +3,9 @@ $animaiton-duration: .2s;
 $animaiton-delay: .25s;
 $border-size: 5px;
 
-div#menu-section {
+div.menu-section {
   @include position(absolute, $null);
   @include size($max);
-
-  margin-left: 50px;
   z-index: 12;
 
   &-background {
@@ -24,6 +22,7 @@ div#menu-section {
   }
 
   div.menu-items {
+    margin-left: 50px;
     height: 100%;
 
     div.menu-item {
@@ -150,7 +149,7 @@ div#menu-section {
   }
 
   div.matrix-rain {
-    @include position(absolute, $null $null $null null);
+    @include position(absolute, $null -2.4% $null null);
     @include size(50% $max);
   }
 

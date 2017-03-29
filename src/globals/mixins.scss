@@ -127,11 +127,6 @@
   margin: auto;
 }
 
-@mixin border-animation($prop, $side) {
-  $delay: .125s * $side;
-  @include transition(.125s $prop ease-out $delay);
-}
-
 @mixin remove-element {
   display: none;
 }

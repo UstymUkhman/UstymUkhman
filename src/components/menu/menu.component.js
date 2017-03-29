@@ -34,8 +34,7 @@ export class MenuComponent {
   }
 
   setMenuSection(section) {
-    this.settedSection   = true;
-    this.resetMatrixCode = false;
+    this.settedSection = true;
 
     setTimeout(() => {
       this.fadeOutArea = true;

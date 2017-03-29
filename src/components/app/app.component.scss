@@ -18,9 +18,8 @@ html, body {
 canvas {
   top:      $null;
   left:     $null;
+  z-index:  $z-pills;
   position: absolute;
-
-  z-index:  10;
 }
 
 label, span, p {

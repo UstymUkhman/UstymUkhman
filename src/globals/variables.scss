@@ -15,10 +15,6 @@ $none: 0%;
 $half: 50%;
 $max:  100%;
 
-// $_4K: 4096px;
-// $_2K: 2048px;
-$_HD: 1920px;
-
 
 // Breakpoints:
 
@@ -40,10 +36,12 @@ $energy-green:      rgba(221, 255, 221, 1);
 $transparent-green: rgba(136, 255, 136, 0);
 $dark-green:        rgba(  0,  68,   0, .5);
 
+
 // Z-indexes:
 
 $z-console:   1;
 $z-preloader: 2;
 $z-message:   3;
+$z-pills:     8;
 $z-code:      9;
 $z-screen:   25;
