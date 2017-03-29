@@ -37,6 +37,7 @@ export class MoreComponent {
     this.RED      = 0xB40000;
 
     this.raining  = null;
+    this.fadeOut  = false;
     this.goToMenu = false;
     this.showRed  = false;
     this.showBlue = false;
@@ -45,13 +46,11 @@ export class MoreComponent {
     this.createScene();
     this.createCamera();
     this.createLights();
-    this.createRenderer();
 
     this.playPillsSpeech();
 
     this.loadPill(this.BLUE);
     this.loadPill(this.RED);
-    this.animate();
   }
 
   createScene() {
@@ -81,6 +80,7 @@ export class MoreComponent {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setClearColor(this.BLACK, 0);
 
+    this.renderer.domElement.id = 'pills';
     this.more.appendChild(this.renderer.domElement);
   }
 
@@ -159,12 +159,17 @@ export class MoreComponent {
 
   faceChosenPill() {
     document.removeEventListener('keydown', this.pillChoice, false);
-
     this.goToMenu = true;
-    this.raining  = false;
 
     setTimeout(() => {
-      if (!this.choice) history.back();
+      this.raining = false;
+      this.fadeOut = true;
+    }, 2500);
+
+    setTimeout(() => {
+      if (!this.choice) {
+        window.location.href = window.location.href.slice(0, -4);
+      }
     }, 5500);
   }
 
@@ -173,38 +178,44 @@ export class MoreComponent {
     this.renderer.render(this.scene, this.camera);
 
     if (this.bluePill && this.redPill) {
-      if (this.showBlue && this.bluePill.material.opacity < 0.9) {
+      if (this.showBlue && this.bluePill.material.opacity < 0.6) {
         this.bluePill.material.opacity += 0.01;
       }
 
-      if (this.showRed && this.redPill.material.opacity < 0.9) {
+      if (this.showRed && this.redPill.material.opacity < 0.6) {
         this.redPill.material.opacity += 0.01;
       }
 
       if (this.choice === false && this.redPill.scale.x > 0.1) {
-        this.redPill.scale.x           -= 0.005;
-        this.redPill.scale.y           -= 0.005;
-        this.redPill.scale.z           -= 0.005;
-        this.redPill.material.opacity  -= 0.025;
+        this.redPill.scale.x           -= 0.01;
+        this.redPill.scale.y           -= 0.01;
+        this.redPill.scale.z           -= 0.01;
+        this.redPill.material.opacity  -= 0.01;
 
-        this.bluePill.scale.x          += 0.005;
-        this.bluePill.scale.y          += 0.005;
-        this.bluePill.scale.z          += 0.005;
-        this.bluePill.material.opacity += 0.025;
+        this.bluePill.scale.x          += 0.01;
+        this.bluePill.scale.y          += 0.01;
+        this.bluePill.scale.z          += 0.01;
+        this.bluePill.material.opacity += 0.01;
       }
 
       if (this.choice === true && this.redPill.scale.x < 0.3) {
-        this.redPill.scale.x           += 0.005;
-        this.redPill.scale.y           += 0.005;
-        this.redPill.scale.z           += 0.005;
-        this.redPill.material.opacity  += 0.025;
+        this.redPill.scale.x           += 0.01;
+        this.redPill.scale.y           += 0.01;
+        this.redPill.scale.z           += 0.01;
+        this.redPill.material.opacity  += 0.01;
 
-        this.bluePill.scale.x          -= 0.005;
-        this.bluePill.scale.y          -= 0.005;
-        this.bluePill.scale.z          -= 0.005;
-        this.bluePill.material.opacity -= 0.025;
+        this.bluePill.scale.x          -= 0.01;
+        this.bluePill.scale.y          -= 0.01;
+        this.bluePill.scale.z          -= 0.01;
+        this.bluePill.material.opacity -= 0.01;
       }
     }
+  }
+
+  ngAfterViewInit() {
+    this.more = this.more.getElementsByClassName('more-component')[0];
+    this.createRenderer();
+    this.animate();
   }
 
   static get parameters() {

@@ -8,7 +8,7 @@ div#matrix-rain {
 
   background-color: transparent;
   background: transparent;
-  z-index: $z-code;
+  z-index: $z-rain;
 
   div.rain-layout {
     @include size($max);

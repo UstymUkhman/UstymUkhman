@@ -43,13 +43,12 @@ export class ConsoleComponent {
   ngAfterViewInit() {
     this.showConsole = true;
 
+    setTimeout(() => {
+      this.hiddenLoading = true;
+    }, 100);
+
     if (this.lastActiveItem !== null)
       this.codeGotRuned(true);
-
-    else
-      setTimeout(() => {
-        this.hiddenLoading = true;
-      }, 100);
   }
 
   static get parameters() {

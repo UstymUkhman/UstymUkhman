@@ -5,7 +5,7 @@ import { LoadingService        } from '../../services/loading.service';
 @Component({
   selector: 'app',
   template: `
-    <span *ngIf="!ready">Loading</span>
+    <span id="loading-message" *ngIf="!ready">Loading</span>
     <router-outlet></router-outlet>
   `
 })
