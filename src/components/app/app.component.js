@@ -35,7 +35,7 @@ export class AppComponent {
 
     let song = new Audio('assets/music.mp3');
     song.autoplay = true;
-    song.volume = 0.1;
+    song.volume = 0.05;
     song.loop = true;
     song.load();
   }

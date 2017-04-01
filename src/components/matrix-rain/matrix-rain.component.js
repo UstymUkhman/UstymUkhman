@@ -55,13 +55,13 @@ export class MatrixRainComponent {
     this.rain[index]      = charCode;
     this.rain[index].size = charSize;
 
-    setTimeout(() => {
+    this.animationTimeout = setTimeout(() => {
       let duration = Math.floor(Math.random() * 14001 + 1000);
 
       this.rain[index].animation = 'slide-down';
       this.rain[index].duration  = duration / 1000;
 
-      setTimeout(() => {
+      this.charCodeTimeout = setTimeout(() => {
         this.setCharCode(index);
       }, duration);
     });
@@ -88,6 +88,8 @@ export class MatrixRainComponent {
     }
 
     if (this.removeRain) {
+      clearTimeout(this.animationTimeout);
+      clearTimeout(this.charCodeTimeout);
       this.matrixRain.remove();
     }
   }

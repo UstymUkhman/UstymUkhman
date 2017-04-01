@@ -5,7 +5,10 @@ export class LoadingService {
 
   finishLoading() {
     this.loaded = true;
-    window.location.href += '.';
+
+    if (window.location.hash === '#/') {
+      window.location.href += '.';
+    }
   }
 
   setActiveItem(item) {
@@ -14,5 +17,12 @@ export class LoadingService {
 
   getLastItem() {
     return this.activeItem || null;
+  }
+
+  loadPillChoice(choice) {
+    if (!choice)
+      window.location.href += '.';
+    else
+      window.location.href = window.location.href.replace('more', 'rabbit-hole');
   }
 }

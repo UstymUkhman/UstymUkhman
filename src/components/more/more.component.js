@@ -12,6 +12,7 @@ import {
 
 import { Component, ElementRef } from '@angular/core';
 import { SmoothShading         } from 'three/src/constants.js';
+import { LoadingService        } from '../../services/loading.service';
 
 
 @Component({
@@ -21,13 +22,14 @@ import { SmoothShading         } from 'three/src/constants.js';
 
 
 export class MoreComponent {
-  constructor(more) {
+  constructor(more, loading) {
     this.scene    = null;
     this.light    = null;
     this.camera   = null;
     this.renderer = null;
     this.bluePill = null;
     this.redPill  = null;
+    this.raining  = null;
     this.choice   = null;
 
     this.WHITE    = 0xFFFFFF;
@@ -36,18 +38,18 @@ export class MoreComponent {
     this.BLUE     = 0x003FFF;
     this.RED      = 0xB40000;
 
-    this.raining  = null;
     this.fadeOut  = false;
     this.goToMenu = false;
     this.showRed  = false;
     this.showBlue = false;
+
+    this.loading  = loading;
     this.more     = more.nativeElement;
 
     this.createScene();
     this.createCamera();
     this.createLights();
-
-    this.playPillsSpeech();
+    this.createSpeech();
 
     this.loadPill(this.BLUE);
     this.loadPill(this.RED);
@@ -84,10 +86,10 @@ export class MoreComponent {
     this.more.appendChild(this.renderer.domElement);
   }
 
-  playPillsSpeech() {
+  createSpeech() {
     let speech = new Audio('assets/speech.wav');
     speech.autoplay = true;
-    speech.volume = 0.5;
+    speech.volume = 1;
     speech.load();
   }
 
@@ -140,7 +142,8 @@ export class MoreComponent {
     this.showBlue = false;
 
     setTimeout(() => {
-      this.raining  = true;
+      this.raining = true;
+      this.visiblePills = true;
     }, 1000);
 
     this.pillChoice = this.setChosenPill.bind(this);
@@ -150,31 +153,19 @@ export class MoreComponent {
   setChosenPill(event) {
     const code = event.keyCode;
 
-    if (code === 37 || code === 39)
+    if (code === 37 || code === 39) {
       this.choice = !this.choice;
+      this.animate();
+    }
 
-    else if (code === 13)
-      this.faceChosenPill();
-  }
-
-  faceChosenPill() {
-    document.removeEventListener('keydown', this.pillChoice, false);
-    this.goToMenu = true;
-
-    setTimeout(() => {
-      this.raining = false;
-      this.fadeOut = true;
-    }, 2500);
-
-    setTimeout(() => {
-      if (!this.choice) {
-        window.location.href = window.location.href.slice(0, -4);
-      }
-    }, 5500);
+    else if (code === 13) {
+      document.removeEventListener('keydown', this.pillChoice, false);
+      this.animateChosenPill();
+    }
   }
 
   animate() {
-    requestAnimationFrame(this.animate.bind(this));
+    this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
 
     if (this.bluePill && this.redPill) {
@@ -209,6 +200,55 @@ export class MoreComponent {
         this.bluePill.scale.z          -= 0.01;
         this.bluePill.material.opacity -= 0.01;
       }
+
+      let redScaleDone  = this.redPill.scale.x  >= 0.3 && this.bluePill.scale.x <= 0.1;
+      let blueScaleDone = this.bluePill.scale.x >= 0.3 && this.redPill.scale.x  <= 0.1;
+
+      if (this.visiblePills && (redScaleDone || blueScaleDone)) {
+        cancelAnimationFrame(this.frame);
+      }
+    }
+  }
+
+  animateChosenPill() {
+    this.choiceAnimation = requestAnimationFrame(this.animateChosenPill.bind(this));
+    this.renderer.render(this.scene, this.camera);
+
+    if (!this.choice && this.bluePill.position.z < 5) {
+      this.bluePill.position.z += 0.25;
+
+      if (this.bluePill.position.x > 0)
+        this.bluePill.position.x -= 0.25;
+
+      if (this.bluePill.rotation.x > 0)
+        this.bluePill.rotation.x += 0.25;
+
+      if (this.bluePill.rotation.z > -0.9)
+        this.bluePill.rotation.z -= 0.075;
+
+    } else if (this.choice && this.redPill.position.z < 5) {
+      this.redPill.position.z += 0.25;
+
+      if (this.redPill.position.x < 0)
+        this.redPill.position.x += 0.25;
+
+      if (this.redPill.rotation.y > 0.8)
+        this.redPill.rotation.y -= 0.05;
+
+      if (this.redPill.rotation.z < 1.5)
+        this.redPill.rotation.z += 0.1;
+
+    } else {
+      setTimeout(this.loading.loadPillChoice, 5500, this.choice);
+      cancelAnimationFrame(this.choiceAnimation);
+
+      this.loading.setActiveItem(3);
+      this.goToMenu = true;
+
+      setTimeout(() => {
+        this.raining = false;
+        this.fadeOut = true;
+      }, 2500);
     }
   }
 
@@ -219,6 +259,6 @@ export class MoreComponent {
   }
 
   static get parameters() {
-    return [[ElementRef]];
+    return [[ElementRef], [LoadingService]];
   }
 }
