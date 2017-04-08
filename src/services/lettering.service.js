@@ -61,10 +61,14 @@ export class LetteringService {
       this.nextTiming = Date.now() + 150;
     }
 
-    cancelAnimationFrame(this.letteringID);
+    if (this.last === this.lastLetter) {
+      cancelAnimationFrame(this.letteringID);
 
-    if (this.last === this.lastLetter && this.hasCallback)
-      return setTimeout(this.callback, 1000);
+      if (this.hasCallback) {
+        setTimeout(this.callback, 1000);
+        return;
+      }
+    }
 
     this.letteringID = requestAnimationFrame(this.lettersAnimation.bind(this));
   }

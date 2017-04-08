@@ -12,6 +12,8 @@ import {
 
 import { Component, ElementRef } from '@angular/core';
 import { SmoothShading         } from 'three/src/constants.js';
+
+import { SoundsService         } from '../../services/sounds.service';
 import { LoadingService        } from '../../services/loading.service';
 
 
@@ -22,7 +24,7 @@ import { LoadingService        } from '../../services/loading.service';
 
 
 export class MoreComponent {
-  constructor(more, loading) {
+  constructor(more, sounds, loading) {
     this.scene    = null;
     this.light    = null;
     this.camera   = null;
@@ -43,6 +45,7 @@ export class MoreComponent {
     this.showRed  = false;
     this.showBlue = false;
 
+    this.audio    = sounds;
     this.loading  = loading;
     this.more     = more.nativeElement;
 
@@ -87,10 +90,7 @@ export class MoreComponent {
   }
 
   createSpeech() {
-    let speech = new Audio('assets/speech.wav');
-    speech.autoplay = true;
-    speech.volume = 1;
-    speech.load();
+    this.audio.playSpeach();
   }
 
   loadPill(color) {
@@ -142,7 +142,7 @@ export class MoreComponent {
     this.showBlue = false;
 
     setTimeout(() => {
-      this.raining = true;
+      this.raining      = true;
       this.visiblePills = true;
     }, 1000);
 
@@ -239,10 +239,8 @@ export class MoreComponent {
         this.redPill.rotation.z += 0.1;
 
     } else {
-      setTimeout(this.loading.loadPillChoice, 5500, this.choice);
+      setTimeout(this.loading.loadPillChoice.bind(this.loading), 5500, this.choice);
       cancelAnimationFrame(this.choiceAnimation);
-
-      this.loading.setActiveItem(3);
       this.goToMenu = true;
 
       setTimeout(() => {
@@ -259,6 +257,10 @@ export class MoreComponent {
   }
 
   static get parameters() {
-    return [[ElementRef], [LoadingService]];
+    return [
+      [ElementRef],
+      [SoundsService],
+      [LoadingService]
+    ];
   }
 }

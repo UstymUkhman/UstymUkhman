@@ -15,10 +15,6 @@ export class ScreenOverlayComponent {
   }
 
   ngOnChanges() {
-    if (this.ready) {
-      setTimeout(() => {
-        this.show = true;
-      }, 1000);
-    }
+    this.show = this.ready;
   }
 }

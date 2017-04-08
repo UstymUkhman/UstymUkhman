@@ -4,7 +4,6 @@ import { LetteringService                    } from '../../services/lettering.se
 
 @Component({
   selector: 'about-me',
-  outputs: ['backToMenu'],
   templateUrl: 'components/about-me/about-me.component.html'
 })
 
@@ -17,7 +16,6 @@ export class AboutMeComponent {
     this.fadeOut          = false;
 
     this.aboutElement     = aboutMe.nativeElement;
-    this.backToMenu       = new EventEmitter();
     this.lettering        = lettering;
 
     this.years = (() => {
@@ -68,11 +66,6 @@ export class AboutMeComponent {
         document.addEventListener('keydown', this.backButtonHandler, false);
       }, 2000);
     });
-  }
-
-  returnToMenu() {
-    this.backToMenu.emit();
-    this.aboutElement.remove();
   }
 
   ngAfterViewInit() {

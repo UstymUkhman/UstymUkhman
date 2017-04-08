@@ -18,10 +18,10 @@ export class MenuComponent {
     this.settedSection = false;
 
     this.pages = [
-      { title : 'Ab0uT_m3'   , href : 'about'   },
-      { title : 'My_W0rk5'   , href : 'works'   },
-      { title : 'C0nT@cT_m3' , href : 'contact' },
-      { title : 'M0r3'       , href : 'more'    }
+      'Ab0uT_m3'   ,
+      'My_W0rk5'   ,
+      'C0nT@cT_m3' ,
+      'M0r3'
     ];
 
     this.itemIndex = -1;
@@ -44,8 +44,7 @@ export class MenuComponent {
         this.itemBoxes[section].classList.remove('active-item');
 
         this.stopRaining = true;
-        this.loading.setActiveItem(section);
-        window.location.href += this.pages[section].href;
+        this.loading.setActivePage(section);
       }, 3000);
     }, 2500);
   }
@@ -96,6 +95,10 @@ export class MenuComponent {
   }
 
   static get parameters() {
-    return [[ElementRef], [LoadingService], [LetteringService]];
+    return [
+      [ElementRef],
+      [LoadingService],
+      [LetteringService]
+    ];
   }
 }

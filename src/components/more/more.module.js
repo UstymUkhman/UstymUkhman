@@ -7,6 +7,8 @@ import { MoreComponent    } from './more.component';
 import { MatrixCodeModule } from '../matrix-code/matrix-code.module';
 import { MatrixRainModule } from '../matrix-rain/matrix-rain.module';
 
+import { SoundsService    } from '../../services/sounds.service';
+
 
 @NgModule({
   imports: [
@@ -15,6 +17,7 @@ import { MatrixRainModule } from '../matrix-rain/matrix-rain.module';
     MatrixRainModule
   ],
 
+  providers    : [SoundsService],
   declarations : [MoreComponent],
   exports      : [MoreComponent]
 })

@@ -1,4 +1,13 @@
 export class LoadingService {
+  constructor() {
+    this.pages = [
+      'about'   ,
+      'works'   ,
+      'contact' ,
+      'more'
+    ];
+  }
+
   canActivate() {
     return this.loaded || false;
   }
@@ -11,8 +20,9 @@ export class LoadingService {
     }
   }
 
-  setActiveItem(item) {
+  setActivePage(item) {
     this.activeItem = item;
+    window.location.href += this.pages[item];
   }
 
   getLastItem() {
@@ -20,9 +30,13 @@ export class LoadingService {
   }
 
   loadPillChoice(choice) {
-    if (!choice)
-      window.location.href += '.';
-    else
+    if (choice)
       window.location.href = window.location.href.replace('more', 'rabbit-hole');
+    else
+      this.backToMenu();
+  }
+
+  backToMenu() {
+    window.history.back();
   }
 }

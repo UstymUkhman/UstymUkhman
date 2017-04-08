@@ -7,6 +7,7 @@ import { BrowserModule   } from '@angular/platform-browser';
 
 import { AppRouting      } from './app.routing';
 import { AppComponent    } from './app.component';
+import { SoundsService   } from '../../services/sounds.service';
 import { LoadingService  } from '../../services/loading.service';
 
 import { MoreModule      } from '../more/more.module';
@@ -26,7 +27,7 @@ import { ContactMeModule } from '../contact-me/contact-me.module';
     ContactMeModule ,
   ],
 
-  providers   : [LoadingService],
+  providers   : [SoundsService, LoadingService],
   declarations: [AppComponent],
   bootstrap   : [AppComponent]
 })

@@ -1,4 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
+import { SoundsService         } from '../../services/sounds.service';
 import { LoadingService        } from '../../services/loading.service';
 
 
@@ -12,9 +13,10 @@ import { LoadingService        } from '../../services/loading.service';
 
 
 export class AppComponent {
-  constructor(app, loading) {
+  constructor(app, sounds, loading) {
     this.interval = 1000;
     this.ready    = false;
+    this.audio    = sounds;
     this.load     = loading;
     this.app      = app.nativeElement;
   }
@@ -31,13 +33,8 @@ export class AppComponent {
 
   compleateLoading() {
     this.ready = true;
+    this.audio.playMusic();
     this.load.finishLoading();
-
-    let song = new Audio('assets/music.mp3');
-    song.autoplay = true;
-    song.volume = 0.05;
-    song.loop = true;
-    song.load();
   }
 
   ngAfterViewInit() {
@@ -46,6 +43,10 @@ export class AppComponent {
   }
 
   static get parameters() {
-    return [[ElementRef], [LoadingService]];
+    return [
+      [ElementRef],
+      [SoundsService],
+      [LoadingService]
+    ];
   }
 }

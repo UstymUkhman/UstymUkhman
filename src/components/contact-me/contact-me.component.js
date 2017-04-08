@@ -4,7 +4,6 @@ import { LetteringService                    } from '../../services/lettering.se
 
 @Component({
   selector: 'contact-me',
-  outputs: ['backToMenu'],
   templateUrl: 'components/contact-me/contact-me.component.html'
 })
 
@@ -22,7 +21,6 @@ export class ContactMeComponent {
     this.removeMatrixRain = false;
 
     this.lettering        = lettering;
-    this.backToMenu       = new EventEmitter();
     this.contactsElement  = contacts.nativeElement;
 
     this.contactsList = [
@@ -54,11 +52,6 @@ export class ContactMeComponent {
       this.startRaining     = false;
       this.removeMatrixRain = true;
     }, 2000);
-  }
-
-  returnToMenu() {
-    this.backToMenu.emit();
-    this.contactsElement.remove();
   }
 
   checkValidCode(code) {

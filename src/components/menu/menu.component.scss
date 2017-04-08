@@ -150,7 +150,7 @@ div.menu-section {
 
   div.matrix-rain {
     @include position(absolute, $null -2.4% $null auto);
-    @include size(50% $max);
+    @include size(45% $max);
   }
 
   div.matrix-code {

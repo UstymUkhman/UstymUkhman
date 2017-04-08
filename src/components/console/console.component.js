@@ -15,8 +15,9 @@ export class ConsoleComponent {
     this.overlayReady   = false;
     this.consoleIsReady = false;
 
-    this.hiddenLoading  = false;
     this.showConsole    = false;
+    this.hiddenLoading  = false;
+    this.visibleOverlay = false;
     this.lastActiveItem = loading.getLastItem();
   }
 
@@ -41,11 +42,9 @@ export class ConsoleComponent {
   }
 
   ngAfterViewInit() {
-    this.showConsole = true;
-
-    setTimeout(() => {
-      this.hiddenLoading = true;
-    }, 100);
+    this.showConsole    = true;
+    this.visibleOverlay = true;
+    this.hiddenLoading  = this.lastActiveItem === null;
 
     if (this.lastActiveItem !== null)
       this.codeGotRuned(true);

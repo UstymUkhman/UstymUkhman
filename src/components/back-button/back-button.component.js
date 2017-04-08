@@ -1,26 +1,25 @@
 import { Component, EventEmitter, ElementRef } from '@angular/core';
+import { LoadingService                      } from '../../services/loading.service';
 import { LetteringService                    } from '../../services/lettering.service';
 
 
 @Component({
   selector: 'back-button',
-  outputs: ['matrixCodeRemoved'],
   inputs: ['active', 'backToMenu', 'showBackButton'],
   templateUrl: 'components/back-button/back-button.component.html'
 })
 
 
 export class BackButtonComponent {
-  constructor(button, lettering) {
-    this.removeMatrixCode  = false;
+  constructor(button, loading, lettering) {
     this.showBackButton    = false;
     this.initialized       = false;
     this.backToMenu        = false;
     this.fadeOut           = false;
     this.active            = false;
 
+    this.loading           = loading;
     this.lettering         = lettering;
-    this.matrixCodeRemoved = new EventEmitter();
     this.button            = button.nativeElement;
   }
 
@@ -36,15 +35,15 @@ export class BackButtonComponent {
         this.fadeOut = true;
       }, 2000);
 
-      setTimeout(() => {
-        this.removeMatrixCode = true;
-        this.matrixCodeRemoved.emit();
-        this.button.remove();
-      }, 5500);
+      setTimeout(this.loading.backToMenu, 5500);
     }
   }
 
   static get parameters() {
-    return [[ElementRef], [LetteringService]];
+    return [
+      [ElementRef],
+      [LoadingService],
+      [LetteringService]
+    ];
   }
 }

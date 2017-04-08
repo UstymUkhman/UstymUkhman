@@ -5,7 +5,6 @@ import { LetteringService                    } from '../../services/lettering.se
 
 @Component({
   selector: 'my-works',
-  outputs: ['backToMenu'],
   templateUrl: 'components/my-works/my-works.component.html'
 })
 
@@ -24,7 +23,6 @@ export class MyWorksComponent {
 
     this.http             = http;
     this.lettering        = lettering;
-    this.backToMenu       = new EventEmitter();
     this.worksElement     = works.nativeElement;
     this.projectsFile     = 'assets/projects.json';
 
@@ -132,11 +130,6 @@ export class MyWorksComponent {
       this.startRaining     = false;
       this.removeMatrixRain = true;
     }, 2000);
-  }
-
-  returnToMenu() {
-    this.backToMenu.emit();
-    this.worksElement.remove();
   }
 
   static get parameters() {
