@@ -215,28 +215,28 @@ export class MoreComponent {
     this.renderer.render(this.scene, this.camera);
 
     if (!this.choice && this.bluePill.position.z < 5) {
-      this.bluePill.position.z += 0.25;
+      this.bluePill.position.z += 0.125;
 
       if (this.bluePill.position.x > 0)
-        this.bluePill.position.x -= 0.25;
+        this.bluePill.position.x -= 0.125;
 
       if (this.bluePill.rotation.x > 0)
-        this.bluePill.rotation.x += 0.25;
+        this.bluePill.rotation.x += 0.125;
 
       if (this.bluePill.rotation.z > -0.9)
-        this.bluePill.rotation.z -= 0.075;
+        this.bluePill.rotation.z -= 0.0375;
 
     } else if (this.choice && this.redPill.position.z < 5) {
-      this.redPill.position.z += 0.25;
+      this.redPill.position.z += 0.125;
 
       if (this.redPill.position.x < 0)
-        this.redPill.position.x += 0.25;
+        this.redPill.position.x += 0.125;
 
       if (this.redPill.rotation.y > 0.8)
-        this.redPill.rotation.y -= 0.05;
+        this.redPill.rotation.y -= 0.025;
 
       if (this.redPill.rotation.z < 1.5)
-        this.redPill.rotation.z += 0.1;
+        this.redPill.rotation.z += 0.05;
 
     } else {
       setTimeout(this.loading.loadPillChoice.bind(this.loading), 5500, this.choice);

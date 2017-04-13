@@ -1,0 +1,5 @@
+div#rabbit-hole {
+  @include position(absolute, $null);
+  @include size($max);
+  overflow: hidden;
+}
