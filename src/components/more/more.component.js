@@ -81,7 +81,7 @@ export class MoreComponent {
   }
 
   createRenderer() {
-    this.renderer = new WebGLRenderer({ alpha: true });
+    this.renderer = new WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setClearColor(this.BLACK, 0);
 
@@ -91,6 +91,10 @@ export class MoreComponent {
 
   createSpeech() {
     this.audio.playSpeach();
+  }
+
+  createResizeHandler() {
+    window.addEventListener('resize', this.onWindowResize.bind(this), false);
   }
 
   loadPill(color) {
@@ -250,10 +254,21 @@ export class MoreComponent {
     }
   }
 
+  onWindowResize() {
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+  }
+
   ngAfterViewInit() {
     this.more = this.more.getElementsByClassName('more-component')[0];
+    this.createResizeHandler();
     this.createRenderer();
     this.animate();
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('resize', this.onWindowResize.bind(this));
   }
 
   static get parameters() {

@@ -20,7 +20,7 @@ const routes = [
   { path: 'contact',     component: ContactMeComponent                              },
   { path: 'more',        component: MoreComponent                                   },
   { path: 'rabbit-hole', component: RabbitHoleComponent                             },
-  { path: '**',          redirectTo: ''                                             }
+  { path: '**',          redirectTo: '/rabbit-hole'                                 }
 ];
 
 
