@@ -72,9 +72,25 @@ export class RabbitHoleComponent {
     // new OrbitControls(this.camera, this.renderer.domElement);
 
     document.addEventListener('keydown', (event) => {
-      const code = event.keyCode;
-
       switch (event.keyCode) {
+        case 38:
+          if (this.checkCameraAngle(true))
+            this.camera.rotateX(0.05);
+        break;
+
+        case 37:
+          this.camera.rotateY(0.05);
+        break;
+
+        case 39:
+          this.camera.rotateY(-0.05);
+        break;
+
+        case 40:
+          if (this.checkCameraAngle(false))
+            this.camera.rotateX(-0.05);
+        break;
+
         case 87:
           this.camera.translateZ(-10);
         break;
@@ -93,6 +109,7 @@ export class RabbitHoleComponent {
       }
 
       this.camera.position.y = 50;
+      console.log(this.camera.rotation.x, this.camera.rotation.y);
 
       if (this.camera.position.x < -45)
         this.camera.position.x = -45;
@@ -107,9 +124,23 @@ export class RabbitHoleComponent {
     window.addEventListener('resize', this.setResizeHandler.bind(this), false);
   }
 
+  checkCameraAngle(top) {
+    return top ? (this.camera.rotation.x < 0 || this.camera.rotation.x >= (Math.PI - 0.5)) : (this.camera.rotation.x > 0 || this.camera.rotation.x < (-Math.PI + 1.5));
+    // return top ? this.camera.rotation.x < 0.5 : this.camera.rotation.x > -1.5;
+  }
+
   setCameraHandler(event) {
-    this.directionX = (event.offsetX - this.WIDTH  / 2) / 20000;
-    this.directionY = (event.offsetY - this.HEIGHT / 2) / 20000;
+    this.directionX = (event.offsetX - this.WIDTH  / 2) / 15000;
+    this.directionY = (event.offsetY - this.HEIGHT / 2) / 15000;
+  }
+
+  setResizeHandler() {
+    this.WIDTH  = window.innerWidth;
+    this.HEIGHT = window.innerHeight;
+
+    this.renderer.setSize(this.WIDTH, this.HEIGHT);
+    this.camera.aspect = this.WIDTH / this.HEIGHT;
+    this.camera.updateProjectionMatrix();
   }
 
   /*checkRoomBorders() {
@@ -207,19 +238,13 @@ export class RabbitHoleComponent {
     this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
 
-    if (Math.abs(this.directionX) > 0.01 || Math.abs(this.directionY) > 0.01) {
+    let validDistance = Math.abs(this.directionX) > 0.01 || Math.abs(this.directionY) > 0.01,
+        validAngle = this.checkCameraAngle(this.directionY < 0);
+
+    if (validAngle && validDistance) {
       this.camera.rotation.x -= this.directionY;
       this.camera.rotation.y -= this.directionX;
     }
-  }
-
-  setResizeHandler() {
-    this.WIDTH  = window.innerWidth;
-    this.HEIGHT = window.innerHeight;
-
-    this.renderer.setSize(this.WIDTH, this.HEIGHT);
-    this.camera.aspect = this.WIDTH / this.HEIGHT;
-    this.camera.updateProjectionMatrix();
   }
 
   ngOnDestroy() {
