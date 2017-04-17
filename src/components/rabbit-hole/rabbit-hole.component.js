@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Component, ElementRef } from '@angular/core';
 
-const OrbitControls = require('three-orbit-controls')(THREE);
+// const OrbitControls = require('three-orbit-controls')(THREE);
 
 
 @Component({
@@ -12,17 +12,22 @@ const OrbitControls = require('three-orbit-controls')(THREE);
 
 export class RabbitHoleComponent {
   constructor(rabbitHole) {
-    this.scene    = null;
-    this.camera   = null;
-    this.renderer = null;
+    this.scene      = null;
+    this.camera     = null;
+    this.renderer   = null;
 
-    this.WHITE    = 0xffffff;
-    this.GRAY     = 0x333333;
-    this.BLACK    = 0x000000;
+    this.WHITE      = 0xFFFFFF;
+    this.LIGHTGRAY  = 0xDDDDDD;
+    this.DARKGRAY   = 0x333333;
+    this.BLACK      = 0x000000;
 
-    this.WIDTH    = window.innerWidth;
-    this.HEIGHT   = window.innerHeight;
-    this.hole     = rabbitHole.nativeElement;
+    this.halfPI     = Math.PI / 2;
+    this.WIDTH      = window.innerWidth;
+    this.HEIGHT     = window.innerHeight;
+    this.hole       = rabbitHole.nativeElement;
+
+    this.directionX = null;
+    this.directionY = null;
 
     this.createScene();
     this.createLight();
@@ -30,8 +35,9 @@ export class RabbitHoleComponent {
     this.createRenderer();
 
     this.createInputListener();
-    this.createResizeHandler();
+    this.createEventHandlers();
 
+    // this.createComputer();
     this.createFloor();
     this.createWalls();
     this.createSky();
@@ -43,14 +49,14 @@ export class RabbitHoleComponent {
   }
 
   createCamera() {
-    this.camera = new THREE.PerspectiveCamera(45, this.WIDTH / this.HEIGHT, 0.1, 20000);
-    this.camera.position.set(0, 30, 550);
+    this.camera = new THREE.PerspectiveCamera(45, this.WIDTH / this.HEIGHT, 1, 10000);
     this.camera.lookAt(this.scene.position);
+    this.camera.position.set(0, 50, 550);
     this.scene.add(this.camera);
   }
 
   createLight() {
-    this.scene.add(new THREE.AmbientLight(this.GRAY));
+    this.scene.add(new THREE.AmbientLight(this.DARKGRAY));
   }
 
   createRenderer() {
@@ -63,34 +69,75 @@ export class RabbitHoleComponent {
   }
 
   createInputListener() {
-    new OrbitControls(this.camera, this.renderer.domElement);
+    // new OrbitControls(this.camera, this.renderer.domElement);
 
     document.addEventListener('keydown', (event) => {
       const code = event.keyCode;
 
       switch (event.keyCode) {
         case 87:
-          this.camera.position.z -= 5;
+          this.camera.translateZ(-10);
         break;
 
         case 65:
-          this.camera.rotateY(0.025);
+          this.camera.translateX(-10);
         break;
 
         case 68:
-          this.camera.rotateY(-0.025);
+          this.camera.translateX(10);
         break;
 
         case 83:
-          this.camera.position.z += 5;
+          this.camera.translateZ(10);
         break;
       }
+
+      this.camera.position.y = 50;
+
+      if (this.camera.position.x < -45)
+        this.camera.position.x = -45;
+
+      else if (this.camera.position.x > 45)
+        this.camera.position.x = 45;
     });
   }
 
-  createResizeHandler() {
-    window.addEventListener('resize', this.onWindowResize.bind(this), false);
+  createEventHandlers() {
+    this.hole.addEventListener('mousemove', this.setCameraHandler.bind(this), false);
+    window.addEventListener('resize', this.setResizeHandler.bind(this), false);
   }
+
+  setCameraHandler(event) {
+    this.directionX = (event.offsetX - this.WIDTH  / 2) / 20000;
+    this.directionY = (event.offsetY - this.HEIGHT / 2) / 20000;
+  }
+
+  /*checkRoomBorders() {
+    this.camera.position.y = 50;
+
+    if (this.camera.position.x < -45)
+      this.camera.position.x = -45;
+
+    else if (this.camera.position.x > 45)
+      this.camera.position.x = 45;
+  }
+
+  createComputer() {
+    const jsonLoader = new THREE.JSONLoader();
+
+    jsonLoader.load('assets/Dell4550.json', (geometry) => {
+      let computer = new THREE.Mesh(
+        geometry,
+        new THREE.MeshStandardMaterial({
+          color     : this.LIGHTGRAY,
+          roughness : 0.5,
+          metalness : 0,
+        })
+      );
+
+      this.scene.add(computer);
+    });
+  }*/
 
   createFloor() {
     let textureLoader = new THREE.TextureLoader();
@@ -98,10 +145,10 @@ export class RabbitHoleComponent {
 
       let floorTexture   = texture;
       floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-      floorTexture.repeat.set(10, 10);
+      floorTexture.repeat.set(1, 10);
 
       let floorMaterial = new THREE.MeshBasicMaterial({ map: floorTexture, side: THREE.DoubleSide }),
-          floorGeom     = new THREE.PlaneGeometry(1000, 1000, 10, 10),
+          floorGeom     = new THREE.PlaneGeometry(100, 1000, 1, 10),
           floor         = new THREE.Mesh(floorGeom, floorMaterial);
 
       floor.rotation.x = Math.PI / 2;
@@ -119,26 +166,26 @@ export class RabbitHoleComponent {
       wallTexture.repeat.set(5, 1);
 
       let wallMaterial = new THREE.MeshBasicMaterial({ map: wallTexture, side: THREE.DoubleSide }),
-          vertWallGeom = new THREE.PlaneGeometry(1000, 170, 10, 10),
-          horzWallGeom = new THREE.PlaneGeometry(1000, 300, 10, 10),
+          vertWallGeom = new THREE.PlaneGeometry(1000, 150, 1, 10),
+          horzWallGeom = new THREE.PlaneGeometry(1000, 100, 10, 10),
 
           wall1        = new THREE.Mesh(vertWallGeom, wallMaterial),
           wall2        = new THREE.Mesh(vertWallGeom, wallMaterial),
           wall3        = new THREE.Mesh(horzWallGeom, wallMaterial);
 
-      wall1.rotation.y = Math.PI / 2;
+      wall1.rotation.y = this.halfPI;
       wall1.rotation.x = Math.PI;
-      wall1.position.x = 150;
-      wall1.position.y = 85;
+      wall1.position.x = 50;
+      wall1.position.y = 75;
 
-      wall2.rotation.y = Math.PI / 2;
+      wall2.rotation.y = this.halfPI;
       wall2.rotation.x = Math.PI;
-      wall2.position.x = -150;
-      wall2.position.y = 85;
+      wall2.position.x = -50;
+      wall2.position.y = 75;
 
-      wall3.rotation.z = -(Math.PI / 2);
-      wall3.rotation.x = Math.PI / 2;
-      wall3.position.y = 170;
+      wall3.rotation.z = -this.halfPI;
+      wall3.rotation.x = this.halfPI;
+      wall3.position.y = 150;
       wall3.position.x = 0;
 
       this.scene.add(wall1);
@@ -159,9 +206,14 @@ export class RabbitHoleComponent {
   animate() {
     this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
+
+    if (Math.abs(this.directionX) > 0.01 || Math.abs(this.directionY) > 0.01) {
+      this.camera.rotation.x -= this.directionY;
+      this.camera.rotation.y -= this.directionX;
+    }
   }
 
-  onWindowResize() {
+  setResizeHandler() {
     this.WIDTH  = window.innerWidth;
     this.HEIGHT = window.innerHeight;
 
@@ -171,7 +223,8 @@ export class RabbitHoleComponent {
   }
 
   ngOnDestroy() {
-    window.removeEventListener('resize', this.onWindowResize.bind(this));
+    this.hole.removeEventListener('mousemove', this.setCameraHandler.bind(this));
+    window.removeEventListener('resize', this.setResizeHandler.bind(this));
     cancelAnimationFrame(this.frame);
   }
 
