@@ -16,6 +16,9 @@ export class RabbitHoleComponent {
     this.camera     = null;
     this.renderer   = null;
 
+    this.directionX = null;
+    this.directionY = null;
+
     this.WHITE      = 0xFFFFFF;
     this.LIGHTGRAY  = 0xDDDDDD;
     this.DARKGRAY   = 0x333333;
@@ -25,9 +28,6 @@ export class RabbitHoleComponent {
     this.WIDTH      = window.innerWidth;
     this.HEIGHT     = window.innerHeight;
     this.hole       = rabbitHole.nativeElement;
-
-    this.directionX = null;
-    this.directionY = null;
 
     this.createScene();
     this.createLight();
@@ -109,7 +109,6 @@ export class RabbitHoleComponent {
       }
 
       this.camera.position.y = 50;
-      console.log(this.camera.rotation.x, this.camera.rotation.y);
 
       if (this.camera.position.x < -45)
         this.camera.position.x = -45;
@@ -125,8 +124,18 @@ export class RabbitHoleComponent {
   }
 
   checkCameraAngle(top) {
-    return top ? (this.camera.rotation.x < 0 || this.camera.rotation.x >= (Math.PI - 0.5)) : (this.camera.rotation.x > 0 || this.camera.rotation.x < (-Math.PI + 1.5));
-    // return top ? this.camera.rotation.x < 0.5 : this.camera.rotation.x > -1.5;
+    if (this.camera.rotation.x < -this.halfPI ||
+        this.camera.rotation.x >  this.halfPI) {
+
+      return top ? (this.camera.rotation.x < 0 || this.camera.rotation.x >= (Math.PI - 0.5))
+                 : (this.camera.rotation.x > 0 || this.camera.rotation.x < (-Math.PI + 1.5));
+
+    } else if (this.camera.rotation.x > -this.halfPI ||
+               this.camera.rotation.x <  this.halfPI) {
+
+      return top ? this.camera.rotation.x < 0.5
+                 : this.camera.rotation.x > -1.5;
+    }
   }
 
   setCameraHandler(event) {
@@ -242,8 +251,8 @@ export class RabbitHoleComponent {
         validAngle = this.checkCameraAngle(this.directionY < 0);
 
     if (validAngle && validDistance) {
-      this.camera.rotation.x -= this.directionY;
-      this.camera.rotation.y -= this.directionX;
+      this.camera.rotateX(-this.directionY);
+      this.camera.rotateY(-this.directionX);
     }
   }
 
