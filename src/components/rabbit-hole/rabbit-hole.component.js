@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Component, ElementRef } from '@angular/core';
 
-// const OrbitControls = require('three-orbit-controls')(THREE);
+const OrbitControls = require('three-orbit-controls')(THREE);
 
 
 @Component({
@@ -34,13 +34,17 @@ export class RabbitHoleComponent {
     this.createCamera();
     this.createRenderer();
 
-    this.createInputListener();
-    this.createEventHandlers();
+    new OrbitControls(this.camera, this.renderer.domElement);
 
-    // this.createComputer();
+    // this.createInputListener();
+    // this.createEventHandlers();
+
+    this.createSky();
     this.createFloor();
     this.createWalls();
-    this.createSky();
+
+    // this.createComputer();
+    this.createDoor();
     this.animate();
   }
 
@@ -108,6 +112,7 @@ export class RabbitHoleComponent {
         break;
       }
 
+      console.log(this.camera.rotation.z);
       this.camera.position.y = 50;
 
       if (this.camera.position.x < -45)
@@ -127,11 +132,15 @@ export class RabbitHoleComponent {
     if (this.camera.rotation.x < -this.halfPI ||
         this.camera.rotation.x >  this.halfPI) {
 
-      return top ? (this.camera.rotation.x < 0 || this.camera.rotation.x >= (Math.PI - 0.5))
+      // this.camera.rotation.z = -Math.PI;
+
+      return top ? (this.camera.rotation.x < 0 || this.camera.rotation.x > ( Math.PI - 0.5))
                  : (this.camera.rotation.x > 0 || this.camera.rotation.x < (-Math.PI + 1.5));
 
     } else if (this.camera.rotation.x > -this.halfPI ||
                this.camera.rotation.x <  this.halfPI) {
+
+      // this.camera.rotation.z = 0;
 
       return top ? this.camera.rotation.x < 0.5
                  : this.camera.rotation.x > -1.5;
@@ -178,6 +187,15 @@ export class RabbitHoleComponent {
       this.scene.add(computer);
     });
   }*/
+
+  createSky() {
+    let skyMaterial = new THREE.MeshBasicMaterial({ color: 0x168BDE, side: THREE.BackSide }),
+        skyGeometry = new THREE.CubeGeometry(10000, 10000, 10000),
+        sky         = new THREE.Mesh(skyGeometry, skyMaterial);
+
+    this.scene.fog = new THREE.FogExp2(0xC2C2C2, 0.0002);
+    this.scene.add(sky);
+  }
 
   createFloor() {
     let textureLoader = new THREE.TextureLoader();
@@ -234,13 +252,36 @@ export class RabbitHoleComponent {
     });
   }
 
-  createSky() {
-    let skyMaterial = new THREE.MeshBasicMaterial({ color: 0x168BDE, side: THREE.BackSide }),
-        skyGeometry = new THREE.CubeGeometry(10000, 10000, 10000),
-        sky         = new THREE.Mesh(skyGeometry, skyMaterial);
+  createDoor() {
+    const jsonLoader = new THREE.JSONLoader();
 
-    this.scene.fog = new THREE.FogExp2(0xC2C2C2, 0.0002);
-    this.scene.add(sky);
+    jsonLoader.load('assets/door.json', (geometry) => {
+      let texture = new THREE.TextureLoader().load('assets/wood.jpg');
+      let door = new THREE.Mesh(
+        geometry,
+        new THREE.MeshBasicMaterial({ map: texture })
+        // new THREE.MeshStandardMaterial({
+        //   shading           : THREE.SmoothShading,
+        //   emissive          : this.BLACK,
+        //   color             : this.WHITE,
+        //   emissiveIntensity : 1,
+
+        //   roughness         : 0.2,
+        //   metalness         : 0,
+        //   opacity           : 1,
+
+        //   depthTest         : true,
+        //   depthWrite        : true,
+        //   transparent       : false
+        // })
+      );
+
+      door.position.set(0, 0, 500);
+      door.scale.set(50, 50, 50);
+      door.rotateY(Math.PI);
+
+      this.scene.add(door);
+    });
   }
 
   animate() {
