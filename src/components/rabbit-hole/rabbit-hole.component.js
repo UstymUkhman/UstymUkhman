@@ -43,7 +43,7 @@ export class RabbitHoleComponent {
     this.createFloor();
     this.createWalls();
 
-    // this.createComputer();
+    this.createComputer();
     this.createDoor();
     this.animate();
   }
@@ -169,7 +169,7 @@ export class RabbitHoleComponent {
 
     else if (this.camera.position.x > 45)
       this.camera.position.x = 45;
-  }
+  }*/
 
   createComputer() {
     const jsonLoader = new THREE.JSONLoader();
@@ -186,7 +186,7 @@ export class RabbitHoleComponent {
 
       this.scene.add(computer);
     });
-  }*/
+  }
 
   createSky() {
     let skyMaterial = new THREE.MeshBasicMaterial({ color: 0x168BDE, side: THREE.BackSide }),
@@ -224,8 +224,8 @@ export class RabbitHoleComponent {
       wallTexture.repeat.set(5, 1);
 
       let wallMaterial = new THREE.MeshBasicMaterial({ map: wallTexture, side: THREE.DoubleSide }),
-          vertWallGeom = new THREE.PlaneGeometry(1000, 150, 1, 10),
           horzWallGeom = new THREE.PlaneGeometry(1000, 100, 10, 10),
+          vertWallGeom = new THREE.PlaneGeometry(1000, 150, 1, 10),
 
           wall1        = new THREE.Mesh(vertWallGeom, wallMaterial),
           wall2        = new THREE.Mesh(vertWallGeom, wallMaterial),
@@ -259,7 +259,7 @@ export class RabbitHoleComponent {
       let texture = new THREE.TextureLoader().load('assets/wood.jpg');
       let door = new THREE.Mesh(
         geometry,
-        new THREE.MeshBasicMaterial({ map: texture })
+        new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide })
         // new THREE.MeshStandardMaterial({
         //   shading           : THREE.SmoothShading,
         //   emissive          : this.BLACK,
