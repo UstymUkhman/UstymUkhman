@@ -174,7 +174,7 @@ export class RabbitHoleComponent {
   createComputer() {
     const jsonLoader = new THREE.JSONLoader();
 
-    jsonLoader.load('assets/Dell4550.json', (geometry) => {
+    jsonLoader.load('assets/Monitor.json', (geometry) => {
       let computer = new THREE.Mesh(
         geometry,
         new THREE.MeshStandardMaterial({
@@ -307,3 +307,9 @@ export class RabbitHoleComponent {
     return [[ElementRef]];
   }
 }
+
+// http://stackoverflow.com/questions/17939188/how-can-i-load-multiple-textures-materials-to-a-model-using-three-js
+// http://stackoverflow.com/questions/16781064/three-js-multiple-materials-on-object-loaded-via-objmtlloader
+// http://stackoverflow.com/questions/26087620/three-js-tile-which-has-multiple-textures-using-plane-geometry
+// http://stackoverflow.com/questions/16781064/three-js-multiple-materials-on-object-loaded-via-objmtlloader/16781472
+// http://stackoverflow.com/questions/16287547/multiple-transparent-textures-on-the-same-mesh-face-in-three-js
