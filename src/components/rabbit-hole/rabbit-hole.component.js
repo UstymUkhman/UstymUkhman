@@ -36,8 +36,8 @@ export class RabbitHoleComponent {
 
     new OrbitControls(this.camera, this.renderer.domElement);
 
-    // this.createInputListener();
-    // this.createEventHandlers();
+    this.createInputListener();
+    this.createEventHandlers();
 
     this.createSky();
     this.createFloor();
@@ -112,7 +112,6 @@ export class RabbitHoleComponent {
         break;
       }
 
-      console.log(this.camera.rotation.z);
       this.camera.position.y = 50;
 
       if (this.camera.position.x < -45)
@@ -132,7 +131,7 @@ export class RabbitHoleComponent {
     if (this.camera.rotation.x < -this.halfPI ||
         this.camera.rotation.x >  this.halfPI) {
 
-      // this.camera.rotation.z = -Math.PI;
+      this.camera.rotation.z = -Math.PI;
 
       return top ? (this.camera.rotation.x < 0 || this.camera.rotation.x > ( Math.PI - 0.5))
                  : (this.camera.rotation.x > 0 || this.camera.rotation.x < (-Math.PI + 1.5));
@@ -140,7 +139,7 @@ export class RabbitHoleComponent {
     } else if (this.camera.rotation.x > -this.halfPI ||
                this.camera.rotation.x <  this.halfPI) {
 
-      // this.camera.rotation.z = 0;
+      this.camera.rotation.z = 0;
 
       return top ? this.camera.rotation.x < 0.5
                  : this.camera.rotation.x > -1.5;
@@ -150,6 +149,7 @@ export class RabbitHoleComponent {
   setCameraHandler(event) {
     this.directionX = (event.offsetX - this.WIDTH  / 2) / 15000;
     this.directionY = (event.offsetY - this.HEIGHT / 2) / 15000;
+    window.camera = this.camera;
   }
 
   setResizeHandler() {
