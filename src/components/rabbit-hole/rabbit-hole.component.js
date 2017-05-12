@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Component, ElementRef } from '@angular/core';
 
-const OrbitControls = require('three-orbit-controls')(THREE);
+// const OrbitControls = require('three-orbit-controls')(THREE);
 
 
 @Component({
@@ -24,6 +24,8 @@ export class RabbitHoleComponent {
     this.DARKGRAY   = 0x333333;
     this.BLACK      = 0x000000;
 
+    this.thetaDelta = 0;
+    this.phiDelta   = 0;
     this.halfPI     = Math.PI / 2;
     this.WIDTH      = window.innerWidth;
     this.HEIGHT     = window.innerHeight;
@@ -34,7 +36,7 @@ export class RabbitHoleComponent {
     this.createCamera();
     this.createRenderer();
 
-    new OrbitControls(this.camera, this.renderer.domElement);
+    // new OrbitControls(this.camera, this.renderer.domElement);
 
     this.createInputListener();
     this.createEventHandlers();
@@ -46,6 +48,10 @@ export class RabbitHoleComponent {
     this.createComputer();
     this.createDoor();
     this.animate();
+
+    this.rotateStart = new THREE.Vector2();
+    this.rotateDelta = new THREE.Vector2();
+    this.rotateEnd   = new THREE.Vector2();
   }
 
   createScene() {
@@ -73,8 +79,6 @@ export class RabbitHoleComponent {
   }
 
   createInputListener() {
-    // new OrbitControls(this.camera, this.renderer.domElement);
-
     document.addEventListener('keydown', (event) => {
       switch (event.keyCode) {
         case 38:
@@ -133,23 +137,49 @@ export class RabbitHoleComponent {
 
       this.camera.rotation.z = -Math.PI;
 
-      return top ? (this.camera.rotation.x < 0 || this.camera.rotation.x > ( Math.PI - 0.5))
-                 : (this.camera.rotation.x > 0 || this.camera.rotation.x < (-Math.PI + 1.5));
+      return top ? (this.camera.rotation.x < 0 || this.camera.rotation.x > ( Math.PI - 1))  // - 0.5
+                 : (this.camera.rotation.x > 0 || this.camera.rotation.x < (-Math.PI + 1)); // + 1.5
 
     } else if (this.camera.rotation.x > -this.halfPI ||
                this.camera.rotation.x <  this.halfPI) {
 
       this.camera.rotation.z = 0;
 
-      return top ? this.camera.rotation.x < 0.5
-                 : this.camera.rotation.x > -1.5;
+      return top ? this.camera.rotation.x <  1  // 0.5
+                 : this.camera.rotation.x > -1; // -1.5;
     }
   }
 
+  rotateUp(angle) {
+    if ( angle === undefined ) {
+      angle = 2 * Math.PI / 60 / 60 * 2.0;
+    }
+
+    this.phiDelta -= angle;
+  }
+
+  rotateLeft(angle) {
+    if (angle === undefined) {
+      angle = 2 * Math.PI / 60 / 60 * 2.0;
+    }
+
+    this.thetaDelta -= angle;
+  };
+
   setCameraHandler(event) {
-    this.directionX = (event.offsetX - this.WIDTH  / 2) / 15000;
-    this.directionY = (event.offsetY - this.HEIGHT / 2) / 15000;
-    window.camera = this.camera;
+    // this.directionX = (event.x - this.WIDTH  / 2) / 15000;
+    // this.directionY = (event.y - this.HEIGHT / 2) / 15000;
+
+    this.rotateEnd.set(event.clientX, event.clientY);
+    this.rotateDelta.subVectors(this.rotateEnd, this.rotateStart);
+
+    this.rotateLeft(2 * Math.PI * this.rotateDelta.x / window.innerWidth * 1.0);
+    this.rotateUp(2 * Math.PI * this.rotateDelta.y / window.innerHeight * 1.0);
+
+    this.rotateStart.copy(this.rotateEnd);
+    // update(object === camera) here:
+    // - https://gist.github.com/heisters/1146b7f20149e1e3925b
+    // - https://github.com/mattdesl/three-orbit-controls/blob/master/index.js
   }
 
   setResizeHandler() {
@@ -288,13 +318,13 @@ export class RabbitHoleComponent {
     this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
 
-    let validDistance = Math.abs(this.directionX) > 0.01 || Math.abs(this.directionY) > 0.01,
-        validAngle = this.checkCameraAngle(this.directionY < 0);
+    // let validDistance = Math.abs(this.directionX) > 0.01 || Math.abs(this.directionY) > 0.01,
+    //     validAngle = this.checkCameraAngle(this.directionY < 0);
 
-    if (validAngle && validDistance) {
-      this.camera.rotateX(-this.directionY);
-      this.camera.rotateY(-this.directionX);
-    }
+    // if (validAngle && validDistance) {
+    //   this.camera.rotateY(-this.directionX); // no
+    //   this.camera.rotateX(-this.directionY);
+    // }
   }
 
   ngOnDestroy() {
