@@ -1,7 +1,5 @@
-import * as THREE from 'three';
 import { Component, ElementRef } from '@angular/core';
-
-// const OrbitControls = require('three-orbit-controls')(THREE);
+import { ControlsService       } from '../../services/controls.service';
 
 
 @Component({
@@ -11,47 +9,39 @@ import { Component, ElementRef } from '@angular/core';
 
 
 export class RabbitHoleComponent {
-  constructor(rabbitHole) {
+  constructor(rabbitHole, cameraControls) {
     this.scene      = null;
     this.camera     = null;
     this.renderer   = null;
-
-    this.directionX = null;
-    this.directionY = null;
 
     this.WHITE      = 0xFFFFFF;
     this.LIGHTGRAY  = 0xDDDDDD;
     this.DARKGRAY   = 0x333333;
     this.BLACK      = 0x000000;
 
-    this.thetaDelta = 0;
-    this.phiDelta   = 0;
+    // this.walls      = [];
     this.halfPI     = Math.PI / 2;
     this.WIDTH      = window.innerWidth;
     this.HEIGHT     = window.innerHeight;
+
     this.hole       = rabbitHole.nativeElement;
+    this.controls   = cameraControls;
 
     this.createScene();
-    this.createLight();
     this.createCamera();
-    this.createRenderer();
-
-    // new OrbitControls(this.camera, this.renderer.domElement);
-
-    this.createInputListener();
-    this.createEventHandlers();
+    this.createLight();
+    this.createControls();
 
     this.createSky();
     this.createFloor();
     this.createWalls();
 
-    this.createComputer();
-    this.createDoor();
-    this.animate();
+    // this.createComputer();
+    // this.createDoor();
 
-    this.rotateStart = new THREE.Vector2();
-    this.rotateDelta = new THREE.Vector2();
-    this.rotateEnd   = new THREE.Vector2();
+    this.createEventHandlers();
+    this.createRenderer();
+    this.animate();
   }
 
   createScene() {
@@ -59,7 +49,7 @@ export class RabbitHoleComponent {
   }
 
   createCamera() {
-    this.camera = new THREE.PerspectiveCamera(45, this.WIDTH / this.HEIGHT, 1, 10000);
+    this.camera = new THREE.PerspectiveCamera(25, this.WIDTH / this.HEIGHT, 1, 10000);
     this.camera.lookAt(this.scene.position);
     this.camera.position.set(0, 50, 550);
     this.scene.add(this.camera);
@@ -69,153 +59,8 @@ export class RabbitHoleComponent {
     this.scene.add(new THREE.AmbientLight(this.DARKGRAY));
   }
 
-  createRenderer() {
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.renderer.setSize(this.WIDTH, this.HEIGHT);
-    this.renderer.setClearColor(this.BLACK, 0);
-
-    this.renderer.domElement.focus();
-    this.hole.appendChild(this.renderer.domElement);
-  }
-
-  createInputListener() {
-    document.addEventListener('keydown', (event) => {
-      switch (event.keyCode) {
-        case 38:
-          if (this.checkCameraAngle(true))
-            this.camera.rotateX(0.05);
-        break;
-
-        case 37:
-          this.camera.rotateY(0.05);
-        break;
-
-        case 39:
-          this.camera.rotateY(-0.05);
-        break;
-
-        case 40:
-          if (this.checkCameraAngle(false))
-            this.camera.rotateX(-0.05);
-        break;
-
-        case 87:
-          this.camera.translateZ(-10);
-        break;
-
-        case 65:
-          this.camera.translateX(-10);
-        break;
-
-        case 68:
-          this.camera.translateX(10);
-        break;
-
-        case 83:
-          this.camera.translateZ(10);
-        break;
-      }
-
-      this.camera.position.y = 50;
-
-      if (this.camera.position.x < -45)
-        this.camera.position.x = -45;
-
-      else if (this.camera.position.x > 45)
-        this.camera.position.x = 45;
-    });
-  }
-
-  createEventHandlers() {
-    this.hole.addEventListener('mousemove', this.setCameraHandler.bind(this), false);
-    window.addEventListener('resize', this.setResizeHandler.bind(this), false);
-  }
-
-  checkCameraAngle(top) {
-    if (this.camera.rotation.x < -this.halfPI ||
-        this.camera.rotation.x >  this.halfPI) {
-
-      this.camera.rotation.z = -Math.PI;
-
-      return top ? (this.camera.rotation.x < 0 || this.camera.rotation.x > ( Math.PI - 1))  // - 0.5
-                 : (this.camera.rotation.x > 0 || this.camera.rotation.x < (-Math.PI + 1)); // + 1.5
-
-    } else if (this.camera.rotation.x > -this.halfPI ||
-               this.camera.rotation.x <  this.halfPI) {
-
-      this.camera.rotation.z = 0;
-
-      return top ? this.camera.rotation.x <  1  // 0.5
-                 : this.camera.rotation.x > -1; // -1.5;
-    }
-  }
-
-  rotateUp(angle) {
-    if ( angle === undefined ) {
-      angle = 2 * Math.PI / 60 / 60 * 2.0;
-    }
-
-    this.phiDelta -= angle;
-  }
-
-  rotateLeft(angle) {
-    if (angle === undefined) {
-      angle = 2 * Math.PI / 60 / 60 * 2.0;
-    }
-
-    this.thetaDelta -= angle;
-  };
-
-  setCameraHandler(event) {
-    // this.directionX = (event.x - this.WIDTH  / 2) / 15000;
-    // this.directionY = (event.y - this.HEIGHT / 2) / 15000;
-
-    this.rotateEnd.set(event.clientX, event.clientY);
-    this.rotateDelta.subVectors(this.rotateEnd, this.rotateStart);
-
-    this.rotateLeft(2 * Math.PI * this.rotateDelta.x / window.innerWidth * 1.0);
-    this.rotateUp(2 * Math.PI * this.rotateDelta.y / window.innerHeight * 1.0);
-
-    this.rotateStart.copy(this.rotateEnd);
-    // update(object === camera) here:
-    // - https://gist.github.com/heisters/1146b7f20149e1e3925b
-    // - https://github.com/mattdesl/three-orbit-controls/blob/master/index.js
-  }
-
-  setResizeHandler() {
-    this.WIDTH  = window.innerWidth;
-    this.HEIGHT = window.innerHeight;
-
-    this.renderer.setSize(this.WIDTH, this.HEIGHT);
-    this.camera.aspect = this.WIDTH / this.HEIGHT;
-    this.camera.updateProjectionMatrix();
-  }
-
-  /*checkRoomBorders() {
-    this.camera.position.y = 50;
-
-    if (this.camera.position.x < -45)
-      this.camera.position.x = -45;
-
-    else if (this.camera.position.x > 45)
-      this.camera.position.x = 45;
-  }*/
-
-  createComputer() {
-    const jsonLoader = new THREE.JSONLoader();
-
-    jsonLoader.load('assets/Monitor.json', (geometry) => {
-      let computer = new THREE.Mesh(
-        geometry,
-        new THREE.MeshStandardMaterial({
-          color     : this.LIGHTGRAY,
-          roughness : 0.5,
-          metalness : 0,
-        })
-      );
-
-      this.scene.add(computer);
-    });
+  createControls() {
+    this.controls.init(this.hole, this.scene, this.camera);
   }
 
   createSky() {
@@ -282,6 +127,23 @@ export class RabbitHoleComponent {
     });
   }
 
+  createComputer() {
+    const jsonLoader = new THREE.JSONLoader();
+
+    jsonLoader.load('assets/Monitor.json', (geometry) => {
+      let computer = new THREE.Mesh(
+        geometry,
+        new THREE.MeshStandardMaterial({
+          color     : this.LIGHTGRAY,
+          roughness : 0.5,
+          metalness : 0,
+        })
+      );
+
+      this.scene.add(computer);
+    });
+  }
+
   createDoor() {
     const jsonLoader = new THREE.JSONLoader();
 
@@ -314,27 +176,51 @@ export class RabbitHoleComponent {
     });
   }
 
+  setResizeHandler() {
+    this.WIDTH  = window.innerWidth;
+    this.HEIGHT = window.innerHeight;
+
+    this.renderer.setSize(this.WIDTH, this.HEIGHT);
+    this.camera.aspect = this.WIDTH / this.HEIGHT;
+    this.camera.updateProjectionMatrix();
+  }
+
+  checkRoomBorders() {
+    this.camera.position.y = 50;
+    if (this.camera.position.x < -45)
+      this.camera.position.x = -45;
+    else if (this.camera.position.x > 45)
+      this.camera.position.x = 45;
+  }
+
+  createEventHandlers() {
+    window.addEventListener('resize', this.setResizeHandler.bind(this), false);
+  }
+
+  createRenderer() {
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(this.WIDTH, this.HEIGHT);
+    this.renderer.setClearColor(this.BLACK, 0);
+
+    this.renderer.domElement.focus();
+    this.hole.appendChild(this.renderer.domElement);
+  }
+
   animate() {
     this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
-
-    // let validDistance = Math.abs(this.directionX) > 0.01 || Math.abs(this.directionY) > 0.01,
-    //     validAngle = this.checkCameraAngle(this.directionY < 0);
-
-    // if (validAngle && validDistance) {
-    //   this.camera.rotateY(-this.directionX); // no
-    //   this.camera.rotateX(-this.directionY);
-    // }
+    this.controls.update();
   }
 
   ngOnDestroy() {
-    this.hole.removeEventListener('mousemove', this.setCameraHandler.bind(this));
     window.removeEventListener('resize', this.setResizeHandler.bind(this));
     cancelAnimationFrame(this.frame);
+    this.controls.remove();
   }
 
   static get parameters() {
-    return [[ElementRef]];
+    return [[ElementRef], [ControlsService]];
   }
 }
 
