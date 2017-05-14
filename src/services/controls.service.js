@@ -29,9 +29,10 @@ export class ControlsService {
     this.scene  = scene;
     this.camera = camera;
 
+    // this.raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
     this.controls  = new THREE.PointerLockControls(this.camera);
-    this.scene.add(this.controls.getObject());
     this.controls.enabled = true;
+    this.scene.add(this.controls.getObject());
 
     this.room.addEventListener('mousemove', this.onMouseMove.bind(this), false);
     document.addEventListener('keydown', this.onKeyDown.bind(this), false);
@@ -79,11 +80,15 @@ export class ControlsService {
   update() {
     if (!this.enabled) return;
 
+    // this.raycaster.ray.origin.copy(this.controls.getObject().position);
+    // this.raycaster.ray.origin.y -= 10;
+
     let time  = performance.now(),
         delta = (time - this.prevTime) / 1000;
 
     this.velocity.x -= this.velocity.x *  10.0 * delta;
     this.velocity.z -= this.velocity.z *  10.0 * delta;
+    // this.velocity.y -= 9.8             * 100.0 * delta;
 
     if (this.move.forward)  this.velocity.z -= 500.0 * delta;
     if (this.move.backward) this.velocity.z += 500.0 * delta;
@@ -92,7 +97,13 @@ export class ControlsService {
     if (this.move.right)    this.velocity.x += 500.0 * delta;
 
     this.controls.getObject().translateX(this.velocity.x * delta);
+    // this.controls.getObject().translateY(this.velocity.y * delta);
     this.controls.getObject().translateZ(this.velocity.z * delta);
+
+    /*if (this.controls.getObject().position.y < 10) {
+      this.controls.getObject().position.y = 10;
+      this.velocity.y = 0;
+    }*/
 
     this.prevTime = time;
   }

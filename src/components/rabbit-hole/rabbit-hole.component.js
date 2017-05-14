@@ -49,9 +49,9 @@ export class RabbitHoleComponent {
   }
 
   createCamera() {
-    this.camera = new THREE.PerspectiveCamera(25, this.WIDTH / this.HEIGHT, 1, 10000);
-    this.camera.lookAt(this.scene.position);
-    this.camera.position.set(0, 50, 550);
+    this.camera = new THREE.PerspectiveCamera(75, this.WIDTH / this.HEIGHT, 1, 1000);
+    // this.camera.lookAt(this.scene.position);
+    // this.camera.position.set(0, 50, 550);
     this.scene.add(this.camera);
   }
 
@@ -89,6 +89,32 @@ export class RabbitHoleComponent {
       this.scene.add(floor);
     });
   }
+
+  /*createFloor() {
+    let geometry = new THREE.PlaneGeometry(2000, 2000, 100, 100);
+    geometry.rotateX(-Math.PI / 2);
+
+    for (let i = 0; i < geometry.vertices.length; i++) {
+      let vertex = geometry.vertices[i];
+
+      vertex.x += Math.random() * 20 - 10;
+      vertex.y += Math.random() * 2;
+      vertex.z += Math.random() * 20 - 10;
+    }
+
+    for(let i = 0; i < geometry.faces.length; i++) {
+      let face = geometry.faces[i];
+
+      face.vertexColors[0] = new THREE.Color().setHSL(Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75);
+      face.vertexColors[1] = new THREE.Color().setHSL(Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75);
+      face.vertexColors[2] = new THREE.Color().setHSL(Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75);
+    }
+
+    let material = new THREE.MeshBasicMaterial({ vertexColors: THREE.VertexColors }),
+        floor    = new THREE.Mesh(geometry, material);
+
+    this.scene.add(floor);
+  }*/
 
   createWalls() {
     let textureLoader = new THREE.TextureLoader();
