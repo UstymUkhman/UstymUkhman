@@ -9,7 +9,7 @@ export class ControlsService {
     this.rotation  = new THREE.Vector2();
     this.velocity  = new THREE.Vector3();
     this.prevTime  = performance.now();
-    this.enabled   = true;
+    this.enabled   = false;
 
     this.controls  = null;
     this.camera    = null;
@@ -29,17 +29,48 @@ export class ControlsService {
     this.scene  = scene;
     this.camera = camera;
 
-    // this.raycaster = new THREE.Raycaster(new THREE.Vector3(), new THREE.Vector3(0, -1, 0), 0, 10);
-    this.controls  = new THREE.PointerLockControls(this.camera);
-    this.controls.enabled = true;
+    this.controls = new THREE.PointerLockControls(this.camera);
     this.scene.add(this.controls.getObject());
 
-    this.room.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-    document.addEventListener('keydown', this.onKeyDown.bind(this), false);
-    document.addEventListener('keyup', this.onKeyUp.bind(this), false);
+    this.pointerLock =
+      this.room.requestPointerLock    ||
+      this.room.mozRequestPointerLock ||
+      this.room.webkitRequestPointerLock;
+
+    document.exitPointerLock =
+      document.exitPointerLock    ||
+      document.mozExitPointerLock ||
+      document.webkitExitPointerLock;
+
+    if (this.pointerLock) {
+      this.room.requestPointerLock =
+        this.room.requestPointerLock    ||
+        this.room.mozRequestPointerLock ||
+        this.room.webkitRequestPointerLock;
+
+      this.addEventListeners();
+    }
+
+    return this.pointerLock;
   }
 
-  onMouseMove(event) {
+  addEventListeners() {
+    document.addEventListener('keydown', this.onKeyDown.bind(this), false);
+    document.addEventListener('keyup', this.onKeyUp.bind(this), false);
+
+    this.room.addEventListener('mousemove', this.updateCameraRotation.bind(this), false);
+    this.room.addEventListener('click', this.togglePointerLock.bind(this), false);
+
+    document.addEventListener('webkitpointerlockchange', this.changePointerLock.bind(this), false);
+    document.addEventListener('mozpointerlockchange', this.changePointerLock.bind(this), false);
+    document.addEventListener('pointerlockchange', this.changePointerLock.bind(this), false);
+
+    document.addEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
+    document.addEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
+    document.addEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+  }
+
+  updateCameraRotation(event) {
     this.rotation.y = -(event.clientY / window.innerHeight) * 2 + 1;
     this.rotation.x =  (event.clientX / window.innerWidth)  * 2 - 1;
 
@@ -47,6 +78,21 @@ export class ControlsService {
     // if x or y touches walls, block rotation in one direction:
     // if this.rotation.x > LEFT_WALL --> this.enabled = false (& save last x)
     // if this.rotation.x < last.x --> this.enabled = true
+  }
+
+  togglePointerLock() {
+    if (!this.controls.enabled)
+      this.room.requestPointerLock();
+    else
+      document.exitPointerLock();
+  }
+
+  changePointerLock() {
+    this.controls.enabled = !this.controls.enabled;
+  }
+
+  pointerLockError(event) {
+    console.error('A \'pointerlockerror\' occured... D:', event);
   }
 
   onKeyDown(event) {
@@ -78,17 +124,13 @@ export class ControlsService {
   }
 
   update() {
-    if (!this.enabled) return;
-
-    // this.raycaster.ray.origin.copy(this.controls.getObject().position);
-    // this.raycaster.ray.origin.y -= 10;
+    if (!this.controls.enabled) return;
 
     let time  = performance.now(),
         delta = (time - this.prevTime) / 1000;
 
     this.velocity.x -= this.velocity.x *  10.0 * delta;
     this.velocity.z -= this.velocity.z *  10.0 * delta;
-    // this.velocity.y -= 9.8             * 100.0 * delta;
 
     if (this.move.forward)  this.velocity.z -= 500.0 * delta;
     if (this.move.backward) this.velocity.z += 500.0 * delta;
@@ -97,13 +139,7 @@ export class ControlsService {
     if (this.move.right)    this.velocity.x += 500.0 * delta;
 
     this.controls.getObject().translateX(this.velocity.x * delta);
-    // this.controls.getObject().translateY(this.velocity.y * delta);
     this.controls.getObject().translateZ(this.velocity.z * delta);
-
-    /*if (this.controls.getObject().position.y < 10) {
-      this.controls.getObject().position.y = 10;
-      this.velocity.y = 0;
-    }*/
 
     this.prevTime = time;
   }

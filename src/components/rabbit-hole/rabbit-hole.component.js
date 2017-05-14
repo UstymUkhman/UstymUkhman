@@ -19,7 +19,7 @@ export class RabbitHoleComponent {
     this.DARKGRAY   = 0x333333;
     this.BLACK      = 0x000000;
 
-    // this.walls      = [];
+    this.error      = false;
     this.halfPI     = Math.PI / 2;
     this.WIDTH      = window.innerWidth;
     this.HEIGHT     = window.innerHeight;
@@ -30,7 +30,6 @@ export class RabbitHoleComponent {
     this.createScene();
     this.createCamera();
     this.createLight();
-    this.createControls();
 
     this.createSky();
     this.createFloor();
@@ -41,6 +40,7 @@ export class RabbitHoleComponent {
 
     this.createEventHandlers();
     this.createRenderer();
+    this.createControls();
     this.animate();
   }
 
@@ -50,8 +50,6 @@ export class RabbitHoleComponent {
 
   createCamera() {
     this.camera = new THREE.PerspectiveCamera(75, this.WIDTH / this.HEIGHT, 1, 1000);
-    // this.camera.lookAt(this.scene.position);
-    // this.camera.position.set(0, 50, 550);
     this.scene.add(this.camera);
   }
 
@@ -60,7 +58,7 @@ export class RabbitHoleComponent {
   }
 
   createControls() {
-    this.controls.init(this.hole, this.scene, this.camera);
+    this.error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
   }
 
   createSky() {
