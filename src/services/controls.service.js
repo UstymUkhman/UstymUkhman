@@ -6,15 +6,14 @@ require('three/examples/js/controls/PointerLockControls');
 
 export class ControlsService {
   constructor() {
-    this.rotation  = new THREE.Vector2();
-    this.velocity  = new THREE.Vector3();
-    this.prevTime  = performance.now();
-    this.enabled   = false;
+    this.velocity = new THREE.Vector3();
+    this.prevTime = performance.now();
+    this.enabled  = false;
 
-    this.controls  = null;
-    this.camera    = null;
-    this.scene     = null;
-    this.room      = null;
+    this.controls = null;
+    this.camera   = null;
+    this.scene    = null;
+    this.room     = null;
 
     this.move = {
       backward : false,
@@ -55,12 +54,6 @@ export class ControlsService {
   }
 
   addEventListeners() {
-    document.addEventListener('keydown', this.onKeyDown.bind(this), false);
-    document.addEventListener('keyup', this.onKeyUp.bind(this), false);
-
-    this.room.addEventListener('mousemove', this.updateCameraRotation.bind(this), false);
-    this.room.addEventListener('click', this.togglePointerLock.bind(this), false);
-
     document.addEventListener('webkitpointerlockchange', this.changePointerLock.bind(this), false);
     document.addEventListener('mozpointerlockchange', this.changePointerLock.bind(this), false);
     document.addEventListener('pointerlockchange', this.changePointerLock.bind(this), false);
@@ -68,23 +61,9 @@ export class ControlsService {
     document.addEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
     document.addEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
     document.addEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
-  }
 
-  updateCameraRotation(event) {
-    this.rotation.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    this.rotation.x =  (event.clientX / window.innerWidth)  * 2 - 1;
-
-    // console.log(this.rotation);
-    // if x or y touches walls, block rotation in one direction:
-    // if this.rotation.x > LEFT_WALL --> this.enabled = false (& save last x)
-    // if this.rotation.x < last.x --> this.enabled = true
-  }
-
-  togglePointerLock() {
-    if (!this.controls.enabled)
-      this.room.requestPointerLock();
-    else
-      document.exitPointerLock();
+    document.addEventListener('keydown', this.onKeyDown.bind(this), false);
+    document.addEventListener('keyup', this.onKeyUp.bind(this), false);
   }
 
   changePointerLock() {
@@ -92,7 +71,7 @@ export class ControlsService {
   }
 
   pointerLockError(event) {
-    console.error('A \'pointerlockerror\' occured... D:', event);
+    console.error('D:\nA \'pointerlockerror\' occured...', event);
   }
 
   onKeyDown(event) {
@@ -105,6 +84,10 @@ export class ControlsService {
 
   keyHandler(code, pressed) {
     switch(code) {
+      case 32:
+        if (pressed) this.togglePointerLock();
+      break;
+
       case 40: case 83:
         this.move.backward = pressed;
       break;
@@ -123,32 +106,47 @@ export class ControlsService {
     }
   }
 
+  togglePointerLock() {
+    if (!this.controls.enabled)
+      this.room.requestPointerLock();
+    else
+      document.exitPointerLock();
+  }
+
   update() {
     if (!this.controls.enabled) return;
 
     let time  = performance.now(),
         delta = (time - this.prevTime) / 1000;
 
-    this.velocity.x -= this.velocity.x *  10.0 * delta;
-    this.velocity.z -= this.velocity.z *  10.0 * delta;
+    this.velocity.x -= this.velocity.x * 10 * delta;
+    this.velocity.z -= this.velocity.z * 10 * delta;
 
-    if (this.move.forward)  this.velocity.z -= 500.0 * delta;
-    if (this.move.backward) this.velocity.z += 500.0 * delta;
+    if (this.move.forward)  this.velocity.z -= 600 * delta;
+    if (this.move.backward) this.velocity.z += 500 * delta;
 
-    if (this.move.left)     this.velocity.x -= 500.0 * delta;
-    if (this.move.right)    this.velocity.x += 500.0 * delta;
+    if (this.move.left)     this.velocity.x -= 500 * delta;
+    if (this.move.right)    this.velocity.x += 500 * delta;
 
     this.controls.getObject().translateX(this.velocity.x * delta);
     this.controls.getObject().translateZ(this.velocity.z * delta);
+
+    // Check camera position from this:
+    // this.controls.getObject().position
 
     this.prevTime = time;
   }
 
   remove() {
-    this.room.removeEventListener('mousemove', this.onMouseMove.bind(this));
+    document.removeEventListener('webkitpointerlockchange', this.changePointerLock.bind(this));
+    document.removeEventListener('mozpointerlockchange', this.changePointerLock.bind(this));
+    document.removeEventListener('pointerlockchange', this.changePointerLock.bind(this));
+
+    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this));
+    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this));
+    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this));
+
     document.removeEventListener('keydown', this.onKeyDown.bind(this));
     document.removeEventListener('keyup', this.onKeyUp.bind(this));
   }
 }
-
-// https://github.com/mrdoob/three.js/blob/master/examples/misc_controls_pointerlock.html
