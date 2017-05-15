@@ -51,7 +51,7 @@ export class RabbitHoleComponent {
   }
 
   createCamera() {
-    this.camera = new THREE.PerspectiveCamera(60, this.WIDTH / this.HEIGHT, 1, 1000);
+    this.camera = new THREE.PerspectiveCamera(50, this.WIDTH / this.HEIGHT, 1, 1000);
     this.scene.add(this.camera);
   }
 
@@ -186,10 +186,12 @@ export class RabbitHoleComponent {
   }
 
   createCinematicIntro() {
-    this.elapsedSpeed = 4.5;
+    // this.rotationStep = Number((Math.PI / 100).toFixed(4));
     this.clock = new THREE.Clock();
+    this.elapsedSpeed = 4.5;
 
     setTimeout(() => {
+      // this.camera.rotateX(-Math.PI / 4);
       this.intro = true;
     }, 1000);
   }
@@ -204,8 +206,8 @@ export class RabbitHoleComponent {
     this.renderer.setSize(this.WIDTH, this.HEIGHT);
     this.renderer.setClearColor(this.BLACK, 0);
 
-    this.renderer.domElement.focus();
     this.hole.appendChild(this.renderer.domElement);
+    this.renderer.domElement.focus();
   }
 
   animate() {
@@ -220,12 +222,16 @@ export class RabbitHoleComponent {
 
   animateCameraIntro() {
     this.camera.fov = this.getCameraFov();
-    if (this.camera.fov >= 75) this.intro = false;
+    // this.camera.rotateX(this.rotationStep);
+
+    if (this.camera.fov >= 75) {
+      this.camera.rotation.x = 0;
+      this.intro = false;
+    }
 
     this.renderer.setViewport(0, 0, this.WIDTH, this.HEIGHT);
     this.renderer.setScissor(0, 0, this.WIDTH, this.HEIGHT);
     this.camera.updateProjectionMatrix();
-
   }
 
   getCameraFov() {
@@ -233,7 +239,7 @@ export class RabbitHoleComponent {
 
     let elapsedTime = this.clock.getElapsedTime(),
         zoomSpeed   = elapsedTime * this.elapsedSpeed,
-        cameraFov   = zoomSpeed + 60;
+        cameraFov   = zoomSpeed + 50;
 
     return (cameraFov < 75) ? cameraFov : 75;
   }
