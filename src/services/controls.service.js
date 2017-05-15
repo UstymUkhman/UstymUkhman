@@ -128,13 +128,28 @@ export class ControlsService {
     if (this.move.left)     this.velocity.x -= 500 * delta;
     if (this.move.right)    this.velocity.x += 500 * delta;
 
-    this.controls.getObject().translateX(this.velocity.x * delta);
-    this.controls.getObject().translateZ(this.velocity.z * delta);
+    let nextStep = {
+      x: this.velocity.x * delta,
+      z: this.velocity.z * delta
+    };
 
-    // Check camera position from this:
-    // this.controls.getObject().position
+    if (true) { // if (this.checkNextMove(nextStep)) {
+      this.controls.getObject().translateX(nextStep.x);
+      this.controls.getObject().translateZ(nextStep.z);
+    }
 
     this.prevTime = time;
+  }
+
+  checkNextMove(nextStep) {
+    let currentPosition = this.controls.getObject().position,
+        nexrPosition    = {
+          x: currentPosition.x + nextStep.x,
+          z: currentPosition.z + nextStep.z
+        };
+
+    return (nexrPosition.x > -50)  && (nexrPosition.x <  50) &&
+           (nexrPosition.z > -250) && (nexrPosition.z < 250);
   }
 
   remove() {

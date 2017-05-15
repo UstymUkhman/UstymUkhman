@@ -10,22 +10,23 @@ import { ControlsService       } from '../../services/controls.service';
 
 export class RabbitHoleComponent {
   constructor(rabbitHole, cameraControls) {
-    this.scene      = null;
-    this.camera     = null;
-    this.renderer   = null;
+    this.scene     = null;
+    this.camera    = null;
+    this.renderer  = null;
 
-    this.WHITE      = 0xFFFFFF;
-    this.LIGHTGRAY  = 0xDDDDDD;
-    this.DARKGRAY   = 0x333333;
-    this.BLACK      = 0x000000;
+    this.WHITE     = 0xFFFFFF;
+    this.LIGHTGRAY = 0xDDDDDD;
+    this.DARKGRAY  = 0x333333;
+    this.BLACK     = 0x000000;
 
-    this.error      = false;
-    this.halfPI     = Math.PI / 2;
-    this.WIDTH      = window.innerWidth;
-    this.HEIGHT     = window.innerHeight;
+    this.intro     = false;
+    this.error     = false;
+    this.halfPI    = Math.PI / 2;
+    this.WIDTH     = window.innerWidth;
+    this.HEIGHT    = window.innerHeight;
 
-    this.hole       = rabbitHole.nativeElement;
-    this.controls   = cameraControls;
+    this.hole      = rabbitHole.nativeElement;
+    this.controls  = cameraControls;
 
     this.createScene();
     this.createCamera();
@@ -38,6 +39,7 @@ export class RabbitHoleComponent {
     // this.createComputer();
     // this.createDoor();
 
+    this.createCinematicIntro();
     this.createEventHandlers();
     this.createRenderer();
     this.createControls();
@@ -49,7 +51,7 @@ export class RabbitHoleComponent {
   }
 
   createCamera() {
-    this.camera = new THREE.PerspectiveCamera(75, this.WIDTH / this.HEIGHT, 1, 1000);
+    this.camera = new THREE.PerspectiveCamera(60, this.WIDTH / this.HEIGHT, 1, 1000);
     this.scene.add(this.camera);
   }
 
@@ -183,6 +185,15 @@ export class RabbitHoleComponent {
     this.camera.updateProjectionMatrix();
   }
 
+  createCinematicIntro() {
+    this.elapsedSpeed = 4.5;
+    this.clock = new THREE.Clock();
+
+    setTimeout(() => {
+      this.intro = true;
+    }, 1000);
+  }
+
   createEventHandlers() {
     window.addEventListener('resize', this.setResizeHandler.bind(this), false);
   }
@@ -201,6 +212,30 @@ export class RabbitHoleComponent {
     this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
     this.controls.update();
+
+    if (this.intro) {
+      this.animateCameraIntro();
+    }
+  }
+
+  animateCameraIntro() {
+    this.camera.fov = this.getCameraFov();
+    if (this.camera.fov >= 75) this.intro = false;
+
+    this.renderer.setViewport(0, 0, this.WIDTH, this.HEIGHT);
+    this.renderer.setScissor(0, 0, this.WIDTH, this.HEIGHT);
+    this.camera.updateProjectionMatrix();
+
+  }
+
+  getCameraFov() {
+    this.elapsedSpeed += this.camera.fov < 70 ? 0.25 : 0.1;
+
+    let elapsedTime = this.clock.getElapsedTime(),
+        zoomSpeed   = elapsedTime * this.elapsedSpeed,
+        cameraFov   = zoomSpeed + 60;
+
+    return (cameraFov < 75) ? cameraFov : 75;
   }
 
   ngOnDestroy() {
