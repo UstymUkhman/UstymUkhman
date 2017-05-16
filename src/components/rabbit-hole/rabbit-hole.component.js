@@ -35,6 +35,7 @@ export class RabbitHoleComponent {
     this.createSky();
     this.createFloor();
     this.createWalls();
+    this.createCeiling();
 
     // this.createComputer();
     // this.createDoor();
@@ -81,11 +82,11 @@ export class RabbitHoleComponent {
       floorTexture.repeat.set(1, 10);
 
       let floorMaterial = new THREE.MeshBasicMaterial({ map: floorTexture, side: THREE.DoubleSide }),
-          floorGeom     = new THREE.PlaneGeometry(100, 1000, 1, 10),
+          floorGeom     = new THREE.PlaneGeometry(50, 500, 1, 20),
           floor         = new THREE.Mesh(floorGeom, floorMaterial);
 
       floor.rotation.x = Math.PI / 2;
-      floor.position.y = 0;
+      floor.position.y = -12.5;
       this.scene.add(floor);
     });
   }
@@ -99,32 +100,35 @@ export class RabbitHoleComponent {
       wallTexture.repeat.set(5, 1);
 
       let wallMaterial = new THREE.MeshBasicMaterial({ map: wallTexture, side: THREE.DoubleSide }),
-          horzWallGeom = new THREE.PlaneGeometry(1000, 100, 10, 10),
-          vertWallGeom = new THREE.PlaneGeometry(1000, 150, 1, 10),
+          wallGeometry = new THREE.PlaneGeometry(500, 65, 1, 10),
 
-          wall1        = new THREE.Mesh(vertWallGeom, wallMaterial),
-          wall2        = new THREE.Mesh(vertWallGeom, wallMaterial),
-          wall3        = new THREE.Mesh(horzWallGeom, wallMaterial);
+          leftWall     = new THREE.Mesh(wallGeometry, wallMaterial),
+          rightWall    = new THREE.Mesh(wallGeometry, wallMaterial);
 
-      wall1.rotation.y = this.halfPI;
-      wall1.rotation.x = Math.PI;
-      wall1.position.x = 50;
-      wall1.position.y = 75;
+      leftWall.rotation.y  = this.halfPI;
+      leftWall.rotation.x  = Math.PI;
+      leftWall.position.y  = 18.5;
+      leftWall.position.x  = -25;
 
-      wall2.rotation.y = this.halfPI;
-      wall2.rotation.x = Math.PI;
-      wall2.position.x = -50;
-      wall2.position.y = 75;
+      rightWall.rotation.y = this.halfPI;
+      rightWall.rotation.x = Math.PI;
+      rightWall.position.y = 18.5;
+      rightWall.position.x = 25;
 
-      wall3.rotation.z = -this.halfPI;
-      wall3.rotation.x = this.halfPI;
-      wall3.position.y = 150;
-      wall3.position.x = 0;
-
-      this.scene.add(wall1);
-      this.scene.add(wall2);
-      this.scene.add(wall3);
+      this.scene.add(rightWall);
+      this.scene.add(leftWall);
     });
+  }
+
+  createCeiling() {
+    let ceiling = new THREE.RectAreaLight(this.WHITE, 1, 50, 500);
+    ceiling.intensity = 100;
+    this.scene.add(ceiling);
+
+    let ceilingHelper = new THREE.RectAreaLightHelper(ceiling);
+    ceilingHelper.position.set(0, 50, 0);
+    ceilingHelper.rotateX(Math.PI / 2);
+    this.scene.add(ceilingHelper);
   }
 
   createComputer() {
@@ -191,7 +195,7 @@ export class RabbitHoleComponent {
     this.elapsedSpeed = 4.5;
 
     setTimeout(() => {
-      // this.camera.rotateX(-Math.PI / 4);
+      // this.camera.rotation.x = -Math.PI / 4;
       this.intro = true;
     }, 1000);
   }
