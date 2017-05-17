@@ -191,12 +191,13 @@ export class RabbitHoleComponent {
   }
 
   createCinematicIntro() {
-    // this.rotationStep = Number((Math.PI / 100).toFixed(4));
     this.clock = new THREE.Clock();
+    this.rotationStep = 0.0031416;
+    this.rotationStepCounter = 0;
     this.elapsedSpeed = 4.5;
 
     setTimeout(() => {
-      // this.camera.rotation.x = -Math.PI / 4;
+      this.camera.rotation.x = -Math.PI / 4;
       this.intro = true;
     }, 1000);
   }
@@ -227,9 +228,13 @@ export class RabbitHoleComponent {
 
   animateCameraIntro() {
     this.camera.fov = this.getCameraFov();
-    // this.camera.rotateX(this.rotationStep);
 
-    if (this.camera.fov >= 75) {
+    if (this.rotationStepCounter < 250) {
+      this.camera.rotation.x += this.rotationStep;
+      this.rotationStepCounter++;
+    }
+
+    if (this.camera.fov === 75) {
       this.camera.rotation.x = 0;
       this.intro = false;
     }
@@ -240,7 +245,7 @@ export class RabbitHoleComponent {
   }
 
   getCameraFov() {
-    this.elapsedSpeed += this.camera.fov < 70 ? 0.25 : 0.1;
+    this.elapsedSpeed += this.camera.fov < 70 ? 0.0125 : 0.005;
 
     let elapsedTime = this.clock.getElapsedTime(),
         zoomSpeed   = elapsedTime * this.elapsedSpeed,
@@ -250,7 +255,7 @@ export class RabbitHoleComponent {
   }
 
   ngOnDestroy() {
-    window.removeEventListener('resize', this.setResizeHandler.bind(this));
+    window.removeEventListener('resize', this.setResizeHandler.bind(this), false);
     cancelAnimationFrame(this.frame);
     this.controls.dispose();
   }
