@@ -31,15 +31,34 @@ export class ControlsService {
     this.controls = new THREE.PointerLockControls(this.camera);
     this.scene.add(this.controls.getObject());
 
+    this.fullscreen =
+      this.room.requestFullscreen    ||
+      this.room.msRequestFullscreen  ||
+      this.room.mozRequestFullScreen ||
+      this.room.webkitRequestFullscreen;
+
     this.pointerLock =
       this.room.requestPointerLock    ||
       this.room.mozRequestPointerLock ||
       this.room.webkitRequestPointerLock;
 
+    document.exitFullscreen =
+      document.exitFullscreen         ||
+      document.mozCancelFullScreen    ||
+      document.webkitCancelFullScreen;
+
     document.exitPointerLock =
       document.exitPointerLock    ||
       document.mozExitPointerLock ||
       document.webkitExitPointerLock;
+
+    if (this.fullscreen) {
+      this.room.requestFullscreen =
+        this.room.requestFullscreen    ||
+        this.room.msRequestFullscreen  ||
+        this.room.mozRequestFullScreen ||
+        this.room.webkitRequestFullscreen;
+    }
 
     if (this.pointerLock) {
       this.room.requestPointerLock =
@@ -85,7 +104,7 @@ export class ControlsService {
   keyHandler(code, pressed) {
     switch(code) {
       case 32:
-        if (pressed) this.togglePointerLock();
+        if (pressed) this.setGameMode();
       break;
 
       case 40: case 83:
@@ -106,11 +125,14 @@ export class ControlsService {
     }
   }
 
-  togglePointerLock() {
-    if (!this.controls.enabled)
+  setGameMode() {
+    if (!this.controls.enabled) {
       this.room.requestPointerLock();
-    else
+      this.room.requestFullscreen();
+    } else {
       document.exitPointerLock();
+      document.exitFullscreen();
+    }
   }
 
   update() {
