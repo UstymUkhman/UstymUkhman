@@ -41,7 +41,7 @@ export class RabbitHoleComponent {
     // this.createComputer();
     // this.createDoor();
 
-    this.createCinematicIntro();
+    // this.createCinematicIntro();
     this.createEventHandlers();
     this.createRenderer();
     this.createControls();
@@ -63,6 +63,20 @@ export class RabbitHoleComponent {
 
   createControls() {
     this.error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
+
+    if (this.error) {
+      console.error(
+        `Your shitty browser does not support Pointer Lock API.\n
+        You need to update it or use a better one: https://www.google.it/chrome/browser/desktop/`
+      );
+    }
+
+    this.controls.setBorders({
+      front : 250,
+      right :  20,
+      left  : -20,
+      back  : 250
+    });
   }
 
   createSky() {

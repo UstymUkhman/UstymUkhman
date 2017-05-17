@@ -1,10 +1,12 @@
-import { Vector3         } from 'three';
-import { PointerControls } from '../classes/PointerControls';
+import * as THREE from 'three';
+window.THREE = THREE;
+
+require('three/examples/js/controls/PointerLockControls');
 
 
 export class ControlsService {
   constructor() {
-    this.velocity = new Vector3();
+    this.velocity = new THREE.Vector3();
     this.prevTime = performance.now();
     this.enabled  = false;
 
@@ -19,6 +21,13 @@ export class ControlsService {
       right    : false,
       left     : false
     };
+
+    this.free = {
+      front : false,
+      right : false,
+      back  : false,
+      left  : false
+    };
   }
 
   init(room, scene, camera) {
@@ -26,7 +35,7 @@ export class ControlsService {
     this.scene  = scene;
     this.camera = camera;
 
-    this.controls = new PointerControls(this.camera);
+    this.controls = new THREE.PointerLockControls(this.camera);
     this.scene.add(this.controls.getObject());
 
     this.fullscreen =
@@ -39,16 +48,6 @@ export class ControlsService {
       this.room.requestPointerLock    ||
       this.room.mozRequestPointerLock ||
       this.room.webkitRequestPointerLock;
-
-    document.exitFullscreen =
-      document.exitFullscreen      ||
-      document.mozCancelFullScreen ||
-      document.webkitCancelFullScreen;
-
-    document.exitPointerLock =
-      document.exitPointerLock    ||
-      document.mozExitPointerLock ||
-      document.webkitExitPointerLock;
 
     if (this.fullscreen) {
       this.room.requestFullscreen =
@@ -67,7 +66,17 @@ export class ControlsService {
       this.addEventListeners();
     }
 
-    return this.pointerLock;
+    document.exitFullscreen =
+      document.exitFullscreen         ||
+      document.mozCancelFullScreen    ||
+      document.webkitCancelFullScreen;
+
+    document.exitPointerLock =
+      document.exitPointerLock    ||
+      document.mozExitPointerLock ||
+      document.webkitExitPointerLock;
+
+    return !this.pointerLock;
   }
 
   addEventListeners() {
@@ -133,6 +142,10 @@ export class ControlsService {
     }
   }
 
+  setBorders(borders) {
+    this.borders = borders;
+  }
+
   update() {
     if (!this.controls.enabled) return;
 
@@ -148,42 +161,61 @@ export class ControlsService {
     if (this.move.left)     this.velocity.x -= 500 * delta;
     if (this.move.right)    this.velocity.x += 500 * delta;
 
-    let nextStep = {
-      x: this.velocity.x * delta,
-      z: this.velocity.z * delta
-    };
-
-    if (true) { // if (this.checkNextMove(nextStep)) {
-      this.controls.getObject().translateX(nextStep.x);
-      this.controls.getObject().translateZ(nextStep.z);
+    if (this.checkNextMove(delta)) {
+      this.controls.getObject().translateX(this.velocity.x * delta);
+      this.controls.getObject().translateZ(this.velocity.z * delta);
     }
 
     this.prevTime = time;
   }
 
-  checkNextMove(nextStep) {
-    let currentPosition = this.controls.getObject().position,
-        nexrPosition    = {
-          x: currentPosition.x + nextStep.x,
-          z: currentPosition.z + nextStep.z
+  checkNextMove(delta) {
+    let nextStep     = this.estimateNextStep(delta),
+        nextPosition = {
+          x: this.controls.getObject().position.x + nextStep.x,
+          z: this.controls.getObject().position.z + nextStep.z
         };
 
-    return (nexrPosition.x > -50)  && (nexrPosition.x <  50) &&
-           (nexrPosition.z > -250) && (nexrPosition.z < 250);
+    this.free.front = nextPosition.z < this.borders.front;
+    this.free.back  = nextPosition.z < this.borders.back;
+
+    this.free.right = nextPosition.x < this.borders.right;
+    this.free.left  = nextPosition.x > this.borders.left;
+
+    return this.free.front && this.free.back && this.free.right && this.free.left;
   }
 
-  dispose() {
-    document.removeEventListener('webkitpointerlockchange', this.changePointerLock.bind(this), false);
-    document.removeEventListener('mozpointerlockchange', this.changePointerLock.bind(this), false);
-    document.removeEventListener('pointerlockchange', this.changePointerLock.bind(this), false);
+  estimateNextStep(delta) {
+    let nextStep = {
+      x: this.velocity.x - this.velocity.x * 10 * delta,
+      z: this.velocity.z - this.velocity.z * 10 * delta
+    };
 
-    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
-    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+    if (this.move.forward)  nextStep.z -= 600 * delta;
+    if (this.move.backward) nextStep.z += 500 * delta;
 
-    document.removeEventListener('keydown', this.onKeyDown.bind(this), false);
-    document.removeEventListener('keyup', this.onKeyUp.bind(this), false);
+    if (this.move.left)     nextStep.x -= 500 * delta;
+    if (this.move.right)    nextStep.x += 500 * delta;
 
-    this.controls.dispose();
+    let s = {
+      x: nextStep.x * delta,
+      z: nextStep.z * delta,
+    };
+
+    // console.log(s);
+    return s;
+  }
+
+  remove() {
+    document.removeEventListener('webkitpointerlockchange', this.changePointerLock.bind(this));
+    document.removeEventListener('mozpointerlockchange', this.changePointerLock.bind(this));
+    document.removeEventListener('pointerlockchange', this.changePointerLock.bind(this));
+
+    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this));
+    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this));
+    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this));
+
+    document.removeEventListener('keydown', this.onKeyDown.bind(this));
+    document.removeEventListener('keyup', this.onKeyUp.bind(this));
   }
 }
