@@ -1,3 +1,4 @@
+import * as THREE                from 'three';
 import { Component, ElementRef } from '@angular/core';
 import { ControlsService       } from '../../services/controls.service';
 
@@ -251,7 +252,7 @@ export class RabbitHoleComponent {
   ngOnDestroy() {
     window.removeEventListener('resize', this.setResizeHandler.bind(this));
     cancelAnimationFrame(this.frame);
-    this.controls.remove();
+    this.controls.dispose();
   }
 
   static get parameters() {

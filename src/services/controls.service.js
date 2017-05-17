@@ -1,12 +1,10 @@
-import * as THREE from 'three';
-window.THREE = THREE;
-
-require('three/examples/js/controls/PointerLockControls');
+import { Vector3         } from 'three';
+import { PointerControls } from '../classes/PointerControls';
 
 
 export class ControlsService {
   constructor() {
-    this.velocity = new THREE.Vector3();
+    this.velocity = new Vector3();
     this.prevTime = performance.now();
     this.enabled  = false;
 
@@ -28,7 +26,7 @@ export class ControlsService {
     this.scene  = scene;
     this.camera = camera;
 
-    this.controls = new THREE.PointerLockControls(this.camera);
+    this.controls = new PointerControls(this.camera);
     this.scene.add(this.controls.getObject());
 
     this.fullscreen =
@@ -43,8 +41,8 @@ export class ControlsService {
       this.room.webkitRequestPointerLock;
 
     document.exitFullscreen =
-      document.exitFullscreen         ||
-      document.mozCancelFullScreen    ||
+      document.exitFullscreen      ||
+      document.mozCancelFullScreen ||
       document.webkitCancelFullScreen;
 
     document.exitPointerLock =
@@ -174,16 +172,18 @@ export class ControlsService {
            (nexrPosition.z > -250) && (nexrPosition.z < 250);
   }
 
-  remove() {
-    document.removeEventListener('webkitpointerlockchange', this.changePointerLock.bind(this));
-    document.removeEventListener('mozpointerlockchange', this.changePointerLock.bind(this));
-    document.removeEventListener('pointerlockchange', this.changePointerLock.bind(this));
+  dispose() {
+    document.removeEventListener('webkitpointerlockchange', this.changePointerLock.bind(this), false);
+    document.removeEventListener('mozpointerlockchange', this.changePointerLock.bind(this), false);
+    document.removeEventListener('pointerlockchange', this.changePointerLock.bind(this), false);
 
-    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this));
-    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this));
-    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this));
+    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
+    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
+    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
 
-    document.removeEventListener('keydown', this.onKeyDown.bind(this));
-    document.removeEventListener('keyup', this.onKeyUp.bind(this));
+    document.removeEventListener('keydown', this.onKeyDown.bind(this), false);
+    document.removeEventListener('keyup', this.onKeyUp.bind(this), false);
+
+    this.controls.dispose();
   }
 }
