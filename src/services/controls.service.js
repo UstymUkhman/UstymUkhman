@@ -1,7 +1,5 @@
 import * as THREE from 'three';
-window.THREE = THREE;
-
-require('three/examples/js/controls/PointerLockControls');
+import { PointerControls } from '../classes/PointerControls';
 
 
 export class ControlsService {
@@ -21,13 +19,6 @@ export class ControlsService {
       right    : false,
       left     : false
     };
-
-    this.free = {
-      front : false,
-      right : false,
-      back  : false,
-      left  : false
-    };
   }
 
   init(room, scene, camera) {
@@ -35,9 +26,14 @@ export class ControlsService {
     this.scene  = scene;
     this.camera = camera;
 
-    this.controls = new THREE.PointerLockControls(this.camera);
+    this.controls = new PointerControls(this.camera);
     this.scene.add(this.controls.getObject());
+    this.setExperimentalAPIs();   
 
+    return !this.pointerLock;
+  }
+
+  setExperimentalAPIs() {
     this.fullscreen =
       this.room.requestFullscreen    ||
       this.room.msRequestFullscreen  ||
@@ -67,29 +63,14 @@ export class ControlsService {
     }
 
     document.exitFullscreen =
-      document.exitFullscreen         ||
-      document.mozCancelFullScreen    ||
+      document.exitFullscreen      ||
+      document.mozCancelFullScreen ||
       document.webkitCancelFullScreen;
 
     document.exitPointerLock =
       document.exitPointerLock    ||
       document.mozExitPointerLock ||
       document.webkitExitPointerLock;
-
-    return !this.pointerLock;
-  }
-
-  addEventListeners() {
-    document.addEventListener('webkitpointerlockchange', this.changePointerLock.bind(this), false);
-    document.addEventListener('mozpointerlockchange', this.changePointerLock.bind(this), false);
-    document.addEventListener('pointerlockchange', this.changePointerLock.bind(this), false);
-
-    document.addEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
-    document.addEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-    document.addEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
-
-    document.addEventListener('keydown', this.onKeyDown.bind(this), false);
-    document.addEventListener('keyup', this.onKeyUp.bind(this), false);
   }
 
   changePointerLock() {
@@ -157,65 +138,99 @@ export class ControlsService {
 
     if (this.move.forward)  this.velocity.z -= 600 * delta;
     if (this.move.backward) this.velocity.z += 500 * delta;
-
     if (this.move.left)     this.velocity.x -= 500 * delta;
     if (this.move.right)    this.velocity.x += 500 * delta;
 
-    if (this.checkNextMove(delta)) {
-      this.controls.getObject().translateX(this.velocity.x * delta);
-      this.controls.getObject().translateZ(this.velocity.z * delta);
+    if (!this.checkMovement()) return this.prevTime = time;
+
+    let position = this.controls.getObject();
+    let step = {
+      x: this.velocity.x * delta,
+      z: this.velocity.z * delta
+    };
+
+    position.translateX(step.x);
+    position.translateZ(step.z);
+
+    if (this.checkCollision(position)) {
+      position.translateX(-step.x);
+      position.translateZ(-step.z);
     }
 
     this.prevTime = time;
   }
 
-  checkNextMove(delta) {
-    let nextStep     = this.estimateNextStep(delta),
-        nextPosition = {
-          x: this.controls.getObject().position.x + nextStep.x,
-          z: this.controls.getObject().position.z + nextStep.z
-        };
+  checkCollision(current) {
+    if (current.position.z > this.borders.front) return true;
+    if (current.position.z > this.borders.back)  return true;
+    if (current.position.x > this.borders.right) return true;
+    if (current.position.x < this.borders.left)  return true;
 
-    this.free.front = nextPosition.z < this.borders.front;
-    this.free.back  = nextPosition.z < this.borders.back;
-
-    this.free.right = nextPosition.x < this.borders.right;
-    this.free.left  = nextPosition.x > this.borders.left;
-
-    return this.free.front && this.free.back && this.free.right && this.free.left;
+    return false;
   }
 
-  estimateNextStep(delta) {
-    let nextStep = {
-      x: this.velocity.x - this.velocity.x * 10 * delta,
-      z: this.velocity.z - this.velocity.z * 10 * delta
-    };
-
-    if (this.move.forward)  nextStep.z -= 600 * delta;
-    if (this.move.backward) nextStep.z += 500 * delta;
-
-    if (this.move.left)     nextStep.x -= 500 * delta;
-    if (this.move.right)    nextStep.x += 500 * delta;
-
-    let s = {
-      x: nextStep.x * delta,
-      z: nextStep.z * delta,
-    };
-
-    // console.log(s);
-    return s;
+  checkMovement() {
+    return this.move.forward || this.move.backward || this.move.left || this.move.right;
   }
 
-  remove() {
-    document.removeEventListener('webkitpointerlockchange', this.changePointerLock.bind(this));
-    document.removeEventListener('mozpointerlockchange', this.changePointerLock.bind(this));
-    document.removeEventListener('pointerlockchange', this.changePointerLock.bind(this));
+  checkDirectionChange() {
+    const FRONT_LEFT_X = -0.5, FRONT_RIGHT_X =  0.5,
+          BACK_RIGHT_X =  0.5, BACK_LEFT_X   = -0.5;
 
-    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this));
-    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this));
-    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this));
+    const FRONT_LEFT_Z = -0.5, FRONT_RIGHT_Z = -0.5,
+          BACK_RIGHT_Z =  0.5, BACK_LEFT_Z   =  0.5;
 
-    document.removeEventListener('keydown', this.onKeyDown.bind(this));
-    document.removeEventListener('keyup', this.onKeyUp.bind(this));
+    const LAST_DIRECTION = this.getLastDirection();
+    const FRONT = 1, RIGHT = 2, BACK = 3, LEFT = 4;
+
+    this.look = {
+      FRONT : false, RIGHT : false,
+      BACK  : false, LEFT  : false
+    };
+
+    this.look.FRONT = (FRONT_LEFT_X  < this.direction.x < FRONT_RIGHT_X && this.direction.z < FRONT_RIGHT_Z   );
+    this.look.RIGHT = (FRONT_RIGHT_Z < this.direction.z < BACK_RIGHT_Z  && BACK_RIGHT_X     < this.direction.x);
+    this.look.BACK  = (BACK_RIGHT_X  > this.direction.x > BACK_LEFT_X   && BACK_LEFT_Z      < this.direction.z);
+    this.look.LEFT  = (BACK_LEFT_Z   > this.direction.z > FRONT_LEFT_Z  && this.direction.x < FRONT_LEFT_X    );
+
+         if (this.look.FRONT && LAST_DIRECTION !== FRONT) return this.look.FRONT;
+    else if (this.look.RIGHT && LAST_DIRECTION !== RIGHT) return this.look.RIGHT;
+    else if (this.look.BACK  && LAST_DIRECTION !== BACK ) return this.look.BACK;
+    else if (this.look.LEFT  && LAST_DIRECTION !== LEFT ) return this.look.LEFT;
+
+    return false;
+  }
+
+  getLastDirection() {
+    if (this.look.FRONT) return 1;
+    if (this.look.RIGHT) return 2;
+    if (this.look.BACK ) return 3;
+    if (this.look.LEFT ) return 4;
+  }
+
+  addEventListeners() {
+    document.addEventListener('webkitpointerlockchange', this.changePointerLock.bind(this), false);
+    document.addEventListener('mozpointerlockchange', this.changePointerLock.bind(this), false);
+    document.addEventListener('pointerlockchange', this.changePointerLock.bind(this), false);
+
+    document.addEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
+    document.addEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
+    document.addEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+
+    document.addEventListener('keydown', this.onKeyDown.bind(this), false);
+    document.addEventListener('keyup', this.onKeyUp.bind(this), false);
+  }
+
+  dispose() {
+    document.removeEventListener('webkitpointerlockchange', this.changePointerLock.bind(this), false);
+    document.removeEventListener('mozpointerlockchange', this.changePointerLock.bind(this), false);
+    document.removeEventListener('pointerlockchange', this.changePointerLock.bind(this), false);
+
+    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
+    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
+    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+
+    document.removeEventListener('keydown', this.onKeyDown.bind(this), false);
+    document.removeEventListener('keyup', this.onKeyUp.bind(this), false);
   }
 }

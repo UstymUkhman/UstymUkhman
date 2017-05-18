@@ -41,7 +41,7 @@ export class RabbitHoleComponent {
     // this.createComputer();
     // this.createDoor();
 
-    // this.createCinematicIntro();
+    this.createCinematicIntro();
     this.createEventHandlers();
     this.createRenderer();
     this.createControls();
