@@ -2,6 +2,8 @@ import * as THREE                from 'three';
 import { Component, ElementRef } from '@angular/core';
 import { ControlsService       } from '../../services/controls.service';
 
+// let OrbitControls = require('three-orbit-controls')(THREE);
+
 
 @Component({
   template: '',
@@ -11,23 +13,23 @@ import { ControlsService       } from '../../services/controls.service';
 
 export class RabbitHoleComponent {
   constructor(rabbitHole, cameraControls) {
-    this.scene     = null;
-    this.camera    = null;
-    this.renderer  = null;
+    this.scene      = null;
+    this.camera     = null;
+    this.renderer   = null;
 
-    this.WHITE     = 0xFFFFFF;
-    this.LIGHTGRAY = 0xDDDDDD;
-    this.DARKGRAY  = 0x333333;
-    this.BLACK     = 0x000000;
+    this.WHITE      = 0xFFFFFF;
+    this.LIGHTGRAY  = 0xDDDDDD;
+    this.DARKGRAY   = 0x333333;
+    this.BLACK      = 0x000000;
 
-    this.intro     = false;
-    this.error     = false;
-    this.halfPI    = Math.PI / 2;
-    this.WIDTH     = window.innerWidth;
-    this.HEIGHT    = window.innerHeight;
+    this.intro      = false;
+    this.error      = false;
+    this.WIDTH      = window.innerWidth;
+    this.HEIGHT     = window.innerHeight;
 
-    this.hole      = rabbitHole.nativeElement;
-    this.controls  = cameraControls;
+    this.hole       = rabbitHole.nativeElement;
+    this.controls   = cameraControls;
+    this.translateZ = 225;
 
     this.createScene();
     this.createCamera();
@@ -41,11 +43,14 @@ export class RabbitHoleComponent {
     // this.createComputer();
     // this.createDoor();
 
-    this.createCinematicIntro();
+    // this.createCinematicIntro();
     this.createEventHandlers();
     this.createRenderer();
+
+    // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.createControls();
     this.animate();
+
   }
 
   createScene() {
@@ -54,6 +59,7 @@ export class RabbitHoleComponent {
 
   createCamera() {
     this.camera = new THREE.PerspectiveCamera(50, this.WIDTH / this.HEIGHT, 1, 1000);
+    // this.camera.position.z = 300;
     this.scene.add(this.camera);
   }
 
@@ -72,10 +78,10 @@ export class RabbitHoleComponent {
     }
 
     this.controls.setBorders({
-      front : 250,
+      front : this.translateZ - 245,
+      back  : this.translateZ + 245,
       right :  20,
-      left  : -20,
-      back  : 250
+      left  : -20
     });
   }
 
@@ -93,15 +99,18 @@ export class RabbitHoleComponent {
     textureLoader.load('assets/floor.jpg', (texture) => {
 
       let floorTexture   = texture;
-      floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
+      floorTexture.wrapS = floorTexture.wrapT = THREE.MirroredRepeatWrapping;
       floorTexture.repeat.set(1, 10);
 
-      let floorMaterial = new THREE.MeshBasicMaterial({ map: floorTexture, side: THREE.DoubleSide }),
+      let floorMaterial = new THREE.MeshBasicMaterial({ map: floorTexture }),
           floorGeom     = new THREE.PlaneGeometry(50, 500, 1, 20),
           floor         = new THREE.Mesh(floorGeom, floorMaterial);
 
+      floor.position.z = this.translateZ;
       floor.rotation.x = Math.PI / 2;
+      floor.rotation.y = Math.PI;
       floor.position.y = -12.5;
+
       this.scene.add(floor);
     });
   }
@@ -110,27 +119,48 @@ export class RabbitHoleComponent {
     let textureLoader = new THREE.TextureLoader();
     textureLoader.load('assets/wall.jpg', (texture) => {
 
-      let wallTexture   = texture;
-      wallTexture.wrapS = wallTexture.wrapT = THREE.RepeatWrapping;
-      wallTexture.repeat.set(5, 1);
+      const PI_2 = Math.PI / 2;
 
-      let wallMaterial = new THREE.MeshBasicMaterial({ map: wallTexture, side: THREE.DoubleSide }),
-          wallGeometry = new THREE.PlaneGeometry(500, 65, 1, 10),
+      let directTexture = texture.clone(),
+          sideTexture   = texture.clone();
 
-          leftWall     = new THREE.Mesh(wallGeometry, wallMaterial),
-          rightWall    = new THREE.Mesh(wallGeometry, wallMaterial);
+      directTexture.wrapS = directTexture.wrapT = THREE.MirroredRepeatWrapping;
+      sideTexture.wrapS   = sideTexture.wrapT   = THREE.MirroredRepeatWrapping;
 
-      leftWall.rotation.y  = this.halfPI;
-      leftWall.rotation.x  = Math.PI;
-      leftWall.position.y  = 18.5;
-      leftWall.position.x  = -25;
+      directTexture.needsUpdate = true;
+      sideTexture.needsUpdate   = true;
 
-      rightWall.rotation.y = this.halfPI;
-      rightWall.rotation.x = Math.PI;
-      rightWall.position.y = 18.5;
-      rightWall.position.x = 25;
+      directTexture.repeat.set(1, 1);
+      sideTexture.repeat.set(5, 1);
 
+      let directGeometry = new THREE.PlaneGeometry( 50, 65, 1, 10),
+          sideGeometry   = new THREE.PlaneGeometry(500, 65, 1, 10);
+
+      let directMaterial = new THREE.MeshBasicMaterial({ map: directTexture }),
+          sideMaterial   = new THREE.MeshBasicMaterial({ map: sideTexture });
+
+      let frontWall      = new THREE.Mesh(directGeometry, directMaterial),
+          backWall       = new THREE.Mesh(directGeometry, directMaterial),
+          leftWall       = new THREE.Mesh(sideGeometry,   sideMaterial),
+          rightWall      = new THREE.Mesh(sideGeometry,   sideMaterial);
+
+      frontWall.position.set(0, 18.5, this.translateZ - 250);
+
+      backWall.position.set(0, 18.5, this.translateZ + 250);
+      backWall.rotateY(Math.PI);
+
+      leftWall.position.set(-25, 18.5, this.translateZ);
+      leftWall.rotation.set(Math.PI, PI_2, 0);
+
+      rightWall.position.set(25, 18.5, this.translateZ);
+      rightWall.rotateY(-PI_2);
+
+      window.frontWall = frontWall;
+      window.backWall = backWall;
+
+      this.scene.add(frontWall);
       this.scene.add(rightWall);
+      this.scene.add(backWall);
       this.scene.add(leftWall);
     });
   }
@@ -138,12 +168,13 @@ export class RabbitHoleComponent {
   createCeiling() {
     let ceiling = new THREE.RectAreaLight(this.WHITE, 1, 50, 500);
     ceiling.intensity = 100;
-    this.scene.add(ceiling);
 
     let ceilingHelper = new THREE.RectAreaLightHelper(ceiling);
-    ceilingHelper.position.set(0, 50, 0);
+    ceilingHelper.position.set(0, 50, this.translateZ);
     ceilingHelper.rotateX(Math.PI / 2);
+
     this.scene.add(ceilingHelper);
+    this.scene.add(ceiling);
   }
 
   createComputer() {
@@ -167,25 +198,8 @@ export class RabbitHoleComponent {
     const jsonLoader = new THREE.JSONLoader();
 
     jsonLoader.load('assets/door.json', (geometry) => {
-      let texture = new THREE.TextureLoader().load('assets/wood.jpg');
-      let door = new THREE.Mesh(
-        geometry,
-        new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide })
-        // new THREE.MeshStandardMaterial({
-        //   shading           : THREE.SmoothShading,
-        //   emissive          : this.BLACK,
-        //   color             : this.WHITE,
-        //   emissiveIntensity : 1,
-
-        //   roughness         : 0.2,
-        //   metalness         : 0,
-        //   opacity           : 1,
-
-        //   depthTest         : true,
-        //   depthWrite        : true,
-        //   transparent       : false
-        // })
-      );
+      let texture = new THREE.TextureLoader().load('assets/wood.jpg'),
+          door    = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ map: texture }));
 
       door.position.set(0, 0, 500);
       door.scale.set(50, 50, 50);
@@ -206,12 +220,12 @@ export class RabbitHoleComponent {
 
   createCinematicIntro() {
     this.clock = new THREE.Clock();
-    this.rotationStep = 0.0031416;
-    this.rotationStepCounter = 0;
+    // this.rotationStep = 0.0031416;
+    // this.rotationStepCounter = 0;
     this.elapsedSpeed = 4.5;
 
     setTimeout(() => {
-      this.camera.rotation.x = -Math.PI / 4;
+      // this.camera.rotation.x = -Math.PI / 4;
       this.intro = true;
     }, 1000);
   }
@@ -243,10 +257,10 @@ export class RabbitHoleComponent {
   animateCameraIntro() {
     this.camera.fov = this.getCameraFov();
 
-    if (this.rotationStepCounter < 250) {
-      this.camera.rotation.x += this.rotationStep;
-      this.rotationStepCounter++;
-    }
+    // if (this.rotationStepCounter < 250) {
+    //   this.camera.rotation.x += this.rotationStep;
+    //   this.rotationStepCounter++;
+    // }
 
     if (this.camera.fov === 75) {
       this.camera.rotation.x = 0;

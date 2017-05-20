@@ -1,11 +1,11 @@
-import * as THREE from 'three';
+import { Vector3 } from 'three';
 import { PointerControls } from '../classes/PointerControls';
 
 
 export class ControlsService {
   constructor() {
-    this.velocity = new THREE.Vector3();
     this.prevTime = performance.now();
+    this.velocity = new Vector3();
     this.enabled  = false;
 
     this.controls = null;
@@ -28,7 +28,7 @@ export class ControlsService {
 
     this.controls = new PointerControls(this.camera);
     this.scene.add(this.controls.getObject());
-    this.setExperimentalAPIs();   
+    this.setExperimentalAPIs();
 
     return !this.pointerLock;
   }
@@ -161,7 +161,7 @@ export class ControlsService {
   }
 
   checkCollision(current) {
-    if (current.position.z > this.borders.front) return true;
+    if (current.position.z < this.borders.front) return true;
     if (current.position.z > this.borders.back)  return true;
     if (current.position.x > this.borders.right) return true;
     if (current.position.x < this.borders.left)  return true;

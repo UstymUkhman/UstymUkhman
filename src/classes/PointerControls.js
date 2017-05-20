@@ -1,4 +1,3 @@
-'use strict';
 import { Object3D, Euler, Vector3 } from 'three';
 
 export class PointerControls {
@@ -59,4 +58,3 @@ export class PointerControls {
     document.removeEventListener('mousemove', this.onMouseMove.bind(this), false);
   }
 }
-
