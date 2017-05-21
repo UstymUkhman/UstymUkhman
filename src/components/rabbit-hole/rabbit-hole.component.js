@@ -33,14 +33,14 @@ export class RabbitHoleComponent {
 
     this.createScene();
     this.createCamera();
-    this.createLight();
+    // this.createLight();
 
-    this.createSky();
     this.createFloor();
     this.createWalls();
     this.createCeiling();
 
     // this.createComputer();
+    // this.createTable();
     // this.createDoor();
 
     // this.createCinematicIntro();
@@ -50,7 +50,6 @@ export class RabbitHoleComponent {
     // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.createControls();
     this.animate();
-
   }
 
   createScene() {
@@ -63,9 +62,9 @@ export class RabbitHoleComponent {
     this.scene.add(this.camera);
   }
 
-  createLight() {
-    this.scene.add(new THREE.AmbientLight(this.DARKGRAY));
-  }
+  // createLight() {
+  //   this.scene.add(new THREE.AmbientLight(this.DARKGRAY));
+  // }
 
   createControls() {
     this.error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
@@ -83,15 +82,6 @@ export class RabbitHoleComponent {
       right :  20,
       left  : -20
     });
-  }
-
-  createSky() {
-    let skyMaterial = new THREE.MeshBasicMaterial({ color: 0x168BDE, side: THREE.BackSide }),
-        skyGeometry = new THREE.CubeGeometry(10000, 10000, 10000),
-        sky         = new THREE.Mesh(skyGeometry, skyMaterial);
-
-    this.scene.fog = new THREE.FogExp2(0xC2C2C2, 0.0002);
-    this.scene.add(sky);
   }
 
   createFloor() {
