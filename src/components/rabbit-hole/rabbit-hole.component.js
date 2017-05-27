@@ -145,8 +145,6 @@ export class RabbitHoleComponent {
       rightWall.position.set(25, 18.5, this.translateZ);
       rightWall.rotateY(-PI_2);
 
-      // window.backWall = backWall;
-
       this.scene.add(frontWall);
       this.scene.add(rightWall);
       this.scene.add(backWall);
@@ -155,15 +153,61 @@ export class RabbitHoleComponent {
   }
 
   createCeiling() {
+    const PI_2 = Math.PI / 2;
+
     let ceiling = new THREE.RectAreaLight(this.WHITE, 1, 50, 500);
     ceiling.intensity = 100;
 
     let ceilingHelper = new THREE.RectAreaLightHelper(ceiling);
-    ceilingHelper.position.set(0, 50, this.translateZ);
-    ceilingHelper.rotateX(Math.PI / 2);
+    ceilingHelper.position.set(0, 51, this.translateZ);
+    ceilingHelper.rotateX(PI_2);
 
     this.scene.add(ceilingHelper);
     this.scene.add(ceiling);
+
+    let textureLoader = new THREE.TextureLoader();
+    textureLoader.load('assets/ceiling.png', (texture) => {
+
+      let directTexture = texture.clone(),
+          sideTexture   = texture.clone();
+
+      directTexture.wrapS = directTexture.wrapT = THREE.MirroredRepeatWrapping;
+      sideTexture.wrapS   = sideTexture.wrapT   = THREE.MirroredRepeatWrapping;
+
+      directTexture.needsUpdate = true;
+      sideTexture.needsUpdate   = true;
+
+      directTexture.repeat.set(1, 1);
+      sideTexture.repeat.set(10, 1);
+
+      let directGeometry = new THREE.PlaneGeometry( 50, 6, 1, 10),
+          sideGeometry   = new THREE.PlaneGeometry(500, 6, 1, 10);
+
+      let directMaterial = new THREE.MeshBasicMaterial({ map: directTexture }),
+          sideMaterial   = new THREE.MeshBasicMaterial({ map: sideTexture });
+
+      let frontCeil      = new THREE.Mesh(directGeometry, directMaterial),
+          backCeil       = new THREE.Mesh(directGeometry, directMaterial),
+          leftCeil       = new THREE.Mesh(sideGeometry,   sideMaterial),
+          rightCeil      = new THREE.Mesh(sideGeometry,   sideMaterial);
+
+      frontCeil.position.set(0, 50.6, this.translateZ - 247);
+      frontCeil.rotateX(PI_2);
+
+      backCeil.position.set(0, 50.6, this.translateZ + 247);
+      backCeil.rotation.set(PI_2, 0, -Math.PI);
+
+      leftCeil.position.set(-22, 50.4, this.translateZ);
+      leftCeil.rotation.set(PI_2, 0, -PI_2);
+
+      rightCeil.position.set(22, 50.4, this.translateZ);
+      rightCeil.rotation.set(PI_2, 0, PI_2);
+
+      this.scene.add(frontCeil);
+      this.scene.add(rightCeil);
+      this.scene.add(backCeil);
+      this.scene.add(leftCeil);
+    });
   }
 
   createComputer() {
