@@ -66,8 +66,8 @@ $bourbon-timing: (
 //   @return $string;
 // }
 
-@function getRandomValue($max: 3) {
-  @return random($max);
+@function getRandom($min: 1, $max: 100) {
+  @return floor(random() * ($max - $min + 1)) + $min;
 }
 
 @function getRandomTimingFunction() {

@@ -121,7 +121,7 @@ export class RabbitHoleComponent {
       sideTexture.needsUpdate   = true;
 
       directTexture.repeat.set(1, 1);
-      sideTexture.repeat.set(5, 1);
+      sideTexture.repeat.set(10, 1);
 
       let directGeometry = new THREE.PlaneGeometry( 50, 65, 1, 10),
           sideGeometry   = new THREE.PlaneGeometry(500, 65, 1, 10);
@@ -140,13 +140,12 @@ export class RabbitHoleComponent {
       backWall.rotateY(Math.PI);
 
       leftWall.position.set(-25, 18.5, this.translateZ);
-      leftWall.rotation.set(Math.PI, PI_2, 0);
+      leftWall.rotateY(PI_2);
 
       rightWall.position.set(25, 18.5, this.translateZ);
       rightWall.rotateY(-PI_2);
 
-      window.frontWall = frontWall;
-      window.backWall = backWall;
+      // window.backWall = backWall;
 
       this.scene.add(frontWall);
       this.scene.add(rightWall);

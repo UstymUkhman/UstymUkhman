@@ -65,7 +65,7 @@ div#matrix-code {
         }
 
         &:nth-last-child(2) {
-          color: $light-green;          
+          color: $light-green;
         }
 
         &:nth-last-child(1) {
@@ -113,7 +113,7 @@ div#matrix-code {
           $i: ($i - 100) * 2;
         }
 
-        $top: getRandomValue(50);
+        $top: getRandom(1, 50);
 
         top: unquote("#{-$top}%");
         left: unquote("#{$i}%");
