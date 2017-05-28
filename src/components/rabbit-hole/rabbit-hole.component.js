@@ -2,7 +2,7 @@ import * as THREE                from 'three';
 import { Component, ElementRef } from '@angular/core';
 import { ControlsService       } from '../../services/controls.service';
 
-let OrbitControls = require('three-orbit-controls')(THREE);
+// let OrbitControls = require('three-orbit-controls')(THREE);
 
 
 @Component({
@@ -19,21 +19,23 @@ export class RabbitHoleComponent {
 
     this.WHITE      = 0xFFFFFF;
     this.LIGHTGRAY  = 0xDDDDDD;
+    this.DARKGREEN  = 0x406550;
     this.DARKGRAY   = 0x333333;
     this.BLACK      = 0x000000;
 
+    this.mod        = true;
     this.intro      = false;
     this.error      = false;
     this.WIDTH      = window.innerWidth;
     this.HEIGHT     = window.innerHeight;
 
     this.hole       = rabbitHole.nativeElement;
-    // this.controls   = cameraControls;
+    this.controls   = cameraControls;
     this.center     = 225;
 
     this.createScene();
     this.createCamera();
-    // this.createLight();
+    this.createLight();
 
     this.createFloor();
     this.createWalls();
@@ -47,8 +49,8 @@ export class RabbitHoleComponent {
     this.createEventHandlers();
     this.createRenderer();
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    // this.createControls();
+    // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.createControls();
     this.animate();
   }
 
@@ -58,13 +60,13 @@ export class RabbitHoleComponent {
 
   createCamera() {
     this.camera = new THREE.PerspectiveCamera(50, this.WIDTH / this.HEIGHT, 1, 1000);
-    this.camera.position.z = 300;
+    // this.camera.position.z = 300;
     this.scene.add(this.camera);
   }
 
-  // createLight() {
-  //   this.scene.add(new THREE.AmbientLight(this.DARKGRAY));
-  // }
+  createLight() {
+    this.scene.add(new THREE.AmbientLight(this.WHITE));
+  }
 
   createControls() {
     this.error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
@@ -88,19 +90,25 @@ export class RabbitHoleComponent {
     let textureLoader = new THREE.TextureLoader();
     textureLoader.load('assets/floor.jpg', (texture) => {
 
-      let floorTexture   = texture;
-      floorTexture.wrapS = floorTexture.wrapT = THREE.MirroredRepeatWrapping;
-      floorTexture.repeat.set(1, 10);
+      texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;
+      texture.needsUpdate = true;
 
-      let floorMaterial = new THREE.MeshBasicMaterial({ map: floorTexture }),
-          floorGeom     = new THREE.PlaneGeometry(50, 500, 1, 20),
-          floor         = new THREE.Mesh(floorGeom, floorMaterial);
+      let floorMaterial = new THREE.MeshStandardMaterial({
+        map: texture,
+        roughness: 1,
+        metalness: 0,
+        opacity: 0.75,
 
-      floor.position.z = this.center;
-      floor.rotation.x = Math.PI / 2;
-      floor.rotation.y = Math.PI;
-      floor.position.y = -12.5;
+        transparent: true,
+        color: this.DARKGREEN,
+        premultipliedAlpha: true,
+        shading: THREE.SmoothShading
+      });
 
+      let floor = new THREE.Mesh(new THREE.PlaneGeometry(50, 500), floorMaterial);
+
+      floor.position.set(0, -14, this.center);
+      floor.rotation.x = -Math.PI / 2;
       this.scene.add(floor);
     });
   }
@@ -280,7 +288,8 @@ export class RabbitHoleComponent {
   animate() {
     this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
-    // this.controls.update();
+    // this.updateFloorCamera();
+    this.controls.update();
 
     if (this.intro) {
       this.animateCameraIntro();
