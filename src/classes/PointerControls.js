@@ -3,7 +3,7 @@ import { Object3D, Euler, Vector3 } from 'three';
 export class PointerControls {
   constructor(camera, height) {
     this.enabled = false;
-    camera.rotation.set(0, 0, 0);
+    // camera.rotation.set(0, 0, 0);
 
     this.pitchObject = new Object3D();
     this.pitchObject.add(camera);

@@ -45,7 +45,6 @@ export class RabbitHoleComponent {
     // this.createTable();
     // this.createDoor();
 
-    // this.createCinematicIntro();
     this.createEventHandlers();
     this.createRenderer();
 
@@ -59,7 +58,8 @@ export class RabbitHoleComponent {
   }
 
   createCamera() {
-    this.camera = new THREE.PerspectiveCamera(50, this.WIDTH / this.HEIGHT, 1, 1000);
+    this.camera = new THREE.PerspectiveCamera(25, this.WIDTH / this.HEIGHT, 1, 1000);
+    this.camera.rotation.x = -Math.PI / 6;
     // this.camera.position.z = 300;
     this.scene.add(this.camera);
   }
@@ -110,6 +110,8 @@ export class RabbitHoleComponent {
       floor.position.set(0, -14, this.center);
       floor.rotation.x = -Math.PI / 2;
       this.scene.add(floor);
+
+      setTimeout(this.createCinematicIntro.bind(this), 100);
     });
   }
 
@@ -261,12 +263,9 @@ export class RabbitHoleComponent {
 
   createCinematicIntro() {
     this.clock = new THREE.Clock();
-    // this.rotationStep = 0.0031416;
-    // this.rotationStepCounter = 0;
     this.elapsedSpeed = 4.5;
 
     setTimeout(() => {
-      // this.camera.rotation.x = -Math.PI / 4;
       this.intro = true;
     }, 1000);
   }
@@ -288,7 +287,6 @@ export class RabbitHoleComponent {
   animate() {
     this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
-    // this.updateFloorCamera();
     this.controls.update();
 
     if (this.intro) {
@@ -299,13 +297,7 @@ export class RabbitHoleComponent {
   animateCameraIntro() {
     this.camera.fov = this.getCameraFov();
 
-    // if (this.rotationStepCounter < 250) {
-    //   this.camera.rotation.x += this.rotationStep;
-    //   this.rotationStepCounter++;
-    // }
-
-    if (this.camera.fov === 75) {
-      this.camera.rotation.x = 0;
+    if (this.camera.fov === 50) {
       this.intro = false;
     }
 
@@ -315,13 +307,13 @@ export class RabbitHoleComponent {
   }
 
   getCameraFov() {
-    this.elapsedSpeed += this.camera.fov < 70 ? 0.0125 : 0.005;
+    this.elapsedSpeed += 0.05;
 
     let elapsedTime = this.clock.getElapsedTime(),
         zoomSpeed   = elapsedTime * this.elapsedSpeed,
-        cameraFov   = zoomSpeed + 50;
+        cameraFov   = zoomSpeed + 25;
 
-    return (cameraFov < 75) ? cameraFov : 75;
+    return (cameraFov < 50) ? cameraFov : 50;
   }
 
   ngOnDestroy() {
