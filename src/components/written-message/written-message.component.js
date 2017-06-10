@@ -13,6 +13,7 @@ import { LetteringService                    } from '../../services/lettering.se
 export class WrittenMessageComponent {
   constructor(writtenMessage, lettering) {
     this.currentIndex   = -1;
+    this.dissolve       = false;
     this.lettering      = lettering;
     this.consoleReady   = new EventEmitter();
     this.messageElement = writtenMessage.nativeElement;
@@ -28,19 +29,12 @@ export class WrittenMessageComponent {
       setTimeout(this.showMessage.bind(this), 1500);
 
     } else if (this.currentIndex === this.messageList.length) {
+      this.consoleReady.emit(true);
+      this.dissolve = true;
       this.currentIndex--;
-      this.message.classList.add('scale-message');
 
       setTimeout(() => {
-        this.consoleReady.emit(true);
-      }, 1000);
-
-      setTimeout(() => {
-        this.message.classList.add('dissolve-text');
-
-        setTimeout(() => {
-          this.messageElement.remove();
-        }, 2500);
+        this.messageElement.remove();
       }, 2500);
     }
   }

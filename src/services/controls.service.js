@@ -173,41 +173,6 @@ export class ControlsService {
     return this.move.forward || this.move.backward || this.move.left || this.move.right;
   }
 
-  checkDirectionChange() {
-    const FRONT_LEFT_X = -0.5, FRONT_RIGHT_X =  0.5,
-          BACK_RIGHT_X =  0.5, BACK_LEFT_X   = -0.5;
-
-    const FRONT_LEFT_Z = -0.5, FRONT_RIGHT_Z = -0.5,
-          BACK_RIGHT_Z =  0.5, BACK_LEFT_Z   =  0.5;
-
-    const LAST_DIRECTION = this.getLastDirection();
-    const FRONT = 1, RIGHT = 2, BACK = 3, LEFT = 4;
-
-    this.look = {
-      FRONT : false, RIGHT : false,
-      BACK  : false, LEFT  : false
-    };
-
-    this.look.FRONT = (FRONT_LEFT_X  < this.direction.x < FRONT_RIGHT_X && this.direction.z < FRONT_RIGHT_Z   );
-    this.look.RIGHT = (FRONT_RIGHT_Z < this.direction.z < BACK_RIGHT_Z  && BACK_RIGHT_X     < this.direction.x);
-    this.look.BACK  = (BACK_RIGHT_X  > this.direction.x > BACK_LEFT_X   && BACK_LEFT_Z      < this.direction.z);
-    this.look.LEFT  = (BACK_LEFT_Z   > this.direction.z > FRONT_LEFT_Z  && this.direction.x < FRONT_LEFT_X    );
-
-         if (this.look.FRONT && LAST_DIRECTION !== FRONT) return this.look.FRONT;
-    else if (this.look.RIGHT && LAST_DIRECTION !== RIGHT) return this.look.RIGHT;
-    else if (this.look.BACK  && LAST_DIRECTION !== BACK ) return this.look.BACK;
-    else if (this.look.LEFT  && LAST_DIRECTION !== LEFT ) return this.look.LEFT;
-
-    return false;
-  }
-
-  getLastDirection() {
-    if (this.look.FRONT) return 1;
-    if (this.look.RIGHT) return 2;
-    if (this.look.BACK ) return 3;
-    if (this.look.LEFT ) return 4;
-  }
-
   addEventListeners() {
     document.addEventListener('webkitpointerlockchange', this.changePointerLock.bind(this), false);
     document.addEventListener('mozpointerlockchange', this.changePointerLock.bind(this), false);
