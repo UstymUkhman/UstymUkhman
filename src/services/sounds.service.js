@@ -14,12 +14,12 @@ export class SoundsService {
     this.speach.volume = 1;
     this.speach.onended = this.endSpeach.bind(this);
 
-    this.music.pause();
+    // this.music.pause();
     this.speach.load();
   }
 
   endSpeach() {
     this.speach = null;
-    this.music.play();
+    // this.music.play();
   }
 }

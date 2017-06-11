@@ -5,11 +5,15 @@ import { LoadingService        } from '../../services/loading.service';
 
 @Component({
   selector: 'app',
-  template: `
-    <p id="loading-message" *ngIf="!ready">
-      Loading<span *ngIf="!blink">_</span>
-    </p>
+  // template: `
+  //   <p id="loading-message" *ngIf="!ready">
+  //     Loading<span *ngIf="!blink">_</span>
+  //   </p>
 
+  //   <router-outlet></router-outlet>
+  // `
+
+  template: `
     <router-outlet></router-outlet>
   `
 })

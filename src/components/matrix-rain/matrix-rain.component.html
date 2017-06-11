@@ -1,20 +1,3 @@
-<div id="matrix-rain">
-  <div *ngIf="raining" class="rain-layout">
-    <p *ngFor="let r of rain; let i = index;"
-        class="rain-column column-size-{{r.size}} rain-{{i}} {{r.animation}}"
-
-        [ngStyle]="{
-          '-webkit-transition-duration': [r.duration] + 's',
-          '-moz-transition-duration': [r.duration] + 's',
-          '-ms-transition-duration': [r.duration] + 's',
-          '-o-transition-duration': [r.duration] + 's',
-          'transition-duration': [r.duration] + 's'
-        }">
-
-      <span *ngFor="let char of r.codes; let j = index;"
-             class="char-{{j}} rain-size-{{r.size}}">
-        {{ char }}
-      </span>
-    </p>
-  </div>
+<div class="matrix-rain-container">
+  <div class="rain-layout"></div>
 </div>

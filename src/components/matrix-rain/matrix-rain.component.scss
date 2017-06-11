@@ -1,10 +1,13 @@
-div#matrix-rain {
+$COLUMNS: 49;
+
+div.matrix-rain-container {
   @include martix-code-nfi;
   @include middle-align;
   @include size(110%);
 
-  top: -5%;
+  margin-left: 100px;
   left: -5%;
+  top: -5%;
 
   background-color: transparent;
   background: transparent;
@@ -13,23 +16,39 @@ div#matrix-rain {
   div.rain-layout {
     @include size($max);
 
-    p.rain-column {
-      $code-sizes: (12, 25, 60);
-
-      @include size(40px auto);
+    p.code-column {
       position: absolute;
+      height: auto;
+      width: 40px;
 
       text-align: center;
       line-height: 25px;
 
+      $code-sizes: (12, 25, 60);
+
+      @for $i from 1 through 3 {
+        $current-size: #{nth($code-sizes, $i)};
+        $margin: -0.5%;
+        $z: 1;
+
+        @if $i == 2 {
+          $margin: 0%;
+          $z: 2;
+        } @else if $i == 3 {
+          $margin: -0.75%;
+          $z: 3;
+        }
+
+        &.column-size-#{$current-size} {
+          margin-left: $margin;
+          z-index: $z;
+        }
+      }
+
       span {
+        text-shadow: 0 -12px 10px $green;
         display: block;
         width: auto;
-
-        margin: 0;
-        padding: 0;
-
-        text-shadow: 0 -12px 10px $green;
 
         &:nth-child(-n+5) {
           opacity: .3;
@@ -64,7 +83,7 @@ div#matrix-rain {
         }
 
         &:nth-last-child(2) {
-          color: $light-green;          
+          color: $light-green;
         }
 
         &:nth-last-child(1) {
@@ -74,49 +93,30 @@ div#matrix-rain {
         @for $i from 1 through 3 {
           $current-size: #{nth($code-sizes, $i)};
 
-          &.rain-size-#{$current-size} {
+          &.code-size-#{$current-size} {
             $size: #{$current-size}px;
 
-            height: $size;
             font-size: $size;
+            height: $size;
           }
         }
       }
-
-      @for $i from 1 through 3 {
-        $z: 1;
-        $margin: -0.5%;
-        $current-size: #{nth($code-sizes, $i)};
-
-        @if $i == 2 {
-          $z: 2;
-          $margin: 0%;
-        } @else if $i == 3 {
-          $z: 3;
-          $margin: -0.75%;
-        }
-
-        &.column-size-#{$current-size} {
-          @include transform(translateY(-3000px));
-          margin-left: $margin;
-          z-index: $z;
-        }
-      }
-
-      &.slide-down {
-        @include transform(translateY(3000px));
-      }
     }
 
-    @for $i from 0 through 9 {
-      p.rain-#{$i} {
-        $left: $i * 11;
-        position: absolute;
-        left: unquote("#{$left}%");
+    @for $i from 0 through $COLUMNS {
+      p.code-#{$i} {
+        $duration: getRandom(1000ms, 15000ms);
+        $delay: getRandom(0ms, 1000ms);
 
-        @include transition-property(transform);
-        @include transition-timing-function(linear);
+        position: absolute;
+        left: unquote("#{$i * 2}%");
+        animation: drop $duration linear $delay infinite;
       }
     }
   }
+}
+
+@keyframes drop {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100%); }
 }

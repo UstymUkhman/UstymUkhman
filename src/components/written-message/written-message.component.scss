@@ -13,13 +13,10 @@ div#written-message {
     /*
      * Scale Animation
      *
-
     @include transition(transform 5s ease-out, opacity 2s ease-out);
-
     &.scale-message {
       @include transform(translate(68em, 10em) scale(25));
     }
-
     */
 
     &.dissolve-text {
