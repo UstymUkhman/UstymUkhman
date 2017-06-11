@@ -3,7 +3,7 @@ export class RainService {
     this.setParams();
   }
 
-  setParams(columns = 50, characters = 50) {
+  setParams(columns = 100, characters = 50) {
     this.characters = characters;
     this.columns    = columns;
   }

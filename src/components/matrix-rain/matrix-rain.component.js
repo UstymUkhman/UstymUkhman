@@ -17,8 +17,8 @@ export class MatrixRainComponent {
 
   ngOnChanges() {
     if (this.raining) {
-      this.rain.setParams();
-      this.rain.createRain(this.matrixRain.firstElementChild.firstElementChild);
+      this.rain.setParams(25);
+      this.rain.createRain(this.matrixRain.firstElementChild);
     }
 
     if (this.removeRain) {

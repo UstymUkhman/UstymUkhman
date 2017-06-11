@@ -81,7 +81,6 @@ div#contact-me {
 
   div.matrix-rain {
     @include position(absolute, 0 auto 0 $half);
-    // @include transform(none);
     @include size(100% $max);
   }
 }

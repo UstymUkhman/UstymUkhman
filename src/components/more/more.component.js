@@ -173,11 +173,11 @@ export class MoreComponent {
     this.renderer.render(this.scene, this.camera);
 
     if (this.bluePill && this.redPill) {
-      if (this.showBlue && this.bluePill.material.opacity < 0.6) {
+      if (this.showBlue && this.bluePill.material.opacity < 0.8) { // 0.6
         this.bluePill.material.opacity += 0.01;
       }
 
-      if (this.showRed && this.redPill.material.opacity < 0.6) {
+      if (this.showRed && this.redPill.material.opacity < 0.8) { // 0.6
         this.redPill.material.opacity += 0.01;
       }
 

@@ -81,7 +81,6 @@ div#my-works {
 
   div.matrix-rain {
     @include position(absolute, 0 auto 0 $half);
-    // @include transform(none);
     @include size($max);
   }
 }

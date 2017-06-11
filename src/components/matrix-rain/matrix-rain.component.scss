@@ -1,117 +1,109 @@
-$COLUMNS: 49;
+$COLUMNS: 24;
 
 div.matrix-rain-container {
   @include martix-code-nfi;
   @include middle-align;
-  @include size(110%);
-
-  margin-left: 100px;
-  left: -5%;
-  top: -5%;
+  @include size($max);
 
   background-color: transparent;
   background: transparent;
   z-index: $z-rain;
 
-  div.rain-layout {
-    @include size($max);
+  p.code-column {
+    position: absolute;
+    height: auto;
+    width: 40px;
 
-    p.code-column {
-      position: absolute;
-      height: auto;
-      width: 40px;
+    text-align: center;
+    line-height: 25px;
 
-      text-align: center;
-      line-height: 25px;
+    $code-sizes: (12, 25, 60);
 
-      $code-sizes: (12, 25, 60);
+    @for $i from 1 through 3 {
+      $current-size: #{nth($code-sizes, $i)};
+      $margin: -0.5%;
+      $z: 1;
 
-      @for $i from 1 through 3 {
-        $current-size: #{nth($code-sizes, $i)};
-        $margin: -0.5%;
-        $z: 1;
-
-        @if $i == 2 {
-          $margin: 0%;
-          $z: 2;
-        } @else if $i == 3 {
-          $margin: -0.75%;
-          $z: 3;
-        }
-
-        &.column-size-#{$current-size} {
-          margin-left: $margin;
-          z-index: $z;
-        }
+      @if $i == 2 {
+        $margin: 0%;
+        $z: 2;
+      } @else if $i == 3 {
+        $margin: -0.75%;
+        $z: 3;
       }
 
-      span {
-        text-shadow: 0 -12px 10px $green;
-        display: block;
-        width: auto;
-
-        &:nth-child(-n+5) {
-          opacity: .3;
-        }
-
-        &:nth-child(n+6):nth-child(-n+10) {
-          opacity: .42;
-        }
-
-        &:nth-child(n+11):nth-child(-n+15) {
-          opacity: .54;
-        }
-
-        &:nth-child(n+16):nth-child(-n+25) {
-          opacity: .66;
-        }
-
-        &:nth-child(n+26):nth-child(-n+35) {
-          opacity: .78;
-        }
-
-        &:nth-child(n+36):nth-child(-n+40) {
-          opacity: .9;
-        }
-
-        &:nth-child(n+41) {
-          opacity: 1;
-        }
-
-        &:nth-last-child(3) {
-          color: $fade-green;
-        }
-
-        &:nth-last-child(2) {
-          color: $light-green;
-        }
-
-        &:nth-last-child(1) {
-          color: $energy-green;
-        }
-
-        @for $i from 1 through 3 {
-          $current-size: #{nth($code-sizes, $i)};
-
-          &.code-size-#{$current-size} {
-            $size: #{$current-size}px;
-
-            font-size: $size;
-            height: $size;
-          }
-        }
+      &.column-size-#{$current-size} {
+        margin-left: $margin;
+        z-index: $z;
       }
     }
 
-    @for $i from 0 through $COLUMNS {
-      p.code-#{$i} {
-        $duration: getRandom(1000ms, 15000ms);
-        $delay: getRandom(0ms, 1000ms);
+    span {
+      text-shadow: 0 -12px 10px $green;
+      display: block;
+      width: auto;
 
-        position: absolute;
-        left: unquote("#{$i * 2}%");
-        animation: drop $duration linear $delay infinite;
+      &:nth-child(-n+5) {
+        opacity: .3;
       }
+
+      &:nth-child(n+6):nth-child(-n+10) {
+        opacity: .42;
+      }
+
+      &:nth-child(n+11):nth-child(-n+15) {
+        opacity: .54;
+      }
+
+      &:nth-child(n+16):nth-child(-n+25) {
+        opacity: .66;
+      }
+
+      &:nth-child(n+26):nth-child(-n+35) {
+        opacity: .78;
+      }
+
+      &:nth-child(n+36):nth-child(-n+40) {
+        opacity: .9;
+      }
+
+      &:nth-child(n+41) {
+        opacity: 1;
+      }
+
+      &:nth-last-child(3) {
+        color: $fade-green;
+      }
+
+      &:nth-last-child(2) {
+        color: $light-green;
+      }
+
+      &:nth-last-child(1) {
+        color: $energy-green;
+      }
+
+      @for $i from 1 through 3 {
+        $current-size: #{nth($code-sizes, $i)};
+
+        &.code-size-#{$current-size} {
+          $size: #{$current-size}px;
+
+          font-size: $size;
+          height: $size;
+        }
+      }
+    }
+  }
+
+  @for $i from 0 through $COLUMNS {
+    p.code-#{$i} {
+      $duration: getRandom(1000ms, 15000ms);
+      $delay: getRandom(0ms, 1000ms);
+
+      position: absolute;
+      left: unquote("#{$i * 4}%");
+      animation: drop $duration linear $delay infinite;
     }
   }
 }

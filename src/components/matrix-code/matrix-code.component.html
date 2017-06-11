@@ -1,12 +1,3 @@
 <div id="matrix-code">
-  <div class="code-layout {{codeAnimation}}">
-    <p *ngFor="let c of code; let i = index;"
-        class="code-column column-size-{{c.size}} code-{{i}}">
-
-      <span *ngFor="let char of c.codes; let j = index;"
-             class="char-{{j}} code-size-{{c.size}}">
-        {{ char }}
-      </span>
-    </p>
-  </div>
+  <div class="code-layout {{codeAnimation}}"></div>
 </div>
