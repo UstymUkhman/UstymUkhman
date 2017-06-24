@@ -23,7 +23,6 @@ export class RabbitHoleComponent {
     this.DARKGRAY   = 0x333333;
     this.BLACK      = 0x000000;
 
-    this.mod        = true;
     this.intro      = false;
     this.error      = false;
     this.WIDTH      = window.innerWidth;
@@ -41,7 +40,7 @@ export class RabbitHoleComponent {
     this.createWalls();
     this.createCeiling();
 
-    // this.createComputer();
+    this.createComputer();
     // this.createTable();
     // this.createDoor();
 
@@ -50,6 +49,7 @@ export class RabbitHoleComponent {
 
     // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.createControls();
+    this.createMessage();
     this.animate();
   }
 
@@ -65,25 +65,34 @@ export class RabbitHoleComponent {
   }
 
   createLight() {
-    this.scene.add(new THREE.AmbientLight(this.WHITE));
-  }
+    // this.scene.add(new THREE.AmbientLight(this.LIGHTGRAY));
 
-  createControls() {
-    this.error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
+    const distance = 50;
 
-    if (this.error) {
-      console.error(
-        `Your shitty browser does not support Pointer Lock API.\n
-        You need to update it or use a better one: https://www.google.it/chrome/browser/desktop/`
-      );
-    }
+    // this.hemiLight = new THREE.HemisphereLight(this.WHITE, this.WHITE, 0.6);
+    // this.hemiLight.position.set(0, 50, this.center);
+    // this.hemiLight.color.setHSL(0.8, 0.9, 0.8);
+    // this.hemiLight.groundColor.setHSL(1, 1, 1);
 
-    this.controls.setBorders({
-      front : this.center - 245,
-      back  : this.center + 245,
-      right :  20,
-      left  : -20
-    });
+    this.dirLight = new THREE.DirectionalLight(this.WHITE, 1);
+    this.dirLight.position.multiplyScalar(50);
+    this.dirLight.color.setHSL(0.1, 1, 0.95);
+    this.dirLight.position.set(-1, 1.75, 1);
+    // this.dirLight.position.set(0, 50, this.center);
+
+    this.dirLight.shadow.mapSize.height = 2048;
+    this.dirLight.shadow.mapSize.width = 2048;
+    this.dirLight.castShadow = false;
+
+    this.dirLight.shadow.camera.bottom = -distance;
+    this.dirLight.shadow.camera.right = distance;
+    this.dirLight.shadow.camera.left = -distance;
+    this.dirLight.shadow.camera.top = distance;
+    this.dirLight.shadow.camera.far = 3500;
+    this.dirLight.shadow.bias = -0.0001;
+
+    // this.scene.add(this.hemiLight);
+    this.scene.add(this.dirLight);
   }
 
   createFloor() {
@@ -110,8 +119,6 @@ export class RabbitHoleComponent {
       floor.position.set(0, -14, this.center);
       floor.rotation.x = -Math.PI / 2;
       this.scene.add(floor);
-
-      setTimeout(this.createCinematicIntro.bind(this), 100);
     });
   }
 
@@ -164,15 +171,13 @@ export class RabbitHoleComponent {
 
   createCeiling() {
     const PI_2 = Math.PI / 2;
+    const ceiling = new THREE.Mesh(
+      new THREE.PlaneGeometry(50, 500),
+      new THREE.MeshBasicMaterial({ color: this.WHITE })
+    );
 
-    let ceiling = new THREE.RectAreaLight(this.WHITE, 1, 50, 500);
-    ceiling.intensity = 100;
-
-    let ceilingHelper = new THREE.RectAreaLightHelper(ceiling);
-    ceilingHelper.position.set(0, 51, this.center);
-    ceilingHelper.rotateX(PI_2);
-
-    this.scene.add(ceilingHelper);
+    ceiling.position.set(0, 51, this.center);
+    ceiling.rotateX(PI_2);
     this.scene.add(ceiling);
 
     let frontCeilLoader = new THREE.TextureLoader();
@@ -223,16 +228,10 @@ export class RabbitHoleComponent {
   createComputer() {
     const jsonLoader = new THREE.JSONLoader();
 
-    jsonLoader.load('assets/Monitor.json', (geometry) => {
-      let computer = new THREE.Mesh(
-        geometry,
-        new THREE.MeshStandardMaterial({
-          color     : this.LIGHTGRAY,
-          roughness : 0.5,
-          metalness : 0,
-        })
-      );
+    jsonLoader.load('assets/test.json', (geometry, materials) => {
+      materials[0].side = THREE.DoubleSide;
 
+      let computer = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
       this.scene.add(computer);
     });
   }
@@ -252,6 +251,10 @@ export class RabbitHoleComponent {
     });
   }
 
+  createEventHandlers() {
+    window.addEventListener('resize', this.setResizeHandler.bind(this), false);
+  }
+
   setResizeHandler() {
     this.WIDTH  = window.innerWidth;
     this.HEIGHT = window.innerHeight;
@@ -259,19 +262,6 @@ export class RabbitHoleComponent {
     this.renderer.setSize(this.WIDTH, this.HEIGHT);
     this.camera.aspect = this.WIDTH / this.HEIGHT;
     this.camera.updateProjectionMatrix();
-  }
-
-  createCinematicIntro() {
-    this.clock = new THREE.Clock();
-    this.elapsedSpeed = 4.5;
-
-    setTimeout(() => {
-      this.intro = true;
-    }, 1000);
-  }
-
-  createEventHandlers() {
-    window.addEventListener('resize', this.setResizeHandler.bind(this), false);
   }
 
   createRenderer() {
@@ -282,6 +272,45 @@ export class RabbitHoleComponent {
 
     this.hole.appendChild(this.renderer.domElement);
     this.renderer.domElement.focus();
+  }
+
+  createControls() {
+    this.error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
+
+    if (this.error) {
+      console.error(
+        `Your shitty browser does not support Pointer Lock API.\n
+        You need to update it or use a better one: https://www.google.it/chrome/browser/desktop/`
+      );
+    }
+
+    this.controls.setBorders({
+      front : this.center - 245,
+      back  : this.center + 245,
+      right :  20,
+      left  : -20
+    });
+  }
+
+  createMessage() {
+    const isFullSize = window.outerWidth  === screen.availWidth &&
+                       window.outerHeight === screen.availHeight;
+
+    if (isFullSize) {
+      // setTimeout(this.createCinematicIntro.bind(this), 100);
+    } else {
+      // Screen Message:
+      // Before continuing, please maximize your browser window.
+    }
+  }
+
+  createCinematicIntro() {
+    this.clock = new THREE.Clock();
+    this.elapsedSpeed = 4.5;
+
+    setTimeout(() => {
+      this.intro = true;
+    }, 1000);
   }
 
   animate() {

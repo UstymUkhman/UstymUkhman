@@ -18,7 +18,7 @@ export class PointerControls {
     document.addEventListener('mousemove', this.onMouseMove.bind(this), false);
   }
 
-  onMouseMove() {
+  onMouseMove(event) {
     if (!this.enabled) return;
 
     const PI_2    = Math.PI / 2;
