@@ -2,7 +2,7 @@ import * as THREE                from 'three';
 import { Component, ElementRef } from '@angular/core';
 import { ControlsService       } from '../../services/controls.service';
 
-// let OrbitControls = require('three-orbit-controls')(THREE);
+let OrbitControls = require('three-orbit-controls')(THREE);
 
 
 @Component({
@@ -29,6 +29,7 @@ export class RabbitHoleComponent {
     this.HEIGHT     = window.innerHeight;
 
     this.hole       = rabbitHole.nativeElement;
+    this.loader     = new THREE.JSONLoader();
     this.controls   = cameraControls;
     this.center     = 225;
 
@@ -38,10 +39,10 @@ export class RabbitHoleComponent {
 
     this.createFloor();
     this.createWalls();
-    this.createCeiling();
+    // this.createCeiling();
 
-    this.createComputer();
-    // this.createTable();
+    // this.createComputer();
+    this.createTable();
     // this.createDoor();
 
     this.createEventHandlers();
@@ -226,9 +227,7 @@ export class RabbitHoleComponent {
   }
 
   createComputer() {
-    const jsonLoader = new THREE.JSONLoader();
-
-    jsonLoader.load('assets/test.json', (geometry, materials) => {
+    this.loader.load('assets/test.json', (geometry, materials) => {
       materials[0].side = THREE.DoubleSide;
 
       let computer = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
@@ -236,10 +235,20 @@ export class RabbitHoleComponent {
     });
   }
 
-  createDoor() {
-    const jsonLoader = new THREE.JSONLoader();
+  createTable() {
+    this.loader.load('assets/table.json', (geometry, materials) => {
+      const table = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
 
-    jsonLoader.load('assets/door.json', (geometry) => {
+      table.position.set(0, -19.8, -14.1);
+      table.rotateY(Math.PI / 2);
+      table.scale.set(6, 6, 6);
+
+      this.scene.add(table);
+    });
+  }
+
+  createDoor() {
+    this.loader.load('assets/door.json', (geometry) => {
       let texture = new THREE.TextureLoader().load('assets/wood.jpg'),
           door    = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ map: texture }));
 
