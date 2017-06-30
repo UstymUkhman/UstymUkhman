@@ -2,7 +2,7 @@ import * as THREE                from 'three';
 import { Component, ElementRef } from '@angular/core';
 import { ControlsService       } from '../../services/controls.service';
 
-let OrbitControls = require('three-orbit-controls')(THREE);
+// let OrbitControls = require('three-orbit-controls')(THREE);
 
 
 @Component({
@@ -30,7 +30,7 @@ export class RabbitHoleComponent {
 
     this.hole       = rabbitHole.nativeElement;
     this.loader     = new THREE.JSONLoader();
-    // this.controls   = cameraControls;
+    this.controls   = cameraControls;
     this.center     = 225;
 
     this.createScene();
@@ -41,15 +41,15 @@ export class RabbitHoleComponent {
     this.createWalls();
     // this.createCeiling();
 
-    // this.createComputer();
+    this.createComputer();
     this.createTable();
     // this.createDoor();
 
     this.createEventHandlers();
     this.createRenderer();
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    // this.createControls();
+    // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.createControls();
     this.createMessage();
     this.animate();
   }
@@ -60,27 +60,20 @@ export class RabbitHoleComponent {
 
   createCamera() {
     this.camera = new THREE.PerspectiveCamera(25, this.WIDTH / this.HEIGHT, 1, 1000);
-    // this.camera.rotation.x = -Math.PI / 6;
-    this.camera.position.z = 300;
+    this.camera.rotation.x = -Math.PI / 6;
+    // this.camera.position.z = 300;
     this.scene.add(this.camera);
   }
 
   createLight() {
-    const tableLight = new THREE.DirectionalLight(this.WHITE, 1.2);
-    const doorLight = new THREE.DirectionalLight(this.WHITE, 1.2);
-    const QUARTER = this.center / 2;
+    const dirLight = new THREE.DirectionalLight(this.WHITE, 0.8);
 
-    tableLight.position.set(0, 100, this.center - QUARTER);
-    doorLight.position.set(0, 100, this.center + QUARTER);
+    dirLight.rotation.set(Math.PI / 4.5, 0, 0);
+    dirLight.position.set(0, 250, 225);
+    dirLight.color.setHSL(0, 1, 1);
 
-    tableLight.rotation.set(Math.PI / 4.5, 0, 0);
-    doorLight.rotation.set(Math.PI / 0.91, 0, 0);
-
-    tableLight.color.setHSL(0, 1, 1);
-    doorLight.color.setHSL(0, 1, 1);
-
-    this.scene.add(tableLight);
-    this.scene.add(doorLight);
+    this.scene.add(new THREE.AmbientLight(this.WHITE, 0.15));
+    this.scene.add(dirLight);
   }
 
   createFloor() {
@@ -214,11 +207,29 @@ export class RabbitHoleComponent {
   }
 
   createComputer() {
-    this.loader.load('assets/test.json', (geometry, materials) => {
-      materials[0].side = THREE.DoubleSide;
+    this.loader.load('assets/case.json', (geometry, materials) => {
+      const systemUnit = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
 
-      let computer = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
-      this.scene.add(computer);
+      systemUnit.position.set(-2.5, 0, -19);
+      systemUnit.scale.set(0.8, 0.8, 0.8);
+      this.scene.add(systemUnit);
+    });
+
+    this.loader.load('assets/keyboard.json', (geometry, materials) => {
+      const keyboard = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+
+      keyboard.position.set(-1.3, 0, -16.5);
+      keyboard.scale.set(0.8, 0.8, 0.8);
+      this.scene.add(keyboard);
+    });
+
+    this.loader.load('assets/monitor.json', (geometry, materials) => {
+      const monitor = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+
+      monitor.position.set(-1.3, 0, -16.5);
+      monitor.rotation.set(-0.05, 0, 0);
+      monitor.scale.set(0.8, 0.8, 0.8);
+      this.scene.add(monitor);
     });
   }
 
@@ -228,9 +239,9 @@ export class RabbitHoleComponent {
       const material = new THREE.MeshStandardMaterial({
         shading: THREE.SmoothShading,
         transparent: false,
-        color: 0x828282,
-        roughness: 0.2,
+        color: 0xBDBDBD,
         metalness: 0.5,
+        roughness: 1,
         opacity: 1
       });
 
