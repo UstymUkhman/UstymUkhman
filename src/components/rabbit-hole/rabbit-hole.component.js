@@ -30,7 +30,7 @@ export class RabbitHoleComponent {
 
     this.hole       = rabbitHole.nativeElement;
     this.loader     = new THREE.JSONLoader();
-    this.controls   = cameraControls;
+    // this.controls   = cameraControls;
     this.center     = 225;
 
     this.createScene();
@@ -48,8 +48,8 @@ export class RabbitHoleComponent {
     this.createEventHandlers();
     this.createRenderer();
 
-    // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.createControls();
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    // this.createControls();
     this.createMessage();
     this.animate();
   }
@@ -60,40 +60,27 @@ export class RabbitHoleComponent {
 
   createCamera() {
     this.camera = new THREE.PerspectiveCamera(25, this.WIDTH / this.HEIGHT, 1, 1000);
-    this.camera.rotation.x = -Math.PI / 6;
-    // this.camera.position.z = 300;
+    // this.camera.rotation.x = -Math.PI / 6;
+    this.camera.position.z = 300;
     this.scene.add(this.camera);
   }
 
   createLight() {
-    // this.scene.add(new THREE.AmbientLight(this.LIGHTGRAY));
+    const tableLight = new THREE.DirectionalLight(this.WHITE, 1.2);
+    const doorLight = new THREE.DirectionalLight(this.WHITE, 1.2);
+    const QUARTER = this.center / 2;
 
-    const distance = 50;
+    tableLight.position.set(0, 100, this.center - QUARTER);
+    doorLight.position.set(0, 100, this.center + QUARTER);
 
-    // this.hemiLight = new THREE.HemisphereLight(this.WHITE, this.WHITE, 0.6);
-    // this.hemiLight.position.set(0, 50, this.center);
-    // this.hemiLight.color.setHSL(0.8, 0.9, 0.8);
-    // this.hemiLight.groundColor.setHSL(1, 1, 1);
+    tableLight.rotation.set(Math.PI / 4.5, 0, 0);
+    doorLight.rotation.set(Math.PI / 0.91, 0, 0);
 
-    this.dirLight = new THREE.DirectionalLight(this.WHITE, 1);
-    this.dirLight.position.multiplyScalar(50);
-    this.dirLight.color.setHSL(0.1, 1, 0.95);
-    this.dirLight.position.set(-1, 1.75, 1);
-    // this.dirLight.position.set(0, 50, this.center);
+    tableLight.color.setHSL(0, 1, 1);
+    doorLight.color.setHSL(0, 1, 1);
 
-    this.dirLight.shadow.mapSize.height = 2048;
-    this.dirLight.shadow.mapSize.width = 2048;
-    this.dirLight.castShadow = false;
-
-    this.dirLight.shadow.camera.bottom = -distance;
-    this.dirLight.shadow.camera.right = distance;
-    this.dirLight.shadow.camera.left = -distance;
-    this.dirLight.shadow.camera.top = distance;
-    this.dirLight.shadow.camera.far = 3500;
-    this.dirLight.shadow.bias = -0.0001;
-
-    // this.scene.add(this.hemiLight);
-    this.scene.add(this.dirLight);
+    this.scene.add(tableLight);
+    this.scene.add(doorLight);
   }
 
   createFloor() {
@@ -237,7 +224,17 @@ export class RabbitHoleComponent {
 
   createTable() {
     this.loader.load('assets/table.json', (geometry, materials) => {
-      const table = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+
+      const material = new THREE.MeshStandardMaterial({
+        shading: THREE.SmoothShading,
+        transparent: false,
+        color: 0x828282,
+        roughness: 0.2,
+        metalness: 0.5,
+        opacity: 1
+      });
+
+      const table = new THREE.Mesh(geometry, material);
 
       table.position.set(0, -19.8, -14.1);
       table.rotateY(Math.PI / 2);
