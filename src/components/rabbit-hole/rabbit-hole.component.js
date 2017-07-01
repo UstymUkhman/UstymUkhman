@@ -39,7 +39,7 @@ export class RabbitHoleComponent {
 
     this.createFloor();
     this.createWalls();
-    // this.createCeiling();
+    this.createCeiling();
 
     this.createComputer();
     this.createTable();
@@ -59,8 +59,9 @@ export class RabbitHoleComponent {
   }
 
   createCamera() {
-    this.camera = new THREE.PerspectiveCamera(25, this.WIDTH / this.HEIGHT, 1, 1000);
-    this.camera.rotation.x = -Math.PI / 6;
+    this.camera = new THREE.PerspectiveCamera(15, this.WIDTH / this.HEIGHT, 1, 1000);
+    this.camera.rotation.x = -Math.PI / 4.5;
+    this.camera.position.z = -5;
     // this.camera.position.z = 300;
     this.scene.add(this.camera);
   }
@@ -210,7 +211,7 @@ export class RabbitHoleComponent {
     this.loader.load('assets/case.json', (geometry, materials) => {
       const systemUnit = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
 
-      systemUnit.position.set(-2.5, 0, -19);
+      systemUnit.position.set(-1, 0, -19);
       systemUnit.scale.set(0.8, 0.8, 0.8);
       this.scene.add(systemUnit);
     });
@@ -218,7 +219,7 @@ export class RabbitHoleComponent {
     this.loader.load('assets/keyboard.json', (geometry, materials) => {
       const keyboard = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
 
-      keyboard.position.set(-1.3, 0, -16.5);
+      keyboard.position.set(0, 0, -16.5);
       keyboard.scale.set(0.8, 0.8, 0.8);
       this.scene.add(keyboard);
     });
@@ -226,7 +227,7 @@ export class RabbitHoleComponent {
     this.loader.load('assets/monitor.json', (geometry, materials) => {
       const monitor = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
 
-      monitor.position.set(-1.3, 0, -16.5);
+      monitor.position.set(0, 0, -16.5);
       monitor.rotation.set(-0.05, 0, 0);
       monitor.scale.set(0.8, 0.8, 0.8);
       this.scene.add(monitor);
@@ -240,7 +241,7 @@ export class RabbitHoleComponent {
         shading: THREE.SmoothShading,
         transparent: false,
         color: 0xBDBDBD,
-        metalness: 0.5,
+        metalness: 0.1,
         roughness: 1,
         opacity: 1
       });
@@ -302,10 +303,10 @@ export class RabbitHoleComponent {
     }
 
     this.controls.setBorders({
-      front : this.center - 245,
-      back  : this.center + 245,
-      right :  20,
-      left  : -20
+      front : this.center - 230,
+      back  : this.center + 242,
+      right :  18,
+      left  : -18
     });
   }
 
@@ -314,7 +315,7 @@ export class RabbitHoleComponent {
                        window.outerHeight === screen.availHeight;
 
     if (isFullSize) {
-      // setTimeout(this.createCinematicIntro.bind(this), 100);
+      setTimeout(this.createCinematicIntro.bind(this), 100);
     } else {
       // Screen Message:
       // Before continuing, please maximize your browser window.
@@ -323,7 +324,7 @@ export class RabbitHoleComponent {
 
   createCinematicIntro() {
     this.clock = new THREE.Clock();
-    this.elapsedSpeed = 4.5;
+    this.elapsedSpeed = 4.0;
 
     setTimeout(() => {
       this.intro = true;
@@ -353,11 +354,11 @@ export class RabbitHoleComponent {
   }
 
   getCameraFov() {
-    this.elapsedSpeed += 0.05;
+    this.elapsedSpeed += 0.1;
 
-    let elapsedTime = this.clock.getElapsedTime(),
-        zoomSpeed   = elapsedTime * this.elapsedSpeed,
-        cameraFov   = zoomSpeed + 25;
+    const elapsedTime = this.clock.getElapsedTime(),
+          zoomSpeed   = elapsedTime * this.elapsedSpeed,
+          cameraFov   = zoomSpeed + 15;
 
     return (cameraFov < 50) ? cameraFov : 50;
   }
@@ -372,9 +373,3 @@ export class RabbitHoleComponent {
     return [[ElementRef], [ControlsService]];
   }
 }
-
-// http://stackoverflow.com/questions/17939188/how-can-i-load-multiple-textures-materials-to-a-model-using-three-js
-// http://stackoverflow.com/questions/16781064/three-js-multiple-materials-on-object-loaded-via-objmtlloader
-// http://stackoverflow.com/questions/26087620/three-js-tile-which-has-multiple-textures-using-plane-geometry
-// http://stackoverflow.com/questions/16781064/three-js-multiple-materials-on-object-loaded-via-objmtlloader/16781472
-// http://stackoverflow.com/questions/16287547/multiple-transparent-textures-on-the-same-mesh-face-in-three-js
