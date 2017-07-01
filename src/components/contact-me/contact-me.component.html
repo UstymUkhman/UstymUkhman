@@ -1,12 +1,11 @@
 <div id="contact-me">
   <div class="contacts-area" [class.fadeOut]='fadeOut'>
 
-    <div *ngFor="let contact of contactsList; let i = index;"
-          class="contact-source hidden-source">
+    <div *ngFor="let contact of contactsList; let c = index;"
+          class="contact-source hidden-source" [class.active]='c === currentContact'>
 
-      <div class="selected-contact" [class.active]='i === currentActive'>></div>
-      <p class="contact" [class.active]='i === currentActive'>{{ contact }}</p>
-      <span *ngIf="i === 2" class="e-mail"> - ustym.ukhman@gmail.com</span>
+      <div class="selected-contact">></div><p class="contact">{{ contact }}</p>
+      <span *ngIf="c === 2" class="e-mail"> - ustym.ukhman@gmail.com</span>
 
     </div>
   </div>

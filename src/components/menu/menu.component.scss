@@ -25,6 +25,16 @@ div.menu-section {
     margin-left: 100px;
     height: 100%;
 
+    &.hidden {
+      div.menu-item {
+        @include hidden-element;
+
+        div.item-box {
+          @include hidden-element;
+        }
+      }
+    }
+
     div.menu-item {
       @include display(flex);
       margin: auto;
@@ -104,7 +114,7 @@ div.menu-section {
           }
         }
 
-        &.active-item {
+        &.active {
           &:before {
             @include transition-delay($animaiton-delay * 3);
             @include transform($scale-complete);
@@ -135,14 +145,6 @@ div.menu-section {
               @include transform($scale-complete);
             }
           }
-        }
-      }
-
-      &.hidden-item {
-        @include hidden-element;
-
-        div.item-box {
-          @include hidden-element;
         }
       }
     }

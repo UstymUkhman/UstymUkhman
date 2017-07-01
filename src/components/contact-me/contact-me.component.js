@@ -10,9 +10,6 @@ import { LetteringService                    } from '../../services/lettering.se
 
 export class ContactMeComponent {
   constructor(contacts, lettering) {
-    this.contactIndex     = -1;
-    this.currentActive    = -1;
-
     this.fadeOut          = false;
     this.goToMenu         = false;
     this.startRaining     = false;
@@ -20,6 +17,7 @@ export class ContactMeComponent {
     this.activeBackButton = false;
     this.removeMatrixRain = false;
 
+    this.contactIndex     = -1;
     this.lettering        = lettering;
     this.contactsElement  = contacts.nativeElement;
 
@@ -86,25 +84,8 @@ export class ContactMeComponent {
     else if (code === 40)
       this.currentContact = (this.currentContact === 3) ? 0 : this.currentContact + 1;
 
-    let lastContact    = this.contactSources[contact].children,
-        currentContact = this.contactSources[this.currentContact].children;
-
-    lastContact[0].classList.remove('active');
-    lastContact[1].classList.remove('active');
-
     if (this.activeBackButton) {
-      return;
-    }
-
-    if (lastContact[2]) {
-      lastContact[2].classList.remove('active');
-    }
-
-    currentContact[0].classList.add('active');
-    currentContact[1].classList.add('active');
-
-    if (currentContact[2]) {
-      currentContact[2].classList.add('active');
+      this.currentContact = -1;
     }
   }
 
@@ -119,7 +100,6 @@ export class ContactMeComponent {
       this.showBackButton = true;
 
       setTimeout(() => {
-        this.currentActive  = 0;
         this.currentContact = 0;
         this.startRaining   = true;
 

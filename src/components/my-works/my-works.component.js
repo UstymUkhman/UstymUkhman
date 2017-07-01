@@ -11,7 +11,6 @@ import { LetteringService                    } from '../../services/lettering.se
 
 export class MyWorksComponent {
   constructor(works, http, lettering) {
-    this.currentActive    = -1;
     this.projectIndex     = -1;
     this.worksList        = [];
     this.projects         = [];
@@ -67,8 +66,7 @@ export class MyWorksComponent {
       this.showBackButton = true;
 
       setTimeout(() => {
-        this.currentActive  = 0;
-        this.currentProject = 0;
+        this.currentWork = 0;
         this.startRaining   = true;
 
         this.projectsNavigation = this.setProjectsNavigation.bind(this);
@@ -79,7 +77,7 @@ export class MyWorksComponent {
 
   setProjectsNavigation(event) {
     const code    = event.keyCode,
-          project = this.currentProject;
+          project = this.currentWork;
 
     if (!this.checkValidCode(code)) {
       return;
@@ -89,32 +87,25 @@ export class MyWorksComponent {
       return;
 
     } else if (this.activeBackButton) {
-      this.currentProject   = (code === 38) ? 0 : this.lastProject;
+      this.currentWork   = (code === 38) ? 0 : this.lastProject;
       this.activeBackButton = false;
 
     } else {
-      this.activeBackButton = ((this.currentProject === this.lastProject && code === 40) || (!this.currentProject && code === 38));
+      this.activeBackButton = ((this.currentWork === this.lastProject && code === 40) || (!this.currentWork && code === 38));
     }
 
     if (code === 13)
       window.open(this.worksList[project].url, '_blank');
 
     else if (code === 38)
-      this.currentProject = (!this.currentProject) ? this.lastProject : this.currentProject - 1;
+      this.currentWork = (!this.currentWork) ? this.lastProject : this.currentWork - 1;
 
     else if (code === 40)
-      this.currentProject = (this.currentProject === this.lastProject) ? 0 : this.currentProject + 1;
+      this.currentWork = (this.currentWork === this.lastProject) ? 0 : this.currentWork + 1;
 
-    let lastProject    = this.projectsSources[project].children,
-        currentProject = this.projectsSources[this.currentProject].children;
-
-    lastProject[0].classList.remove('active');
-    lastProject[1].classList.remove('active');
-
-    if (this.activeBackButton) return;
-
-    currentProject[0].classList.add('active');
-    currentProject[1].classList.add('active');
+    if (this.activeBackButton) {
+      this.currentWork = -1;
+    }
   }
 
   checkValidCode(code) {

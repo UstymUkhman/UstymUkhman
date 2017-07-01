@@ -1,10 +1,10 @@
 <div id="my-works">
   <div class="works-area" [class.fadeOut]='fadeOut'>
-    <div *ngFor="let work of worksList; let i = index;"
-          class="project-source hidden-source">
+    <div *ngFor="let work of worksList; let w = index;"
+          class="project-source hidden-source" [class.active]='w === currentWork'>
 
-      <div class="selected-project" [class.active]='i === currentActive'>//</div>
-      <p class="project" [class.active]='i === currentActive'>{{ work.name }}</p>
+      <div class="selected-project">//</div>
+      <p class="project">{{ work.name }}</p>
 
     </div>
   </div>

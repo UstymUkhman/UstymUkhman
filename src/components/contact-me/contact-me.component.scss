@@ -29,6 +29,24 @@ div#contact-me {
         @include hidden-element;
       }
 
+      &.active {
+        div.selected-contact {
+          @include visible-element;
+        }
+
+        p.contact {
+          @include transform(translateX(25px));
+
+          position: relative;
+          color: $fade-green;
+        }
+
+        span.e-mail {
+          @include transform(translateX(25px));
+          opacity: 1;
+        }
+      }
+
       p.contact,
       div.selected-contact {
         @include transition(transform .3s ease-out);
@@ -38,19 +56,8 @@ div#contact-me {
         font-size: 25px;
       }
 
-      div.selected-contact.active {
-        @include visible-element;
-      }
-
       p.contact {
         line-height: 20px;
-
-        &.active {
-          @include transform(translateX(25px));
-
-          position: relative;
-          color: $fade-green;
-        }
       }
 
       span.e-mail {
@@ -70,11 +77,6 @@ div#contact-me {
         cursor: default;
         width: auto;
         opacity: 0;
-
-        &.active {
-          @include transform(translateX(25px));
-          opacity: 1;
-        }
       }
     }
   }

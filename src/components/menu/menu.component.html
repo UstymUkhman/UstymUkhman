@@ -1,8 +1,8 @@
 <div class="menu-section" [ngClass]="{'menu-section-background': activeItem !== null}">
-  <div class="menu-area menu-items" [ngClass]="{'fade-out': fadeOutArea}">
-    <div *ngFor="let page of pages" class="menu-item hidden-item">
+  <div class="menu-area menu-items" [ngClass]="{'hidden': hiddenItems, 'fade-out': fadeOutArea}">
+    <div *ngFor="let page of pages; let p = index" class="menu-item">
 
-      <div class="item-box">
+      <div class="item-box" [class.active]='p === currentItem'>
         <div class="item-background"></div>
         <p class="item">{{ page }}</p>
       </div>

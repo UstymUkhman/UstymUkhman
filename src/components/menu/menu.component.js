@@ -12,6 +12,7 @@ import { LetteringService      } from '../../services/lettering.service';
 
 export class MenuComponent {
   constructor(menu, loading, lettering) {
+    this.hiddenItems    = true;
     this.startRaining   = false;
     this.stopRaining    = false;
     this.fadeOutArea    = false;
@@ -24,13 +25,13 @@ export class MenuComponent {
       'M0r3'
     ];
 
-    this.itemIndex = -1;
-    this.loading   = loading;
-    this.lettering = lettering;
+    this.itemIndex   = -1;
+    this.loading     = loading;
+    this.lettering   = lettering;
 
-    this.menu      = menu.nativeElement;
-    this.itemBoxes = this.menu.getElementsByClassName('item-box');
-    this.menuItems = this.menu.getElementsByClassName('menu-item');
+    this.menu        = menu.nativeElement;
+    this.itemBoxes   = this.menu.getElementsByClassName('item-box');
+    this.menuItems   = this.menu.getElementsByClassName('menu-item');
   }
 
   setMenuSection(section) {
@@ -41,7 +42,6 @@ export class MenuComponent {
 
       setTimeout(() => {
         document.removeEventListener('keydown', this.menuNavigation, false);
-        this.itemBoxes[section].classList.remove('active-item');
 
         this.stopRaining = true;
         this.loading.setActivePage(section);
@@ -61,9 +61,6 @@ export class MenuComponent {
 
     else if (code === 40)
       this.currentItem = (this.currentItem === 3) ? 0 : this.currentItem + 1;
-
-    this.itemBoxes[item].classList.remove('active-item');
-    this.itemBoxes[this.currentItem].classList.add('active-item');
   }
 
   showMenuItems() {
@@ -74,22 +71,17 @@ export class MenuComponent {
       );
 
     else {
-      for (let i = 0; i < this.menuItems.length; i++) {
-        this.menuItems[i].classList.remove('hidden-item');
-      }
-
       this.startRaining   = true;
-      this.currentItem    = this.currentItem || 0;
+      this.hiddenItems    = false;
+      this.currentItem    = this.activeItem || 0;
       this.menuNavigation = this.setMenuNavigation.bind(this);
 
-      this.itemBoxes[this.currentItem].classList.add('active-item');
       document.addEventListener('keydown', this.menuNavigation, false);
     }
   }
 
   ngOnChanges() {
     if (this.showMenu) {
-      this.currentItem = this.activeItem;
       this.showMenuItems();
     }
   }

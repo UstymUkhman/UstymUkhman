@@ -29,6 +29,19 @@ div#my-works {
         @include hidden-element;
       }
 
+      &.active {
+        div.selected-project {
+          @include visible-element;
+        }
+
+        p.project {
+          @include transform(translateX(25px));
+
+          position: relative;
+          color: $fade-green;
+        }
+      }
+
       p.project,
       div.selected-project {
         @include transition(transform .3s ease-out);
@@ -38,43 +51,8 @@ div#my-works {
         font-size: 25px;
       }
 
-      div.selected-project.active {
-        @include visible-element;
-      }
-
       p.project {
         line-height: 20px;
-
-        &.active {
-          @include transform(translateX(25px));
-
-          position: relative;
-          color: $fade-green;
-        }
-      }
-
-      span.e-mail {
-        @include transition(transform .3s ease-out, opacity .3s ease-out);
-        @include visible-element;
-        @include white-rabbit;
-
-        white-space: nowrap;
-        position: absolute;
-        margin-left: 10px;
-
-        font-style: italic;
-        line-height: 20px;
-        font-size: 25px;
-
-        color: $fade-green;
-        cursor: default;
-        width: auto;
-        opacity: 0;
-
-        &.active {
-          @include transform(translateX(25px));
-          opacity: 1;
-        }
       }
     }
   }
