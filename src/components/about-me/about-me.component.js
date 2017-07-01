@@ -10,13 +10,13 @@ import { LetteringService                    } from '../../services/lettering.se
 
 export class AboutMeComponent {
   constructor(aboutMe, lettering) {
+    this.aboutElement     = aboutMe.nativeElement;
+    this.lettering        = lettering;
+
     this.activeBackButton = false;
     this.showBackButton   = false;
     this.goToMenu         = false;
     this.fadeOut          = false;
-
-    this.aboutElement     = aboutMe.nativeElement;
-    this.lettering        = lettering;
 
     this.years = (() => {
       let today  = new Date(),

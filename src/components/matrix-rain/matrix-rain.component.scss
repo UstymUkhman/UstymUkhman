@@ -1,6 +1,7 @@
-$COLUMNS: 24;
+$COLUMNS: 9;
 
 div.matrix-rain-container {
+  @include transition(transform 5000ms ease-out);
   @include martix-code-nfi;
   @include middle-align;
   @include size($max);
@@ -98,11 +99,12 @@ div.matrix-rain-container {
 
   @for $i from 0 through $COLUMNS {
     p.code-#{$i} {
-      $duration: getRandom(1000ms, 10000ms); // 15000ms
-      $delay: getRandom(0ms, 1000ms);
+      $delay: getRandom(0ms, 5000ms);
+      $duration: getRandom(1000ms, 8000ms); // 15000ms
 
       position: absolute;
-      left: unquote("#{$i * 4}%");
+      left: unquote("#{$i * 10}%");
+      transform: translateY(-110%);
       animation: drop $duration linear $delay infinite;
     }
   }

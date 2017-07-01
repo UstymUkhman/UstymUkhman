@@ -1,5 +1,6 @@
 export class LoadingService {
   constructor() {
+    this.activeItem = null;
     this.pages = [
       'about'   ,
       'works'   ,
@@ -26,7 +27,7 @@ export class LoadingService {
   }
 
   getLastItem() {
-    return this.activeItem || null;
+    return this.activeItem;
   }
 
   loadPillChoice(choice) {
@@ -37,6 +38,7 @@ export class LoadingService {
   }
 
   backToMenu() {
-    window.history.back();
+    window.location.hash = '#/';
+    // window.history.back();
   }
 }

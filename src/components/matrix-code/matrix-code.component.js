@@ -15,7 +15,7 @@ export class MatrixCodeComponent {
     this.matrixCode    = matrixCode.nativeElement;
     this.rain          = rain;
 
-    this.codeRuned     = new EventEmitter();
+    this.codeRunned    = new EventEmitter();
     this.codeAnimation = 'setup-animation';
   }
 
@@ -29,7 +29,7 @@ export class MatrixCodeComponent {
       this.codeAnimation = 'run-animation';
 
       setTimeout(() => {
-        this.codeRuned.emit(true);
+        this.codeRunned.emit(true);
 
         if (this.removeCode) {
           this.matrixCode.remove();

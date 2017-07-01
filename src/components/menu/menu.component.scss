@@ -13,7 +13,7 @@ div.menu-section {
   }
 
   div.menu-area {
-    @include transition(opacity .3s ease-out);
+    @include transition(opacity .5s ease-out);
     opacity: 1;
 
     &.fade-out {
@@ -150,7 +150,7 @@ div.menu-section {
 
   div.matrix-rain {
     @include position(absolute, $null auto $null $half);
-    @include size($max);
+    @include size($half $max);
   }
 
   div.matrix-code {

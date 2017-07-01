@@ -12,10 +12,10 @@ import { LetteringService      } from '../../services/lettering.service';
 
 export class MenuComponent {
   constructor(menu, loading, lettering) {
-    this.startRaining  = false;
-    this.stopRaining   = false;
-    this.fadeOutArea   = false;
-    this.settedSection = false;
+    this.startRaining   = false;
+    this.stopRaining    = false;
+    this.fadeOutArea    = false;
+    this.settedSection  = false;
 
     this.pages = [
       'Ab0uT_m3'   ,
@@ -74,11 +74,11 @@ export class MenuComponent {
       );
 
     else {
-      for (let i = 0; i < this.menuItems.length; i++)
+      for (let i = 0; i < this.menuItems.length; i++) {
         this.menuItems[i].classList.remove('hidden-item');
+      }
 
       this.startRaining   = true;
-      this.hideMatrixCode = false;
       this.currentItem    = this.currentItem || 0;
       this.menuNavigation = this.setMenuNavigation.bind(this);
 

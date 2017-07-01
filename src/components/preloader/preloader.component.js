@@ -53,6 +53,7 @@ export class PreloaderComponent {
       requestAnimationFrame(this.animate.bind(this));
     } else {
       this.loaded.emit(true);
+      this.preloader.remove();
     }
   }
 
