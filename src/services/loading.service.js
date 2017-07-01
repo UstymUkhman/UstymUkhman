@@ -38,7 +38,10 @@ export class LoadingService {
   }
 
   backToMenu() {
+    if (!this.activeItem) {
+      this.activeItem = 0;
+    }
+
     window.location.hash = '#/';
-    // window.history.back();
   }
 }

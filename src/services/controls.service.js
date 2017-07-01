@@ -1,4 +1,4 @@
-import { Vector3 } from 'three';
+import { Vector3         } from 'three';
 import { PointerControls } from '../classes/PointerControls';
 
 
@@ -197,5 +197,7 @@ export class ControlsService {
 
     document.removeEventListener('keydown', this.onKeyDown.bind(this), false);
     document.removeEventListener('keyup', this.onKeyUp.bind(this), false);
+
+    this.controls.dispose();
   }
 }

@@ -1,19 +1,17 @@
 import { Object3D, Euler, Vector3 } from 'three';
 
 export class PointerControls {
-  constructor(camera, height) {
-    this.enabled = false;
-    // camera.rotation.set(0, 0, 0);
+  constructor(camera, height = 10) {
+    this.rotation  = new Euler(0, 0, 0, 'YXZ');
+    this.direction = new Vector3(0, 0, -1);
+    this.enabled   = false;
 
     this.pitchObject = new Object3D();
     this.pitchObject.add(camera);
 
     this.yawObject = new Object3D();
-    this.yawObject.position.y = height || 10;
+    this.yawObject.position.y = height;
     this.yawObject.add(this.pitchObject);
-
-    this.direction = new Vector3(0, 0, -1);
-    this.rotation  = new Euler(0, 0, 0, 'YXZ');
 
     document.addEventListener('mousemove', this.onMouseMove.bind(this), false);
   }
