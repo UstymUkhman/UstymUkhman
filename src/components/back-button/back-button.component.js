@@ -1,6 +1,6 @@
-import { Component, EventEmitter, ElementRef } from '@angular/core';
-import { LoadingService                      } from '../../services/loading.service';
-import { LetteringService                    } from '../../services/lettering.service';
+import { Component, ElementRef } from '@angular/core';
+import { LoadingService        } from '../../services/loading.service';
+import { LetteringService      } from '../../services/lettering.service';
 
 
 @Component({

@@ -1,18 +1,17 @@
 <screen-overlay [ready]='visibleOverlay'></screen-overlay>
 
 <matrix-code
-  (codeReady)='codeGotReady($event)'
-  (codeRuned)='codeGotRuned($event)'
+  (codeRunned)='codeRunned($event)'
   [runOverlay]='overlayReady'
   [removeCode]='overlayReady'>
 </matrix-code>
 
 <div class="main-window">
-  <preloader [start]='hiddenLoading'></preloader>
+  <preloader (loaded)='loadingFinished($event)'></preloader>
 
   <div class="console" [ngClass]="{'ready': showConsole}">
     <written-message
-      (consoleReady)='consoleGotReady($event)'
+      (consoleReady)='runCodeOverlay($event)'
       [start]='hiddenLoading'>
     </written-message>
 

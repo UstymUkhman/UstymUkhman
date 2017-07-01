@@ -5,23 +5,23 @@ import { LoadingService        } from '../../services/loading.service';
 
 @Component({
   selector: 'app',
-  // template: `
-  //   <p id="loading-message" *ngIf="!ready">
-  //     Loading<span *ngIf="!blink">_</span>
-  //   </p>
-
-  //   <router-outlet></router-outlet>
-  // `
-
   template: `
+    <p id="loading-message" *ngIf="!ready">
+      Loading<span *ngIf="!blink">_</span>
+    </p>
+
     <router-outlet></router-outlet>
   `
+
+  // template: `
+  //   <router-outlet></router-outlet>
+  // `
 })
 
 
 export class AppComponent {
   constructor(app, sounds, loading) {
-    this.interval = 250;
+    this.interval = 0;
     this.blink    = true;
     this.ready    = false;
     this.audio    = sounds;
@@ -36,7 +36,7 @@ export class AppComponent {
     }
 
     this.blink = !this.blink;
-    this.interval += 250;
+    this.interval += 500;
   }
 
   compleateLoading() {
@@ -47,7 +47,7 @@ export class AppComponent {
 
   ngAfterViewInit() {
     this.loadingMessage = this.app.children[0];
-    this.loading = setInterval(this.showNext.bind(this), 250);
+    this.loading = setInterval(this.showNext.bind(this), 500);
   }
 
   static get parameters() {

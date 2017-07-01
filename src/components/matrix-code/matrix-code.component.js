@@ -3,8 +3,8 @@ import { RainService                         } from '../../services/rain.service
 
 
 @Component({
+  outputs: ['codeRunned'],
   selector: 'matrix-code',
-  outputs: ['codeReady', 'codeRuned'],
   inputs: ['runOverlay', 'resetCode', 'removeCode'],
   templateUrl: 'components/matrix-code/matrix-code.component.html'
 })
@@ -15,7 +15,6 @@ export class MatrixCodeComponent {
     this.matrixCode    = matrixCode.nativeElement;
     this.rain          = rain;
 
-    this.codeReady     = new EventEmitter();
     this.codeRuned     = new EventEmitter();
     this.codeAnimation = 'setup-animation';
   }
@@ -23,7 +22,6 @@ export class MatrixCodeComponent {
   ngAfterViewInit() {
     this.rain.setParams(150);
     this.rain.createRain(this.matrixCode.firstElementChild.firstElementChild);
-    this.codeReady.emit(true);
   }
 
   ngOnChanges() {

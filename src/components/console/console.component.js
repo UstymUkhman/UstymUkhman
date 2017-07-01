@@ -11,43 +11,40 @@ import { LoadingService } from '../../services/loading.service';
 export class ConsoleComponent {
   constructor(loading) {
     this.menuReady      = false;
-    this.codeIsReady    = false;
     this.overlayReady   = false;
-    this.consoleIsReady = false;
+    this.contentLoaded  = false;
 
+    this.showMessage    = false;
     this.showConsole    = false;
     this.hiddenLoading  = false;
     this.visibleOverlay = false;
     this.lastActiveItem = loading.getLastItem();
   }
 
-  consoleGotReady(ready) {
-    this.consoleIsReady = ready;
-    this.runCodeOverlayWhenReady();
+  runCodeOverlay() {
+    this.overlayReady = true;
   }
 
-  codeGotReady(ready) {
-    this.codeIsReady = ready;
-    this.runCodeOverlayWhenReady();
-  }
-
-  runCodeOverlayWhenReady() {
-    if (this.codeIsReady && this.consoleIsReady) {
-      this.overlayReady = true;
-    }
-  }
-
-  codeGotRuned(ready) {
+  codeRunned(ready) {
     this.menuReady = ready;
   }
 
-  ngAfterViewInit() {
+  loadingFinished() {
     this.showConsole    = true;
+    this.contentLoaded  = true;
     this.visibleOverlay = true;
+  }
+
+  ngAfterViewInit() {
     this.hiddenLoading  = this.lastActiveItem === null;
 
+    if (this.contentLoaded) {
+      this.showConsole    = true;
+      this.visibleOverlay = true;
+    }
+
     if (this.lastActiveItem !== null)
-      this.codeGotRuned(true);
+      this.codeRunned(true);
   }
 
   static get parameters() {
