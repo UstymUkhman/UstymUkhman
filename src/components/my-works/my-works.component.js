@@ -132,6 +132,10 @@ export class MyWorksComponent {
     }, 2000);
   }
 
+  ngOnDestroy() {
+    document.removeEventListener('keydown', this.projectsNavigation, false);
+  }
+
   static get parameters() {
     return [[ElementRef], [Http], [LetteringService]];
   }

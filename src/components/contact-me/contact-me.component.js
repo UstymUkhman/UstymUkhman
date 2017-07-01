@@ -134,6 +134,10 @@ export class ContactMeComponent {
     this.prepareContactsList();
   }
 
+  ngOnDestroy() {
+    document.removeEventListener('keydown', this.contactsNavigation, false);
+  }
+
   static get parameters() {
     return [[ElementRef], [LetteringService]];
   }

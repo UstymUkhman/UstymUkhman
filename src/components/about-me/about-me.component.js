@@ -73,6 +73,10 @@ export class AboutMeComponent {
     this.showMessage();
   }
 
+  ngOnDestroy() {
+    document.removeEventListener('keydown', this.backButtonHandler, false);
+  }
+
   static get parameters() {
     return [[ElementRef], [LetteringService]];
   }

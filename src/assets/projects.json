@@ -1,6 +1,7 @@
 {
   "projects": [
-    { "Nuova Dacia Sandero"      : "http://nuovasandero.dacia.it/"     },
-    { "Peugeot Sensation Driver" : "http://peugeotsensationdriver.it/" }
+    { "Nuova Dacia Sandero"      : "http://nuovasandero.dacia.it/"      },
+    { "Peugeot Sensation Driver" : "http://peugeotsensationdriver.it/"  },
+    { "Jagermeister"             : "https://www.bethenightmeister.com/" }
   ]
 }
