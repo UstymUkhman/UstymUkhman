@@ -2,7 +2,7 @@ import * as THREE                from 'three';
 import { Component, ElementRef } from '@angular/core';
 import { ControlsService       } from '../../services/controls.service';
 
-// let OrbitControls = require('three-orbit-controls')(THREE);
+let OrbitControls = require('three-orbit-controls')(THREE);
 
 
 @Component({
@@ -43,7 +43,7 @@ export class RabbitHoleComponent {
 
     this.createComputer();
     this.createTable();
-    // this.createDoor();
+    this.createDoors();
 
     this.createEventHandlers();
     this.createRenderer();
@@ -235,7 +235,7 @@ export class RabbitHoleComponent {
   }
 
   createTable() {
-    this.loader.load('assets/table.json', (geometry, materials) => {
+    this.loader.load('assets/table.json', (geometry) => {
 
       const material = new THREE.MeshStandardMaterial({
         shading: THREE.SmoothShading,
@@ -256,16 +256,50 @@ export class RabbitHoleComponent {
     });
   }
 
-  createDoor() {
-    this.loader.load('assets/door.json', (geometry) => {
-      let texture = new THREE.TextureLoader().load('assets/wood.jpg'),
-          door    = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ map: texture }));
+  createDoors() {
+    this.loader.load('assets/frame.json', (frameGeometry, frameMaterials) => {
+      this.loader.load('assets/door.json', (doorGeometry, doorMaterials) => {
+        const PI_2 = Math.PI / 2;
 
-      door.position.set(0, 0, 500);
-      door.scale.set(50, 50, 50);
-      door.rotateY(Math.PI);
+        const frontFrame = new THREE.Mesh(frameGeometry, new THREE.MultiMaterial(frameMaterials));
+        const frontDoor  = new THREE.Mesh(doorGeometry, new THREE.MultiMaterial(doorMaterials));
 
-      this.scene.add(door);
+        frontFrame.position.set(0, -14, 474.5);
+        frontFrame.rotation.y = Math.PI;
+
+        frontDoor.position.set(0, -14, 474.5);
+        frontDoor.rotation.y = Math.PI;
+
+        frontFrame.scale.set(20, 20, 20);
+        frontDoor.scale.set(20, 20, 20);
+
+        this.scene.add(frontFrame);
+        this.scene.add(frontDoor);
+
+        for (let i = 0; i < 10; i++) {
+          const sideFrame = frontFrame.clone(),
+                sideDoor  = frontDoor.clone();
+
+          let positionZ = i * 50,
+              positionX = -24.5,
+              rotationY = PI_2;
+
+          if (i % 2) {
+            positionX = -positionX;
+            rotationY = -rotationY;
+            positionZ = (i - 1) * 50;
+          }
+
+          sideFrame.position.set(positionX, -14, positionZ);
+          sideDoor.position.set(positionX, -14, positionZ);
+
+          sideFrame.rotation.y = rotationY;
+          sideDoor.rotation.y = rotationY;
+
+          this.scene.add(sideFrame);
+          this.scene.add(sideDoor);
+        }
+      });
     });
   }
 
@@ -314,12 +348,12 @@ export class RabbitHoleComponent {
     const isFullSize = window.outerWidth  === screen.availWidth &&
                        window.outerHeight === screen.availHeight;
 
-    if (isFullSize) {
-      setTimeout(this.createCinematicIntro.bind(this), 100);
-    } else {
+    // if (isFullSize) {
+    setTimeout(this.createCinematicIntro.bind(this), 100);
+    // } else {
       // Screen Message:
       // Before continuing, please maximize your browser window.
-    }
+    // }
   }
 
   createCinematicIntro() {
