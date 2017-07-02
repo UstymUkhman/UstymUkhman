@@ -25,6 +25,7 @@ export class RabbitHoleComponent {
 
     this.intro      = false;
     this.error      = false;
+    this.pressed    = false;
     this.WIDTH      = window.innerWidth;
     this.HEIGHT     = window.innerHeight;
 
@@ -50,7 +51,7 @@ export class RabbitHoleComponent {
 
     // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.createControls();
-    // this.createMessage();
+    this.createMessage();
     this.animate();
   }
 
@@ -59,10 +60,12 @@ export class RabbitHoleComponent {
   }
 
   createCamera() {
-    this.camera = new THREE.PerspectiveCamera(15, this.WIDTH / this.HEIGHT, 1, 1000);
-    this.camera.rotation.x = -Math.PI / 4.5;
+    this.camera = new THREE.PerspectiveCamera(8, this.WIDTH / this.HEIGHT, 1, 1000);
+    this.camera.rotation.x = -Math.PI / 4.465;
     this.camera.position.z = -5;
     // this.camera.position.z = 300;
+
+    window.camera = this.camera;
     this.scene.add(this.camera);
   }
 
@@ -259,26 +262,36 @@ export class RabbitHoleComponent {
   createDoors() {
     this.loader.load('assets/frame.json', (frameGeometry, frameMaterials) => {
       this.loader.load('assets/door.json', (doorGeometry, doorMaterials) => {
+        const frontFrame = new THREE.Mesh(frameGeometry, new THREE.MultiMaterial(frameMaterials));
         const PI_2 = Math.PI / 2;
 
-        const frontFrame = new THREE.Mesh(frameGeometry, new THREE.MultiMaterial(frameMaterials));
-        const frontDoor  = new THREE.Mesh(doorGeometry, new THREE.MultiMaterial(doorMaterials));
+        this.frontDoor = new THREE.Mesh(doorGeometry, new THREE.MultiMaterial(doorMaterials));
 
         frontFrame.position.set(0, -14, 474.5);
         frontFrame.rotation.y = Math.PI;
 
-        frontDoor.position.set(0, -14, 474.5);
-        frontDoor.rotation.y = Math.PI;
+        this.frontDoor.position.set(10, 0, 0);
+        this.frontDoor.rotation.y = Math.PI;
 
         frontFrame.scale.set(20, 20, 20);
-        frontDoor.scale.set(20, 20, 20);
+        this.frontDoor.scale.set(20, 20, 20);
 
+        this.scene.add(this.frontDoor);
         this.scene.add(frontFrame);
-        this.scene.add(frontDoor);
+
+        const pitch = new THREE.Object3D();
+        this.pivot = new THREE.Object3D();
+
+        this.pivot.position.set(-10, -14, 475);
+        this.pivot.rotation.y = 0;
+
+        this.pivot.add(this.frontDoor);
+        this.scene.add(pitch);
+        pitch.add(this.pivot);
 
         for (let i = 0; i < 10; i++) {
           const sideFrame = frontFrame.clone(),
-                sideDoor  = frontDoor.clone();
+                sideDoor  = this.frontDoor.clone();
 
           let positionZ = i * 50,
               positionX = -24.5,
@@ -305,6 +318,8 @@ export class RabbitHoleComponent {
 
   createEventHandlers() {
     window.addEventListener('resize', this.setResizeHandler.bind(this), false);
+    document.addEventListener('keydown', this.onKeyDown.bind(this), false);
+    document.addEventListener('keyup', this.onKeyUp.bind(this), false);
   }
 
   setResizeHandler() {
@@ -314,6 +329,14 @@ export class RabbitHoleComponent {
     this.renderer.setSize(this.WIDTH, this.HEIGHT);
     this.camera.aspect = this.WIDTH / this.HEIGHT;
     this.camera.updateProjectionMatrix();
+  }
+
+  onKeyDown(event) {
+    this.pressed = (event.keyCode === 13);
+  }
+
+  onKeyUp(event) {
+    this.pressed = false;
   }
 
   createRenderer() {
@@ -345,15 +368,18 @@ export class RabbitHoleComponent {
   }
 
   createMessage() {
-    const isFullSize = window.outerWidth  === screen.availWidth &&
-                       window.outerHeight === screen.availHeight;
+    const minWidth  = screen.availWidth  - 5,
+          minHeight = screen.availHeight - 5;
 
-    // if (isFullSize) {
-    setTimeout(this.createCinematicIntro.bind(this), 100);
-    // } else {
+    const isFullSize = window.outerWidth  >= minWidth &&
+                       window.outerHeight >= minHeight;
+
+    if (isFullSize) {
+      setTimeout(this.createCinematicIntro.bind(this), 100);
+    } else {
       // Screen Message:
       // Before continuing, please maximize your browser window.
-    // }
+    }
   }
 
   createCinematicIntro() {
@@ -373,6 +399,10 @@ export class RabbitHoleComponent {
     if (this.intro) {
       this.animateCameraIntro();
     }
+
+    if (this.pivot) {
+      this.openTheDoor();
+    }
   }
 
   animateCameraIntro() {
@@ -387,18 +417,38 @@ export class RabbitHoleComponent {
     this.camera.updateProjectionMatrix();
   }
 
+  openTheDoor() {
+    if (this.pressed && this.pivot.rotation.y < 1.56) {
+      this.pivot.rotation.y += 0.01;
+
+    } else if (!this.pressed && this.pivot.rotation.y > 0) {
+      this.pivot.rotation.y -= 0.02;
+    }
+
+    if (this.pivot.rotation.y > 1.56) {
+      this.pivot.rotation.y = 1.56;
+    }
+
+    if (this.pivot.rotation.y < 0) {
+      this.pivot.rotation.y = 0;
+    }
+  }
+
   getCameraFov() {
-    this.elapsedSpeed += 0.1;
+    this.elapsedSpeed += this.camera.fov < 20 ? 0.01 : 0.075;
 
     const elapsedTime = this.clock.getElapsedTime(),
           zoomSpeed   = elapsedTime * this.elapsedSpeed,
-          cameraFov   = zoomSpeed + 15;
+          cameraFov   = zoomSpeed + 8;
 
     return (cameraFov < 50) ? cameraFov : 50;
   }
 
   ngOnDestroy() {
     window.removeEventListener('resize', this.setResizeHandler.bind(this), false);
+    document.removeEventListener('keydown', this.onKeyDown.bind(this), false);
+    document.removeEventListener('keyup', this.onKeyUp.bind(this), false);
+
     cancelAnimationFrame(this.frame);
     this.controls.dispose();
   }
