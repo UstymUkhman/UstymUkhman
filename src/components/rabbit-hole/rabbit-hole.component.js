@@ -50,7 +50,7 @@ export class RabbitHoleComponent {
 
     // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.createControls();
-    this.createMessage();
+    // this.createMessage();
     this.animate();
   }
 

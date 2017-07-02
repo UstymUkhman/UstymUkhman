@@ -1,4 +1,6 @@
 <div class="more-component" [ngClass]="{'fade-out': fadeOut}">
+  <screen-overlay [ready]='true'></screen-overlay>
+
   <div class="more-component-background">
     <matrix-rain
       [removeRain]='raining === false'

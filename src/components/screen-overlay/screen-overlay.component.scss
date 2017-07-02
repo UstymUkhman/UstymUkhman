@@ -1,4 +1,4 @@
-div#screen-overlay {
+div.screen-overlay {
   @include position(absolute, 0);
 
   background-image: url(../assets/overlay.png);
@@ -8,7 +8,7 @@ div#screen-overlay {
   z-index: $z-screen;
   display: none;
 
-  &.console-ready {
+  &.ready {
     display: block;
   }
 }

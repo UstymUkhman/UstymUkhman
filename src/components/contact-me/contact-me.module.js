@@ -1,14 +1,15 @@
 import 'zone.js/dist/zone';
 
-import { NgModule           } from '@angular/core';
-import { CommonModule       } from '@angular/common';
+import { NgModule             } from '@angular/core';
+import { CommonModule         } from '@angular/common';
 
-import { ContactMeComponent } from './contact-me.component';
-import { LetteringService   } from '../../services/lettering.service';
+import { ContactMeComponent   } from './contact-me.component';
+import { LetteringService     } from '../../services/lettering.service';
 
-import { MatrixCodeModule   } from '../matrix-code/matrix-code.module';
-import { MatrixRainModule   } from '../matrix-rain/matrix-rain.module';
-import { BackButtonModule   } from '../back-button/back-button.module';
+import { MatrixCodeModule     } from '../matrix-code/matrix-code.module';
+import { MatrixRainModule     } from '../matrix-rain/matrix-rain.module';
+import { BackButtonModule     } from '../back-button/back-button.module';
+import { ScreenOverlayModule  } from '../screen-overlay/screen-overlay.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { BackButtonModule   } from '../back-button/back-button.module';
     CommonModule,
     MatrixCodeModule,
     MatrixRainModule,
-    BackButtonModule
+    BackButtonModule,
+    ScreenOverlayModule
   ],
 
   declarations : [ContactMeComponent],

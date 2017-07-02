@@ -5,7 +5,7 @@ import { LetteringService      } from '../../services/lettering.service';
 
 @Component({
   selector: 'menu',
-  inputs: ['activeItem', 'showMenu'],
+  inputs: ['showOverlay', 'activeItem', 'showMenu'],
   templateUrl: 'components/menu/menu.component.html'
 })
 

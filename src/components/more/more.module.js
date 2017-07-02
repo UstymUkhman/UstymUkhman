@@ -1,25 +1,28 @@
 import 'zone.js/dist/zone';
 
-import { NgModule         } from '@angular/core';
-import { CommonModule     } from '@angular/common';
+import { NgModule             } from '@angular/core';
+import { CommonModule         } from '@angular/common';
 
-import { MoreComponent    } from './more.component';
-import { MatrixCodeModule } from '../matrix-code/matrix-code.module';
-import { MatrixRainModule } from '../matrix-rain/matrix-rain.module';
+import { MoreComponent        } from './more.component';
+import { SoundsService        } from '../../services/sounds.service';
 
-import { SoundsService    } from '../../services/sounds.service';
+import { MatrixCodeModule     } from '../matrix-code/matrix-code.module';
+import { MatrixRainModule     } from '../matrix-rain/matrix-rain.module';
+import { ScreenOverlayModule  } from '../screen-overlay/screen-overlay.module';
 
 
 @NgModule({
   imports: [
     CommonModule,
     MatrixCodeModule,
-    MatrixRainModule
+    MatrixRainModule,
+    ScreenOverlayModule
   ],
 
   providers    : [SoundsService],
   declarations : [MoreComponent],
   exports      : [MoreComponent]
 })
+
 
 export class MoreModule { }

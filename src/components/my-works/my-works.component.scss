@@ -1,4 +1,4 @@
-div#my-works {
+div.my-works {
   @include position(absolute, $null);
   @include size($max);
 

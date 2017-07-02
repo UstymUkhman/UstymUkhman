@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 @Component({
   inputs: ['ready'],
   selector: 'screen-overlay',
-  template: `<div id="screen-overlay" [ngClass]="{'console-ready': show}"></div>`
+  template: `<div class="screen-overlay" [ngClass]="{'ready': show}"></div>`
 })
 
 

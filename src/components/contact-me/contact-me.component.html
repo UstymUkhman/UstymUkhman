@@ -1,6 +1,7 @@
-<div id="contact-me">
-  <div class="contacts-area" [class.fadeOut]='fadeOut'>
+<div class="contact-me">
+  <screen-overlay [ready]='true'></screen-overlay>
 
+  <div class="contacts-area" [class.fadeOut]='fadeOut'>
     <div *ngFor="let contact of contactsList; let c = index;"
           class="contact-source hidden-source" [class.active]='c === currentContact'>
 

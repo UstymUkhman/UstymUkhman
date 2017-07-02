@@ -1,4 +1,6 @@
-<div id="my-works">
+<div class="my-works">
+  <screen-overlay [ready]='true'></screen-overlay>
+
   <div class="works-area" [class.fadeOut]='fadeOut'>
     <div *ngFor="let work of worksList; let w = index;"
           class="project-source hidden-source" [class.active]='w === currentWork'>

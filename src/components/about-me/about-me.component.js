@@ -57,7 +57,7 @@ export class AboutMeComponent {
   }
 
   showMessage() {
-    this.lettering.animate(this.aboutMessage.children[0], false, () => {
+    this.lettering.animate(this.aboutMessage.children[1], false, () => {
       this.showBackButton = true;
 
       setTimeout(() => {
@@ -69,7 +69,7 @@ export class AboutMeComponent {
   }
 
   ngAfterViewInit() {
-    this.aboutMessage = this.aboutElement.children[0];
+    this.aboutMessage = this.aboutElement.firstChild;
     this.showMessage();
   }
 

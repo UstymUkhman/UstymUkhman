@@ -99,8 +99,8 @@ div.matrix-rain-container {
 
   @for $i from 0 through $COLUMNS {
     p.code-#{$i} {
-      $delay: getRandom(0ms, 5000ms);
-      $duration: getRandom(1000ms, 8000ms); // 15000ms
+      $delay: getRandom(0ms, 1000ms);
+      $duration: getRandom(1000ms, 15000ms);
 
       position: absolute;
       left: unquote("#{$i * 10}%");

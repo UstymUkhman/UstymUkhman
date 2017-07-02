@@ -1,4 +1,4 @@
-div#contact-me {
+div.contact-me {
   @include position(absolute, $null);
   @include size($max);
 

@@ -1,9 +1,6 @@
-<screen-overlay [ready]='visibleOverlay'></screen-overlay>
-
 <matrix-code
   (codeRunned)='codeRunned($event)'
-  [runOverlay]='overlayReady'
-  [removeCode]='overlayReady'>
+  [runOverlay]='overlayReady'>
 </matrix-code>
 
 <div class="main-window">
@@ -16,6 +13,7 @@
     </written-message>
 
     <menu
+      [showOverlay]='visibleOverlay'
       [activeItem]='lastActiveItem'
       [showMenu]='menuReady'>
     </menu>

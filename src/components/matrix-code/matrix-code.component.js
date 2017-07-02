@@ -3,9 +3,9 @@ import { RainService                         } from '../../services/rain.service
 
 
 @Component({
+  inputs: ['runOverlay'],
   outputs: ['codeRunned'],
   selector: 'matrix-code',
-  inputs: ['runOverlay', 'resetCode', 'removeCode'],
   templateUrl: 'components/matrix-code/matrix-code.component.html'
 })
 
@@ -30,15 +30,8 @@ export class MatrixCodeComponent {
 
       setTimeout(() => {
         this.codeRunned.emit(true);
-
-        if (this.removeCode) {
-          this.matrixCode.remove();
-        }
+        this.matrixCode.remove();
       }, 5500);
-    }
-
-    if (this.resetCode) {
-      this.initializeCode();
     }
   }
 
