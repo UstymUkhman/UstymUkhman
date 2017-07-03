@@ -37,8 +37,11 @@ export class WrittenMessageComponent {
 
       setTimeout(() => {
         this.consoleReady.emit(true);
-        this.messageElement.remove();
       }, 2000);
+
+      setTimeout(() => {
+        this.messageElement.remove();
+      }, 4500);
     }
   }
 

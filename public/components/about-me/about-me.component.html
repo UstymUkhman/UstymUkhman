@@ -1,0 +1,13 @@
+<div id="about-me">
+  <screen-overlay [ready]='true'></screen-overlay>
+
+  <p class="about-text" [class.fadeOut]='fadeOut'
+     [textContent]='aboutDescription'>
+  </p>
+
+  <back-button
+    [showBackButton]='showBackButton'
+    [active]='activeBackButton'
+    [backToMenu]='goToMenu'>
+  </back-button>
+</div>

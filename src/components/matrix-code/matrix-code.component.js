@@ -31,7 +31,7 @@ export class MatrixCodeComponent {
       setTimeout(() => {
         this.codeRunned.emit(true);
         this.matrixCode.remove();
-      }, 5500);
+      }, 8500);
     }
   }
 

@@ -11,7 +11,6 @@ import { LoadingService } from '../../services/loading.service';
 export class ConsoleComponent {
   constructor(loading) {
     this.menuReady      = false;
-    this.overlayReady   = false;
     this.contentLoaded  = false;
 
     this.showMessage    = false;
@@ -25,12 +24,10 @@ export class ConsoleComponent {
     }
   }
 
-  runCodeOverlay() {
-    this.overlayReady = true;
-  }
-
-  codeRunned(ready) {
-    this.menuReady = ready;
+  showMenu() {
+    setTimeout(() => {
+      this.menuReady = true;
+    }, 1500);
   }
 
   loadingFinished() {
@@ -48,7 +45,7 @@ export class ConsoleComponent {
     }
 
     if (this.lastActiveItem !== null) {
-      this.codeRunned(true);
+      this.menuReady = true;
     }
   }
 

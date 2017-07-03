@@ -2,7 +2,7 @@
   <preloader (loaded)='loadingFinished($event)'></preloader>
 
   <div class="console" [ngClass]="{'ready': showConsole}">
-    <written-message (consoleReady)='showMenu' [start]='hiddenLoading'></written-message>
+    <written-message (consoleReady)='showMenu()' [start]='hiddenLoading'></written-message>
     <menu [showOverlay]='visibleOverlay' [activeItem]='lastActiveItem' [showMenu]='menuReady'></menu>
   </div>
 </div>

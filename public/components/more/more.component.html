@@ -1,0 +1,12 @@
+<div class="more-component" [ngClass]="{'fade-out': fadeOut}">
+  <screen-overlay [ready]='true'></screen-overlay>
+
+  <div class="more-component-background">
+    <matrix-rain
+      [removeRain]='raining === false'
+      [raining]='raining === true'>
+    </matrix-rain>
+  </div>
+
+  <matrix-code [runOverlay]='goToMenu'></matrix-code>
+</div>

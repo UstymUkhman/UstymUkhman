@@ -1,8 +1,8 @@
 node_modules/
-public/
+public/*
 .git/
 
-!node_modules/three/src/constants.js
 src/assets/music.mp3
+!public/components
 .editorconfig
 *.log.*

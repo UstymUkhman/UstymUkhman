@@ -12,11 +12,11 @@ import { LetteringService      } from '../../services/lettering.service';
 
 export class MenuComponent {
   constructor(menu, loading, lettering) {
-    this.hiddenItems    = true;
-    this.startRaining   = false;
-    this.stopRaining    = false;
-    this.fadeOutArea    = false;
-    this.settedSection  = false;
+    this.hiddenItems   = true;
+    this.startRaining  = false;
+    this.stopRaining   = false;
+    this.fadeOutArea   = false;
+    this.settedSection = false;
 
     this.pages = [
       'Ab0uT_m3'   ,
@@ -39,14 +39,14 @@ export class MenuComponent {
 
     setTimeout(() => {
       this.fadeOutArea = true;
+    }, 4000);
 
-      setTimeout(() => {
-        document.removeEventListener('keydown', this.menuNavigation, false);
+    setTimeout(() => {
+      document.removeEventListener('keydown', this.menuNavigation, false);
 
-        this.stopRaining = true;
-        this.loading.setActivePage(section);
-      }, 3000);
-    }, 2500);
+      this.stopRaining = true;
+      this.loading.setActivePage(section);
+    }, 8500);
   }
 
   setMenuNavigation(event) {

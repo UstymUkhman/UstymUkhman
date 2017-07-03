@@ -1,0 +1,26 @@
+<div class="my-works">
+  <screen-overlay [ready]='true'></screen-overlay>
+
+  <div class="works-area" [class.fadeOut]='fadeOut'>
+    <div *ngFor="let work of worksList; let w = index;"
+          class="project-source hidden-source" [class.active]='w === currentWork'>
+
+      <div class="selected-project">//</div>
+      <p class="project">{{ work.name }}</p>
+
+    </div>
+  </div>
+
+  <div class="works-area matrix-rain">
+    <matrix-rain
+      [removeRain]='removeMatrixRain'
+      [raining]='startRaining'>
+    </matrix-rain>
+  </div>
+
+  <back-button
+    [showBackButton]='showBackButton'
+    [active]='activeBackButton'
+    [backToMenu]='goToMenu'>
+  </back-button>
+</div>

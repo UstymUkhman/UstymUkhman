@@ -1,0 +1,22 @@
+<div class="menu-section" [ngClass]="{'menu-section-background': activeItem !== null}">
+  <screen-overlay [ready]='showOverlay'></screen-overlay>
+
+  <div class="menu-area menu-items" [ngClass]="{'hidden': hiddenItems, 'fade-out': fadeOutArea}">
+    <div *ngFor="let page of pages; let p = index" class="menu-item">
+
+      <div class="item-box" [class.active]='p === currentItem'>
+        <div class="item-background"></div>
+        <p class="item">{{ page }}</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="menu-area matrix-rain" [ngClass]="{'fade-out': fadeOutArea}">
+    <matrix-rain [removeRain]='stopRaining' [raining]='startRaining'></matrix-rain>
+  </div>
+
+  <div class="matrix-code">
+    <matrix-code [runOverlay]='settedSection'></matrix-code>
+  </div>
+</div>
