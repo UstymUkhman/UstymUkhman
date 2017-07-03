@@ -1,5 +1,5 @@
 export class LetteringService {
-  animate(message, slowTyping, callback) {
+  animate(message, slowTyping = 0, callback) {
     if (!message) return;
 
     this.index       = 0;
@@ -58,7 +58,7 @@ export class LetteringService {
 
     if (!this.slowly || (this.slowly && typeLetter)) {
       this.showLetter(this.letters[this.index++]);
-      this.nextTiming = Date.now() + 150;
+      this.nextTiming = Date.now() + this.slowly;
     }
 
     if (this.last === this.lastLetter) {

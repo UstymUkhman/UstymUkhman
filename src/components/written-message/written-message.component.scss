@@ -1,3 +1,6 @@
+$dissolve-easing: cubic-bezier(0.645,  0.045, 0.355, 1.000);
+$letters: 24;
+
 div#written-message {
   display: block;
   z-index: $z-message;
@@ -10,17 +13,25 @@ div#written-message {
     @include white-rabbit;
     @include transition(opacity 0.5s ease-out);
 
-    /*
-     * Scale Animation
-     *
-    @include transition(transform 5s ease-out, opacity 2s ease-out);
-    &.scale-message {
-      @include transform(translate(68em, 10em) scale(25));
-    }
-    */
-
-    &.dissolve-text {
+    &.fade-out {
       opacity: 0;
+    }
+
+    &.dissolve {
+      span {
+        opacity: 0;
+      }
+    }
+
+    span {
+      @include transition(opacity 0.5s $dissolve-easing);
+
+      @for $i from 1 through $letters {
+        &:nth-child(#{$i}) {
+          $delay: getRandom(1000, 2000);
+          transition-delay: #{$delay}ms;
+        }
+      }
     }
   }
 

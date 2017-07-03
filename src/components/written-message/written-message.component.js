@@ -20,27 +20,30 @@ export class WrittenMessageComponent {
 
     this.messageList = [
       'Hello my friend.',
-      'Welcome...'
+      'I\'m glad to see you here.',
+      'Follow your instincts...'
     ];
   }
 
   prepareMessage() {
+    const delay = this.currentIndex < 0 ? 3000 : 1500;
+
     if (this.start && this.messageList[++this.currentIndex]) {
-      setTimeout(this.showMessage.bind(this), 1500);
+      setTimeout(this.showMessage.bind(this), delay);
 
     } else if (this.currentIndex === this.messageList.length) {
-      this.consoleReady.emit(true);
       this.dissolve = true;
       this.currentIndex--;
 
       setTimeout(() => {
+        this.consoleReady.emit(true);
         this.messageElement.remove();
-      }, 2500);
+      }, 2000);
     }
   }
 
   showMessage() {
-    this.lettering.animate(this.message, true, this.prepareMessage.bind(this));
+    this.lettering.animate(this.message, 200, this.prepareMessage.bind(this));
   }
 
   ngOnChanges() {
