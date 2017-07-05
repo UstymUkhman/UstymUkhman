@@ -36,10 +36,7 @@ export class MenuComponent {
 
   setMenuSection(section) {
     this.settedSection = true;
-
-    setTimeout(() => {
-      this.fadeOutArea = true;
-    }, 4000);
+    setTimeout(() => { this.fadeOutArea = true; }, 3500);
 
     setTimeout(() => {
       document.removeEventListener('keydown', this.menuNavigation, false);
@@ -71,11 +68,11 @@ export class MenuComponent {
       );
 
     else {
-      this.startRaining   = true;
       this.hiddenItems    = false;
       this.currentItem    = this.activeItem || 0;
       this.menuNavigation = this.setMenuNavigation.bind(this);
 
+      setTimeout(() => { this.startRaining = true; }, 1500);
       document.addEventListener('keydown', this.menuNavigation, false);
     }
   }

@@ -26,16 +26,16 @@ export class BackButtonComponent {
   ngOnChanges() {
     if (this.showBackButton && !this.initialized) {
       let buttonText = this.button.getElementsByClassName('button-box')[0];
-      this.lettering.animate(buttonText.children[1], false, null, 100);
+      this.lettering.animate(buttonText.children[1], 100);
       this.initialized = true;
     }
 
     if (this.backToMenu) {
       setTimeout(() => {
         this.fadeOut = true;
-      }, 2000);
+      }, 3500);
 
-      setTimeout(this.loading.backToMenu, 5500);
+      setTimeout(this.loading.backToMenu, 8500);
     }
   }
 

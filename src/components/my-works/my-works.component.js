@@ -59,7 +59,7 @@ export class MyWorksComponent {
     if (++this.projectIndex < this.worksList.length)
       this.lettering.animate(
         this.projectsSources[this.projectIndex].children[1],
-        false, this.prepareWorksList.bind(this)
+        100, this.prepareWorksList.bind(this)
       );
 
     else {
@@ -71,7 +71,7 @@ export class MyWorksComponent {
 
         this.projectsNavigation = this.setProjectsNavigation.bind(this);
         document.addEventListener('keydown', this.projectsNavigation, false);
-      }, 2000);
+      }, 1000);
     }
   }
 
@@ -120,7 +120,7 @@ export class MyWorksComponent {
       this.fadeOut          = true;
       this.startRaining     = false;
       this.removeMatrixRain = true;
-    }, 2000);
+    }, 3500);
   }
 
   ngOnDestroy() {

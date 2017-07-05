@@ -59,7 +59,7 @@ div#back-button-section {
         }
 
         div.button-background {
-          @include transition(background-color .3s ease .5s);
+          @include transition(background-color .25s ease .5s);
           @include position(absolute, $null);
           @include size(150px 50px);
 
@@ -68,7 +68,7 @@ div#back-button-section {
         }
 
         p.button {
-          @include transition(color .5s ease);
+          @include transition(color .5s ease .5s);
           @include hidden-element;
           @include white-rabbit;
 

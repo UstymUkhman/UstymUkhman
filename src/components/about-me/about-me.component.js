@@ -44,11 +44,8 @@ export class AboutMeComponent {
 
   removeAboutMeSection() {
     this.goToMenu = true;
+    setTimeout(() => { this.fadeOut = true; }, 3500);
     document.removeEventListener('keydown', this.backButtonHandler, false);
-
-    setTimeout(() => {
-      this.fadeOut = true;
-    }, 2000);
   }
 
   setBackButtonHandler(event) {
@@ -57,14 +54,14 @@ export class AboutMeComponent {
   }
 
   showMessage() {
-    this.lettering.animate(this.aboutMessage.children[1], false, () => {
+    this.lettering.animate(this.aboutMessage.children[1], 50, () => {
       this.showBackButton = true;
 
       setTimeout(() => {
         this.activeBackButton  = true;
         this.backButtonHandler = this.setBackButtonHandler.bind(this);
         document.addEventListener('keydown', this.backButtonHandler, false);
-      }, 2000);
+      }, 1000);
     });
   }
 

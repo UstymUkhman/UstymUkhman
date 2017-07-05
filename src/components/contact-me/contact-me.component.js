@@ -93,7 +93,7 @@ export class ContactMeComponent {
     if (++this.contactIndex < this.contactsList.length)
       this.lettering.animate(
         this.contactSources[this.contactIndex].children[1],
-        false, this.prepareContactsList.bind(this)
+        100, this.prepareContactsList.bind(this)
       );
 
     else {
@@ -105,7 +105,7 @@ export class ContactMeComponent {
 
         this.contactsNavigation = this.setContactsNavigation.bind(this);
         document.addEventListener('keydown', this.contactsNavigation, false);
-      }, 2000);
+      }, 1000);
     }
   }
 

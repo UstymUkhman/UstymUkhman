@@ -88,7 +88,7 @@ div.menu-section {
         }
 
         p.item {
-          @include transition(color .5s ease 0.5s);
+          @include transition(color .5s ease .5s);
           @include white-rabbit;
 
           line-height: 130px;

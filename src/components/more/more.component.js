@@ -106,13 +106,14 @@ export class MoreComponent {
       color             : color,
       emissiveIntensity : 1,
 
-      roughness         : 0.2,
-      metalness         : 0,
-      opacity           : 0,
-
       depthTest         : true,
       depthWrite        : true,
-      transparent       : true
+      transparent       : true,
+
+      roughness         : 0.2,
+      metalness         : 0,
+      opacity           : 0
+
     };
 
     jsonLoader.load('assets/pill.json', (geometry) => {
@@ -148,7 +149,7 @@ export class MoreComponent {
     setTimeout(() => {
       this.raining      = true;
       this.visiblePills = true;
-    }, 1000);
+    }, 1500);
 
     this.pillChoice = this.setChosenPill.bind(this);
     document.addEventListener('keydown', this.pillChoice, false);
@@ -173,36 +174,36 @@ export class MoreComponent {
     this.renderer.render(this.scene, this.camera);
 
     if (this.bluePill && this.redPill) {
-      if (this.showBlue && this.bluePill.material.opacity < 0.8) { // 0.6
+      if (this.showBlue && this.bluePill.material.opacity < 0.8) {
         this.bluePill.material.opacity += 0.01;
       }
 
-      if (this.showRed && this.redPill.material.opacity < 0.8) { // 0.6
+      if (this.showRed && this.redPill.material.opacity < 0.8) {
         this.redPill.material.opacity += 0.01;
       }
 
       if (this.choice === false && this.redPill.scale.x > 0.1) {
-        this.redPill.scale.x           -= 0.01;
-        this.redPill.scale.y           -= 0.01;
-        this.redPill.scale.z           -= 0.01;
-        this.redPill.material.opacity  -= 0.01;
+        this.redPill.scale.x           -= 0.005;
+        this.redPill.scale.y           -= 0.005;
+        this.redPill.scale.z           -= 0.005;
+        this.redPill.material.opacity  -= 0.005;
 
-        this.bluePill.scale.x          += 0.01;
-        this.bluePill.scale.y          += 0.01;
-        this.bluePill.scale.z          += 0.01;
-        this.bluePill.material.opacity += 0.01;
+        this.bluePill.scale.x          += 0.005;
+        this.bluePill.scale.y          += 0.005;
+        this.bluePill.scale.z          += 0.005;
+        this.bluePill.material.opacity += 0.005;
       }
 
       if (this.choice === true && this.redPill.scale.x < 0.3) {
-        this.redPill.scale.x           += 0.01;
-        this.redPill.scale.y           += 0.01;
-        this.redPill.scale.z           += 0.01;
-        this.redPill.material.opacity  += 0.01;
+        this.redPill.scale.x           += 0.005;
+        this.redPill.scale.y           += 0.005;
+        this.redPill.scale.z           += 0.005;
+        this.redPill.material.opacity  += 0.005;
 
-        this.bluePill.scale.x          -= 0.01;
-        this.bluePill.scale.y          -= 0.01;
-        this.bluePill.scale.z          -= 0.01;
-        this.bluePill.material.opacity -= 0.01;
+        this.bluePill.scale.x          -= 0.005;
+        this.bluePill.scale.y          -= 0.005;
+        this.bluePill.scale.z          -= 0.005;
+        this.bluePill.material.opacity -= 0.005;
       }
 
       let redScaleDone  = this.redPill.scale.x  >= 0.3 && this.bluePill.scale.x <= 0.1;
@@ -219,38 +220,38 @@ export class MoreComponent {
     this.renderer.render(this.scene, this.camera);
 
     if (!this.choice && this.bluePill.position.z < 5) {
-      this.bluePill.position.z += 0.125;
+      this.bluePill.position.z += 0.0625;
 
       if (this.bluePill.position.x > 0)
-        this.bluePill.position.x -= 0.125;
+        this.bluePill.position.x -= 0.0625;
 
       if (this.bluePill.rotation.x > 0)
-        this.bluePill.rotation.x += 0.125;
+        this.bluePill.rotation.x += 0.0625;
 
       if (this.bluePill.rotation.z > -0.9)
-        this.bluePill.rotation.z -= 0.0375;
+        this.bluePill.rotation.z -= 0.01875;
 
     } else if (this.choice && this.redPill.position.z < 5) {
       this.redPill.position.z += 0.125;
 
       if (this.redPill.position.x < 0)
-        this.redPill.position.x += 0.125;
+        this.redPill.position.x += 0.0625;
 
       if (this.redPill.rotation.y > 0.8)
-        this.redPill.rotation.y -= 0.025;
+        this.redPill.rotation.y -= 0.0125;
 
       if (this.redPill.rotation.z < 1.5)
-        this.redPill.rotation.z += 0.05;
+        this.redPill.rotation.z += 0.0025;
 
     } else {
-      setTimeout(this.loading.loadPillChoice.bind(this.loading), 5500, this.choice);
+      setTimeout(this.loading.loadPillChoice.bind(this.loading), 8500, this.choice);
       cancelAnimationFrame(this.choiceAnimation);
       this.goToMenu = true;
 
       setTimeout(() => {
         this.raining = false;
         this.fadeOut = true;
-      }, 2500);
+      }, 3500);
     }
   }
 
