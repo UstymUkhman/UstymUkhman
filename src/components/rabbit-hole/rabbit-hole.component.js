@@ -70,14 +70,19 @@ export class RabbitHoleComponent {
   }
 
   createLight() {
-    const dirLight = new THREE.DirectionalLight(this.WHITE, 0.8);
+    let firstLight = new THREE.SpotLight(this.WHITE);
 
-    dirLight.rotation.set(Math.PI / 4.5, 0, 0);
-    dirLight.position.set(0, 250, 225);
-    dirLight.color.setHSL(0, 1, 1);
+    firstLight.target.position.set(0, 0, this.center);
+    firstLight.target.updateMatrixWorld();
+    firstLight.position.set(0, 500, -75);
+    firstLight.distance = 750;
 
-    this.scene.add(new THREE.AmbientLight(this.WHITE, 0.15));
-    this.scene.add(dirLight);
+    let secondLight = firstLight.clone();
+    secondLight.position.z = 525;
+
+    this.scene.add(new THREE.AmbientLight(this.WHITE, 0.25));
+    this.scene.add(secondLight);
+    this.scene.add(firstLight);
   }
 
   createFloor() {
