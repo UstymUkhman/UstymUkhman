@@ -1,7 +1,10 @@
-div#rabbit-hole {
+div.rabbit-hole-component {
   @include position(absolute, $null);
   @include size($max);
 
+  background-image: radial-gradient(circle, transparent, $green);
+
   overflow: hidden;
-  cursor: none;
+  z-index: $z-max;
+  // cursor: none;
 }

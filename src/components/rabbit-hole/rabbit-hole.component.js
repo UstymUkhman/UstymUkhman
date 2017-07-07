@@ -6,8 +6,8 @@ let OrbitControls = require('three-orbit-controls')(THREE);
 
 
 @Component({
-  template: '',
-  selector: 'rabbit-hole'
+  selector: 'rabbit-hole',
+  templateUrl: 'components/rabbit-hole/rabbit-hole.component.html'
 })
 
 
@@ -70,19 +70,30 @@ export class RabbitHoleComponent {
   }
 
   createLight() {
-    let firstLight = new THREE.SpotLight(this.WHITE);
+    const ambientLight = new THREE.AmbientLight(this.WHITE, 0.25)
+    const firstLight = new THREE.SpotLight(this.WHITE);
 
     firstLight.target.position.set(0, 0, this.center);
     firstLight.target.updateMatrixWorld();
     firstLight.position.set(0, 500, -75);
     firstLight.distance = 750;
 
-    let secondLight = firstLight.clone();
+    const secondLight = firstLight.clone();
     secondLight.position.z = 525;
 
-    this.scene.add(new THREE.AmbientLight(this.WHITE, 0.25));
-    this.scene.add(secondLight);
+    // const firstLightHelper = new THREE.DirectionalLightHelper(firstLight, 5);
+    // const secondLightHelper = new THREE.DirectionalLightHelper(secondLight, 5);
+
+    // this.scene.add(firstLightHelper);
+    // this.scene.add(secondLightHelper);
+
     this.scene.add(firstLight);
+    this.scene.add(secondLight);
+    this.scene.add(ambientLight);
+
+    // window.firstLight = firstLight;
+    // window.secondLight = secondLight;
+    // window.ambientLight = ambientLight;
   }
 
   createFloor() {
@@ -380,7 +391,7 @@ export class RabbitHoleComponent {
                        window.outerHeight >= minHeight;
 
     if (isFullSize) {
-      setTimeout(this.createCinematicIntro.bind(this), 100);
+      // setTimeout(this.createCinematicIntro.bind(this), 100);
     } else {
       // Screen Message:
       // Before continuing, please maximize your browser window.

@@ -13,7 +13,7 @@ div.more-component {
   }
 
   canvas#pills {
-    @include transition(opacity .3s ease-out);
+    @include transition(opacity 1s ease-out);
     opacity: 1;
   }
 }

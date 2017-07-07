@@ -269,6 +269,7 @@ export class MoreComponent {
   }
 
   ngOnDestroy() {
+    this.audio.endSpeach();
     window.removeEventListener('resize', this.onResize.bind(this), false);
     document.removeEventListener('keydown', this.pillChoice, false);
   }

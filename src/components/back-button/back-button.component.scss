@@ -11,7 +11,7 @@ div#back-button-section {
 
   div.back-button-container {
     @include position(absolute, null $null $null);
-    @include transition(opacity .5s ease-out);
+    @include transition(opacity 1s ease-out);
     @include size(150px 50px);
 
     margin: 0 auto 25px;
@@ -96,11 +96,13 @@ div#back-button-section {
             bottom: $null;
           }
 
-          span:first-child {
-            @include transition(transform .3s ease-out .5s);
-            @include transform(translateX(-25px));
+          &.back {
+            span:first-child {
+              @include transition(transform .3s ease-out .5s);
+              @include transform(translateX(-25px));
 
-            position: absolute;
+              position: absolute;
+            }
           }
         }
 
@@ -135,8 +137,10 @@ div#back-button-section {
               @include transform($scale-complete);
             }
 
-            span:first-child {
-              @include transform(translateX(-35px));
+            &.back {
+              span:first-child {
+                @include transform(translateX(-35px));
+              }
             }
           }
         }

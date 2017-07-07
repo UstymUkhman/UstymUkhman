@@ -5,7 +5,7 @@ import { LetteringService      } from '../../services/lettering.service';
 
 @Component({
   selector: 'back-button',
-  inputs: ['active', 'backToMenu', 'showBackButton'],
+  inputs: ['active', 'backToMenu', 'showBackButton', 'buttonText'],
   templateUrl: 'components/back-button/back-button.component.html'
 })
 
@@ -18,7 +18,9 @@ export class BackButtonComponent {
     this.fadeOut           = false;
     this.active            = false;
 
+    this.backButton        = true;
     this.loading           = loading;
+    this.buttonText        = '< b@cK';
     this.lettering         = lettering;
     this.button            = button.nativeElement;
   }
@@ -31,10 +33,7 @@ export class BackButtonComponent {
     }
 
     if (this.backToMenu) {
-      setTimeout(() => {
-        this.fadeOut = true;
-      }, 3500);
-
+      setTimeout(() => { this.fadeOut = true; }, 3500);
       setTimeout(this.loading.backToMenu, 8500);
     }
   }

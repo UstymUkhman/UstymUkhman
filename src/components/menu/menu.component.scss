@@ -13,7 +13,7 @@ div.menu-section {
   }
 
   div.menu-area {
-    @include transition(opacity .5s ease-out);
+    @include transition(opacity 1s ease-out);
     opacity: 1;
 
     &.fade-out {
@@ -156,8 +156,7 @@ div.menu-section {
   }
 
   div.matrix-code {
-    @include position(absolute, $null);
-    margin: auto;
+    @include middle-align;
 
     &.hidden {
       display: none;

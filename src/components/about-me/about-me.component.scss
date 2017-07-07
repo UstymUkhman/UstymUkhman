@@ -7,7 +7,7 @@ div#about-me {
   display: block;
 
   p.about-text {
-    @include transition(opacity .5s ease-out);
+    @include transition(opacity 1s ease-out);
     @include position(absolute, $null);
     @include size(1050px 395px);
     @include white-rabbit;
