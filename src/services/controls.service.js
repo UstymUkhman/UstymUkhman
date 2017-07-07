@@ -91,9 +91,9 @@ export class ControlsService {
 
   keyHandler(code, pressed) {
     switch(code) {
-      case 32:
-        if (pressed) this.setGameMode();
-      break;
+      // case 32:
+      //   if (pressed) this.setGameMode();
+      // break;
 
       case 40: case 83:
         this.move.backward = pressed;

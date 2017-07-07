@@ -32,6 +32,7 @@ export class RabbitHoleComponent {
     this.hole       = rabbitHole.nativeElement;
     this.loader     = new THREE.JSONLoader();
     this.controls   = cameraControls;
+    this.guidelines = null;
     this.center     = 225;
 
     this.createScene();
@@ -349,6 +350,10 @@ export class RabbitHoleComponent {
 
   onKeyDown(event) {
     this.pressed = (event.keyCode === 13);
+
+    if (event.keyCode === 32) {
+      this.controls.setGameMode();
+    }
   }
 
   onKeyUp(event) {
@@ -390,12 +395,26 @@ export class RabbitHoleComponent {
     const isFullSize = window.outerWidth  >= minWidth &&
                        window.outerHeight >= minHeight;
 
-    if (isFullSize) {
-      // setTimeout(this.createCinematicIntro.bind(this), 100);
-    } else {
-      // Screen Message:
-      // Before continuing, please maximize your browser window.
+    this.guidelines = `
+      Welcome to the real world.##
+      Use [W], [A], [S], [D] keys to move and [ENTER] to interract with the enviroment.##
+    `;
+
+    if (!isFullSize) {
+      this.guidelines += `
+        It seems that your browser window is not fullsize.#
+        Please, be sure to maximize it in order to fully enjoy this experience.
+      `;
     }
+
+    this.guidelines += 'Press [SPACE] when you\'re ready.';
+
+    // if (isFullSize) {
+    //   setTimeout(this.createCinematicIntro.bind(this), 100);
+    // } else {
+    //   // Screen Message:
+    //   // Before continuing, please maximize your browser window.
+    // }
   }
 
   createCinematicIntro() {

@@ -2,9 +2,32 @@ div.rabbit-hole-component {
   @include position(absolute, $null);
   @include size($max);
 
-  background-image: radial-gradient(circle, transparent, $green);
-
   overflow: hidden;
   z-index: $z-max;
-  // cursor: none;
+
+  div.window-overlay {
+    @include position(absolute, $null);
+    @include size($max);
+
+    background-image: radial-gradient(circle, transparent, $green);
+    transition: opacity 1s linear;
+    opacity: 0;
+
+    &.visible {
+      opacity: 1;
+    }
+  }
+
+  div.guidelines-container {
+    @include middle-align;
+
+    p.info-text {
+      @include transform(translate(-$half, -$half));
+      @include white-rabbit;
+
+      position: absolute;
+      left: $half;
+      top: $half;
+    }
+  }
 }
