@@ -116,7 +116,7 @@ export class MoreComponent {
 
     };
 
-    jsonLoader.load('assets/pill.json', (geometry) => {
+    jsonLoader.load('assets/models/pill.json', (geometry) => {
       let pill = new Mesh(geometry, new MeshStandardMaterial(pillMaterial));
 
       if (color === this.BLUE) {

@@ -5,13 +5,14 @@ import { CommonModule        } from '@angular/common';
 
 import { RabbitHoleComponent } from './rabbit-hole.component';
 import { ControlsService     } from '../../services/controls.service';
+import { LetteringService    } from '../../services/lettering.service';
 
 
 @NgModule({
   imports      : [CommonModule],
-  providers    : [ControlsService],
   declarations : [RabbitHoleComponent],
-  exports      : [RabbitHoleComponent]
+  exports      : [RabbitHoleComponent],
+  providers    : [ControlsService, LetteringService]
 })
 
 

@@ -6,10 +6,9 @@ div.main-window {
 div.console {
   @include size(100%);
 
-  padding-top: 75px;
-  padding-left: 50px;
-
   z-index: $z-console;
+  padding-left: 50px;
+  padding-top: 75px;
 
   &.ready {
     background-color: $black;

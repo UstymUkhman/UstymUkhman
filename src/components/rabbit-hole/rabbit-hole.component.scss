@@ -9,8 +9,8 @@ div.rabbit-hole-component {
     @include position(absolute, $null);
     @include size($max);
 
-    background-image: radial-gradient(circle, transparent, $green);
-    transition: opacity 1s linear;
+    background-color: $dark-green-overlay;
+    transition: opacity 1s linear 2.5s;
     opacity: 0;
 
     &.visible {
@@ -22,12 +22,15 @@ div.rabbit-hole-component {
     @include middle-align;
 
     p.info-text {
-      @include transform(translate(-$half, -$half));
+      @include size(835px 70px);
       @include white-rabbit;
 
-      position: absolute;
-      left: $half;
-      top: $half;
+      position: relative;
+      margin-left: 50px;
+      margin-top: 75px;
+
+      &.dissolve { span { opacity: 0; } }
+      span { @include dissolve-text(314); }
     }
   }
 }

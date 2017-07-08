@@ -1,6 +1,6 @@
 export class SoundsService {
   playMusic() {
-    // this.music = new Audio('assets/music.mp3');
+    // this.music = new Audio('assets/audio/music.mp3');
     // this.music.autoplay = true;
     // this.music.volume = 0.05;
     // this.music.loop = true;
@@ -8,7 +8,7 @@ export class SoundsService {
   }
 
   playSpeach() {
-    this.speach = new Audio('assets/speech.wav');
+    this.speach = new Audio('assets/audio/speech.wav');
     this.speach.autoplay = true;
     this.speach.loop = false;
     this.speach.volume = 1;

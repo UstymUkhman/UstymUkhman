@@ -73,8 +73,17 @@ export class ControlsService {
       document.webkitExitPointerLock;
   }
 
+  enable(enable = true) {
+    this.controls.enabled = enable;
+    this.enabled = enable;
+  }
+
   changePointerLock() {
     this.controls.enabled = !this.controls.enabled;
+
+    if (!this.enabled) {
+      this.controls.enabled = false;
+    }
   }
 
   pointerLockError(event) {
@@ -91,10 +100,6 @@ export class ControlsService {
 
   keyHandler(code, pressed) {
     switch(code) {
-      // case 32:
-      //   if (pressed) this.setGameMode();
-      // break;
-
       case 40: case 83:
         this.move.backward = pressed;
       break;

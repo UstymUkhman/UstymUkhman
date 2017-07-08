@@ -1,6 +1,7 @@
 import * as THREE                from 'three';
 import { Component, ElementRef } from '@angular/core';
 import { ControlsService       } from '../../services/controls.service';
+import { LetteringService      } from '../../services/lettering.service';
 
 let OrbitControls = require('three-orbit-controls')(THREE);
 
@@ -12,28 +13,27 @@ let OrbitControls = require('three-orbit-controls')(THREE);
 
 
 export class RabbitHoleComponent {
-  constructor(rabbitHole, cameraControls) {
-    this.scene      = null;
-    this.camera     = null;
-    this.renderer   = null;
+  constructor(rabbitHole, cameraControls, lettering) {
+    this.scene       = null;
+    this.camera      = null;
+    this.renderer    = null;
+    this.intro       = false;
+    this.pressed     = false;
 
-    this.WHITE      = 0xFFFFFF;
-    this.LIGHTGRAY  = 0xDDDDDD;
-    this.DARKGREEN  = 0x406550;
-    this.DARKGRAY   = 0x333333;
-    this.BLACK      = 0x000000;
+    this.WHITE       = 0xFFFFFF;
+    this.LIGHTGRAY   = 0xDDDDDD;
+    this.DARKGREEN   = 0x406550;
+    this.DARKGRAY    = 0x333333;
+    this.BLACK       = 0x000000;
 
-    this.intro      = false;
-    this.error      = false;
-    this.pressed    = false;
-    this.WIDTH      = window.innerWidth;
-    this.HEIGHT     = window.innerHeight;
-
-    this.hole       = rabbitHole.nativeElement;
-    this.loader     = new THREE.JSONLoader();
-    this.controls   = cameraControls;
-    this.guidelines = null;
-    this.center     = 225;
+    this.hole        = rabbitHole.nativeElement;
+    this.loader      = new THREE.JSONLoader();
+    this.controls    = cameraControls;
+    this.lettering   = lettering;
+    this.showOverlay = false;
+    this.introPlayed = false;
+    this.guidelines  = null;
+    this.center      = 225;
 
     this.createScene();
     this.createCamera();
@@ -47,12 +47,12 @@ export class RabbitHoleComponent {
     this.createTable();
     this.createDoors();
 
-    this.createEventHandlers();
     this.createRenderer();
+    this.setResizeHandler();
+    this.createMessage();
 
     // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.createControls();
-    this.createMessage();
     this.animate();
   }
 
@@ -61,12 +61,11 @@ export class RabbitHoleComponent {
   }
 
   createCamera() {
-    this.camera = new THREE.PerspectiveCamera(8, this.WIDTH / this.HEIGHT, 1, 1000);
+    this.camera = new THREE.PerspectiveCamera(7, this.WIDTH / this.HEIGHT, 1, 1000);
     this.camera.rotation.x = -Math.PI / 4.465;
     this.camera.position.z = -5;
     // this.camera.position.z = 300;
 
-    window.camera = this.camera;
     this.scene.add(this.camera);
   }
 
@@ -99,7 +98,7 @@ export class RabbitHoleComponent {
 
   createFloor() {
     let textureLoader = new THREE.TextureLoader();
-    textureLoader.load('assets/floor.jpg', (texture) => {
+    textureLoader.load('assets/textures/floor.jpg', (texture) => {
 
       texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;
       texture.needsUpdate = true;
@@ -126,7 +125,7 @@ export class RabbitHoleComponent {
 
   createWalls() {
     let textureLoader = new THREE.TextureLoader();
-    textureLoader.load('assets/wall.jpg', (texture) => {
+    textureLoader.load('assets/textures/wall.jpg', (texture) => {
 
       const PI_2 = Math.PI / 2;
 
@@ -183,7 +182,7 @@ export class RabbitHoleComponent {
     this.scene.add(ceiling);
 
     let frontCeilLoader = new THREE.TextureLoader();
-    frontCeilLoader.load('assets/front_ceiling.jpg', (texture) => {
+    frontCeilLoader.load('assets/textures/front_ceiling.jpg', (texture) => {
 
       texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;
       texture.needsUpdate = true;
@@ -205,7 +204,7 @@ export class RabbitHoleComponent {
     });
 
     let sideCeilLoader = new THREE.TextureLoader();
-    sideCeilLoader.load('assets/side_ceiling.jpg', (texture) => {
+    sideCeilLoader.load('assets/textures/side_ceiling.jpg', (texture) => {
 
       texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;
       texture.needsUpdate = true;
@@ -228,7 +227,7 @@ export class RabbitHoleComponent {
   }
 
   createComputer() {
-    this.loader.load('assets/case.json', (geometry, materials) => {
+    this.loader.load('assets/models/case.json', (geometry, materials) => {
       const systemUnit = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
 
       systemUnit.position.set(-1, 0, -19);
@@ -236,7 +235,7 @@ export class RabbitHoleComponent {
       this.scene.add(systemUnit);
     });
 
-    this.loader.load('assets/keyboard.json', (geometry, materials) => {
+    this.loader.load('assets/models/keyboard.json', (geometry, materials) => {
       const keyboard = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
 
       keyboard.position.set(0, 0, -16.5);
@@ -244,7 +243,7 @@ export class RabbitHoleComponent {
       this.scene.add(keyboard);
     });
 
-    this.loader.load('assets/monitor.json', (geometry, materials) => {
+    this.loader.load('assets/models/monitor.json', (geometry, materials) => {
       const monitor = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
 
       monitor.position.set(0, 0, -16.5);
@@ -255,7 +254,7 @@ export class RabbitHoleComponent {
   }
 
   createTable() {
-    this.loader.load('assets/table.json', (geometry) => {
+    this.loader.load('assets/models/table.json', (geometry) => {
 
       const material = new THREE.MeshStandardMaterial({
         shading: THREE.SmoothShading,
@@ -277,8 +276,8 @@ export class RabbitHoleComponent {
   }
 
   createDoors() {
-    this.loader.load('assets/frame.json', (frameGeometry, frameMaterials) => {
-      this.loader.load('assets/door.json', (doorGeometry, doorMaterials) => {
+    this.loader.load('assets/models/frame.json', (frameGeometry, frameMaterials) => {
+      this.loader.load('assets/models/door.json', (doorGeometry, doorMaterials) => {
         const frontFrame = new THREE.Mesh(frameGeometry, new THREE.MultiMaterial(frameMaterials));
         const PI_2 = Math.PI / 2;
 
@@ -334,30 +333,47 @@ export class RabbitHoleComponent {
   }
 
   createEventHandlers() {
+    document.addEventListener('keydown', this.setKeyDownHandler.bind(this), false);
+    document.addEventListener('keyup', this.setKeyUpHandler.bind(this), false);
     window.addEventListener('resize', this.setResizeHandler.bind(this), false);
-    document.addEventListener('keydown', this.onKeyDown.bind(this), false);
-    document.addEventListener('keyup', this.onKeyUp.bind(this), false);
+  }
+
+  setKeyDownHandler(event) {
+    this.pressed = (event.keyCode === 13);
+
+    if (this.isFullSize && event.keyCode === 32) {
+      this.controls.setGameMode();
+    }
+
+    if (this.isFullSize && !this.introPlayed) {
+      this.showOverlay = true;
+      setTimeout(this.createCinematicIntro.bind(this), 2500);
+    }
+  }
+
+  setKeyUpHandler(event) {
+    this.pressed = false;
   }
 
   setResizeHandler() {
-    this.WIDTH  = window.innerWidth;
-    this.HEIGHT = window.innerHeight;
+    const minWidth  = screen.availWidth  - 5,
+          minHeight = screen.availHeight - 5;
+
+    this.WIDTH      = window.innerWidth;
+    this.HEIGHT     = window.innerHeight;
+
+    if (!this.isFullSize) {
+      this.isFullSize = window.outerWidth  >= minWidth &&
+                        window.outerHeight >= minHeight;
+    }
 
     this.renderer.setSize(this.WIDTH, this.HEIGHT);
     this.camera.aspect = this.WIDTH / this.HEIGHT;
     this.camera.updateProjectionMatrix();
   }
 
-  onKeyDown(event) {
-    this.pressed = (event.keyCode === 13);
-
-    if (event.keyCode === 32) {
-      this.controls.setGameMode();
-    }
-  }
-
-  onKeyUp(event) {
-    this.pressed = false;
+  setErrorHandler() {
+    console.error('Your shitty browser does not support Pointer Lock API.\nYou need to update it or use a better one: https://www.google.it/chrome/browser/desktop/');
   }
 
   createRenderer() {
@@ -371,13 +387,10 @@ export class RabbitHoleComponent {
   }
 
   createControls() {
-    this.error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
+    const error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
 
-    if (this.error) {
-      console.error(
-        `Your shitty browser does not support Pointer Lock API.\n
-        You need to update it or use a better one: https://www.google.it/chrome/browser/desktop/`
-      );
+    if (error) {
+      this.setErrorHandler();
     }
 
     this.controls.setBorders({
@@ -389,41 +402,26 @@ export class RabbitHoleComponent {
   }
 
   createMessage() {
-    const minWidth  = screen.availWidth  - 5,
-          minHeight = screen.availHeight - 5;
-
-    const isFullSize = window.outerWidth  >= minWidth &&
-                       window.outerHeight >= minHeight;
-
     this.guidelines = `
       Welcome to the real world.##
-      Use [W], [A], [S], [D] keys to move and [ENTER] to interract with the enviroment.##
+      Use [W], [A], [S], [D] to move and [ENTER] to interract with the enviroment.#####
     `;
 
-    if (!isFullSize) {
+    if (!this.isFullSize) {
       this.guidelines += `
-        It seems that your browser window is not fullsize.#
-        Please, be sure to maximize it in order to fully enjoy this experience.
+        It seems that your browser window is not full size.##
+        Please, be sure to maximize it in order to fully enjoy this experience.#####
       `;
     }
 
     this.guidelines += 'Press [SPACE] when you\'re ready.';
-
-    // if (isFullSize) {
-    //   setTimeout(this.createCinematicIntro.bind(this), 100);
-    // } else {
-    //   // Screen Message:
-    //   // Before continuing, please maximize your browser window.
-    // }
   }
 
   createCinematicIntro() {
     this.clock = new THREE.Clock();
     this.elapsedSpeed = 4.0;
 
-    setTimeout(() => {
-      this.intro = true;
-    }, 1000);
+    setTimeout(() => { this.intro = true; }, 1000);
   }
 
   animate() {
@@ -444,6 +442,8 @@ export class RabbitHoleComponent {
     this.camera.fov = this.getCameraFov();
 
     if (this.camera.fov === 50) {
+      this.controls.enable();
+      this.introPlayed = true;
       this.intro = false;
     }
 
@@ -474,21 +474,32 @@ export class RabbitHoleComponent {
 
     const elapsedTime = this.clock.getElapsedTime(),
           zoomSpeed   = elapsedTime * this.elapsedSpeed,
-          cameraFov   = zoomSpeed + 8;
+          cameraFov   = zoomSpeed + 7;
 
     return (cameraFov < 50) ? cameraFov : 50;
   }
 
+  ngAfterViewInit() {
+    this.lettering.animate(
+      this.hole.children[1].children[1].children[0],
+      50, this.createEventHandlers.bind(this)
+    );
+  }
+
   ngOnDestroy() {
+    document.removeEventListener('keydown', this.setKeyDownHandler.bind(this), false);
+    document.removeEventListener('keyup', this.setKeyUpHandler.bind(this), false);
     window.removeEventListener('resize', this.setResizeHandler.bind(this), false);
-    document.removeEventListener('keydown', this.onKeyDown.bind(this), false);
-    document.removeEventListener('keyup', this.onKeyUp.bind(this), false);
 
     cancelAnimationFrame(this.frame);
     this.controls.dispose();
   }
 
   static get parameters() {
-    return [[ElementRef], [ControlsService]];
+    return [[ElementRef], [ControlsService], [LetteringService]];
   }
 }
+
+// https://www.blenderguru.com/tutorials/photorealistic-wood
+// https://www.youtube.com/watch?v=3bQcAOPxSLY
+// #88a799

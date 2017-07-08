@@ -138,3 +138,15 @@
 @mixin visible-element {
   visibility: visible;
 }
+
+@mixin dissolve-text($letters) {
+  $dissolve-easing: cubic-bezier(0.645,  0.045, 0.355, 1.000);
+  @include transition(opacity 0.5s $dissolve-easing);
+
+  @for $i from 1 through $letters {
+    &:nth-child(#{$i}) {
+      $delay: getRandom(500, 2500);
+      transition-delay: #{$delay}ms;
+    }
+  }
+}
