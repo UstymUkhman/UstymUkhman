@@ -54,6 +54,9 @@ export class RabbitHoleComponent {
     // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.createControls();
     this.animate();
+
+    // this.createEventHandlers();
+    // this.controls.enable();
   }
 
   createScene() {
@@ -75,25 +78,15 @@ export class RabbitHoleComponent {
 
     firstLight.target.position.set(0, 0, this.center);
     firstLight.target.updateMatrixWorld();
-    firstLight.position.set(0, 500, -75);
+    firstLight.position.set(0, 250, -75);
     firstLight.distance = 750;
 
     const secondLight = firstLight.clone();
     secondLight.position.z = 525;
 
-    // const firstLightHelper = new THREE.DirectionalLightHelper(firstLight, 5);
-    // const secondLightHelper = new THREE.DirectionalLightHelper(secondLight, 5);
-
-    // this.scene.add(firstLightHelper);
-    // this.scene.add(secondLightHelper);
-
     this.scene.add(firstLight);
     this.scene.add(secondLight);
     this.scene.add(ambientLight);
-
-    // window.firstLight = firstLight;
-    // window.secondLight = secondLight;
-    // window.ambientLight = ambientLight;
   }
 
   createFloor() {
@@ -107,7 +100,7 @@ export class RabbitHoleComponent {
         map: texture,
         roughness: 1,
         metalness: 0,
-        opacity: 0.75,
+        opacity: 1,
 
         transparent: true,
         color: this.DARKGREEN,
@@ -278,19 +271,25 @@ export class RabbitHoleComponent {
   createDoors() {
     this.loader.load('assets/models/frame.json', (frameGeometry, frameMaterials) => {
       this.loader.load('assets/models/door.json', (doorGeometry, doorMaterials) => {
+        frameMaterials[0].color = new THREE.Color(0x496F61);
+        frameMaterials[1].color = new THREE.Color(0x496F61);
+
         const frontFrame = new THREE.Mesh(frameGeometry, new THREE.MultiMaterial(frameMaterials));
         const PI_2 = Math.PI / 2;
 
+        doorMaterials[0].color = new THREE.Color(0xEEEEEE);
+        doorMaterials[1].color = new THREE.Color(0x496F61);
+
         this.frontDoor = new THREE.Mesh(doorGeometry, new THREE.MultiMaterial(doorMaterials));
 
-        frontFrame.position.set(0, -14, 474.5);
+        frontFrame.position.set(0, -10.5, 475);
         frontFrame.rotation.y = Math.PI;
 
-        this.frontDoor.position.set(10, 0, 0);
+        this.frontDoor.position.set(8.3, 0, 0);
         this.frontDoor.rotation.y = Math.PI;
 
-        frontFrame.scale.set(20, 20, 20);
-        this.frontDoor.scale.set(20, 20, 20);
+        this.frontDoor.scale.set(4, 4, 4);
+        frontFrame.scale.set(4, 4, 4);
 
         this.scene.add(this.frontDoor);
         this.scene.add(frontFrame);
@@ -298,36 +297,40 @@ export class RabbitHoleComponent {
         const pitch = new THREE.Object3D();
         this.pivot = new THREE.Object3D();
 
-        this.pivot.position.set(-10, -14, 475);
+        this.pivot.position.set(-8.3, -10.5, 475.5);
         this.pivot.rotation.y = 0;
 
         this.pivot.add(this.frontDoor);
         this.scene.add(pitch);
         pitch.add(this.pivot);
 
-        for (let i = 0; i < 10; i++) {
-          const sideFrame = frontFrame.clone(),
-                sideDoor  = this.frontDoor.clone();
+        window.door = this.frontDoor;
+        window.frame = frontFrame;
+        window.pivot = this.pivot;
 
-          let positionZ = i * 50,
-              positionX = -24.5,
-              rotationY = PI_2;
+        // for (let i = 0; i < 10; i++) {
+        //   const sideFrame = frontFrame.clone(),
+        //         sideDoor  = this.frontDoor.clone();
 
-          if (i % 2) {
-            positionX = -positionX;
-            rotationY = -rotationY;
-            positionZ = (i - 1) * 50;
-          }
+        //   let positionZ = i * 50,
+        //       positionX = -24.5,
+        //       rotationY = PI_2;
 
-          sideFrame.position.set(positionX, -14, positionZ);
-          sideDoor.position.set(positionX, -14, positionZ);
+        //   if (i % 2) {
+        //     positionX = -positionX;
+        //     rotationY = -rotationY;
+        //     positionZ = (i - 1) * 50;
+        //   }
 
-          sideFrame.rotation.y = rotationY;
-          sideDoor.rotation.y = rotationY;
+        //   sideFrame.position.set(positionX, -14, positionZ);
+        //   sideDoor.position.set(positionX, -14, positionZ);
 
-          this.scene.add(sideFrame);
-          this.scene.add(sideDoor);
-        }
+        //   sideFrame.rotation.y = rotationY;
+        //   sideDoor.rotation.y = rotationY;
+
+        //   this.scene.add(sideFrame);
+        //   this.scene.add(sideDoor);
+        // }
       });
     });
   }
@@ -454,6 +457,9 @@ export class RabbitHoleComponent {
 
   openTheDoor() {
     if (this.pressed && this.pivot.rotation.y < 1.56) {
+      this.pivot.rotation.y += 0.01;
+
+    } else if (!this.pressed && this.pivot.rotation.y > 1) {
       this.pivot.rotation.y += 0.01;
 
     } else if (!this.pressed && this.pivot.rotation.y > 0) {
