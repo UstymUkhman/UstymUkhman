@@ -54,9 +54,6 @@ export class RabbitHoleComponent {
     // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.createControls();
     this.animate();
-
-    // this.createEventHandlers();
-    // this.controls.enable();
   }
 
   createScene() {
@@ -78,7 +75,7 @@ export class RabbitHoleComponent {
 
     firstLight.target.position.set(0, 0, this.center);
     firstLight.target.updateMatrixWorld();
-    firstLight.position.set(0, 250, -75);
+    firstLight.position.set(0, 300, -75);
     firstLight.distance = 750;
 
     const secondLight = firstLight.clone();
@@ -118,48 +115,61 @@ export class RabbitHoleComponent {
 
   createWalls() {
     let textureLoader = new THREE.TextureLoader();
-    textureLoader.load('assets/textures/wall.jpg', (texture) => {
+    textureLoader.load('assets/textures/wall.png', (emptyWall) => {
+      textureLoader.load('assets/textures/wall.jpg', (fullWall) => {
 
-      const PI_2 = Math.PI / 2;
+        const PI_2 = Math.PI / 2;
 
-      let directTexture = texture.clone(),
-          sideTexture   = texture.clone();
+        emptyWall.wrapS = emptyWall.wrapT = THREE.MirroredRepeatWrapping;
+        fullWall.wrapS = fullWall.wrapT = THREE.MirroredRepeatWrapping;
 
-      directTexture.wrapS = directTexture.wrapT = THREE.MirroredRepeatWrapping;
-      sideTexture.wrapS   = sideTexture.wrapT   = THREE.MirroredRepeatWrapping;
+        emptyWall.needsUpdate = true;
+        fullWall.needsUpdate = true;
 
-      directTexture.needsUpdate = true;
-      sideTexture.needsUpdate   = true;
+        emptyWall.repeat.set(1, 1);
+        fullWall.repeat.set(1, 1);
 
-      directTexture.repeat.set(1, 1);
-      sideTexture.repeat.set(10, 1);
+        const geometry     = new THREE.PlaneGeometry( 50, 65, 1, 10),
+              fullMaterial = new THREE.MeshBasicMaterial({ map: fullWall }),
 
-      let directGeometry = new THREE.PlaneGeometry( 50, 65, 1, 10),
-          sideGeometry   = new THREE.PlaneGeometry(500, 65, 1, 10);
+              emptyMaterial = new THREE.MeshBasicMaterial({
+                alphaMap: emptyWall,
+                transparent: true,
+                map: emptyWall,
+                opacity: 10,
+              });
 
-      let directMaterial = new THREE.MeshBasicMaterial({ map: directTexture }),
-          sideMaterial   = new THREE.MeshBasicMaterial({ map: sideTexture });
+        const backWall  = new THREE.Mesh(geometry, emptyMaterial),
+              frontWall = new THREE.Mesh(geometry, fullMaterial);
 
-      let frontWall      = new THREE.Mesh(directGeometry, directMaterial),
-          backWall       = new THREE.Mesh(directGeometry, directMaterial),
-          leftWall       = new THREE.Mesh(sideGeometry,   sideMaterial),
-          rightWall      = new THREE.Mesh(sideGeometry,   sideMaterial);
+        frontWall.position.set(0, 18.5, this.center - 250);
+        backWall.position.set(0, 18.5, this.center + 250);
+        backWall.rotateY(Math.PI);
 
-      frontWall.position.set(0, 18.5, this.center - 250);
+        this.scene.add(frontWall);
+        this.scene.add(backWall);
 
-      backWall.position.set(0, 18.5, this.center + 250);
-      backWall.rotateY(Math.PI);
+        for (let i = 0; i < 20; i++) {
+          const material = (i % 4 > 1) ? emptyMaterial : fullMaterial,
+                wall     = new THREE.Mesh(geometry, material);
 
-      leftWall.position.set(-25, 18.5, this.center);
-      leftWall.rotateY(PI_2);
+          let positionZ = i * 25,
+              rotationY = PI_2,
+              positionX = -25;
 
-      rightWall.position.set(25, 18.5, this.center);
-      rightWall.rotateY(-PI_2);
+          if (i % 2) {
+            positionX = 25;
+            rotationY = -PI_2;
+            positionZ = (i - 1) * 25;
+          }
 
-      this.scene.add(frontWall);
-      this.scene.add(rightWall);
-      this.scene.add(backWall);
-      this.scene.add(leftWall);
+          wall.position.set(positionX, 18.5, positionZ);
+          wall.rotateY(rotationY);
+          this.scene.add(wall);
+
+          window.wall = wall;
+        }
+      });
     });
   }
 
@@ -285,7 +295,7 @@ export class RabbitHoleComponent {
         frontFrame.position.set(0, -10.5, 475);
         frontFrame.rotation.y = Math.PI;
 
-        this.frontDoor.position.set(8.3, 0, 0);
+        this.frontDoor.position.set(8.5, 0, 0);
         this.frontDoor.rotation.y = Math.PI;
 
         this.frontDoor.scale.set(4, 4, 4);
@@ -297,40 +307,36 @@ export class RabbitHoleComponent {
         const pitch = new THREE.Object3D();
         this.pivot = new THREE.Object3D();
 
-        this.pivot.position.set(-8.3, -10.5, 475.5);
+        this.pivot.position.set(-8.5, -10.4, 475.4);
         this.pivot.rotation.y = 0;
 
         this.pivot.add(this.frontDoor);
         this.scene.add(pitch);
         pitch.add(this.pivot);
 
-        window.door = this.frontDoor;
-        window.frame = frontFrame;
-        window.pivot = this.pivot;
+        for (let i = 0; i < 10; i++) {
+          const sideFrame = frontFrame.clone(),
+                sideDoor  = this.frontDoor.clone();
 
-        // for (let i = 0; i < 10; i++) {
-        //   const sideFrame = frontFrame.clone(),
-        //         sideDoor  = this.frontDoor.clone();
+          let positionZ = i * 50 + 50,
+              rotationY = PI_2,
+              positionX = -25;
 
-        //   let positionZ = i * 50,
-        //       positionX = -24.5,
-        //       rotationY = PI_2;
+          if (i % 2) {
+            positionX = -positionX;
+            rotationY = -rotationY;
+            positionZ = (i - 1) * 50 + 50;
+          }
 
-        //   if (i % 2) {
-        //     positionX = -positionX;
-        //     rotationY = -rotationY;
-        //     positionZ = (i - 1) * 50;
-        //   }
+          sideFrame.position.set(positionX, -10.5, positionZ);
+          sideDoor.position.set(positionX, -10.4, positionZ);
 
-        //   sideFrame.position.set(positionX, -14, positionZ);
-        //   sideDoor.position.set(positionX, -14, positionZ);
+          sideFrame.rotation.y = rotationY;
+          sideDoor.rotation.y = rotationY;
 
-        //   sideFrame.rotation.y = rotationY;
-        //   sideDoor.rotation.y = rotationY;
-
-        //   this.scene.add(sideFrame);
-        //   this.scene.add(sideDoor);
-        // }
+          this.scene.add(sideFrame);
+          this.scene.add(sideDoor);
+        }
       });
     });
   }
@@ -476,7 +482,7 @@ export class RabbitHoleComponent {
   }
 
   getCameraFov() {
-    this.elapsedSpeed += this.camera.fov < 20 ? 0.01 : 0.075;
+    this.elapsedSpeed += this.camera.fov < 20 ? 0.01 : 0.1;
 
     const elapsedTime = this.clock.getElapsedTime(),
           zoomSpeed   = elapsedTime * this.elapsedSpeed,
@@ -488,7 +494,7 @@ export class RabbitHoleComponent {
   ngAfterViewInit() {
     this.lettering.animate(
       this.hole.children[1].children[1].children[0],
-      50, this.createEventHandlers.bind(this)
+      50, this.createEventHandlers.bind(this), null
     );
   }
 
@@ -506,6 +512,5 @@ export class RabbitHoleComponent {
   }
 }
 
-// https://www.blenderguru.com/tutorials/photorealistic-wood
 // https://www.youtube.com/watch?v=3bQcAOPxSLY
 // #88a799

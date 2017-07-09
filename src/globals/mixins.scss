@@ -145,7 +145,7 @@
 
   @for $i from 1 through $letters {
     &:nth-child(#{$i}) {
-      $delay: getRandom(500, 2500);
+      $delay: getRandom(500, 2000);
       transition-delay: #{$delay}ms;
     }
   }

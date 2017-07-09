@@ -10,7 +10,7 @@ div.rabbit-hole-component {
     @include size($max);
 
     background-color: $dark-green-overlay;
-    transition: opacity 1s linear 2.5s;
+    transition: opacity 2s linear 2.5s;
     opacity: 0;
 
     &.visible {

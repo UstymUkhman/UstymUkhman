@@ -19,7 +19,7 @@ export class SoundsService {
   }
 
   endSpeach() {
-    this.speach.pause();
+    // this.speach.pause();
     this.speach = null;
     // this.music.play();
   }

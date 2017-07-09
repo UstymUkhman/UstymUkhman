@@ -1,5 +1,5 @@
 export class LetteringService {
-  animate(message, slowTyping = 0, callback) {
+  animate(message, slowTyping = 0, callback, timeout = 1000) {
     if (!message) return;
 
     this.index       = 0;
@@ -15,6 +15,7 @@ export class LetteringService {
 
     if (this.hasCallback) {
       this.callback = callback;
+      this.timeout  = timeout;
     }
 
     this.getLetters();
@@ -65,7 +66,7 @@ export class LetteringService {
       cancelAnimationFrame(this.letteringID);
 
       if (this.hasCallback) {
-        setTimeout(this.callback, 1000);
+        setTimeout(this.callback, this.timeout);
         return;
       }
     }
