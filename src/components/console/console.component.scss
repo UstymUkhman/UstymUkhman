@@ -10,6 +10,10 @@ div.console {
   padding-left: 50px;
   padding-top: 75px;
 
+  @include breakpoint($mobile) {
+    padding: 0;
+  }
+
   &.ready {
     background-color: $black;
   }

@@ -348,13 +348,14 @@ export class RabbitHoleComponent {
   }
 
   setKeyDownHandler(event) {
+    const ready = this.isFullSize && event.keyCode === 32;
     this.pressed = (event.keyCode === 13);
 
-    if (this.isFullSize && event.keyCode === 32) {
+    if (ready) {
       this.controls.setGameMode();
     }
 
-    if (this.isFullSize && !this.introPlayed) {
+    if (ready && !this.introPlayed) {
       this.showOverlay = true;
       setTimeout(this.createCinematicIntro.bind(this), 2500);
     }
@@ -494,7 +495,7 @@ export class RabbitHoleComponent {
   ngAfterViewInit() {
     this.lettering.animate(
       this.hole.children[1].children[1].children[0],
-      50, this.createEventHandlers.bind(this), null
+      100, this.createEventHandlers.bind(this), null
     );
   }
 

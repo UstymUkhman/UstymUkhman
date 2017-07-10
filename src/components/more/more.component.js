@@ -123,7 +123,10 @@ export class MoreComponent {
         pill.rotation.set(0, -1.5, -0.4);
         pill.position.set(2.5, 0, 2);
         this.bluePill = pill;
-        this.showBlue = true;
+
+        setTimeout(() => {
+          this.showBlue = true;
+        }, 2800);
 
       } else {
         pill.rotation.set(-0.05, 1.3, 0.4);
@@ -133,7 +136,7 @@ export class MoreComponent {
         setTimeout(() => {
           this.showRed = true;
           setTimeout(this.createChoice.bind(this), 8500);
-        }, 7500);
+        }, 9800);
       }
 
       pill.scale.set(0.2, 0.2, 0.2);
@@ -232,7 +235,7 @@ export class MoreComponent {
         this.bluePill.rotation.z -= 0.01875;
 
     } else if (this.choice && this.redPill.position.z < 5) {
-      this.redPill.position.z += 0.125;
+      this.redPill.position.z += 0.0625;
 
       if (this.redPill.position.x < 0)
         this.redPill.position.x += 0.0625;
@@ -241,7 +244,7 @@ export class MoreComponent {
         this.redPill.rotation.y -= 0.0125;
 
       if (this.redPill.rotation.z < 1.5)
-        this.redPill.rotation.z += 0.0025;
+        this.redPill.rotation.z += 0.025;
 
     } else {
       setTimeout(this.loading.loadPillChoice.bind(this.loading), 8500, this.choice);

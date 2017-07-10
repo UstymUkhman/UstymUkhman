@@ -12,10 +12,6 @@ import { LoadingService        } from '../../services/loading.service';
 
     <router-outlet></router-outlet>
   `
-
-  // template: `
-  //   <router-outlet></router-outlet>
-  // `
 })
 
 

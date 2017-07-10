@@ -1,5 +1,5 @@
 div.screen-overlay {
-  @include position(absolute, 0);
+  @include position(absolute, $null);
 
   background-image: url(../assets/overlay.png);
   background-position: top left;
@@ -7,6 +7,10 @@ div.screen-overlay {
 
   z-index: $z-screen;
   display: none;
+
+  @include breakpoint($mobile) {
+    pointer-events: none;
+  }
 
   &.ready {
     display: block;

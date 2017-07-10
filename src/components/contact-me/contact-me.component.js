@@ -49,7 +49,7 @@ export class ContactMeComponent {
       this.fadeOut          = true;
       this.startRaining     = false;
       this.removeMatrixRain = true;
-    }, 2000);
+    }, 3500);
   }
 
   checkValidCode(code) {

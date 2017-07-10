@@ -25,6 +25,11 @@ div.menu-section {
     margin-left: 100px;
     height: 100%;
 
+    @include breakpoint($mobile) {
+      padding: 50px 0;
+      margin-left: 0;
+    }
+
     &.hidden {
       div.menu-item {
         @include hidden-element;
@@ -40,6 +45,10 @@ div.menu-section {
       margin: auto;
       height: 25vh;
 
+      @include breakpoint($mobile) {
+        height: 20vh;
+      }
+
       div.item-box {
         @include transform(translateY(-50%));
         @include size(500px 130px);
@@ -47,6 +56,17 @@ div.menu-section {
         text-align: center;
         position: relative;
         top: 50%;
+
+        @include breakpoint($mobile) {
+          @include size(400px 120px);
+          @include transform(none);
+
+          margin: $null auto;
+          width: $half;
+
+          right: 8.8%;
+          left: $null;
+        }
 
         &:before, &:after,
         p.item:before,
@@ -94,6 +114,10 @@ div.menu-section {
           line-height: 130px;
           font-size: 50px;
           color: $green;
+
+          @include breakpoint($mobile) {
+            line-height: 120px;
+          }
 
           &:before, &:after {
             @include transform(scale3d(0, 1, 1));
@@ -153,6 +177,14 @@ div.menu-section {
   div.matrix-rain {
     @include position(absolute, $null auto $null $half);
     @include size($half $max);
+
+    @include breakpoint($mobile) {
+      overflow: hidden;
+      width: $max;
+
+      right: $null;
+      left: $null;
+    }
   }
 
   div.matrix-code {
