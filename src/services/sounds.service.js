@@ -14,7 +14,10 @@ export class SoundsService {
     this.speach.volume = 1;
     this.speach.onended = this.endSpeach.bind(this);
 
-    this.reduceInterval = setInterval(this.reduceMusicVolume.bind(this), 500);
+    if (this.music) {
+      this.reduceInterval = setInterval(this.reduceMusicVolume.bind(this), 500);
+    }
+
     this.speach.load();
   }
 
@@ -40,6 +43,10 @@ export class SoundsService {
     if (this.speach) {
       this.speach.pause();
       this.speach = null;
+
+      if (!this.music) {
+        this.playMusic();
+      }
 
       this.music.play();
       this.raiseInterval = setInterval(this.raiseMusicVolume.bind(this), 500);

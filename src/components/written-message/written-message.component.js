@@ -46,7 +46,7 @@ export class WrittenMessageComponent {
   }
 
   showMessage() {
-    this.lettering.animate(this.message, 150, this.prepareMessage.bind(this), 2000);
+    this.lettering.animate(this.message, 100, this.prepareMessage.bind(this), 2000);
   }
 
   ngOnChanges() {

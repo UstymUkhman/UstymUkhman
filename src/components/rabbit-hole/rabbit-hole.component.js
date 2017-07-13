@@ -166,8 +166,6 @@ export class RabbitHoleComponent {
           wall.position.set(positionX, 18.5, positionZ);
           wall.rotateY(rotationY);
           this.scene.add(wall);
-
-          window.wall = wall;
         }
       });
     });
@@ -258,7 +256,6 @@ export class RabbitHoleComponent {
 
   createTable() {
     this.loader.load('assets/models/table.json', (geometry) => {
-
       const material = new THREE.MeshStandardMaterial({
         shading: THREE.SmoothShading,
         transparent: false,
@@ -273,7 +270,6 @@ export class RabbitHoleComponent {
       table.position.set(0, -19.8, -14.1);
       table.rotateY(Math.PI / 2);
       table.scale.set(6, 6, 6);
-
       this.scene.add(table);
     });
   }
@@ -295,7 +291,7 @@ export class RabbitHoleComponent {
         frontFrame.position.set(0, -10.5, 475);
         frontFrame.rotation.y = Math.PI;
 
-        this.frontDoor.position.set(8.5, 0, 0);
+        this.frontDoor.position.set(8.75, 0, 0);
         this.frontDoor.rotation.y = Math.PI;
 
         this.frontDoor.scale.set(4, 4, 4);
@@ -307,7 +303,7 @@ export class RabbitHoleComponent {
         const pitch = new THREE.Object3D();
         this.pivot = new THREE.Object3D();
 
-        this.pivot.position.set(-8.5, -10.4, 475.4);
+        this.pivot.position.set(-8.75, -10.4, 474.75);
         this.pivot.rotation.y = 0;
 
         this.pivot.add(this.frontDoor);
@@ -319,17 +315,19 @@ export class RabbitHoleComponent {
                 sideDoor  = this.frontDoor.clone();
 
           let positionZ = i * 50 + 50,
-              rotationY = PI_2,
-              positionX = -25;
+              doorPositionX = -24.8,
+              framePositionX = -25,
+              rotationY = PI_2;
 
           if (i % 2) {
-            positionX = -positionX;
-            rotationY = -rotationY;
+            framePositionX = -framePositionX;
+            doorPositionX = -doorPositionX;
             positionZ = (i - 1) * 50 + 50;
+            rotationY = -rotationY;
           }
 
-          sideFrame.position.set(positionX, -10.5, positionZ);
-          sideDoor.position.set(positionX, -10.4, positionZ);
+          sideFrame.position.set(framePositionX, -10.5, positionZ);
+          sideDoor.position.set(doorPositionX, -10.4, positionZ);
 
           sideFrame.rotation.y = rotationY;
           sideDoor.rotation.y = rotationY;
@@ -348,8 +346,8 @@ export class RabbitHoleComponent {
   }
 
   setKeyDownHandler(event) {
-    const ready = this.isFullSize && event.keyCode === 32;
-    this.pressed = (event.keyCode === 13);
+    const ready = this.isFullSize && event.keyCode === 13;
+    this.pressed = (event.keyCode === 32);
 
     if (ready) {
       this.controls.setGameMode();
@@ -413,8 +411,9 @@ export class RabbitHoleComponent {
 
   createMessage() {
     this.guidelines = `
-      Welcome to the real world.##
-      Use [W], [A], [S], [D] to move and [ENTER] to interract with the enviroment.#####
+      Welcome to the real world.###
+      Use [W], [A], [S], [D] keys to move and drag you mouse to look around.##
+      Use [SPACE] to interact with the enviroment.#####
     `;
 
     if (!this.isFullSize) {
@@ -424,7 +423,7 @@ export class RabbitHoleComponent {
       `;
     }
 
-    this.guidelines += 'Press [SPACE] when you\'re ready.';
+    this.guidelines += 'Press [ENTER] when you\'re ready.';
   }
 
   createCinematicIntro() {
@@ -483,7 +482,7 @@ export class RabbitHoleComponent {
   }
 
   getCameraFov() {
-    this.elapsedSpeed += this.camera.fov < 20 ? 0.01 : 0.1;
+    this.elapsedSpeed += this.camera.fov < 20 ? 0.01 : 0.06;
 
     const elapsedTime = this.clock.getElapsedTime(),
           zoomSpeed   = elapsedTime * this.elapsedSpeed,
@@ -495,7 +494,7 @@ export class RabbitHoleComponent {
   ngAfterViewInit() {
     this.lettering.animate(
       this.hole.children[1].children[1].children[0],
-      100, this.createEventHandlers.bind(this), null
+      50, this.createEventHandlers.bind(this), null
     );
   }
 
@@ -512,6 +511,3 @@ export class RabbitHoleComponent {
     return [[ElementRef], [ControlsService], [LetteringService]];
   }
 }
-
-// https://www.youtube.com/watch?v=3bQcAOPxSLY
-// #88a799

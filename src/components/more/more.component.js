@@ -223,6 +223,7 @@ export class MoreComponent {
     this.renderer.render(this.scene, this.camera);
 
     if (!this.choice && this.bluePill.position.z < 5) {
+      this.redPill.material.opacity -= 0.015;
       this.bluePill.position.z += 0.0625;
 
       if (this.bluePill.position.x > 0)
@@ -235,6 +236,7 @@ export class MoreComponent {
         this.bluePill.rotation.z -= 0.01875;
 
     } else if (this.choice && this.redPill.position.z < 5) {
+      this.bluePill.material.opacity -= 0.015;
       this.redPill.position.z += 0.0625;
 
       if (this.redPill.position.x < 0)

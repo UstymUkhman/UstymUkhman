@@ -59,7 +59,7 @@ export class MyWorksComponent {
     if (++this.projectIndex < this.worksList.length)
       this.lettering.animate(
         this.projectsSources[this.projectIndex].children[1],
-        100, this.prepareWorksList.bind(this)
+        50, this.prepareWorksList.bind(this)
       );
 
     else {

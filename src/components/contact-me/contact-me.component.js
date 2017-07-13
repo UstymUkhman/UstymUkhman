@@ -93,7 +93,7 @@ export class ContactMeComponent {
     if (++this.contactIndex < this.contactsList.length)
       this.lettering.animate(
         this.contactSources[this.contactIndex].children[1],
-        100, this.prepareContactsList.bind(this)
+        50, this.prepareContactsList.bind(this)
       );
 
     else {
