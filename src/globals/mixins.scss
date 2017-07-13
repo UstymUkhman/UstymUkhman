@@ -32,28 +32,32 @@
   -webkit-transform: $animation;
   -moz-transform: $animation;
   -ms-transform: $animation;
+  -o-transform: $animation;
   transform: $animation;
 }
 
 @mixin transition($animation...) {
   -webkit-transition: $animation;
   -moz-transition: $animation;
-  -ms-transition: $animation;
+  -o-transition: $animation;
   transition: $animation;
 }
 
 @mixin transition-property($property) {
   $webkit-property: stringReplace("#{-webkit-$property}");
   $moz-property: stringReplace("#{-moz-$property}");
+  $o-property: stringReplace("#{-o-$property}");
 
   -webkit-transition-property: $webkit-property;
   -moz-transition-property: $moz-property;
+  -o-transition-property: $o-property;
   transition-property: $property;
 }
 
 @mixin transition-timing-function($function) {
   -webkit-transition-timing-function: $function;
   -moz-transition-timing-function: $function;
+  -o-transition-timing-function: $function;
   transition-timing-function: $function;
 }
 

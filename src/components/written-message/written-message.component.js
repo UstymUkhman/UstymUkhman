@@ -29,7 +29,7 @@ export class WrittenMessageComponent {
     const delay = this.currentIndex < 0 ? 3000 : 1500;
 
     if (this.start && this.messageList[++this.currentIndex]) {
-      setTimeout(this.showMessage.bind(this), delay);
+      this.showTimeout = setTimeout(this.showMessage.bind(this), delay);
 
     } else if (this.currentIndex === this.messageList.length) {
       this.dissolve = true;
@@ -46,8 +46,12 @@ export class WrittenMessageComponent {
   }
 
   skipMessages() {
+    clearTimeout(this.showTimeout);
     this.consoleReady.emit(true);
-    this.messageElement.remove();
+
+    setTimeout(() => {
+      this.messageElement.remove();
+    }, 1000);
   }
 
   showMessage() {

@@ -22,18 +22,26 @@ div.matrix-rain-container {
 
     @for $i from 1 through 3 {
       $current-size: #{nth($code-sizes, $i)};
+      $animation: deep-drop;
       $margin: -0.5%;
       $z: 1;
 
       @if $i == 2 {
+        $animation: drop;
         $margin: 0%;
         $z: 2;
       } @else if $i == 3 {
+        $animation: drop;
         $margin: -0.75%;
         $z: 3;
       }
 
       &.column-size-#{$current-size} {
+        -webkit-animation-name: $animation;
+        -moz-animation-name: $animation;
+        -o-animation-name: $animation;
+        animation-name: $animation;
+
         margin-left: $margin;
         z-index: $z;
       }
@@ -105,7 +113,26 @@ div.matrix-rain-container {
       position: absolute;
       left: unquote("#{$i * 10}%");
       transform: translateY(-110%);
-      animation: drop $duration linear $delay infinite;
+
+      -webkit-animation-duration: $duration;
+      -moz-animation-duration: $duration;
+      -o-animation-duration: $duration;
+      animation-duration: $duration;
+
+      -webkit-animation-timing-function: linear;
+      -moz-animation-timing-function: linear;
+      -o-animation-timing-function: linear;
+      animation-timing-function: linear;
+
+      -webkit-animation-delay: $delay;
+      -moz-animation-delay: $delay;
+      -o-animation-delay: $delay;
+      animation-delay: $delay;
+
+      -webkit-animation-iteration-count: infinite;
+      -moz-animation-iteration-count: infinite;
+      -o-animation-iteration-count: infinite;
+      animation-iteration-count: infinite;
     }
   }
 }
@@ -113,4 +140,9 @@ div.matrix-rain-container {
 @keyframes drop {
   from { transform: translateY(-100%); }
   to { transform: translateY(100%); }
+}
+
+@keyframes deep-drop {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(175%); }
 }
