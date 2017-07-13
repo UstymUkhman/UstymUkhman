@@ -139,10 +139,10 @@ div.matrix-rain-container {
 
 @keyframes drop {
   from { transform: translateY(-100%); }
-  to { transform: translateY(100%); }
+  to   { transform: translateY(100%);  }
 }
 
 @keyframes deep-drop {
   from { transform: translateY(-100%); }
-  to { transform: translateY(175%); }
+  to   { transform: translateY(175%);  }
 }

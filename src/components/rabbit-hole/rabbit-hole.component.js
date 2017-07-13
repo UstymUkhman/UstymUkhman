@@ -346,6 +346,8 @@ export class RabbitHoleComponent {
   }
 
   setKeyDownHandler(event) {
+    if (this.intro) return;
+
     const ready = this.isFullSize && event.keyCode === 13;
     this.pressed = (event.keyCode === 32);
 
@@ -364,8 +366,8 @@ export class RabbitHoleComponent {
   }
 
   setResizeHandler() {
-    const minWidth  = screen.availWidth  - 5,
-          minHeight = screen.availHeight - 5;
+    const minWidth  = screen.availWidth  - 16,
+          minHeight = screen.availHeight - 16;
 
     this.WIDTH      = window.innerWidth;
     this.HEIGHT     = window.innerHeight;

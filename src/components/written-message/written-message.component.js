@@ -68,7 +68,6 @@ export class WrittenMessageComponent {
   }
 
   ngOnDestroy() {
-    this.audio.endSpeach();
     document.removeEventListener('keydown', this.skipMessages.bind(this), false);
   }
 

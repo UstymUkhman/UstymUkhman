@@ -4,7 +4,7 @@
   <div class="menu-area menu-items" [ngClass]="{'hidden': hiddenItems, 'fade-out': fadeOutArea}">
     <div *ngFor="let page of pages; let p = index" class="menu-item">
 
-      <div class="item-box" [class.active]='p === currentItem'>
+      <div class="item-box" [ngClass]="{'active': p === currentItem, 'selected': p === settedSection}">
         <div class="item-background"></div>
         <p class="item">{{ page }}</p>
       </div>
@@ -17,7 +17,6 @@
   </div>
 
   <div class="matrix-code">
-    <!--  (codeRunned)='' -->
-    <matrix-code [runOverlay]='settedSection'></matrix-code>
+    <matrix-code [runOverlay]='settedSection !== null'></matrix-code>
   </div>
 </div>

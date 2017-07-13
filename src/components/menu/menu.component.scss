@@ -1,4 +1,6 @@
+$flash-easing: cubic-bezier(0.075,  0.820, 0.165, 1.000);
 $scale-complete: scale3d(1, 1, 1);
+
 $animaiton-duration: .15s;
 $animaiton-delay: .15s;
 $border-size: 5px;
@@ -170,6 +172,15 @@ div.menu-section {
             }
           }
         }
+
+        &.selected {
+          div.item-background {
+            -webkit-animation: flash 100ms $flash-easing;
+            -moz-animation: flash 100ms $flash-easing;
+            -o-animation: flash 100ms $flash-easing;
+            animation: flash 100ms $flash-easing;
+          }
+        }
       }
     }
   }
@@ -194,4 +205,10 @@ div.menu-section {
       display: none;
     }
   }
+}
+
+@keyframes flash {
+  0%   { background-color: $dark-green;   }
+  50%  { background-color: $energy-green; }
+  100% { background-color: $dark-green;   }
 }

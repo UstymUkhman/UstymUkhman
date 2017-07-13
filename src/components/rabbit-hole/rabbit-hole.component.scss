@@ -30,7 +30,7 @@ div.rabbit-hole-component {
       margin-top: 75px;
 
       &.dissolve { span { opacity: 0; } }
-      span { @include dissolve-text(354); }
+      span { @include dissolve-text(362); }
     }
   }
 }
