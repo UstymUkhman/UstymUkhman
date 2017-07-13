@@ -45,13 +45,27 @@ export class WrittenMessageComponent {
     }
   }
 
+  skipMessages() {
+    this.consoleReady.emit(true);
+    this.messageElement.remove();
+  }
+
   showMessage() {
-    this.lettering.animate(this.message, 100, this.prepareMessage.bind(this), 2000);
+    this.lettering.animate(this.message, 150, this.prepareMessage.bind(this), 2000);
+  }
+
+  ngAfterViewInit() {
+    document.addEventListener('keydown', this.skipMessages.bind(this), false);
   }
 
   ngOnChanges() {
     this.message = this.messageElement.firstChild.children[0];
     this.prepareMessage();
+  }
+
+  ngOnDestroy() {
+    this.audio.endSpeach();
+    document.removeEventListener('keydown', this.skipMessages.bind(this), false);
   }
 
   static get parameters() {
