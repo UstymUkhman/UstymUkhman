@@ -1,7 +1,7 @@
 <div id="back-button-section">
   <div class="back-button-container" [class.fadeOut]='fadeOut'>
     <div class="button-border">
-      <div class="button-box" [class.active]='active'>
+      <div class="button-box" [ngClass]="{'active': active, 'selected': backToMenu}">
 
         <div class="button-background"></div>
         <p class="button" [class.back]='backButton'>{{ buttonText }}</p>

@@ -144,7 +144,22 @@ div#back-button-section {
             }
           }
         }
+
+        &.selected {
+          div.button-background {
+            -webkit-animation: flash 100ms $flash-easing;
+            -moz-animation: flash 100ms $flash-easing;
+            -o-animation: flash 100ms $flash-easing;
+            animation: flash 100ms $flash-easing;
+          }
+        }
       }
     }
   }
+}
+
+@keyframes flash {
+  0%   { background-color: $dark-green;   }
+  50%  { background-color: $energy-green; }
+  100% { background-color: $dark-green;   }
 }
