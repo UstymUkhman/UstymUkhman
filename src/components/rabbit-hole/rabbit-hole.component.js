@@ -3,8 +3,6 @@ import { Component, ElementRef } from '@angular/core';
 import { ControlsService       } from '../../services/controls.service';
 import { LetteringService      } from '../../services/lettering.service';
 
-let OrbitControls = require('three-orbit-controls')(THREE);
-
 
 @Component({
   selector: 'rabbit-hole',
@@ -14,26 +12,35 @@ let OrbitControls = require('three-orbit-controls')(THREE);
 
 export class RabbitHoleComponent {
   constructor(rabbitHole, cameraControls, lettering) {
-    this.scene       = null;
-    this.camera      = null;
-    this.renderer    = null;
-    this.intro       = false;
-    this.pressed     = false;
+    this.showOverlay  = false;
+    this.introPlayed  = false;
+    this.pressed      = false;
+    this.intro        = false;
+    this.selectedDoor = null;
+    this.guidelines   = null;
 
-    this.WHITE       = 0xFFFFFF;
-    this.LIGHTGRAY   = 0xDDDDDD;
-    this.DARKGREEN   = 0x406550;
-    this.DARKGRAY    = 0x333333;
-    this.BLACK       = 0x000000;
+    this.scene    = null;
+    this.camera   = null;
+    this.renderer = null;
 
-    this.hole        = rabbitHole.nativeElement;
-    this.loader      = new THREE.JSONLoader();
-    this.controls    = cameraControls;
-    this.lettering   = lettering;
-    this.showOverlay = false;
-    this.introPlayed = false;
-    this.guidelines  = null;
-    this.center      = 225;
+    this.WHITE     = 0xFFFFFF;
+    this.LIGHTGRAY = 0xDDDDDD;
+    this.DARKGREEN = 0x406550;
+    this.DARKGRAY  = 0x333333;
+    this.BLACK     = 0x000000;
+
+    this.loader    = new THREE.JSONLoader();
+    this.raycaster = new THREE.Raycaster();
+    this.focus     = new THREE.Vector2();
+
+    this.hole      = rabbitHole.nativeElement;
+    this.controls  = cameraControls;
+    this.lettering = lettering;
+    this.doors     = [];
+
+    this.center  = 225;
+    this.focus.x = 0;
+    this.focus.y = 2;
 
     this.createScene();
     this.createCamera();
@@ -51,7 +58,6 @@ export class RabbitHoleComponent {
     this.setResizeHandler();
     this.createMessage();
 
-    // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.createControls();
     this.animate();
   }
@@ -64,14 +70,13 @@ export class RabbitHoleComponent {
     this.camera = new THREE.PerspectiveCamera(7, this.WIDTH / this.HEIGHT, 1, 1000);
     this.camera.rotation.x = -Math.PI / 4.465;
     this.camera.position.z = -5;
-    // this.camera.position.z = 300;
 
     this.scene.add(this.camera);
   }
 
   createLight() {
     const ambientLight = new THREE.AmbientLight(this.WHITE, 0.25)
-    const firstLight = new THREE.SpotLight(this.WHITE);
+    const firstLight   = new THREE.SpotLight(this.WHITE);
 
     firstLight.target.position.set(0, 0, this.center);
     firstLight.target.updateMatrixWorld();
@@ -87,13 +92,13 @@ export class RabbitHoleComponent {
   }
 
   createFloor() {
-    let textureLoader = new THREE.TextureLoader();
+    const textureLoader = new THREE.TextureLoader();
     textureLoader.load('assets/textures/floor.jpg', (texture) => {
 
       texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping;
       texture.needsUpdate = true;
 
-      let floorMaterial = new THREE.MeshStandardMaterial({
+      const floorMaterial = new THREE.MeshStandardMaterial({
         map: texture,
         roughness: 1,
         metalness: 0,
@@ -129,8 +134,8 @@ export class RabbitHoleComponent {
         emptyWall.repeat.set(1, 1);
         fullWall.repeat.set(1, 1);
 
-        const geometry     = new THREE.PlaneGeometry( 50, 65, 1, 10),
-              fullMaterial = new THREE.MeshBasicMaterial({ map: fullWall }),
+        const geometry      = new THREE.PlaneGeometry( 50, 65, 1, 10),
+              fullMaterial  = new THREE.MeshBasicMaterial({ map: fullWall }),
 
               emptyMaterial = new THREE.MeshBasicMaterial({
                 alphaMap: emptyWall,
@@ -280,76 +285,107 @@ export class RabbitHoleComponent {
         frameMaterials[0].color = new THREE.Color(0x496F61);
         frameMaterials[1].color = new THREE.Color(0x496F61);
 
-        const frontFrame = new THREE.Mesh(frameGeometry, new THREE.MultiMaterial(frameMaterials));
-        const PI_2 = Math.PI / 2;
-
         doorMaterials[0].color = new THREE.Color(0xEEEEEE);
         doorMaterials[1].color = new THREE.Color(0x496F61);
 
-        this.frontDoor = new THREE.Mesh(doorGeometry, new THREE.MultiMaterial(doorMaterials));
+        const frontFrame = new THREE.Mesh(frameGeometry, new THREE.MultiMaterial(frameMaterials)),
+              frontDoor  = new THREE.Mesh(doorGeometry, new THREE.MultiMaterial(doorMaterials)),
+              OFFSET     = 8.75;
 
         frontFrame.position.set(0, -10.5, 475);
         frontFrame.rotation.y = Math.PI;
-
-        this.frontDoor.position.set(8.75, 0, 0);
-        this.frontDoor.rotation.y = Math.PI;
-
-        this.frontDoor.scale.set(4, 4, 4);
         frontFrame.scale.set(4, 4, 4);
 
-        this.scene.add(this.frontDoor);
+        frontDoor.position.set(OFFSET, 0, 0);
+        frontDoor.rotation.y = Math.PI;
+        frontDoor.scale.set(4, 4, 4);
+
         this.scene.add(frontFrame);
+        this.scene.add(frontDoor);
 
-        const pitch = new THREE.Object3D();
-        this.pivot = new THREE.Object3D();
+        const pitch = new THREE.Object3D(),
+              pivot = new THREE.Object3D(),
+              PI_2  = Math.PI / 2;
 
-        this.pivot.position.set(-8.75, -10.4, 474.75);
-        this.pivot.rotation.y = 0;
+        pivot.position.set(-OFFSET, -10.4, 474.75);
+        pivot.rotation.y = 0;
 
-        this.pivot.add(this.frontDoor);
+        pivot.add(frontDoor);
+        pitch.add(pivot);
+
         this.scene.add(pitch);
-        pitch.add(this.pivot);
+        this.doors.push({
+          door: frontDoor,
+          pivot: pivot
+        });
 
         for (let i = 0; i < 10; i++) {
           const sideFrame = frontFrame.clone(),
-                sideDoor  = this.frontDoor.clone();
+                sideDoor  = frontDoor.clone(),
 
-          let positionZ = i * 50 + 50,
-              doorPositionX = -24.8,
-              framePositionX = -25,
-              rotationY = PI_2;
+                pitch = new THREE.Object3D(),
+                pivot = new THREE.Object3D();
+
+          let framePositionX = -25,
+              rotationY      = PI_2,
+              doorPositionX  = -24.8,
+              rotation       = OFFSET,
+              positionZ      = i * 50 + 50,
+              pivotRotation  = positionZ - OFFSET;
 
           if (i % 2) {
+            rotation       = -OFFSET;
+            rotationY      = -rotationY;
+            doorPositionX  = -doorPositionX;
             framePositionX = -framePositionX;
-            doorPositionX = -doorPositionX;
-            positionZ = (i - 1) * 50 + 50;
-            rotationY = -rotationY;
+            positionZ      = (i - 1) * 50 + 50;
+            pivotRotation  = positionZ + OFFSET;
           }
 
           sideFrame.position.set(framePositionX, -10.5, positionZ);
-          sideDoor.position.set(doorPositionX, -10.4, positionZ);
+          sideDoor.position.set(0, 0, rotation);
 
           sideFrame.rotation.y = rotationY;
           sideDoor.rotation.y = rotationY;
 
+          pivot.position.set(doorPositionX, -10.4, pivotRotation);
+          pivot.rotation.y = 0;
+
           this.scene.add(sideFrame);
           this.scene.add(sideDoor);
+          this.scene.add(pitch);
+
+          pivot.add(sideDoor);
+          pitch.add(pivot);
+
+          this.doors.push({
+            door: sideDoor,
+            pivot: pivot
+          });
         }
       });
     });
   }
 
   createEventHandlers() {
+    document.addEventListener('mousedown', this.setMouseDownHandler.bind(this), false);
+    document.addEventListener('mouseup', this.setMouseUpHandler.bind(this), false);
+
     document.addEventListener('keydown', this.setKeyDownHandler.bind(this), false);
-    document.addEventListener('keyup', this.setKeyUpHandler.bind(this), false);
     window.addEventListener('resize', this.setResizeHandler.bind(this), false);
+  }
+
+  setMouseDownHandler() {
+    this.pressed = true;
+  }
+
+  setMouseUpHandler() {
+    this.pressed = false;
   }
 
   setKeyDownHandler(event) {
     if (this.intro) return;
-
     const ready = this.isFullSize && event.keyCode === 13;
-    this.pressed = (event.keyCode === 32);
 
     if (ready) {
       this.controls.setGameMode();
@@ -361,16 +397,12 @@ export class RabbitHoleComponent {
     }
   }
 
-  setKeyUpHandler(event) {
-    this.pressed = false;
-  }
-
   setResizeHandler() {
     const minWidth  = screen.availWidth  - 16,
           minHeight = screen.availHeight - 16;
 
-    this.WIDTH      = window.innerWidth;
-    this.HEIGHT     = window.innerHeight;
+    this.WIDTH  = window.innerWidth;
+    this.HEIGHT = window.innerHeight;
 
     if (!this.isFullSize) {
       this.isFullSize = window.outerWidth  >= minWidth &&
@@ -429,10 +461,9 @@ export class RabbitHoleComponent {
   }
 
   createCinematicIntro() {
+    setTimeout(() => { this.intro = true; }, 1000);
     this.clock = new THREE.Clock();
     this.elapsedSpeed = 4.0;
-
-    setTimeout(() => { this.intro = true; }, 1000);
   }
 
   animate() {
@@ -442,10 +473,8 @@ export class RabbitHoleComponent {
 
     if (this.intro) {
       this.animateCameraIntro();
-    }
-
-    if (this.pivot) {
-      this.openTheDoor();
+    } else {
+      this.checkFocusDirection();      
     }
   }
 
@@ -463,23 +492,49 @@ export class RabbitHoleComponent {
     this.camera.updateProjectionMatrix();
   }
 
-  openTheDoor() {
-    if (this.pressed && this.pivot.rotation.y < 1.56) {
-      this.pivot.rotation.y += 0.01;
+  checkFocusDirection() {
+    this.raycaster.setFromCamera(this.focus, this.camera);
 
-    } else if (!this.pressed && this.pivot.rotation.y > 1) {
-      this.pivot.rotation.y += 0.01;
+    const doors      = Array.from(this.doors, doors => doors.door);
+    const intersects = this.raycaster.intersectObjects(doors);
 
-    } else if (!this.pressed && this.pivot.rotation.y > 0) {
-      this.pivot.rotation.y -= 0.02;
+    if (intersects.length) {
+      const selectedDoor = intersects[0].object;
+
+      const door = this.doors.filter((mesh) => {
+        return mesh.door.id === selectedDoor.id;
+      });
+
+      this.openTheDoor(door[0]);
+
+    } else if (this.selectedDoor) {
+      this.openTheDoor();
+    }
+  }
+
+  openTheDoor(door = this.selectedDoor) {
+    if (!this.selectedDoor) {
+      this.selectedDoor = door;
     }
 
-    if (this.pivot.rotation.y > 1.56) {
-      this.pivot.rotation.y = 1.56;
+    if (this.pressed && door.pivot.rotation.y < 1.56) {
+      door.pivot.rotation.y += 0.01;
+
+    } else if (!this.pressed && door.pivot.rotation.y > 1) {
+      door.pivot.rotation.y += 0.01;
+
+    } else if (!this.pressed && door.pivot.rotation.y > 0) {
+      door.pivot.rotation.y -= 0.02;
     }
 
-    if (this.pivot.rotation.y < 0) {
-      this.pivot.rotation.y = 0;
+    if (door.pivot.rotation.y > 1.56) {
+      door.pivot.rotation.y = 1.56;
+      this.selectedDoor = null;
+    }
+
+    if (door.pivot.rotation.y < 0) {
+      door.pivot.rotation.y = 0;
+      this.selectedDoor = null;
     }
   }
 
@@ -501,8 +556,10 @@ export class RabbitHoleComponent {
   }
 
   ngOnDestroy() {
+    document.removeEventListener('mousedown', this.setMouseDownHandler.bind(this), false);
+    document.removeEventListener('mouseup', this.setMouseUpHandler.bind(this), false);
+
     document.removeEventListener('keydown', this.setKeyDownHandler.bind(this), false);
-    document.removeEventListener('keyup', this.setKeyUpHandler.bind(this), false);
     window.removeEventListener('resize', this.setResizeHandler.bind(this), false);
 
     cancelAnimationFrame(this.frame);
