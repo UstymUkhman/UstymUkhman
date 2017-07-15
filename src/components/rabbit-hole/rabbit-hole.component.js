@@ -12,10 +12,12 @@ import { LetteringService      } from '../../services/lettering.service';
 
 export class RabbitHoleComponent {
   constructor(rabbitHole, cameraControls, lettering) {
+    this.activeButton = false;
     this.showOverlay  = false;
     this.introPlayed  = false;
     this.pressed      = false;
     this.intro        = false;
+    this.showScreen   = true;
     this.selectedDoor = null;
     this.guidelines   = null;
 
@@ -393,7 +395,11 @@ export class RabbitHoleComponent {
 
     if (ready && !this.introPlayed) {
       this.showOverlay = true;
-      setTimeout(this.createCinematicIntro.bind(this), 2500);
+
+      setTimeout(() => {
+        this.showScreen = false;
+        this.createCinematicIntro();
+      }, 2500);
     }
   }
 
@@ -457,7 +463,7 @@ export class RabbitHoleComponent {
       `;
     }
 
-    this.guidelines += 'Press [ENTER] when you\'re ready.';
+    this.guidelines += 'Press  ENTER  when you\'re ready.';
   }
 
   createCinematicIntro() {
@@ -549,9 +555,10 @@ export class RabbitHoleComponent {
   }
 
   ngAfterViewInit() {
+    this.createEventHandlers();
     this.lettering.animate(
       this.hole.children[1].children[1].children[0],
-      50, this.createEventHandlers.bind(this), null
+      50, () => { this.activeButton = true; }, null
     );
   }
 

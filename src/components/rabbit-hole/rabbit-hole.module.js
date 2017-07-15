@@ -6,12 +6,13 @@ import { CommonModule        } from '@angular/common';
 import { RabbitHoleComponent } from './rabbit-hole.component';
 import { ControlsService     } from '../../services/controls.service';
 import { LetteringService    } from '../../services/lettering.service';
+import { ScreenOverlayModule } from '../screen-overlay/screen-overlay.module';
 
 
 @NgModule({
-  imports      : [CommonModule],
   declarations : [RabbitHoleComponent],
   exports      : [RabbitHoleComponent],
+  imports      : [CommonModule, ScreenOverlayModule],
   providers    : [ControlsService, LetteringService]
 })
 

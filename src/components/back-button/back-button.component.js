@@ -5,7 +5,7 @@ import { LetteringService      } from '../../services/lettering.service';
 
 @Component({
   selector: 'back-button',
-  inputs: ['active', 'backToMenu', 'showBackButton', 'buttonText'],
+  inputs: ['active', 'backToMenu', 'showBackButton'],
   templateUrl: 'components/back-button/back-button.component.html'
 })
 
@@ -18,16 +18,15 @@ export class BackButtonComponent {
     this.fadeOut           = false;
     this.active            = false;
 
-    this.backButton        = true;
     this.loading           = loading;
-    this.buttonText        = '< b@cK';
     this.lettering         = lettering;
     this.button            = button.nativeElement;
   }
 
   ngOnChanges() {
     if (this.showBackButton && !this.initialized) {
-      let buttonText = this.button.getElementsByClassName('button-box')[0];
+      const buttonText = this.button.getElementsByClassName('button-box')[0];
+
       this.lettering.animate(buttonText.children[1], 100);
       this.initialized = true;
     }
