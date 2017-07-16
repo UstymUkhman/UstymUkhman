@@ -70,8 +70,6 @@ export class RabbitHoleComponent {
     this.setResizeHandler();
     this.createMessage();
 
-    console.log('controls');
-
     this.createControls();
     this.animate();
   }
@@ -515,13 +513,9 @@ export class RabbitHoleComponent {
     }
 
     if (this.exit) {
-      if (this.fadeOut) {
-        if (this.controls) {
-          this.controls.setGameMode();
-          this.removeEventHandlers();
-        }
-
-        cancelAnimationFrame(this.frame);
+      if (this.fadeOut && this.controls) {
+        this.controls.setGameMode();
+        this.removeEventHandlers();
         setTimeout(this.gotoNextPage.bind(this), 1500);
       }
 
@@ -612,10 +606,12 @@ export class RabbitHoleComponent {
   }
 
   gotoNextPage() {
+    cancelAnimationFrame(this.frame);
+
     if (this.experiment) {
       this.loading.loadExperiment(this.selectedDoor.index);
     } else {
-      this.loading.backToMenu();
+      this.loading.backToMenu(true);
     }
   }
 
@@ -630,19 +626,22 @@ export class RabbitHoleComponent {
   }
 
   createEventHandlers() {
-    document.addEventListener('mousedown', this.setMouseDownHandler.bind(this), false);
-    document.addEventListener('mouseup', this.setMouseUpHandler.bind(this), false);
+    this.onMouseDown = this.setMouseDownHandler.bind(this);
+    this.onMouseUp = this.setMouseUpHandler.bind(this);
+    this.onKeyDown = this.setKeyDownHandler.bind(this);
+    this.onResize = this.setResizeHandler.bind(this);
 
-    document.addEventListener('keydown', this.setKeyDownHandler.bind(this), false);
-    window.addEventListener('resize', this.setResizeHandler.bind(this), false);
+    document.addEventListener('mousedown', this.onMouseDown, false);
+    document.addEventListener('mouseup', this.onMouseUp, false);
+    document.addEventListener('keydown', this.onKeyDown, false);
+    window.addEventListener('resize', this.onResize, false);
   }
 
   removeEventHandlers() {
-    document.removeEventListener('mousedown', this.setMouseDownHandler.bind(this), false);
-    document.removeEventListener('mouseup', this.setMouseUpHandler.bind(this), false);
-
-    document.removeEventListener('keydown', this.setKeyDownHandler.bind(this), false);
-    window.removeEventListener('resize', this.setResizeHandler.bind(this), false);
+    document.removeEventListener('mousedown', this.onMouseDown, false);
+    document.removeEventListener('mouseup', this.onMouseUp, false);
+    document.removeEventListener('keydown', this.onKeyDown, false);
+    window.removeEventListener('resize', this.onResize, false);
 
     if (this.controls) {
       this.controls.dispose();
@@ -651,7 +650,6 @@ export class RabbitHoleComponent {
   }
 
   ngAfterViewInit() {
-    console.log('mousedown');
     this.createEventHandlers();
     this.lettering.animate(
       this.hole.children[1].children[1].children[0],

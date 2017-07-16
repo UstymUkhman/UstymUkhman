@@ -47,10 +47,9 @@ export class LoadingService {
     window.location.href = 'http://nuovasandero.dacia.it/';
   }
 
-  backToMenu() {
-    if (!this.activeItem) {
-      this.activeItem = 0;
-    }
+  backToMenu(reset = false) {
+    if (!this.activeItem) this.activeItem = 0;
+    if (reset) this.activeItem = null;
 
     window.location.hash = '#/';
   }
