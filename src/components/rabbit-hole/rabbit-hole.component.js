@@ -15,15 +15,18 @@ export class RabbitHoleComponent {
     this.activeButton = false;
     this.showOverlay  = false;
     this.introPlayed  = false;
+    this.experiment   = false;
+    this.rightDoor    = false;
     this.pressed      = false;
     this.intro        = false;
+    this.exit         = false;
     this.showScreen   = true;
+
     this.selectedDoor = null;
     this.guidelines   = null;
-
-    this.scene    = null;
-    this.camera   = null;
-    this.renderer = null;
+    this.scene        = null;
+    this.camera       = null;
+    this.renderer     = null;
 
     this.WHITE     = 0xFFFFFF;
     this.LIGHTGRAY = 0xDDDDDD;
@@ -38,6 +41,7 @@ export class RabbitHoleComponent {
     this.hole      = rabbitHole.nativeElement;
     this.controls  = cameraControls;
     this.lettering = lettering;
+    this.walls     = [];
     this.doors     = [];
 
     this.center  = 225;
@@ -72,7 +76,6 @@ export class RabbitHoleComponent {
     this.camera = new THREE.PerspectiveCamera(7, this.WIDTH / this.HEIGHT, 1, 1000);
     this.camera.rotation.x = -Math.PI / 4.465;
     this.camera.position.z = -5;
-
     this.scene.add(this.camera);
   }
 
@@ -127,6 +130,20 @@ export class RabbitHoleComponent {
 
         const PI_2 = Math.PI / 2;
 
+        const lightGeometry = new THREE.PlaneGeometry(510, 75, 1, 1),
+              lightMaterial = new THREE.MeshBasicMaterial({ color: this.WHITE });
+
+        const leftLight  = new THREE.Mesh(lightGeometry, lightMaterial);
+        leftLight.position.set(-25.5, 18.5, this.center);
+        leftLight.rotateY(PI_2);
+
+        const rightLight = leftLight.clone();
+        rightLight.rotation.y = -PI_2;
+        rightLight.position.x = 25.5;
+
+        this.scene.add(rightLight);
+        this.scene.add(leftLight);
+
         emptyWall.wrapS = emptyWall.wrapT = THREE.MirroredRepeatWrapping;
         fullWall.wrapS = fullWall.wrapT = THREE.MirroredRepeatWrapping;
 
@@ -136,14 +153,19 @@ export class RabbitHoleComponent {
         emptyWall.repeat.set(1, 1);
         fullWall.repeat.set(1, 1);
 
-        const geometry      = new THREE.PlaneGeometry( 50, 65, 1, 10),
-              fullMaterial  = new THREE.MeshBasicMaterial({ map: fullWall }),
+        const geometry = new THREE.PlaneGeometry(50, 65, 1, 1),
+
+              fullMaterial = new THREE.MeshBasicMaterial({
+                transparent: true,
+                map: fullWall,
+                opacity: 1
+              }),
 
               emptyMaterial = new THREE.MeshBasicMaterial({
                 alphaMap: emptyWall,
                 transparent: true,
                 map: emptyWall,
-                opacity: 10,
+                opacity: 10
               });
 
         const backWall  = new THREE.Mesh(geometry, emptyMaterial),
@@ -153,6 +175,16 @@ export class RabbitHoleComponent {
         backWall.position.set(0, 18.5, this.center + 250);
         backWall.rotateY(Math.PI);
 
+        const backLight = backWall.clone();
+
+        backLight.geometry = new THREE.PlaneGeometry(50, 75, 1, 1),
+        backLight.material = lightMaterial;
+        backLight.position.z += 0.5;
+
+        this.walls.push(frontWall);
+        this.walls.push(backWall);
+
+        this.scene.add(backLight);
         this.scene.add(frontWall);
         this.scene.add(backWall);
 
@@ -172,6 +204,8 @@ export class RabbitHoleComponent {
 
           wall.position.set(positionX, 18.5, positionZ);
           wall.rotateY(rotationY);
+
+          this.walls.push(wall);
           this.scene.add(wall);
         }
       });
@@ -369,14 +403,6 @@ export class RabbitHoleComponent {
     });
   }
 
-  createEventHandlers() {
-    document.addEventListener('mousedown', this.setMouseDownHandler.bind(this), false);
-    document.addEventListener('mouseup', this.setMouseUpHandler.bind(this), false);
-
-    document.addEventListener('keydown', this.setKeyDownHandler.bind(this), false);
-    window.addEventListener('resize', this.setResizeHandler.bind(this), false);
-  }
-
   setMouseDownHandler() {
     this.pressed = true;
   }
@@ -475,12 +501,23 @@ export class RabbitHoleComponent {
   animate() {
     this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
-    this.controls.update();
 
     if (this.intro) {
       this.animateCameraIntro();
     } else {
       this.checkFocusDirection();
+    }
+
+    if (this.controls) {
+      this.controls.update();
+    }
+
+    if (this.exit) {
+      // if (this.controls) {
+      //   this.removeEventHandlers();
+      // }
+
+      this.wallsFadeOut();
     }
   }
 
@@ -496,6 +533,16 @@ export class RabbitHoleComponent {
     this.renderer.setViewport(0, 0, this.WIDTH, this.HEIGHT);
     this.renderer.setScissor(0, 0, this.WIDTH, this.HEIGHT);
     this.camera.updateProjectionMatrix();
+  }
+
+  getCameraFov() {
+    this.elapsedSpeed += this.camera.fov < 20 ? 0.01 : 0.06;
+
+    const elapsedTime = this.clock.getElapsedTime(),
+          zoomSpeed   = elapsedTime * this.elapsedSpeed,
+          cameraFov   = zoomSpeed + 7;
+
+    return (cameraFov < 50) ? cameraFov : 50;
   }
 
   checkFocusDirection() {
@@ -527,7 +574,11 @@ export class RabbitHoleComponent {
       door.pivot.rotation.y += 0.01;
 
     } else if (!this.pressed && door.pivot.rotation.y > 1) {
+      this.rightDoor  = door.door.position.z < 0;
+      this.experiment = !!door.door.position.z;
+
       door.pivot.rotation.y += 0.01;
+      this.exit = true;
 
     } else if (!this.pressed && door.pivot.rotation.y > 0) {
       door.pivot.rotation.y -= 0.02;
@@ -544,14 +595,37 @@ export class RabbitHoleComponent {
     }
   }
 
-  getCameraFov() {
-    this.elapsedSpeed += this.camera.fov < 20 ? 0.01 : 0.06;
+  wallsFadeOut() {
+    if (this.experiment) {
+      for (let i = 0; i < this.walls.length; i++) {
+        const opacity = (i % 4 > 1) ? 0.001 : 0.01;
+        this.walls[i].material.opacity -= opacity;
+      }
 
-    const elapsedTime = this.clock.getElapsedTime(),
-          zoomSpeed   = elapsedTime * this.elapsedSpeed,
-          cameraFov   = zoomSpeed + 7;
+    } else {
+      this.walls[0].material.opacity -= 0.001;
+      this.doors[0].door.material.materials[0].opacity -= 0.01;
+      this.doors[0].door.material.materials[1].opacity -= 0.01;
+    }
+  }
 
-    return (cameraFov < 50) ? cameraFov : 50;
+  createEventHandlers() {
+    document.addEventListener('mousedown', this.setMouseDownHandler.bind(this), false);
+    document.addEventListener('mouseup', this.setMouseUpHandler.bind(this), false);
+
+    document.addEventListener('keydown', this.setKeyDownHandler.bind(this), false);
+    window.addEventListener('resize', this.setResizeHandler.bind(this), false);
+  }
+
+  removeEventHandlers() {
+    document.removeEventListener('mousedown', this.setMouseDownHandler.bind(this), false);
+    document.removeEventListener('mouseup', this.setMouseUpHandler.bind(this), false);
+
+    document.removeEventListener('keydown', this.setKeyDownHandler.bind(this), false);
+    window.removeEventListener('resize', this.setResizeHandler.bind(this), false);
+
+    this.controls.dispose();
+    this.controls = null;
   }
 
   ngAfterViewInit() {
@@ -563,14 +637,8 @@ export class RabbitHoleComponent {
   }
 
   ngOnDestroy() {
-    document.removeEventListener('mousedown', this.setMouseDownHandler.bind(this), false);
-    document.removeEventListener('mouseup', this.setMouseUpHandler.bind(this), false);
-
-    document.removeEventListener('keydown', this.setKeyDownHandler.bind(this), false);
-    window.removeEventListener('resize', this.setResizeHandler.bind(this), false);
-
     cancelAnimationFrame(this.frame);
-    this.controls.dispose();
+    this.removeEventHandlers();
   }
 
   static get parameters() {

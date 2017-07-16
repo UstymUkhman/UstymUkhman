@@ -56,8 +56,7 @@ export class WrittenMessageComponent {
   }
 
   ngAfterViewInit() {
-    this.skipEvent = this.skipMessages.bind(this);
-    document.addEventListener('keydown', this.skipEvent, false);
+    document.addEventListener('keydown', this.skipMessages.bind(this), false);
   }
 
   ngOnChanges() {
@@ -66,7 +65,7 @@ export class WrittenMessageComponent {
   }
 
   ngOnDestroy() {
-    document.removeEventListener('keydown', this.skipEvent, false);
+    document.removeEventListener('keydown', this.skipMessages.bind(this), false);
   }
 
   static get parameters() {
