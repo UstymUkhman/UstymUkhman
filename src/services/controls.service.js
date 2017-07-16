@@ -87,7 +87,7 @@ export class ControlsService {
   }
 
   pointerLockError(event) {
-    console.error('D:\nA \'pointerlockerror\' occured...', event);
+    console.error('\'pointerlockerror\' event occured...', event);
   }
 
   onKeyDown(event) {
@@ -122,6 +122,7 @@ export class ControlsService {
     if (!this.controls.enabled) {
       this.room.requestPointerLock();
       this.room.requestFullscreen();
+
     } else {
       document.exitPointerLock();
       document.exitFullscreen();
@@ -130,6 +131,10 @@ export class ControlsService {
 
   setBorders(borders) {
     this.borders = borders;
+  }
+
+  isFullscreen() {
+    return document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen;
   }
 
   update() {

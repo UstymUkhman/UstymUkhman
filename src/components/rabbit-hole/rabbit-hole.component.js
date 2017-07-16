@@ -1,5 +1,7 @@
 import * as THREE                from 'three';
 import { Component, ElementRef } from '@angular/core';
+
+import { LoadingService        } from '../../services/loading.service';
 import { ControlsService       } from '../../services/controls.service';
 import { LetteringService      } from '../../services/lettering.service';
 
@@ -11,7 +13,7 @@ import { LetteringService      } from '../../services/lettering.service';
 
 
 export class RabbitHoleComponent {
-  constructor(rabbitHole, cameraControls, lettering) {
+  constructor(rabbitHole, loading, cameraControls, lettering) {
     this.activeButton = false;
     this.showOverlay  = false;
     this.introPlayed  = false;
@@ -33,19 +35,20 @@ export class RabbitHoleComponent {
     this.rightLight   = null;
 
     this.WHITE     = 0xFFFFFF;
-    this.LIGHTGRAY = 0xDDDDDD;
+    this.LIGHTGRAY = 0xEEEEEE;
+    this.GREEN     = 0x496F61;
     this.DARKGREEN = 0x406550;
-    this.DARKGRAY  = 0x333333;
     this.BLACK     = 0x000000;
 
     this.loader    = new THREE.JSONLoader();
     this.raycaster = new THREE.Raycaster();
     this.focus     = new THREE.Vector2();
 
-    this.hole      = rabbitHole.nativeElement;
-    this.controls  = cameraControls;
-    this.lettering = lettering;
-    this.doors     = [];
+    this.hole        = rabbitHole.nativeElement;
+    this.controls    = cameraControls;
+    this.lettering   = lettering;
+    this.loading     = loading;
+    this.doors       = [];
 
     this.center    = 225;
     this.focus.x   = 0;
@@ -66,6 +69,8 @@ export class RabbitHoleComponent {
     this.createRenderer();
     this.setResizeHandler();
     this.createMessage();
+
+    console.log('controls');
 
     this.createControls();
     this.animate();
@@ -314,11 +319,11 @@ export class RabbitHoleComponent {
   createDoors() {
     this.loader.load('assets/models/frame.json', (frameGeometry, frameMaterials) => {
       this.loader.load('assets/models/door.json', (doorGeometry, doorMaterials) => {
-        frameMaterials[0].color = new THREE.Color(0x496F61);
-        frameMaterials[1].color = new THREE.Color(0x496F61);
+        frameMaterials[0].color = new THREE.Color(this.GREEN);
+        frameMaterials[1].color = new THREE.Color(this.GREEN);
 
-        doorMaterials[0].color = new THREE.Color(0xEEEEEE);
-        doorMaterials[1].color = new THREE.Color(0x496F61);
+        doorMaterials[0].color = new THREE.Color(this.LIGHTGRAY);
+        doorMaterials[1].color = new THREE.Color(this.GREEN);
 
         const frontFrame = new THREE.Mesh(frameGeometry, new THREE.MultiMaterial(frameMaterials)),
               frontDoor  = new THREE.Mesh(doorGeometry, new THREE.MultiMaterial(doorMaterials)),
@@ -379,6 +384,7 @@ export class RabbitHoleComponent {
 
           sideFrame.rotation.y = rotationY;
           sideDoor.rotation.y = rotationY;
+          sideDoor.index = i;
 
           pivot.position.set(doorPositionX, -10.4, pivotRotation);
           pivot.rotation.y = 0;
@@ -400,7 +406,7 @@ export class RabbitHoleComponent {
   }
 
   setMouseDownHandler() {
-    this.pressed = true;
+    this.pressed = this.controls.isFullscreen();
   }
 
   setMouseUpHandler() {
@@ -411,7 +417,7 @@ export class RabbitHoleComponent {
     if (this.intro) return;
     const ready = this.isFullSize && event.keyCode === 13;
 
-    if (ready) {
+    if (this.controls && ready) {
       this.controls.setGameMode();
     }
 
@@ -423,6 +429,12 @@ export class RabbitHoleComponent {
         this.createCinematicIntro();
       }, 2500);
     }
+  }
+
+  createCinematicIntro() {
+    setTimeout(() => { this.intro = true; }, 1000);
+    this.clock = new THREE.Clock();
+    this.elapsedSpeed = 4.0;
   }
 
   setResizeHandler() {
@@ -456,21 +468,6 @@ export class RabbitHoleComponent {
     this.renderer.domElement.focus();
   }
 
-  createControls() {
-    const error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
-
-    if (error) {
-      this.setErrorHandler();
-    }
-
-    this.controls.setBorders({
-      front : this.center - 230,
-      back  : this.center + 242,
-      right :  18,
-      left  : -18
-    });
-  }
-
   createMessage() {
     this.guidelines = `
       Welcome to the real world.###
@@ -488,10 +485,19 @@ export class RabbitHoleComponent {
     this.guidelines += 'Press  ENTER  when you\'re ready.';
   }
 
-  createCinematicIntro() {
-    setTimeout(() => { this.intro = true; }, 1000);
-    this.clock = new THREE.Clock();
-    this.elapsedSpeed = 4.0;
+  createControls() {
+    const error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
+
+    if (error) {
+      this.setErrorHandler();
+    }
+
+    this.controls.setBorders({
+      front : this.center - 230,
+      back  : this.center + 242,
+      right :  18,
+      left  : -18
+    });
   }
 
   animate() {
@@ -509,8 +515,14 @@ export class RabbitHoleComponent {
     }
 
     if (this.exit) {
-      if (this.controls) {
-        this.removeEventHandlers();
+      if (this.fadeOut) {
+        if (this.controls) {
+          this.controls.setGameMode();
+          this.removeEventHandlers();
+        }
+
+        cancelAnimationFrame(this.frame);
+        setTimeout(this.gotoNextPage.bind(this), 1500);
       }
 
       this.lightFadeIn();
@@ -570,8 +582,6 @@ export class RabbitHoleComponent {
       door.pivot.rotation.y += 0.01;
 
     } else if (!this.pressed && door.pivot.rotation.y > 1) {
-      this.rightDoor  = door.door.position.z < 0;
-      this.experiment = !!door.door.position.z;
       door.pivot.rotation.y += 0.01;
 
     } else if (!this.pressed && door.pivot.rotation.y > 0) {
@@ -580,10 +590,11 @@ export class RabbitHoleComponent {
 
     if (door.pivot.rotation.y > 1.56) {
       door.pivot.rotation.y = 1.56;
-      this.selectedDoor = null;
     }
 
     if (door.pivot.rotation.y > 1) {
+      this.rightDoor  = door.door.position.z < 0;
+      this.experiment = !!door.door.position.z;
       this.fadeOut = true;
     } else if (door.pivot.rotation.y > 0.5) {
       this.exit = true;
@@ -597,6 +608,14 @@ export class RabbitHoleComponent {
       door.pivot.rotation.y = 0;
       this.selectedDoor = null;
       this.exit = false;
+    }
+  }
+
+  gotoNextPage() {
+    if (this.experiment) {
+      this.loading.loadExperiment(this.selectedDoor.index);
+    } else {
+      this.loading.backToMenu();
     }
   }
 
@@ -625,11 +644,14 @@ export class RabbitHoleComponent {
     document.removeEventListener('keydown', this.setKeyDownHandler.bind(this), false);
     window.removeEventListener('resize', this.setResizeHandler.bind(this), false);
 
-    this.controls.dispose();
-    this.controls = null;
+    if (this.controls) {
+      this.controls.dispose();
+      this.controls = null;
+    }
   }
 
   ngAfterViewInit() {
+    console.log('mousedown');
     this.createEventHandlers();
     this.lettering.animate(
       this.hole.children[1].children[1].children[0],
@@ -643,6 +665,11 @@ export class RabbitHoleComponent {
   }
 
   static get parameters() {
-    return [[ElementRef], [ControlsService], [LetteringService]];
+    return [
+      [ElementRef],
+      [LoadingService],
+      [ControlsService],
+      [LetteringService]
+    ];
   }
 }

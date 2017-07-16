@@ -1,11 +1,16 @@
 export class LoadingService {
   constructor() {
     this.activeItem = null;
+
     this.pages = [
       'about'   ,
       'works'   ,
       'contact' ,
       'more'
+    ];
+
+    this.experiments = [
+      'audioreactive'
     ];
   }
 
@@ -35,6 +40,11 @@ export class LoadingService {
       window.location.href = window.location.href.replace('more', 'rabbit-hole');
     else
       this.backToMenu();
+  }
+
+  loadExperiment(index) {
+    // window.location.href = `${window.location.origin}/experiments/${this.experiments[index]}`;
+    window.location.href = 'http://nuovasandero.dacia.it/';
   }
 
   backToMenu() {

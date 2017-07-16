@@ -1,17 +1,17 @@
 <div class="rabbit-hole-component">
-  <div class="window-overlay" [class.visible]='showOverlay'></div>
+  <div class="window-overlay" [ngClass]="{'fade-out': fadeOut, 'visible': showOverlay}"></div>
 
-  <div class="guidelines-container">
+  <div class="guidelines-container" *ngIf='!introPlayed'>
     <p class="info-text" [class.dissolve]='showOverlay'>{{ guidelines }}</p>
 
-    <div class="button-border" [class.lower]='!isFullSize'>
+    <!-- <div class="button-border" [class.lower]='!isFullSize'>
       <div class="button-box" [ngClass]="{'active': true, 'selected': ready}">
 
         <div class="button-background"></div>
         <p class="button" [class.back]='backButton'></p>
 
       </div>
-    </div>
+    </div> -->
   </div>
 
   <screen-overlay [ready]='showScreen'></screen-overlay>
