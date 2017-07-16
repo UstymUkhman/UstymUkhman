@@ -2,11 +2,11 @@
   <screen-overlay [ready]='showOverlay'></screen-overlay>
 
   <div class="menu-area menu-items" [ngClass]="{'hidden': hiddenItems, 'fade-out': fadeOutArea}">
-    <div *ngFor="let page of pages; let p = index" class="menu-item">
+    <div *ngFor="let page of pages; let p = index" class="button-border">
 
-      <div class="item-box" [ngClass]="{'active': p === currentItem, 'selected': p === settedSection}">
-        <div class="item-background"></div>
-        <p class="item">{{ page }}</p>
+      <div class="button-box" [ngClass]="{'active': p === currentItem, 'selected': p === settedSection}">
+        <div class="button-background"></div>
+        <p class="button">{{ page }}</p>
       </div>
 
     </div>

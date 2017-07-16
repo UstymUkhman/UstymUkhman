@@ -1,8 +1,3 @@
-$scale-complete: scale3d(1, 1, 1);
-$animaiton-duration: .15s;
-$animaiton-delay: .15s;
-$border-size: 3px;
-
 div#back-button-section {
   @include position(absolute, $null);
   @include size($max);
@@ -13,6 +8,7 @@ div#back-button-section {
     @include position(absolute, null $null $null);
     @include transition(opacity 1s ease-out);
     @include size(150px 50px);
+    @include back-button;
 
     margin: 0 auto 25px;
 
@@ -20,146 +16,21 @@ div#back-button-section {
       opacity: 0;
     }
 
-    div.button-border {
-      @include visible-element;
-      cursor: pointer;
+    p.button {
+      span:first-child {
+        @include transition(transform .3s ease-out .5s);
+        @include transform(translateX(-25px));
 
-      div.button-box {
-        text-align: center;
-        width: 150px;
+        position: absolute;
+      }
+    }
 
-        &:before, &:after,
-        p.button:before,
-        p.button:after {
-          @include transition-timing-function(cubic-bezier(1, .75, .15, .9));
-          @include transition(transform $animaiton-duration);
-
-          background-color: $light-green;
-          visibility: visible;
-          position: absolute;
-          content: '';
-        }
-
-        &:before, &:after {
-          @include transform(scale3d(1, 0, 1));
-          @include size($border-size $max);
-          top: $null;
-        }
-
-        &:before {
-          @include transform-origin($half $max);
-          @include transition-delay(0s);
-          left: $null;
-        }
-
-        &:after {
-          @include transition-delay($animaiton-delay * 2);
-          @include transform-origin($half $none);
-          right: $null;
-        }
-
-        div.button-background {
-          @include transition(background-color .25s ease .5s);
-          @include position(absolute, $null);
-          @include size(150px 50px);
-
-          background-color: transparent;
-          z-index: -1;
-        }
-
-        p.button {
-          @include transition(color .5s ease .5s);
-          @include hidden-element;
-          @include white-rabbit;
-
-          padding: 0 10% 0 20%;
-          line-height: 50px;
-          font-size: 25px;
-          color: $green;
-          margin: $null;
-
-          &:before, &:after {
-            @include transform(scale3d(0, 1, 1));
-            @include size($max $border-size);
-            left: $null;
-          }
-
-          &:before {
-            @include transition-delay($animaiton-delay * 3);
-            @include transform-origin($none $half);
-            top: $null;
-          }
-
-          &:after {
-            @include transition-delay($animaiton-delay);
-            @include transform-origin($max $half);
-            bottom: $null;
-          }
-
-          &.back {
-            span:first-child {
-              @include transition(transform .3s ease-out .5s);
-              @include transform(translateX(-25px));
-
-              position: absolute;
-            }
-          }
-        }
-
-        &.active {
-          &:before {
-            @include transition-delay($animaiton-delay * 3);
-            @include transform($scale-complete);
-          }
-
-          &:after {
-            @include transition-delay($animaiton-delay);
-            @include transform($scale-complete);
-          }
-
-          div.button-background {
-            background-color: $dark-green;
-          }
-
-          p.button {
-            -webkit-margin-before: 0;
-            -webkit-margin-after: 0;
-            visibility: visible;
-            color: $fade-green;
-
-            &:before {
-              @include transform($scale-complete);
-              @include transition-delay(0s);
-            }
-
-            &:after {
-              @include transition-delay($animaiton-delay * 2);
-              @include transform($scale-complete);
-            }
-
-            &.back {
-              span:first-child {
-                @include transform(translateX(-35px));
-              }
-            }
-          }
-        }
-
-        &.selected {
-          div.button-background {
-            -webkit-animation: flash 100ms $flash-easing;
-            -moz-animation: flash 100ms $flash-easing;
-            -o-animation: flash 100ms $flash-easing;
-            animation: flash 100ms $flash-easing;
-          }
+    div.button-box.active {
+      p.button {
+        span:first-child {
+          @include transform(translateX(-35px));
         }
       }
     }
   }
-}
-
-@keyframes flash {
-  0%   { background-color: $dark-green;   }
-  50%  { background-color: $energy-green; }
-  100% { background-color: $dark-green;   }
 }

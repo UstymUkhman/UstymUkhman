@@ -73,4 +73,8 @@ export class LetteringService {
 
     this.letteringID = requestAnimationFrame(this.lettersAnimation.bind(this));
   }
+
+  getAnimationFrameID() {
+    return this.letteringID;
+  }
 }

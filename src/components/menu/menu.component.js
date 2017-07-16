@@ -31,8 +31,8 @@ export class MenuComponent {
     this.lettering   = lettering;
 
     this.menu        = menu.nativeElement;
-    this.itemBoxes   = this.menu.getElementsByClassName('item-box');
-    this.menuItems   = this.menu.getElementsByClassName('menu-item');
+    this.itemBoxes   = this.menu.getElementsByClassName('button-box');
+    this.menuItems   = this.menu.getElementsByClassName('button-border');
   }
 
   setMenuSection(section) {

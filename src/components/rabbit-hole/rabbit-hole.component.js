@@ -480,7 +480,7 @@ export class RabbitHoleComponent {
     if (this.intro) {
       this.animateCameraIntro();
     } else {
-      this.checkFocusDirection();      
+      this.checkFocusDirection();
     }
   }
 

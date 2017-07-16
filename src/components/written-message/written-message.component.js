@@ -32,26 +32,23 @@ export class WrittenMessageComponent {
       this.showTimeout = setTimeout(this.showMessage.bind(this), delay);
 
     } else if (this.currentIndex === this.messageList.length) {
-      this.dissolve = true;
       this.currentIndex--;
-
-      setTimeout(() => {
-        this.consoleReady.emit(true);
-      }, 2000);
-
-      setTimeout(() => {
-        this.messageElement.remove();
-      }, 4500);
+      this.removeMessage();
     }
+  }
+
+  removeMessage() {
+    this.dissolve = true;
+
+    setTimeout(() => { this.consoleReady.emit(true); }, 2000);
+    setTimeout(() => { this.messageElement.remove(); }, 4500);
   }
 
   skipMessages() {
     clearTimeout(this.showTimeout);
-    this.consoleReady.emit(true);
+    cancelAnimationFrame(this.lettering.getAnimationFrameID());
 
-    setTimeout(() => {
-      this.messageElement.remove();
-    }, 1000);
+    this.removeMessage();
   }
 
   showMessage() {
@@ -59,7 +56,8 @@ export class WrittenMessageComponent {
   }
 
   ngAfterViewInit() {
-    document.addEventListener('keydown', this.skipMessages.bind(this), false);
+    this.skipEvent = this.skipMessages.bind(this);
+    document.addEventListener('keydown', this.skipEvent, false);
   }
 
   ngOnChanges() {
@@ -68,7 +66,7 @@ export class WrittenMessageComponent {
   }
 
   ngOnDestroy() {
-    document.removeEventListener('keydown', this.skipMessages.bind(this), false);
+    document.removeEventListener('keydown', this.skipEvent, false);
   }
 
   static get parameters() {
