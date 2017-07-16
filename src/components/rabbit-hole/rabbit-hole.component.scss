@@ -11,12 +11,17 @@ div.rabbit-hole-component {
   z-index: $z-max;
 
   div.window-overlay {
-    @include transition(opacity 2s linear 2.5s);
+    @include transition(background-color 1s linear, opacity 2s linear 2.5s);
     @include position(absolute, $null);
     @include size($max);
 
     background-color: $dark-green-overlay;
     opacity: 0;
+
+    &.fade-out {
+      // @include transition-delay(0.5s);
+      background-color: $white;
+    }
 
     &.visible {
       opacity: 1;

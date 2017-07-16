@@ -20,6 +20,7 @@ export class RabbitHoleComponent {
     this.pressed      = false;
     this.intro        = false;
     this.exit         = false;
+    this.fadeOut      = false;
     this.showScreen   = true;
 
     this.selectedDoor = null;
@@ -27,6 +28,9 @@ export class RabbitHoleComponent {
     this.scene        = null;
     this.camera       = null;
     this.renderer     = null;
+    this.backLight    = null;
+    this.leftLight    = null;
+    this.rightLight   = null;
 
     this.WHITE     = 0xFFFFFF;
     this.LIGHTGRAY = 0xDDDDDD;
@@ -41,12 +45,11 @@ export class RabbitHoleComponent {
     this.hole      = rabbitHole.nativeElement;
     this.controls  = cameraControls;
     this.lettering = lettering;
-    this.walls     = [];
     this.doors     = [];
 
-    this.center  = 225;
-    this.focus.x = 0;
-    this.focus.y = 2;
+    this.center    = 225;
+    this.focus.x   = 0;
+    this.focus.y   = 2;
 
     this.createScene();
     this.createCamera();
@@ -131,18 +134,22 @@ export class RabbitHoleComponent {
         const PI_2 = Math.PI / 2;
 
         const lightGeometry = new THREE.PlaneGeometry(510, 75, 1, 1),
-              lightMaterial = new THREE.MeshBasicMaterial({ color: this.WHITE });
+              lightMaterial = new THREE.MeshBasicMaterial({
+                transparent: true,
+                color: this.WHITE,
+                opacity: 0
+              });
 
-        const leftLight  = new THREE.Mesh(lightGeometry, lightMaterial);
-        leftLight.position.set(-25.5, 18.5, this.center);
-        leftLight.rotateY(PI_2);
+        this.leftLight = new THREE.Mesh(lightGeometry, lightMaterial);
+        this.leftLight.position.set(-25.5, 18.5, this.center);
+        this.leftLight.rotateY(PI_2);
 
-        const rightLight = leftLight.clone();
-        rightLight.rotation.y = -PI_2;
-        rightLight.position.x = 25.5;
+        this.rightLight = this.leftLight.clone();
+        this.rightLight.rotation.y = -PI_2;
+        this.rightLight.position.x = 25.5;
 
-        this.scene.add(rightLight);
-        this.scene.add(leftLight);
+        this.scene.add(this.rightLight);
+        this.scene.add(this.leftLight);
 
         emptyWall.wrapS = emptyWall.wrapT = THREE.MirroredRepeatWrapping;
         fullWall.wrapS = fullWall.wrapT = THREE.MirroredRepeatWrapping;
@@ -153,14 +160,8 @@ export class RabbitHoleComponent {
         emptyWall.repeat.set(1, 1);
         fullWall.repeat.set(1, 1);
 
-        const geometry = new THREE.PlaneGeometry(50, 65, 1, 1),
-
-              fullMaterial = new THREE.MeshBasicMaterial({
-                transparent: true,
-                map: fullWall,
-                opacity: 1
-              }),
-
+        const geometry      = new THREE.PlaneGeometry(50, 65, 1, 1),
+              fullMaterial  = new THREE.MeshBasicMaterial({ map: fullWall }),
               emptyMaterial = new THREE.MeshBasicMaterial({
                 alphaMap: emptyWall,
                 transparent: true,
@@ -175,16 +176,13 @@ export class RabbitHoleComponent {
         backWall.position.set(0, 18.5, this.center + 250);
         backWall.rotateY(Math.PI);
 
-        const backLight = backWall.clone();
+        this.backLight = backWall.clone();
 
-        backLight.geometry = new THREE.PlaneGeometry(50, 75, 1, 1),
-        backLight.material = lightMaterial;
-        backLight.position.z += 0.5;
+        this.backLight.geometry = new THREE.PlaneGeometry(50, 75, 1, 1),
+        this.backLight.material = lightMaterial;
+        this.backLight.position.z += 0.5;
 
-        this.walls.push(frontWall);
-        this.walls.push(backWall);
-
-        this.scene.add(backLight);
+        this.scene.add(this.backLight);
         this.scene.add(frontWall);
         this.scene.add(backWall);
 
@@ -204,8 +202,6 @@ export class RabbitHoleComponent {
 
           wall.position.set(positionX, 18.5, positionZ);
           wall.rotateY(rotationY);
-
-          this.walls.push(wall);
           this.scene.add(wall);
         }
       });
@@ -513,11 +509,11 @@ export class RabbitHoleComponent {
     }
 
     if (this.exit) {
-      // if (this.controls) {
-      //   this.removeEventHandlers();
-      // }
+      if (this.controls) {
+        this.removeEventHandlers();
+      }
 
-      this.wallsFadeOut();
+      this.lightFadeIn();
     }
   }
 
@@ -576,9 +572,7 @@ export class RabbitHoleComponent {
     } else if (!this.pressed && door.pivot.rotation.y > 1) {
       this.rightDoor  = door.door.position.z < 0;
       this.experiment = !!door.door.position.z;
-
       door.pivot.rotation.y += 0.01;
-      this.exit = true;
 
     } else if (!this.pressed && door.pivot.rotation.y > 0) {
       door.pivot.rotation.y -= 0.02;
@@ -589,23 +583,30 @@ export class RabbitHoleComponent {
       this.selectedDoor = null;
     }
 
-    if (door.pivot.rotation.y < 0) {
+    if (door.pivot.rotation.y > 1) {
+      this.fadeOut = true;
+    } else if (door.pivot.rotation.y > 0.5) {
+      this.exit = true;
+    }
+
+    if (door.pivot.rotation.y <= 0) {
+      this.rightLight.material.opacity = 0;
+      this.leftLight.material.opacity  = 0;
+      this.backLight.material.opacity  = 0;
+
       door.pivot.rotation.y = 0;
       this.selectedDoor = null;
+      this.exit = false;
     }
   }
 
-  wallsFadeOut() {
+  lightFadeIn() {
     if (this.experiment) {
-      for (let i = 0; i < this.walls.length; i++) {
-        const opacity = (i % 4 > 1) ? 0.001 : 0.01;
-        this.walls[i].material.opacity -= opacity;
-      }
+      const light = this.rightDoor ? this.rightLight : this.leftLight;
+      light.material.opacity += 0.01;
 
     } else {
-      this.walls[0].material.opacity -= 0.001;
-      this.doors[0].door.material.materials[0].opacity -= 0.01;
-      this.doors[0].door.material.materials[1].opacity -= 0.01;
+      this.backLight.material.opacity += 0.01;
     }
   }
 
