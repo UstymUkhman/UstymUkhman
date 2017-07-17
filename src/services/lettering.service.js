@@ -67,11 +67,16 @@ export class LetteringService {
 
       if (this.hasCallback) {
         setTimeout(this.callback, this.timeout);
-        return;
       }
+
+      return;
     }
 
     this.letteringID = requestAnimationFrame(this.lettersAnimation.bind(this));
+  }
+
+  stopLettering() {
+    cancelAnimationFrame(this.letteringID);
   }
 
   getAnimationFrameID() {

@@ -118,7 +118,7 @@ export class ControlsService {
     }
   }
 
-  setGameMode() {
+  setGameMode(enable = false) {
     if (!this.controls.enabled) {
       this.room.requestPointerLock();
       this.room.requestFullscreen();

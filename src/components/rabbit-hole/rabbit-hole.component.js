@@ -2,6 +2,7 @@ import * as THREE                from 'three';
 import { Component, ElementRef } from '@angular/core';
 import { Http                  } from '@angular/http';
 
+import { SoundsService         } from '../../services/sounds.service';
 import { LoadingService        } from '../../services/loading.service';
 import { ControlsService       } from '../../services/controls.service';
 import { LetteringService      } from '../../services/lettering.service';
@@ -14,7 +15,8 @@ import { LetteringService      } from '../../services/lettering.service';
 
 
 export class RabbitHoleComponent {
-  constructor(http, rabbitHole, loading, cameraControls, lettering) {
+  constructor(http, rabbitHole, sounds, loading, cameraControls, lettering) {
+
     this.activeButton = false;
     this.showOverlay  = false;
     this.introPlayed  = false;
@@ -24,6 +26,7 @@ export class RabbitHoleComponent {
     this.intro        = false;
     this.exit         = false;
     this.fadeOut      = false;
+    this.isFocused    = true;
     this.showScreen   = true;
 
     this.selectedDoor = null;
@@ -49,13 +52,14 @@ export class RabbitHoleComponent {
     this.controls    = cameraControls;
     this.lettering   = lettering;
     this.loading     = loading;
+    this.sounds      = sounds;
     this.http        = http;
     this.experiments = [];
     this.doors       = [];
 
-    this.center    = 225;
-    this.focus.x   = 0;
-    this.focus.y   = 2;
+    this.center  = 225;
+    this.focus.x = 0;
+    this.focus.y = 2;
 
     this.createScene();
     this.createCamera();
@@ -456,6 +460,19 @@ export class RabbitHoleComponent {
     this.camera.updateProjectionMatrix();
   }
 
+  setFocusHandler() {
+    this.isFocused = true;
+
+    if (this.controls && !this.controls.enabled) {
+      this.controls.setGameMode();
+      this.controls.enable();
+    }
+  }
+
+  setBlurHandler() {
+    this.isFocused = false;
+  }
+
   setErrorHandler() {
     console.error('Your shitty browser does not support Pointer Lock API.\nYou need to update it or use a better one: https://www.google.it/chrome/browser/desktop/');
   }
@@ -538,9 +555,12 @@ export class RabbitHoleComponent {
     this.camera.fov = this.getCameraFov();
 
     if (this.camera.fov === 50) {
-      this.controls.enable();
       this.introPlayed = true;
       this.intro = false;
+
+      if (this.isFocused) {
+        this.controls.enable();
+      }
     }
 
     this.renderer.setViewport(0, 0, this.WIDTH, this.HEIGHT);
@@ -584,6 +604,10 @@ export class RabbitHoleComponent {
     }
 
     if (this.pressed && door.pivot.rotation.y < 1.56) {
+      if (!door.pivot.rotation.y) {
+        if (this.playDoorSound(door.door.index)) return;
+      }
+
       door.pivot.rotation.y += 0.01;
 
     } else if (!this.pressed && door.pivot.rotation.y > 1) {
@@ -617,6 +641,18 @@ export class RabbitHoleComponent {
     }
   }
 
+  playDoorSound(door) {
+    const closed = door >= this.experiments.length;
+
+    if (closed) {
+      this.sounds.closedDoor();
+    } else {
+      this.sounds.openedDoor();
+    }
+
+    return closed;
+  }
+
   gotoNextPage() {
     this.controls.setGameMode();
 
@@ -646,24 +682,28 @@ export class RabbitHoleComponent {
     this.onMouseUp = this.setMouseUpHandler.bind(this);
     this.onKeyDown = this.setKeyDownHandler.bind(this);
     this.onResize = this.setResizeHandler.bind(this);
+    this.onFocus = this.setFocusHandler.bind(this);
+    this.onBlur = this.setBlurHandler.bind(this);
 
     document.addEventListener('mousedown', this.onMouseDown, false);
     document.addEventListener('mouseup', this.onMouseUp, false);
     document.addEventListener('keydown', this.onKeyDown, false);
+
     window.addEventListener('resize', this.onResize, false);
+    window.addEventListener('focus', this.onFocus, false);
+    window.addEventListener('blur', this.onBlur, false);
   }
 
   removeEventHandlers() {
     document.removeEventListener('mousedown', this.onMouseDown, false);
     document.removeEventListener('mouseup', this.onMouseUp, false);
     document.removeEventListener('keydown', this.onKeyDown, false);
+
     window.removeEventListener('resize', this.onResize, false);
+    window.removeEventListener('focus', this.onFocus, false);
+    window.removeEventListener('blur', this.onBlur, false);
 
     this.controls.dispose();
-
-    // if (this.controls) {
-    //   this.controls = null;
-    // }
   }
 
   ngAfterViewInit() {
@@ -683,6 +723,7 @@ export class RabbitHoleComponent {
     return [
       [Http],
       [ElementRef],
+      [SoundsService],
       [LoadingService],
       [ControlsService],
       [LetteringService]
