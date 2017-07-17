@@ -1,5 +1,6 @@
 import * as THREE                from 'three';
 import { Component, ElementRef } from '@angular/core';
+import { Http                  } from '@angular/http';
 
 import { LoadingService        } from '../../services/loading.service';
 import { ControlsService       } from '../../services/controls.service';
@@ -13,7 +14,7 @@ import { LetteringService      } from '../../services/lettering.service';
 
 
 export class RabbitHoleComponent {
-  constructor(rabbitHole, loading, cameraControls, lettering) {
+  constructor(http, rabbitHole, loading, cameraControls, lettering) {
     this.activeButton = false;
     this.showOverlay  = false;
     this.introPlayed  = false;
@@ -48,6 +49,8 @@ export class RabbitHoleComponent {
     this.controls    = cameraControls;
     this.lettering   = lettering;
     this.loading     = loading;
+    this.http        = http;
+    this.experiments = [];
     this.doors       = [];
 
     this.center    = 225;
@@ -71,6 +74,7 @@ export class RabbitHoleComponent {
     this.createMessage();
 
     this.createControls();
+    this.getExperiments();
     this.animate();
   }
 
@@ -498,6 +502,13 @@ export class RabbitHoleComponent {
     });
   }
 
+  getExperiments() {
+    this.http.get('assets/experiments.json').subscribe(
+      res   => this.experiments = res.json().experiments,
+      error => console.error(error)
+    );
+  }
+
   animate() {
     this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
@@ -513,9 +524,9 @@ export class RabbitHoleComponent {
     }
 
     if (this.exit) {
-      if (this.fadeOut && this.controls) {
-        this.controls.setGameMode();
+      if (this.fadeOut) {
         this.removeEventHandlers();
+        cancelAnimationFrame(this.frame);
         setTimeout(this.gotoNextPage.bind(this), 1500);
       }
 
@@ -590,6 +601,7 @@ export class RabbitHoleComponent {
       this.rightDoor  = door.door.position.z < 0;
       this.experiment = !!door.door.position.z;
       this.fadeOut = true;
+
     } else if (door.pivot.rotation.y > 0.5) {
       this.exit = true;
     }
@@ -606,10 +618,14 @@ export class RabbitHoleComponent {
   }
 
   gotoNextPage() {
-    cancelAnimationFrame(this.frame);
+    this.controls.setGameMode();
 
     if (this.experiment) {
-      this.loading.loadExperiment(this.selectedDoor.index);
+      const index = this.selectedDoor.door.index;
+      const experiment = this.experiments[index];
+      const url = experiment[Object.keys(experiment)[0]];
+
+      this.loading.loadExperiment(url);
     } else {
       this.loading.backToMenu(true);
     }
@@ -643,10 +659,11 @@ export class RabbitHoleComponent {
     document.removeEventListener('keydown', this.onKeyDown, false);
     window.removeEventListener('resize', this.onResize, false);
 
-    if (this.controls) {
-      this.controls.dispose();
-      this.controls = null;
-    }
+    this.controls.dispose();
+
+    // if (this.controls) {
+    //   this.controls = null;
+    // }
   }
 
   ngAfterViewInit() {
@@ -664,6 +681,7 @@ export class RabbitHoleComponent {
 
   static get parameters() {
     return [
+      [Http],
       [ElementRef],
       [LoadingService],
       [ControlsService],

@@ -39,6 +39,7 @@ export class WrittenMessageComponent {
 
   removeMessage() {
     this.dissolve = true;
+    document.removeEventListener('keydown', this.onKeyDown, false);
 
     setTimeout(() => { this.consoleReady.emit(true); }, 2000);
     setTimeout(() => { this.messageElement.remove(); }, 4500);
@@ -56,7 +57,8 @@ export class WrittenMessageComponent {
   }
 
   ngAfterViewInit() {
-    document.addEventListener('keydown', this.skipMessages.bind(this), false);
+    this.onKeyDown = this.skipMessages.bind(this);
+    document.addEventListener('keydown', this.onKeyDown, false);
   }
 
   ngOnChanges() {
@@ -65,7 +67,7 @@ export class WrittenMessageComponent {
   }
 
   ngOnDestroy() {
-    document.removeEventListener('keydown', this.skipMessages.bind(this), false);
+    document.removeEventListener('keydown', this.onKeyDown, false);
   }
 
   static get parameters() {

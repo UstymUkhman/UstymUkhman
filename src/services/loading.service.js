@@ -8,10 +8,6 @@ export class LoadingService {
       'contact' ,
       'more'
     ];
-
-    this.experiments = [
-      'audioreactive'
-    ];
   }
 
   canActivate() {
@@ -42,9 +38,9 @@ export class LoadingService {
       this.backToMenu();
   }
 
-  loadExperiment(index) {
-    // window.location.href = `${window.location.origin}/experiments/${this.experiments[index]}`;
-    window.location.href = 'http://nuovasandero.dacia.it/';
+  loadExperiment(experiment) {
+    // window.location.href = `${window.location.origin}/experiments/${experiment}`;
+    window.location.href = experiment;
   }
 
   backToMenu(reset = false) {
