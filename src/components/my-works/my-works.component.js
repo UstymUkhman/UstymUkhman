@@ -12,13 +12,17 @@ import { LetteringService                    } from '../../services/lettering.se
 export class MyWorksComponent {
   constructor(works, http, lettering) {
     this.projectIndex     = -1;
+    this.listOffset       = 0;
     this.worksList        = [];
     this.projects         = [];
 
     this.fadeOut          = false;
     this.goToMenu         = false;
+    this.startRaining     = false;
+    this.skipLettering    = false;
     this.showBackButton   = false;
     this.activeBackButton = false;
+    this.showWorksCounter = false;
 
     this.http             = http;
     this.lettering        = lettering;
@@ -50,32 +54,42 @@ export class MyWorksComponent {
 
     setTimeout(() => {
       this.projectsSources = this.worksElement.getElementsByClassName('project-source');
+      this.lastScrollingProject = this.projects.length - 4;
       this.lastProject = this.projects.length - 1;
       this.prepareWorksList();
     });
   }
 
   prepareWorksList() {
-    if (++this.projectIndex < this.worksList.length)
+    if (++this.projectIndex < this.worksList.length) {
+      const cbDelay = this.skipLettering ? 0 : 1000;
+
       this.lettering.animate(
         this.projectsSources[this.projectIndex].children[1],
-        50, this.prepareWorksList.bind(this)
+        50, this.prepareWorksList.bind(this), cbDelay
       );
 
-    else {
+      if (this.skipLettering) {
+        this.lettering.skipLettering();
+      }
+
+    } else {
+      this.currentWork    = 0;
       this.showBackButton = true;
 
       setTimeout(() => {
-        this.currentWork = 0;
-        this.startRaining   = true;
-
-        this.projectsNavigation = this.setProjectsNavigation.bind(this);
-        document.addEventListener('keydown', this.projectsNavigation, false);
+        this.startRaining     = true;
+        this.showWorksCounter = true;
       }, 1000);
     }
   }
 
   setProjectsNavigation(event) {
+    if (!this.startRaining) {
+      this.skipLettering = true;
+      return;
+    }
+
     const code    = event.keyCode,
           project = this.currentWork;
 
@@ -87,7 +101,7 @@ export class MyWorksComponent {
       return;
 
     } else if (this.activeBackButton) {
-      this.currentWork   = (code === 38) ? 0 : this.lastProject;
+      this.currentWork = (code === 38) ? 0 : this.lastProject;
       this.activeBackButton = false;
 
     } else {
@@ -103,7 +117,17 @@ export class MyWorksComponent {
     else if (code === 40)
       this.currentWork = (this.currentWork === this.lastProject) ? 0 : this.currentWork + 1;
 
+    if (this.projects.length > 5) {
+      this.listOffset = (this.currentWork < this.lastScrollingProject)
+        ? `${this.currentWork * -this.listStep}px`
+        : this.listOffset;
+
+    } else {
+      this.listOffset = '50%';
+    }
+
     if (this.activeBackButton) {
+      this.listOffset = `${(this.lastScrollingProject - 1) * -this.listStep}px`;
       this.currentWork = -1;
     }
   }
@@ -123,7 +147,21 @@ export class MyWorksComponent {
     }, 3500);
   }
 
+  onResizeHandler() {
+    this.listStep = window.innerHeight * 0.15 + 21;
+  }
+
+  ngAfterViewInit() {
+    this.onResizeHandler();
+    this.onResize = this.onResizeHandler.bind(this);
+    this.projectsNavigation = this.setProjectsNavigation.bind(this);
+
+    window.addEventListener('resize', this.onResize, false);
+    document.addEventListener('keydown', this.projectsNavigation, false);
+  }
+
   ngOnDestroy() {
+    window.removeEventListener('resize', this.onResize, false);
     document.removeEventListener('keydown', this.projectsNavigation, false);
   }
 

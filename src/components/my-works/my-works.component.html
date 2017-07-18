@@ -1,7 +1,18 @@
 <div class="my-works">
   <screen-overlay [ready]='true'></screen-overlay>
 
-  <div class="works-area" [class.fadeOut]='fadeOut'>
+  <div *ngIf='!activeBackButton' class="works-counter"
+       [ngClass]="{'visible': showWorksCounter, 'fadeOut': fadeOut }">
+    <span>{{ currentWork + 1 }} / {{ projects.length }}</span>
+  </div>
+
+  <div class="works-area" [class.fadeOut]='fadeOut' [ngStyle]="{
+       '-webkit-transform': 'translateY(' + listOffset + ')',
+       '-moz-transform': 'translateY(' + listOffset + ')',
+       '-ms-transform': 'translateY(' + listOffset + ')',
+       '-o-transform': 'translateY(' + listOffset + ')',
+       'transform': 'translateY(' + listOffset + ')'}">
+
     <div *ngFor="let work of worksList; let w = index;"
           class="project-source hidden-source" [class.active]='w === currentWork'>
 

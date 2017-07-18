@@ -94,7 +94,8 @@ export class MoreComponent {
   }
 
   createResizeHandler() {
-    window.addEventListener('resize', this.onResize.bind(this), false);
+    this.onResize = this.onResizeHandler.bind(this);
+    window.addEventListener('resize', this.onResize, false);
   }
 
   loadPill(color) {
@@ -260,7 +261,7 @@ export class MoreComponent {
     }
   }
 
-  onResize() {
+  onResizeHandler() {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
@@ -275,7 +276,7 @@ export class MoreComponent {
 
   ngOnDestroy() {
     this.audio.endSpeach();
-    window.removeEventListener('resize', this.onResize.bind(this), false);
+    window.removeEventListener('resize', this.onResize, false);
     document.removeEventListener('keydown', this.pillChoice, false);
   }
 
