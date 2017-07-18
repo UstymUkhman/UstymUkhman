@@ -45,33 +45,35 @@ export class AboutMeComponent {
   removeAboutMeSection() {
     this.goToMenu = true;
     setTimeout(() => { this.fadeOut = true; }, 3500);
-    document.removeEventListener('keydown', this.backButtonHandler, false);
+    document.removeEventListener('keydown', this.onKeyDown, false);
   }
 
-  setBackButtonHandler(event) {
-    if (event.keyCode === 13)
+  setKeyDownHandler(event) {
+    if (this.activeBackButton && event.keyCode === 13) {
       this.removeAboutMeSection();
+
+    } else if (!this.showBackButton) {
+      this.lettering.skipLettering();
+    }
   }
 
   showMessage() {
     this.lettering.animate(this.aboutMessage.children[1], 50, () => {
       this.showBackButton = true;
-
-      setTimeout(() => {
-        this.activeBackButton  = true;
-        this.backButtonHandler = this.setBackButtonHandler.bind(this);
-        document.addEventListener('keydown', this.backButtonHandler, false);
-      }, 1000);
+      setTimeout(() => { this.activeBackButton = true; }, 1000);
     });
   }
 
   ngAfterViewInit() {
+    this.onKeyDown = this.setKeyDownHandler.bind(this);
+    document.addEventListener('keydown', this.onKeyDown, false);
+
     this.aboutMessage = this.aboutElement.firstChild;
     this.showMessage();
   }
 
   ngOnDestroy() {
-    document.removeEventListener('keydown', this.backButtonHandler, false);
+    document.removeEventListener('keydown', this.onKeyDown, false);
   }
 
   static get parameters() {

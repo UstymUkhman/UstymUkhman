@@ -63,7 +63,7 @@ export class LetteringService {
     }
 
     if (this.last === this.lastLetter) {
-      cancelAnimationFrame(this.letteringID);
+      this.stopLettering();
 
       if (this.hasCallback) {
         setTimeout(this.callback, this.timeout);
@@ -73,6 +73,19 @@ export class LetteringService {
     }
 
     this.letteringID = requestAnimationFrame(this.lettersAnimation.bind(this));
+  }
+
+  skipLettering() {
+    this.stopLettering();
+
+    for (let i = this.index; i < this.letters.length;) {
+      this.showLetter(this.letters[i]);
+      this.index = ++i;
+    }
+
+    if (this.hasCallback) {
+      setTimeout(this.callback, this.timeout);
+    }
   }
 
   stopLettering() {
