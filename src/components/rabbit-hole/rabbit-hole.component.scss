@@ -1,8 +1,8 @@
 div.rabbit-hole-component {
   @include position(absolute, $null);
+  @include hidden-overflow;
   @include size($max);
 
-  overflow: hidden;
   z-index: $z-max;
 
   div.window-overlay {

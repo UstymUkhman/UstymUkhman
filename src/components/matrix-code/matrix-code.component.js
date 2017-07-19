@@ -20,7 +20,8 @@ export class MatrixCodeComponent {
   }
 
   ngAfterViewInit() {
-    this.rain.setParams(150);
+    // this.rain.setParams(150);
+    this.rain.setParams(isMobile ? 50 : 150);
     this.rain.createRain(this.matrixCode.firstElementChild.firstElementChild);
   }
 

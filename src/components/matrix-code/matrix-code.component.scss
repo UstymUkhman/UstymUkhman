@@ -10,6 +10,12 @@ div.matrix-code-container {
   z-index: $z-code;
   background-color: transparent;
 
+  @include breakpoint($mobile) {
+    @include size($max);
+    left: $null;    
+    top: $null;
+  }
+
   div.code-layout {
     @include size($max);
     @include hidden-element;

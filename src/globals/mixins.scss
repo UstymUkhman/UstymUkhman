@@ -109,6 +109,19 @@
  * Custom Mixins:
  */
 
+@mixin visible-overflow {
+  -webkit-overflow-scrolling: touch;
+  -webkit-touch-callout: default;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@mixin hidden-overflow {
+  -webkit-overflow-scrolling: auto;
+  -webkit-touch-callout: none;
+  overflow: hidden;
+}
+
 @mixin white-rabbit {
   font-family: 'White Rabbit';
   font-size: 18px;

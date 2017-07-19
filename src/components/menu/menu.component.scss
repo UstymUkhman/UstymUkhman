@@ -22,6 +22,7 @@ div.menu-section {
     height: 100%;
 
     @include breakpoint($mobile) {
+      @include hidden-overflow;
       padding: 50px 0;
       margin-left: 0;
     }
@@ -75,7 +76,7 @@ div.menu-section {
     @include size($half $max);
 
     @include breakpoint($mobile) {
-      overflow: hidden;
+      @include hidden-overflow;
       width: $max;
 
       right: $null;

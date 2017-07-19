@@ -1,8 +1,8 @@
 canvas#preloader {
+  @include hidden-overflow;
   @include size(100%);
-  position: absolute;
-  overflow: hidden;
 
   background-color: $black;
   z-index: $z-preloader;
+  position: absolute;
 }
