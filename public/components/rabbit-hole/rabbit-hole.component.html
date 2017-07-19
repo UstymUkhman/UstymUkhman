@@ -1,5 +1,9 @@
 <div class="rabbit-hole-component">
-  <div class="window-overlay" [ngClass]="{'fade-out': fadeOut, 'visible': showOverlay}"></div>
+  <div class="window-overlay" [ngClass]="{'fade-out': fadeOut, 'visible': showOverlay}">
+    <div class="suggestion-container" [class.show]='canOpen'>
+      <span>Hold left mouse button to open the door</span>
+    </div>
+  </div>
 
   <div class="guidelines-container" *ngIf='!introPlayed'>
     <p class="info-text" [class.dissolve]='showOverlay'>{{ guidelines }}</p>

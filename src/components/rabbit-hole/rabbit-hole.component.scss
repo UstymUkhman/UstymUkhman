@@ -20,6 +20,26 @@ div.rabbit-hole-component {
     &.visible {
       opacity: 1;
     }
+
+    div.suggestion-container {
+      @include transition(opacity 0.5s ease-out);
+      @include transform(translateX(-50%));
+      @include white-rabbit;
+
+      text-transform: uppercase;
+      background-color: $black;
+      position: absolute;
+      opacity: 0;
+
+      border-radius: 5px;
+      padding: 10px;
+      bottom: 20px;
+      left: 50%;
+
+      &.show {
+        opacity: 1;
+      }
+    }
   }
 
   div.guidelines-container {

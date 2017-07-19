@@ -25,6 +25,7 @@ export class RabbitHoleComponent {
     this.pressed      = false;
     this.intro        = false;
     this.exit         = false;
+    this.canOpen      = false;
     this.fadeOut      = false;
     this.isFocused    = true;
     this.showScreen   = true;
@@ -463,7 +464,7 @@ export class RabbitHoleComponent {
   setFocusHandler() {
     this.isFocused = true;
 
-    if (this.controls && !this.controls.enabled) {
+    if (this.controls && this.introPlayed && !this.controls.enabled) {
       this.controls.setGameMode();
       this.controls.enable();
     }
@@ -580,6 +581,7 @@ export class RabbitHoleComponent {
 
   checkFocusDirection() {
     this.raycaster.setFromCamera(this.focus, this.camera);
+    this.canOpen = false;
 
     const doors      = Array.from(this.doors, doors => doors.door);
     const intersects = this.raycaster.intersectObjects(doors);
@@ -591,6 +593,7 @@ export class RabbitHoleComponent {
         return mesh.door.id === selectedDoor.id;
       });
 
+      this.canOpen = true;
       this.openTheDoor(door[0]);
 
     } else if (this.selectedDoor) {
@@ -619,14 +622,15 @@ export class RabbitHoleComponent {
 
     if (door.pivot.rotation.y > 1.56) {
       door.pivot.rotation.y = 1.56;
+      this.fadeOut = true;
     }
 
     if (door.pivot.rotation.y > 1) {
       this.rightDoor  = door.door.position.z < 0;
       this.experiment = !!door.door.position.z;
-      this.fadeOut = true;
 
     } else if (door.pivot.rotation.y > 0.5) {
+      this.canOpen = false;
       this.exit = true;
     }
 

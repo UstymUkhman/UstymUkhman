@@ -28,12 +28,12 @@
   }
 }
 
-@mixin transform($animation...) {
-  -webkit-transform: $animation;
-  -moz-transform: $animation;
-  -ms-transform: $animation;
-  -o-transform: $animation;
-  transform: $animation;
+@mixin transform($transformation...) {
+  -webkit-transform: $transformation;
+  -moz-transform: $transformation;
+  -ms-transform: $transformation;
+  -o-transform: $transformation;
+  transform: $transformation;
 }
 
 @mixin transition($animation...) {
