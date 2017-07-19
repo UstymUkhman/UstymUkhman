@@ -4,7 +4,7 @@ import { LetteringService      } from '../../services/lettering.service';
 
 
 @Component({
-  selector: 'menu',
+  selector: 'menu-component',
   inputs: ['showOverlay', 'activeItem', 'showMenu'],
   templateUrl: 'components/menu/menu.component.html'
 })
@@ -39,6 +39,12 @@ export class MenuComponent {
     this.settedSection = section;
     document.removeEventListener('keydown', this.menuNavigation, false);
 
+    if (isMobile) {
+      for (let i = 0; i < this.itemBoxes.length; i++) {
+        this.itemBoxes[i].removeEventListener('click', this.setClickHandler.bind(this, i), false);
+      }
+    }
+
     setTimeout(() => { this.fadeOutArea = true; }, 3500);
 
     setTimeout(() => {
@@ -61,6 +67,11 @@ export class MenuComponent {
       this.currentItem = (this.currentItem === 3) ? 0 : this.currentItem + 1;
   }
 
+  setClickHandler(index) {
+    this.currentItem = index;
+    this.setMenuNavigation({keyCode: 13});
+  }
+
   showMenuItems() {
     if (++this.itemIndex < this.pages.length)
       this.lettering.animate(
@@ -76,6 +87,12 @@ export class MenuComponent {
 
       setTimeout(() => { this.startRaining = true; }, 1500);
       document.addEventListener('keydown', this.menuNavigation, false);
+
+      if (isMobile) {
+        for (let i = 0; i < this.itemBoxes.length; i++) {
+          this.itemBoxes[i].addEventListener('click', this.setClickHandler.bind(this, i), false);
+        }
+      }
     }
   }
 

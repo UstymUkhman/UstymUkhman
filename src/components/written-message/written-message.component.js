@@ -41,6 +41,10 @@ export class WrittenMessageComponent {
     this.dissolve = true;
     document.removeEventListener('keydown', this.onKeyDown, false);
 
+    if (isMobile) {
+      document.removeEventListener('click', this.onKeyDown, false);
+    }
+
     setTimeout(() => { this.consoleReady.emit(true); }, 2000);
     setTimeout(() => { this.messageElement.remove(); }, 4500);
   }
@@ -62,11 +66,19 @@ export class WrittenMessageComponent {
 
       this.onKeyDown = this.skipMessages.bind(this);
       document.addEventListener('keydown', this.onKeyDown, false);
+
+      if (isMobile) {
+        document.addEventListener('click', this.onKeyDown, false);
+      }
     }
   }
 
   ngOnDestroy() {
     document.removeEventListener('keydown', this.onKeyDown, false);
+
+    if (isMobile) {
+      document.removeEventListener('click', this.onKeyDown, false);
+    }
   }
 
   static get parameters() {

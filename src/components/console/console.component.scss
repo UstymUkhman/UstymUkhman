@@ -1,5 +1,6 @@
 div.main-window {
   @include size($max);
+  @include hidden-overflow;
   @include position(absolute, $null);
 }
 
@@ -10,23 +11,16 @@ div.console {
   padding-left: 50px;
   padding-top: 75px;
 
-  @include breakpoint($mobile) {
-    padding: 0;
-  }
-
   &.ready {
     background-color: $black;
   }
 
-  menu {
-    -webkit-padding-before: 0;
-    -webkit-padding-after: 0;
-    -webkit-padding-start: 0;
-    -webkit-padding-end: 0;
+  @include breakpoint($mobile) {
+    width: auto;
+  }
 
-    -webkit-margin-before: 0;
-    -webkit-margin-after: 0;
-    -webkit-margin-start: 0;
-    -webkit-margin-end: 0;
+  @include breakpoint($phone) {
+    padding-left: 25px;
+    padding-top: 50px;
   }
 }

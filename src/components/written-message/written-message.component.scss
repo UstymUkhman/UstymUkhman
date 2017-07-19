@@ -10,6 +10,10 @@ div#written-message {
     @include white-rabbit;
     @include transition(opacity 0.5s ease-out);
 
+    @include breakpoint($mobile) {
+      font-size: 14px;
+    }
+
     &.fade-out {
       opacity: 0;
     }

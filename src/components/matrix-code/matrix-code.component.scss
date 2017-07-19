@@ -12,7 +12,7 @@ div.matrix-code-container {
 
   @include breakpoint($mobile) {
     @include size($max);
-    left: $null;    
+    left: $null;
     top: $null;
   }
 

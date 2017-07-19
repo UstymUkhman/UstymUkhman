@@ -491,8 +491,8 @@ export class RabbitHoleComponent {
   createMessage() {
     this.guidelines = `
       Welcome to the real world.###
-      Use [W], [A], [S], [D] keys to move and drag you mouse to look around.##
-      Use [SPACE] to interact with the enviroment.#####
+      Use W, A, S, D keys to move and drag you mouse to look around.##
+      Press left mouse button to interact with the enviroment.#####
     `;
 
     if (!this.isFullSize) {

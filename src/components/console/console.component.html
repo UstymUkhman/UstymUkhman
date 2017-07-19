@@ -3,6 +3,6 @@
 
   <div class="console" [ngClass]="{'ready': showConsole}">
     <written-message (consoleReady)='showMenu' [start]='hiddenLoading'></written-message>
-    <menu [showOverlay]='visibleOverlay' [activeItem]='lastActiveItem' [showMenu]='menuReady'></menu>
+    <menu-component [showOverlay]='visibleOverlay' [activeItem]='lastActiveItem' [showMenu]='menuReady'></menu-component>
   </div>
 </div>

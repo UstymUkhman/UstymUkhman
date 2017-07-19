@@ -14,6 +14,12 @@ div.menu-section {
     &.fade-out {
       opacity: 0;
     }
+
+    @include breakpoint($mobile) {
+      position: absolute;
+      z-index: $z-pills;
+      width: 100%;
+    }
   }
 
   div.menu-items {
@@ -23,7 +29,7 @@ div.menu-section {
 
     @include breakpoint($mobile) {
       @include hidden-overflow;
-      padding: 50px 0;
+      padding: 10vh 0;
       margin-left: 0;
     }
 
@@ -44,14 +50,12 @@ div.menu-section {
         top: 50%;
 
         @include breakpoint($mobile) {
-          @include size(400px 120px);
-          @include transform(none);
-
+          @include size(50% 100px);
           margin: $null auto;
-          width: $half;
+        }
 
-          right: 8.8%;
-          left: $null;
+        @include breakpoint($phone) {
+          @include size(80% 80px);
         }
 
         div.button-background {
@@ -64,7 +68,15 @@ div.menu-section {
           padding: 0;
 
           @include breakpoint($mobile) {
-            line-height: 120px;
+            line-height: 100px;
+            font-size: 40px;
+            height: 100px;
+          }
+
+          @include breakpoint($phone) {
+            line-height: 80px;
+            font-size: 35px;
+            height: 80px;
           }
         }
       }
@@ -77,6 +89,7 @@ div.menu-section {
 
     @include breakpoint($mobile) {
       @include hidden-overflow;
+      pointer-events: none;
       width: $max;
 
       right: $null;
@@ -86,6 +99,7 @@ div.menu-section {
 
   div.matrix-code {
     @include middle-align;
+    pointer-events: none;
 
     &.hidden {
       display: none;

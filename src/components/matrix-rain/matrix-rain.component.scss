@@ -133,6 +133,10 @@ div.matrix-rain-container {
       -moz-animation-iteration-count: infinite;
       -o-animation-iteration-count: infinite;
       animation-iteration-count: infinite;
+
+      @include breakpoint($mobile) {
+        left: unquote("#{$i * 20}%");
+      }
     }
   }
 }

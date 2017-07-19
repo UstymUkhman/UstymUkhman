@@ -55,7 +55,7 @@ div.rabbit-hole-component {
       margin-top: 75px;
 
       &.dissolve { span { opacity: 0; } }
-      span { @include dissolve-text(362); }
+      span { @include dissolve-text(365); }
     }
 
     div.button-border {
