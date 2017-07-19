@@ -6,12 +6,15 @@
     <span>{{ currentWork + 1 }} / {{ projects.length }}</span>
   </div>
 
-  <div class="works-area" [class.fadeOut]='fadeOut' [ngStyle]="{
-       '-webkit-transform': 'translateY(' + listOffset + ')',
-       '-moz-transform': 'translateY(' + listOffset + ')',
-       '-ms-transform': 'translateY(' + listOffset + ')',
-       '-o-transform': 'translateY(' + listOffset + ')',
-       'transform': 'translateY(' + listOffset + ')'}">
+  <div class="works-area"
+       [ngClass]="{'small-list': projects.length < 6, 'fadeOut': fadeOut}"
+       [ngStyle]="{
+         '-webkit-transform': 'translateY(' + listOffset + ')',
+         '-moz-transform': 'translateY(' + listOffset + ')',
+         '-ms-transform': 'translateY(' + listOffset + ')',
+         '-o-transform': 'translateY(' + listOffset + ')',
+         'transform': 'translateY(' + listOffset + ')'
+       }">
 
     <div *ngFor="let work of worksList; let w = index;"
           class="project-source hidden-source" [class.active]='w === currentWork'>

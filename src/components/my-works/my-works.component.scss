@@ -42,6 +42,12 @@ div.my-works {
 
     opacity: 1;
 
+    &.small-list {
+      @include transition(opacity 1s ease-out);
+      bottom: auto;
+      top: 50%;
+    }
+
     &.fadeOut {
       opacity: 0;
     }

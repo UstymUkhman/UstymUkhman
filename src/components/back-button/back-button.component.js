@@ -33,7 +33,7 @@ export class BackButtonComponent {
 
     if (this.backToMenu) {
       setTimeout(() => { this.fadeOut = true; }, 3500);
-      setTimeout(this.loading.backToMenu, 8500);
+      setTimeout(() => { this.loading.backToMenu(); }, 8500);
     }
   }
 

@@ -52,6 +52,10 @@ export class MyWorksComponent {
       });
     }
 
+    if (this.projects.length < 6) {
+      this.listOffset = '-50%';
+    }
+
     setTimeout(() => {
       this.projectsSources = this.worksElement.getElementsByClassName('project-source');
       this.lastScrollingProject = this.projects.length - 4;
@@ -123,11 +127,14 @@ export class MyWorksComponent {
         : this.listOffset;
 
     } else {
-      this.listOffset = '50%';
+      this.listOffset = '-50%';
     }
 
     if (this.activeBackButton) {
-      this.listOffset = `${(this.lastScrollingProject - 1) * -this.listStep}px`;
+      if (this.projects.length > 5) {
+        this.listOffset = `${(this.lastScrollingProject - 1) * -this.listStep}px`;
+      }
+
       this.currentWork = -1;
     }
   }

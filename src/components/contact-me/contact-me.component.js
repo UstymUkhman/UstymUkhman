@@ -13,6 +13,7 @@ export class ContactMeComponent {
     this.fadeOut          = false;
     this.goToMenu         = false;
     this.startRaining     = false;
+    this.skipLettering    = false;
     this.showBackButton   = false;
     this.activeBackButton = false;
     this.removeMatrixRain = false;
@@ -57,6 +58,11 @@ export class ContactMeComponent {
   }
 
   setContactsNavigation(event) {
+    if (!this.startRaining) {
+      this.skipLettering = true;
+      return;
+    }
+
     const code    = event.keyCode,
           contact = this.currentContact;
 
@@ -90,26 +96,32 @@ export class ContactMeComponent {
   }
 
   prepareContactsList() {
-    if (++this.contactIndex < this.contactsList.length)
+    if (++this.contactIndex < this.contactsList.length) {
+      const cbDelay = this.skipLettering ? 0 : 1000;
+
       this.lettering.animate(
         this.contactSources[this.contactIndex].children[1],
-        50, this.prepareContactsList.bind(this)
+        50, this.prepareContactsList.bind(this), cbDelay
       );
 
-    else {
+      if (this.skipLettering) {
+        this.lettering.skipLettering();
+      }
+
+    } else {
       this.showBackButton = true;
 
       setTimeout(() => {
         this.currentContact = 0;
         this.startRaining   = true;
-
-        this.contactsNavigation = this.setContactsNavigation.bind(this);
-        document.addEventListener('keydown', this.contactsNavigation, false);
       }, 1000);
     }
   }
 
   ngAfterViewInit() {
+    this.contactsNavigation = this.setContactsNavigation.bind(this);
+    document.addEventListener('keydown', this.contactsNavigation, false);
+
     this.contactSources = this.contactsElement.getElementsByClassName('contact-source');
     this.prepareContactsList();
   }
