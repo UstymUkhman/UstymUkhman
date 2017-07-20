@@ -425,7 +425,12 @@ export class RabbitHoleComponent {
     const ready = this.isFullSize && event.keyCode === 13;
 
     if (this.controls && ready) {
+      this.forceSuggestion = false;
       this.controls.setGameMode();
+
+      setTimeout(() => {
+        this.suggestion = 'Hold left mouse button to open the door';
+      }, 1000);
     }
 
     if (ready && !this.introPlayed) {
@@ -462,9 +467,11 @@ export class RabbitHoleComponent {
   }
 
   setFocusHandler() {
+    this.suggestion = 'Press enter to interact';
+    this.forceSuggestion = true;
     this.isFocused = true;
 
-    if (this.controls && this.introPlayed && !this.controls.enabled) {
+    if (this.introPlayed && this.controls && !this.controls.enabled) {
       this.controls.setGameMode();
       this.controls.enable();
     }
@@ -503,6 +510,7 @@ export class RabbitHoleComponent {
     }
 
     this.guidelines += 'Press  ENTER  when you\'re ready.';
+    this.suggestion  = 'Hold left mouse button to open the door';
   }
 
   createControls() {
