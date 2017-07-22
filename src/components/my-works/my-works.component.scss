@@ -39,6 +39,7 @@ div.my-works {
   div.works-area {
     @include transition(transform 0.5s $scroll-easing, opacity 1s ease-out);
     @include position(absolute, $null null $null);
+    @include backface-visibility(hidden);
 
     opacity: 1;
 

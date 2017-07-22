@@ -64,24 +64,41 @@ export class MyWorksComponent {
     });
   }
 
-  prepareWorksList() {
-    if (++this.projectIndex < this.worksList.length) {
-      const cbDelay = this.skipLettering ? 0 : 1000;
+  prepareWorksList(endAnimation = false) {
+    if (!endAnimation) {
+      const delay = this.skipLettering ? 0 : 1000;
 
-      this.lettering.animate(
-        this.projectsSources[this.projectIndex].children[1],
-        50, this.prepareWorksList.bind(this), cbDelay
-      );
+      setTimeout(() => {
+        const currentIndex   = this.projectIndex,
+              nextIndex      = ++this.projectIndex,
+              scrollableList = this.projects.length > 5 && currentIndex < this.lastScrollingProject;
 
-      if (this.skipLettering) {
-        this.lettering.skipLettering();
-      }
+        if (!this.projectsSources[nextIndex]) {
+          this.prepareWorksList(true);
+          return;
+        }
 
-    } else {
-      this.currentWork    = 0;
+        if (!this.skipLettering && scrollableList) {
+          this.listOffset = `${nextIndex * -this.listStep}px`;
+        }
+
+        this.lettering.animate(
+          this.projectsSources[nextIndex].children[1],
+          50, this.prepareWorksList.bind(this), 0
+        );
+
+        if (this.skipLettering) {
+          this.lettering.skipLettering();
+          this.prepareWorksList();
+        }
+      }, delay);
+
+    } else if (!this.showBackButton) {
       this.showBackButton = true;
 
       setTimeout(() => {
+        this.listOffset       = 0;
+        this.currentWork      = 0;
         this.startRaining     = true;
         this.showWorksCounter = true;
       }, 1000);
@@ -90,7 +107,9 @@ export class MyWorksComponent {
 
   setProjectsNavigation(event) {
     if (!this.startRaining) {
+      this.lettering.skipLettering();
       this.skipLettering = true;
+      this.listOffset = 0;
       return;
     }
 

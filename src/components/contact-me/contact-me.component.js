@@ -25,20 +25,22 @@ export class ContactMeComponent {
     this.contactsList = [
       'LinkedIn',
       'GitHub',
-      'E-mail',
-      'CV'
+      'CodePen',
+      'E-mail'
+      // 'CV'
     ];
 
     this.contactsLinks = [
       'https://www.linkedin.com/in/ustymukhman',
       'https://github.com/UstymUkhman/',
-      'mailto:ustym.ukhman@gmail.com',
-      'assets/curriculum_vitae.pdf'
+      'https://codepen.io/UstymUkhman/',
+      'mailto:ustym.ukhman@gmail.com'
+      // 'assets/curriculum_vitae.pdf'
     ];
   }
 
   openContactLink(contact) {
-    let target = (contact === 2) ? '_self' : '_blank';
+    let target = (contact === 3) ? '_self' : '_blank';
     window.open(this.contactsLinks[contact], target);
   }
 
@@ -59,6 +61,7 @@ export class ContactMeComponent {
 
   setContactsNavigation(event) {
     if (!this.startRaining) {
+      this.lettering.skipLettering();
       this.skipLettering = true;
       return;
     }
@@ -95,20 +98,30 @@ export class ContactMeComponent {
     }
   }
 
-  prepareContactsList() {
-    if (++this.contactIndex < this.contactsList.length) {
-      const cbDelay = this.skipLettering ? 0 : 1000;
+  prepareContactsList(endAnimation = false) {
+    if (!endAnimation) {
+      const delay = this.skipLettering ? 0 : 1000;
 
-      this.lettering.animate(
-        this.contactSources[this.contactIndex].children[1],
-        50, this.prepareContactsList.bind(this), cbDelay
-      );
+      setTimeout(() => {
+        const nextIndex = ++this.contactIndex;
 
-      if (this.skipLettering) {
-        this.lettering.skipLettering();
-      }
+        if (!this.contactSources[nextIndex]) {
+          this.prepareContactsList(true);
+          return;
+        }
 
-    } else {
+        this.lettering.animate(
+          this.contactSources[nextIndex].children[1],
+          50, this.prepareContactsList.bind(this), 0
+        );
+
+        if (this.skipLettering) {
+          this.lettering.skipLettering();
+          this.prepareContactsList();
+        }
+      }, delay);
+
+    } else if (!this.showBackButton) {
       this.showBackButton = true;
 
       setTimeout(() => {

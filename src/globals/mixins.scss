@@ -122,6 +122,11 @@
   overflow: hidden;
 }
 
+@mixin backface-visibility($mode) {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
 @mixin white-rabbit {
   font-family: 'White Rabbit';
   font-size: 18px;

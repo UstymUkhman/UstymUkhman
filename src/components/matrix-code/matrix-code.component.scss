@@ -21,6 +21,8 @@ div.matrix-code-container {
     @include hidden-element;
     @include transition(transform 8s linear);
 
+    will-change: transform;
+
     p.code-column {
       $code-sizes: (12, 25, 60);
       @include size(40px auto);

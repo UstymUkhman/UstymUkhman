@@ -76,7 +76,7 @@ export class MenuComponent {
     if (++this.itemIndex < this.pages.length)
       this.lettering.animate(
         this.itemBoxes[this.itemIndex].children[1],
-        100, this.showMenuItems.bind(this)
+        50, this.showMenuItems.bind(this), 500
       );
 
     else {

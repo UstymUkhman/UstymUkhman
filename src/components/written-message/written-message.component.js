@@ -49,14 +49,8 @@ export class WrittenMessageComponent {
     setTimeout(() => { this.messageElement.remove(); }, 4500);
   }
 
-  skipMessages() {
-    clearTimeout(this.showTimeout);
-    this.lettering.stopLettering();
-    this.removeMessage();
-  }
-
   showMessage() {
-    this.lettering.animate(this.message, 150, this.prepareMessage.bind(this), 2000);
+    this.lettering.animate(this.message, 150, this.prepareMessage.bind(this), 1500);
   }
 
   ngOnChanges() {
@@ -64,7 +58,7 @@ export class WrittenMessageComponent {
       this.message = this.messageElement.firstChild.children[0];
       this.prepareMessage();
 
-      this.onKeyDown = this.skipMessages.bind(this);
+      this.onKeyDown = () => { this.lettering.skipLettering(); };
       document.addEventListener('keydown', this.onKeyDown, false);
 
       if (isMobile) {
