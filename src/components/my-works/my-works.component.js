@@ -97,10 +97,10 @@ export class MyWorksComponent {
       this.showBackButton = true;
 
       setTimeout(() => {
-        this.listOffset       = 0;
         this.currentWork      = 0;
         this.startRaining     = true;
         this.showWorksCounter = true;
+        // this.listOffset       = this.projects.length < 6 ? '-50%' : 0;
       }, 1000);
     }
   }

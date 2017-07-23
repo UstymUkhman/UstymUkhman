@@ -125,8 +125,8 @@ export class ContactMeComponent {
       this.showBackButton = true;
 
       setTimeout(() => {
-        this.currentContact = 0;
         this.startRaining   = true;
+        this.currentContact = isMobile ? null : 0;
       }, 1000);
     }
   }

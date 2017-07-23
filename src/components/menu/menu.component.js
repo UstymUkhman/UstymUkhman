@@ -82,8 +82,8 @@ export class MenuComponent {
     else {
       this.settedSection  = null;
       this.hiddenItems    = false;
-      this.currentItem    = this.activeItem || 0;
       this.menuNavigation = this.setMenuNavigation.bind(this);
+      this.currentItem    = isMobile ? null : this.activeItem || 0;
 
       setTimeout(() => { this.startRaining = true; }, 1500);
       document.addEventListener('keydown', this.menuNavigation, false);

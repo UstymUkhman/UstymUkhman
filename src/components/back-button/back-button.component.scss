@@ -16,12 +16,24 @@ div#back-button-section {
       opacity: 0;
     }
 
+    @include breakpoint($mobile) {
+      @include size(120px 40px);
+    }
+
+    @media only screen and (max-height: 550px) {
+      margin-bottom: 10px;
+    }
+
     p.button {
       span:first-child {
         @include transition(transform .3s ease-out .5s);
         @include transform(translateX(-25px));
 
         position: absolute;
+
+        @include breakpoint($mobile) {
+          @include transform(translateX(-15px));
+        }
       }
     }
 
@@ -29,6 +41,10 @@ div#back-button-section {
       p.button {
         span:first-child {
           @include transform(translateX(-35px));
+
+          @include breakpoint($mobile) {
+            @include transform(translateX(-25px));
+          }
         }
       }
     }

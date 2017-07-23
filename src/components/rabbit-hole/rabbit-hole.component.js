@@ -480,16 +480,17 @@ export class RabbitHoleComponent {
     }
 
     if (ready && !this.introPlayed) {
-      const overlayDelay = this.activeButton ? 0 : 2500;
-      const introDelay = this.activeButton ? 2500 : 5000;
-
+      const delay = this.activeButton ? 0 : 2500;
       this.lettering.skipLettering();
-      setTimeout(() => { this.showOverlay = true; }, overlayDelay);
+
+      setTimeout(() => {
+        this.showOverlay = true;
+      }, delay);
 
       setTimeout(() => {
         this.showScreen = false;
         this.createCinematicIntro();
-      }, introDelay);
+      }, delay + 2500);
     }
   }
 
@@ -582,10 +583,10 @@ export class RabbitHoleComponent {
 
     this.controls.setFullscreenCallback(this.exitViewMode.bind(this));
     this.controls.setBorders({
-      front : this.center - 230,
-      back  : this.center + 242,
-      right :  18,
-      left  : -18
+      front: this.center - 230,
+      back : this.center + 242,
+      right:  18,
+      left : -18
     });
   }
 
@@ -600,15 +601,10 @@ export class RabbitHoleComponent {
     this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
 
-    if (this.intro) {
-      this.animateCameraIntro();
-    } else {
-      this.checkFocusDirection();
-    }
+    if (this.intro) this.animateCameraIntro();
+    else this.checkFocusDirection();
 
-    if (this.controls) {
-      this.controls.update();
-    }
+    if (this.controls) this.controls.update();
 
     if (this.exit) {
       if (this.fadeOut) {
@@ -627,9 +623,7 @@ export class RabbitHoleComponent {
       this.introPlayed = true;
       this.intro = false;
 
-      if (this.isFocused) {
-        this.controls.enable();
-      }
+      if (this.isFocused) this.controls.enable();
     }
 
     this.renderer.setViewport(0, 0, this.WIDTH, this.HEIGHT);
@@ -733,11 +727,8 @@ export class RabbitHoleComponent {
   playDoorSound(door) {
     const closed = door >= this.experiments.length;
 
-    if (closed) {
-      this.sounds.closedDoor();
-    } else {
-      this.sounds.openedDoor();
-    }
+    if (closed) this.sounds.closedDoor();
+    else this.sounds.openedDoor();
 
     return closed;
   }

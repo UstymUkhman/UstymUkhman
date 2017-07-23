@@ -192,6 +192,10 @@
       text-align: center;
       width: 150px;
 
+      @include breakpoint($mobile) {
+        width: 120px;
+      }
+
       &:before, &:after,
       p.button:before,
       p.button:after {
@@ -229,6 +233,10 @@
 
         background-color: transparent;
         z-index: -1;
+
+        @include breakpoint($mobile) {
+          @include size(120px 40px);
+        }
       }
 
       p.button {
@@ -241,6 +249,12 @@
         font-size: 25px;
         color: $green;
         margin: $null;
+
+        @include breakpoint($mobile) {
+          padding-left: 25%;
+          line-height: 40px;
+          font-size: 20px;
+        }
 
         &:before, &:after {
           @include transform(scale3d(0, 1, 1));

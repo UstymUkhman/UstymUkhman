@@ -1,5 +1,6 @@
 div.contact-me {
   @include position(absolute, $null);
+  @include hidden-overflow;
   @include size($max);
 
   background-color: $black;
@@ -10,16 +11,34 @@ div.contact-me {
     @include remove-element;
   }
 
-  div.contacts-area {
-    @include transition(opacity 1s ease-out);
-    @include position(absolute, $null null $null);
+  @include breakpoint($mobile) {
+    padding: 0;
+  }
 
+  div.contacts-area {
+    @include position(absolute, $null null $null);
+    @include transition(opacity 1s ease-out);
+
+    pointer-events: none;
     height: 78.5vh;
     margin: auto;
     opacity: 1;
 
     &.fadeOut {
       opacity: 0;
+    }
+
+    @include breakpoint($mobile) {
+      margin: 5vh 0 0 50px;
+      height: 100%;
+    }
+
+    @include breakpoint($phone) {
+      margin-left: 25px;
+    }
+
+    @media only screen and (max-height: 550px) {
+      margin-top: 25px;
     }
 
     div.contact-source {
@@ -54,10 +73,18 @@ div.contact-me {
 
         display: inline-block;
         font-size: 25px;
+
+        @include breakpoint($phone) {
+          font-size: 20px;
+        }
       }
 
       p.contact {
         line-height: 20px;
+
+        @include breakpoint($phone) {
+          line-height: 15px;
+        }
       }
 
       span.e-mail {
@@ -84,5 +111,10 @@ div.contact-me {
   div.matrix-rain {
     @include position(absolute, 0 auto 0 $half);
     @include size($half $max);
+
+    @include breakpoint($mobile) {
+      width: 100%;
+      left: 0;
+    }
   }
 }

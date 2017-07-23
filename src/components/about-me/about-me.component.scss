@@ -1,5 +1,6 @@
 div#about-me {
   @include position(absolute, $null);
+  @include hidden-overflow;
   @include size($max);
 
   background-color: $black;
@@ -19,6 +20,22 @@ div#about-me {
 
     &.fadeOut {
       opacity: 0;
+    }
+
+    @include breakpoint($mobile) {
+      line-height: 20px;
+      font-size: 13px;
+
+      height: 360px;
+      width: 95vw;
+    }
+
+    @include breakpoint($phone) {
+      margin-top: 15vh;
+    }
+
+    @media only screen and (max-height: 550px) {
+      margin-top: 5vh;
     }
   }
 }

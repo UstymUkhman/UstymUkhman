@@ -46,6 +46,10 @@ export class AboutMeComponent {
     this.goToMenu = true;
     setTimeout(() => { this.fadeOut = true; }, 3500);
     document.removeEventListener('keydown', this.onKeyDown, false);
+
+    if (isMobile) {
+      document.removeEventListener('click', this.onKeyDown, false);
+    }
   }
 
   setKeyDownHandler(event) {
@@ -68,12 +72,20 @@ export class AboutMeComponent {
     this.onKeyDown = this.setKeyDownHandler.bind(this);
     document.addEventListener('keydown', this.onKeyDown, false);
 
+    if (isMobile) {
+      document.addEventListener('click', this.onKeyDown, false);
+    }
+
     this.aboutMessage = this.aboutElement.firstChild;
     this.showMessage();
   }
 
   ngOnDestroy() {
     document.removeEventListener('keydown', this.onKeyDown, false);
+
+    if (isMobile) {
+      document.removeEventListener('click', this.onKeyDown, false);
+    }
   }
 
   static get parameters() {

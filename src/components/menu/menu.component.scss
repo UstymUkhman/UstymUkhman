@@ -33,6 +33,10 @@ div.menu-section {
       margin-left: 0;
     }
 
+    @media only screen and (max-height: 550px) {
+      padding: 5vh 0;
+    }
+
     div.button-border {
       @include display(flex);
       margin: auto;
@@ -60,6 +64,13 @@ div.menu-section {
 
         div.button-background {
           @include size(100%);
+
+          @include breakpoint($mobile) {
+            -webkit-animation-delay: 500ms !important;
+            -moz-animation-delay: 500ms !important;
+            -o-animation-delay: 500ms !important;
+            animation-delay: 500ms !important;
+          }
         }
 
         p.button {

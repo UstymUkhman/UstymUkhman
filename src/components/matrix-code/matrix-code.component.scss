@@ -11,9 +11,10 @@ div.matrix-code-container {
   background-color: transparent;
 
   @include breakpoint($mobile) {
-    @include size($max);
-    left: $null;
-    top: $null;
+    pointer-events: none;
+    // @include size($max);
+    // left: $null;
+    // top: $null;
   }
 
   div.code-layout {
@@ -126,6 +127,14 @@ div.matrix-code-container {
         top: unquote("#{-$top}%");
         left: unquote("#{$i}%");
         position: absolute;
+
+        @include breakpoint($mobile) {
+          left: unquote("#{$i * 2}%");
+        }
+
+        @include breakpoint($phone) {
+          left: unquote("#{$i * 4}%");
+        }
       }
     }
 

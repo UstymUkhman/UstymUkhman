@@ -28,13 +28,11 @@ export class WrittenMessageComponent {
   prepareMessage() {
     const delay = this.currentIndex < 0 ? 3000 : 1500;
 
-    if (this.start && this.messageList[++this.currentIndex]) {
+    if (this.start && this.messageList[++this.currentIndex])
       this.showTimeout = setTimeout(this.showMessage.bind(this), delay);
 
-    } else if (this.currentIndex === this.messageList.length) {
+    else if (this.currentIndex === this.messageList.length)
       this.currentIndex--;
-      this.removeMessage();
-    }
   }
 
   removeMessage() {
@@ -53,12 +51,22 @@ export class WrittenMessageComponent {
     this.lettering.animate(this.message, 150, this.prepareMessage.bind(this), 1500);
   }
 
+  setKeyDownHandler() {
+    this.lettering.skipLettering();
+    const lastMessage = this.messageList.length - 1;
+
+    if (this.currentIndex === lastMessage) {
+      const delay = isMobile ? 500 : 100;
+      setTimeout(() => { this.removeMessage(); }, delay);
+    }
+  }
+
   ngOnChanges() {
     if (this.start) {
       this.message = this.messageElement.firstChild.children[0];
       this.prepareMessage();
 
-      this.onKeyDown = () => { this.lettering.skipLettering(); };
+      this.onKeyDown = this.setKeyDownHandler.bind(this);
       document.addEventListener('keydown', this.onKeyDown, false);
 
       if (isMobile) {
