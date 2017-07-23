@@ -1,6 +1,6 @@
 <div class="rabbit-hole-component">
   <div class="window-overlay" [ngClass]="{'fade-out': fadeOut, 'visible': showOverlay}">
-    <div class="suggestion-container" [class.show]='canOpen || forceSuggestion'>
+    <div class="suggestion-container" [class.show]='canTake || canOpen || forceSuggestion'>
       <span>{{ suggestion }}</span>
     </div>
   </div>

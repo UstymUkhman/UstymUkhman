@@ -4,14 +4,16 @@ import { PointerControls } from '../classes/PointerControls';
 
 export class ControlsService {
   constructor() {
-    this.prevTime = performance.now();
-    this.velocity = new Vector3();
-    this.enabled  = false;
+    this.prevTime  = performance.now();
+    this.direction = new Vector3();
+    this.velocity  = new Vector3();
+    this.enabled   = false;
+    this.callback  = null;
 
-    this.controls = null;
-    this.camera   = null;
-    this.scene    = null;
-    this.room     = null;
+    this.controls  = null;
+    this.camera    = null;
+    this.scene     = null;
+    this.room      = null;
 
     this.move = {
       backward : false,
@@ -73,6 +75,14 @@ export class ControlsService {
       document.webkitExitPointerLock;
   }
 
+  setFullscreenCallback(callback) {
+    this.callback = callback;
+  }
+
+  setBorders(borders) {
+    this.borders = borders;
+  }
+
   enable(enable = true) {
     this.controls.enabled = enable;
     this.enabled = enable;
@@ -84,17 +94,21 @@ export class ControlsService {
     if (!this.enabled) {
       this.controls.enabled = false;
     }
+
+    if (this.callback && !this.controls.enabled) {
+      this.callback();
+    }
   }
 
   pointerLockError(event) {
     console.error('\'pointerlockerror\' event occured...', event);
   }
 
-  onKeyDown(event) {
+  keyDownHandler(event) {
     this.keyHandler(event.keyCode, true);
   }
 
-  onKeyUp(event) {
+  keyUpHandler(event) {
     this.keyHandler(event.keyCode, false);
   }
 
@@ -118,8 +132,8 @@ export class ControlsService {
     }
   }
 
-  setGameMode(enable = false) {
-    if (!this.controls.enabled) {
+  setFullscreenMode(full = true) {
+    if (full) {
       this.room.requestPointerLock();
       this.room.requestFullscreen();
 
@@ -127,10 +141,6 @@ export class ControlsService {
       document.exitPointerLock();
       document.exitFullscreen();
     }
-  }
-
-  setBorders(borders) {
-    this.borders = borders;
   }
 
   isFullscreen() {
@@ -179,35 +189,47 @@ export class ControlsService {
     return false;
   }
 
+  getCameraDirection() {
+   this.direction.normalize();
+   return this.controls.getDirection(this.direction);
+  }
+
   checkMovement() {
     return this.move.forward || this.move.backward || this.move.left || this.move.right;
   }
 
   addEventListeners() {
-    document.addEventListener('webkitpointerlockchange', this.changePointerLock.bind(this), false);
-    document.addEventListener('mozpointerlockchange', this.changePointerLock.bind(this), false);
-    document.addEventListener('pointerlockchange', this.changePointerLock.bind(this), false);
+    this.onChangePointerLock = this.changePointerLock.bind(this);
+    this.onPointerLockError = this.pointerLockError.bind(this);
 
-    document.addEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
-    document.addEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-    document.addEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+    this.onKeyDown = this.keyDownHandler.bind(this);
+    this.onKeyUp = this.keyUpHandler.bind(this);
 
-    document.addEventListener('keydown', this.onKeyDown.bind(this), false);
-    document.addEventListener('keyup', this.onKeyUp.bind(this), false);
+    document.addEventListener('webkitpointerlockchange', this.onChangePointerLock, false);
+    document.addEventListener('mozpointerlockchange', this.onChangePointerLock, false);
+    document.addEventListener('pointerlockchange', this.onChangePointerLock, false);
+
+    document.addEventListener('webkitpointerlockerror', this.onPointerLockError, false);
+    document.addEventListener('mozpointerlockerror', this.onPointerLockError, false);
+    document.addEventListener('pointerlockerror', this.onPointerLockError, false);
+
+    document.addEventListener('keydown', this.onKeyDown, false);
+    document.addEventListener('keyup', this.onKeyUp, false);
   }
 
   dispose() {
-    document.removeEventListener('webkitpointerlockchange', this.changePointerLock.bind(this), false);
-    document.removeEventListener('mozpointerlockchange', this.changePointerLock.bind(this), false);
-    document.removeEventListener('pointerlockchange', this.changePointerLock.bind(this), false);
+    document.removeEventListener('webkitpointerlockchange', this.onChangePointerLock, false);
+    document.removeEventListener('mozpointerlockchange', this.onChangePointerLock, false);
+    document.removeEventListener('pointerlockchange', this.onChangePointerLock, false);
 
-    document.removeEventListener('webkitpointerlockerror', this.pointerLockError.bind(this), false);
-    document.removeEventListener('mozpointerlockerror', this.pointerLockError.bind(this), false);
-    document.removeEventListener('pointerlockerror', this.pointerLockError.bind(this), false);
+    document.removeEventListener('webkitpointerlockerror', this.onPointerLockError, false);
+    document.removeEventListener('mozpointerlockerror', this.onPointerLockError, false);
+    document.removeEventListener('pointerlockerror', this.onPointerLockError, false);
 
-    document.removeEventListener('keydown', this.onKeyDown.bind(this), false);
-    document.removeEventListener('keyup', this.onKeyUp.bind(this), false);
+    document.removeEventListener('keydown', this.onKeyDown, false);
+    document.removeEventListener('keyup', this.onKeyUp, false);
 
+    this.setFullscreenMode(false);
     this.controls.dispose();
   }
 }

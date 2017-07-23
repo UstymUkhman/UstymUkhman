@@ -39,8 +39,8 @@ export class LoadingService {
   }
 
   loadExperiment(experiment) {
-    // window.location.href = `${window.location.origin}/experiments/${experiment}`;
-    window.location.href = experiment;
+    // `${window.location.origin}/experiments/${experiment}`;
+    window.open(experiment, '_blank');
   }
 
   backToMenu(reset = false) {

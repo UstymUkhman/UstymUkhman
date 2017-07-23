@@ -25,19 +25,24 @@ export class RabbitHoleComponent {
     this.pressed      = false;
     this.intro        = false;
     this.exit         = false;
+    this.ready        = false;
+    this.hasKey       = false;
+    this.canTake      = false;
     this.canOpen      = false;
     this.fadeOut      = false;
     this.isFocused    = true;
     this.showScreen   = true;
+    this.mouseEvents  = true;
 
     this.selectedDoor = null;
     this.guidelines   = null;
-    this.scene        = null;
-    this.camera       = null;
-    this.renderer     = null;
-    this.backLight    = null;
-    this.leftLight    = null;
     this.rightLight   = null;
+    this.leftLight    = null;
+    this.backLight    = null;
+    this.renderer     = null;
+    this.camera       = null;
+    this.scene        = null;
+    this.key          = null;
 
     this.WHITE     = 0xFFFFFF;
     this.LIGHTGRAY = 0xEEEEEE;
@@ -57,10 +62,12 @@ export class RabbitHoleComponent {
     this.http        = http;
     this.experiments = [];
     this.doors       = [];
+    this.suggestion  = '';
 
-    this.center  = 225;
-    this.focus.x = 0;
-    this.focus.y = 2;
+    this.center        = 225;
+    this.raycaster.far = 15;
+    this.focus.x       = 0;
+    this.focus.y       = 2;
 
     this.createScene();
     this.createCamera();
@@ -69,10 +76,11 @@ export class RabbitHoleComponent {
     this.createFloor();
     this.createWalls();
     this.createCeiling();
-
-    this.createComputer();
-    this.createTable();
     this.createDoors();
+
+    this.createTable();
+    this.createComputer();
+    this.createKey();
 
     this.createRenderer();
     this.setResizeHandler();
@@ -276,33 +284,6 @@ export class RabbitHoleComponent {
     });
   }
 
-  createComputer() {
-    this.loader.load('assets/models/case.json', (geometry, materials) => {
-      const systemUnit = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
-
-      systemUnit.position.set(-1, 0, -19);
-      systemUnit.scale.set(0.8, 0.8, 0.8);
-      this.scene.add(systemUnit);
-    });
-
-    this.loader.load('assets/models/keyboard.json', (geometry, materials) => {
-      const keyboard = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
-
-      keyboard.position.set(0, 0, -16.5);
-      keyboard.scale.set(0.8, 0.8, 0.8);
-      this.scene.add(keyboard);
-    });
-
-    this.loader.load('assets/models/monitor.json', (geometry, materials) => {
-      const monitor = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
-
-      monitor.position.set(0, 0, -16.5);
-      monitor.rotation.set(-0.05, 0, 0);
-      monitor.scale.set(0.8, 0.8, 0.8);
-      this.scene.add(monitor);
-    });
-  }
-
   createTable() {
     this.loader.load('assets/models/table.json', (geometry) => {
       const material = new THREE.MeshStandardMaterial({
@@ -320,6 +301,45 @@ export class RabbitHoleComponent {
       table.rotateY(Math.PI / 2);
       table.scale.set(6, 6, 6);
       this.scene.add(table);
+    });
+  }
+
+  createComputer() {
+    this.loader.load('assets/models/case.json', (geometry, materials) => {
+      const systemUnit = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+
+      systemUnit.position.set(-1, 0, -19);
+      systemUnit.scale.set(0.8, 0.8, 0.8);
+      this.scene.add(systemUnit);
+    });
+
+    this.loader.load('assets/models/keyboard.json', (geometry, materials) => {
+      this.keyboard = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+
+      this.keyboard.position.set(0, 0, -16.5);
+      this.keyboard.scale.set(0.8, 0.8, 0.8);
+      this.scene.add(this.keyboard);
+    });
+
+    this.loader.load('assets/models/monitor.json', (geometry, materials) => {
+      const monitor = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+
+      monitor.position.set(0, 0, -16.5);
+      monitor.rotation.set(-0.05, 0, 0);
+      monitor.scale.set(0.8, 0.8, 0.8);
+      this.scene.add(monitor);
+    });
+  }
+
+  createKey() {
+    this.loader.load('assets/models/key.json', (geometry, materials) => {
+      this.key = new THREE.Mesh(geometry, materials[0]);
+
+      this.key.rotation.set(0, -0.5, -Math.PI / 2);
+      this.key.position.set(4, -2.4, -14);
+      this.key.scale.set(3, 3, 3);
+
+      this.scene.add(this.key);
     });
   }
 
@@ -412,8 +432,15 @@ export class RabbitHoleComponent {
     });
   }
 
-  setMouseDownHandler() {
+  setMouseDownHandler(event) {
+    if (event.which !== 1) return;
     this.pressed = this.controls.isFullscreen();
+
+    if (this.introPlayed && !this.hasKey && this.canTake) {
+      this.key.visible = false;
+      this.canTake = false;
+      this.hasKey = true;
+    }
   }
 
   setMouseUpHandler() {
@@ -425,28 +452,72 @@ export class RabbitHoleComponent {
     const ready = this.isFullSize && event.keyCode === 13;
 
     if (this.controls && ready) {
-      this.forceSuggestion = false;
-      this.controls.setGameMode();
+      if (this.controls.isFullscreen()) {
+        this.exitViewMode();
 
-      setTimeout(() => {
-        this.suggestion = 'Hold left mouse button to open the door';
-      }, 1000);
+      } else {
+        if (!this.mouseEvents && !this.controls.enabled) {
+          this.controls.enable(false);
+          this.controls.enabled = true;
+        }
+
+        this.setViewMode();
+      }
+
+      if (!this.mouseEvents) {
+        document.addEventListener('mousedown', this.onMouseDown, false);
+        document.addEventListener('mouseup', this.onMouseUp, false);
+        this.mouseEvents = true;
+
+        if (this.controls.isFullscreen()) {
+          this.setViewMode();
+        }
+      }
+
+      if (!this.frame) {
+        this.frame = requestAnimationFrame(this.animate.bind(this));
+      }
     }
 
     if (ready && !this.introPlayed) {
-      this.showOverlay = true;
+      const overlayDelay = this.activeButton ? 0 : 2500;
+      const introDelay = this.activeButton ? 2500 : 5000;
+
+      this.lettering.skipLettering();
+      setTimeout(() => { this.showOverlay = true; }, overlayDelay);
 
       setTimeout(() => {
         this.showScreen = false;
         this.createCinematicIntro();
-      }, 2500);
+      }, introDelay);
     }
+  }
+
+  setViewMode(game = true) {
+    this.controls.setFullscreenMode(game);
+    this.forceSuggestion = !game;
+    this.ready = game;
+  }
+
+  exitViewMode() {
+    this.suggestion = 'Press enter to interact';
+    this.setViewMode(false);
   }
 
   createCinematicIntro() {
     setTimeout(() => { this.intro = true; }, 1000);
     this.clock = new THREE.Clock();
     this.elapsedSpeed = 4.0;
+  }
+
+  createRenderer() {
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(this.WIDTH, this.HEIGHT);
+    this.renderer.setClearColor(this.BLACK, 0);
+
+    this.hole.appendChild(this.renderer.domElement);
+    this.renderer.domElement.focus();
   }
 
   setResizeHandler() {
@@ -467,32 +538,24 @@ export class RabbitHoleComponent {
   }
 
   setFocusHandler() {
-    this.suggestion = 'Press enter to interact';
-    this.forceSuggestion = true;
     this.isFocused = true;
-
-    if (this.introPlayed && this.controls && !this.controls.enabled) {
-      this.controls.setGameMode();
-      this.controls.enable();
-    }
   }
 
   setBlurHandler() {
+    document.removeEventListener('mousedown', this.onMouseDown, false);
+    document.removeEventListener('mouseup', this.onMouseUp, false);
+
+    this.mouseEvents = false;
     this.isFocused = false;
+    this.exitViewMode();
+
+    if (this.intro) {
+      this.controls.enable(false);
+    }
   }
 
   setErrorHandler() {
     console.error('Your shitty browser does not support Pointer Lock API.\nYou need to update it or use a better one: https://www.google.it/chrome/browser/desktop/');
-  }
-
-  createRenderer() {
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(this.WIDTH, this.HEIGHT);
-    this.renderer.setClearColor(this.BLACK, 0);
-
-    this.hole.appendChild(this.renderer.domElement);
-    this.renderer.domElement.focus();
   }
 
   createMessage() {
@@ -515,11 +578,9 @@ export class RabbitHoleComponent {
 
   createControls() {
     const error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
+    if (error) this.setErrorHandler();
 
-    if (error) {
-      this.setErrorHandler();
-    }
-
+    this.controls.setFullscreenCallback(this.exitViewMode.bind(this));
     this.controls.setBorders({
       front : this.center - 230,
       back  : this.center + 242,
@@ -551,7 +612,6 @@ export class RabbitHoleComponent {
 
     if (this.exit) {
       if (this.fadeOut) {
-        this.removeEventHandlers();
         cancelAnimationFrame(this.frame);
         setTimeout(this.gotoNextPage.bind(this), 1500);
       }
@@ -588,21 +648,38 @@ export class RabbitHoleComponent {
   }
 
   checkFocusDirection() {
-    this.raycaster.setFromCamera(this.focus, this.camera);
+    const direction = this.controls.getCameraDirection();
+
     this.canOpen = false;
+    this.raycaster.setFromCamera(this.focus, this.camera);
+    this.raycaster.ray.direction.copy(direction).applyEuler(this.camera.rotation);
+
+    if (this.keyboard && this.key && !this.hasKey) {
+      this.canTake = !!this.raycaster.intersectObjects([this.keyboard, this.key]).length;
+
+      if (this.canTake) {
+        this.suggestion = this.ready ? 'Take the key' : 'Press enter to interact';
+      }
+    }
 
     const doors      = Array.from(this.doors, doors => doors.door);
     const intersects = this.raycaster.intersectObjects(doors);
 
     if (intersects.length) {
-      const selectedDoor = intersects[0].object;
+      if (this.pressed && !this.hasKey) {
+        this.sounds.closedDoor();
 
-      const door = this.doors.filter((mesh) => {
-        return mesh.door.id === selectedDoor.id;
-      });
+      } else if (this.hasKey) {
+        const selectedDoor = intersects[0].object;
 
-      this.canOpen = true;
-      this.openTheDoor(door[0]);
+        const door = this.doors.filter((mesh) => {
+          return mesh.door.id === selectedDoor.id;
+        });
+
+        this.suggestion = this.ready ? 'Hold left mouse button to open the door' : 'Press enter to interact';
+        this.canOpen = true;
+        this.openTheDoor(door[0]);
+      }
 
     } else if (this.selectedDoor) {
       this.openTheDoor();
@@ -666,15 +743,20 @@ export class RabbitHoleComponent {
   }
 
   gotoNextPage() {
-    this.controls.setGameMode();
+    this.frame = null;
 
-    if (this.experiment) {
+    if (this.experiment && this.selectedDoor) {
       const index = this.selectedDoor.door.index;
       const experiment = this.experiments[index];
       const url = experiment[Object.keys(experiment)[0]];
 
+      this.exit = false;
+      this.fadeOut = false;
       this.loading.loadExperiment(url);
+      this.selectedDoor.pivot.rotation.y = 0;
+
     } else {
+      this.removeEventHandlers();
       this.loading.backToMenu(true);
     }
   }
@@ -691,11 +773,12 @@ export class RabbitHoleComponent {
 
   createEventHandlers() {
     this.onMouseDown = this.setMouseDownHandler.bind(this);
-    this.onMouseUp = this.setMouseUpHandler.bind(this);
-    this.onKeyDown = this.setKeyDownHandler.bind(this);
-    this.onResize = this.setResizeHandler.bind(this);
-    this.onFocus = this.setFocusHandler.bind(this);
-    this.onBlur = this.setBlurHandler.bind(this);
+    this.onMouseUp   = this.setMouseUpHandler.bind(this);
+    this.onKeyDown   = this.setKeyDownHandler.bind(this);
+
+    this.onResize    = this.setResizeHandler.bind(this);
+    this.onFocus     = this.setFocusHandler.bind(this);
+    this.onBlur      = this.setBlurHandler.bind(this);
 
     document.addEventListener('mousedown', this.onMouseDown, false);
     document.addEventListener('mouseup', this.onMouseUp, false);
@@ -722,13 +805,14 @@ export class RabbitHoleComponent {
     this.createEventHandlers();
     this.lettering.animate(
       this.hole.children[1].children[1].children[0],
-      50, () => { this.activeButton = true; }, null
+      50, () => { this.activeButton = true; }, 0
     );
   }
 
   ngOnDestroy() {
     cancelAnimationFrame(this.frame);
     this.removeEventHandlers();
+    this.controls = null;
   }
 
   static get parameters() {

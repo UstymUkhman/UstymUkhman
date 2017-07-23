@@ -22,7 +22,8 @@ export class PreloaderComponent {
     this.loaded     = new EventEmitter();
     this.preloader  = preloader.nativeElement;
 
-    window.addEventListener('resize', this.onResize.bind(this), false);
+    this.onResize = this.setResizeHandler.bind(this);
+    window.addEventListener('resize', this.onResize, false);
   }
 
   initDrawing() {
@@ -57,7 +58,7 @@ export class PreloaderComponent {
     }
   }
 
-  onResize() {
+  setResizeHandler() {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
 
@@ -70,7 +71,7 @@ export class PreloaderComponent {
   }
 
   ngOnDestroy() {
-    window.removeEventListener('resize', this.onResize.bind(this));
+    window.removeEventListener('resize', this.onResize);
   }
 
   static get parameters() {

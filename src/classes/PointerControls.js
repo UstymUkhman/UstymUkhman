@@ -14,10 +14,11 @@ export class PointerControls {
     this.yawObject.position.y = height;
     this.yawObject.add(this.pitchObject);
 
-    document.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+    this.onMouseMove = this.mouseMoveHandler.bind(this);
+    document.addEventListener('mousemove', this.onMouseMove, false);
   }
 
-  onMouseMove(event) {
+  mouseMoveHandler(event) {
     if (!this.enabled) return;
 
     const movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0,
@@ -32,20 +33,6 @@ export class PointerControls {
     }
   }
 
-  /**
-   * @memberof PointerControls
-   * @param {THREE.Vector3()} way - ThreeJS empty 3D vector
-   *
-   * @see THREE.PointerLockControls
-   *      {@link https://github.com/mrdoob/three.js/blob/master/examples/js/controls/PointerLockControls.js#L50 | GitHub}
-   *
-   * @example
-   *   let direction = new THREE.Vector3();
-   *   direction.normalize();
-   *   direction = PointerControls.getDirection(direction);
-   *
-   * @returns {THREE.Vector3()} Current direction orientation
-   */
   getDirection(way) {
     this.rotation.set(this.pitchObject.rotation.x, this.yawObject.rotation.y, 0);
     way.copy(this.direction).applyEuler(this.rotation);
@@ -57,6 +44,6 @@ export class PointerControls {
   }
 
   dispose() {
-    document.removeEventListener('mousemove', this.onMouseMove.bind(this), false);
+    document.removeEventListener('mousemove', this.onMouseMove, false);
   }
 }
