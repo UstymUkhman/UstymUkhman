@@ -2,12 +2,8 @@ export class LoadingService {
   constructor() {
     this.activeItem = null;
 
-    this.pages = [
-      'about'   ,
-      'works'   ,
-      'contact' ,
-      'more'
-    ];
+    this.pages = ['about', 'works', 'contact'];
+    this.pages.push(isMobile ? 'experiments' : 'more');
   }
 
   canActivate() {

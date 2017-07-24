@@ -17,6 +17,7 @@ import { LetteringService      } from '../../services/lettering.service';
 export class RabbitHoleComponent {
   constructor(http, rabbitHole, sounds, loading, cameraControls, lettering) {
 
+    this.introStarted = false;
     this.activeButton = false;
     this.showOverlay  = false;
     this.introPlayed  = false;
@@ -26,13 +27,11 @@ export class RabbitHoleComponent {
     this.intro        = false;
     this.exit         = false;
     this.ready        = false;
-    this.hasKey       = false;
+    this.hasKey       = true;
     this.canTake      = false;
     this.canOpen      = false;
     this.fadeOut      = false;
-    this.isFocused    = true;
     this.showScreen   = true;
-    this.mouseEvents  = true;
 
     this.selectedDoor = null;
     this.guidelines   = null;
@@ -448,60 +447,66 @@ export class RabbitHoleComponent {
   }
 
   setKeyDownHandler(event) {
-    if (this.intro) return;
     const ready = this.isFullSize && event.keyCode === 13;
+    const inFullscreen = this.controls.isFullscreen();
 
-    if (this.controls && ready) {
-      if (this.controls.isFullscreen()) {
-        this.exitViewMode();
+    if (this.introStarted) return;
 
-      } else {
-        if (!this.mouseEvents && !this.controls.enabled) {
-          this.controls.enable(false);
-          this.controls.enabled = true;
-        }
+    if (ready && !this.frame) {
+      this.frame = requestAnimationFrame(this.animate.bind(this));
+    }
 
-        this.setViewMode();
+    if (ready && inFullscreen) {
+      if (this.introPlayed) {
+        this.controls.enable();
       }
 
-      if (!this.mouseEvents) {
-        document.addEventListener('mousedown', this.onMouseDown, false);
-        document.addEventListener('mouseup', this.onMouseUp, false);
-        this.mouseEvents = true;
+      this.controls.setFullscreenMode(false);
+      this.exitFullscreenMode();
+    }
 
-        if (this.controls.isFullscreen()) {
-          this.setViewMode();
-        }
+    if (ready && !inFullscreen) {
+      if (this.introPlayed) {
+        this.controls.enable(false);
       }
 
-      if (!this.frame) {
-        this.frame = requestAnimationFrame(this.animate.bind(this));
-      }
+      this.controls.setFullscreenMode(true);
+      this.enterFullscreenMode();
     }
 
     if (ready && !this.introPlayed) {
-      const overlayDelay = this.activeButton ? 0 : 2500;
-      const introDelay = this.activeButton ? 2500 : 5000;
+      const delay = this.activeButton ? 0 : 2500;
 
+      this.introStarted = true;
       this.lettering.skipLettering();
-      setTimeout(() => { this.showOverlay = true; }, overlayDelay);
+      this.controls.setFullscreenMode();
+
+      setTimeout(() => {
+        this.showOverlay = true;
+      }, delay);
 
       setTimeout(() => {
         this.showScreen = false;
         this.createCinematicIntro();
-      }, introDelay);
+      }, delay + 2500);
     }
   }
 
-  setViewMode(game = true) {
-    this.controls.setFullscreenMode(game);
-    this.forceSuggestion = !game;
-    this.ready = game;
+  enterFullscreenMode() {
+    document.addEventListener('mousedown', this.onMouseDown, false);
+    document.addEventListener('mouseup', this.onMouseUp, false);
+
+    this.forceSuggestion = false;
+    this.ready = true;
   }
 
-  exitViewMode() {
+  exitFullscreenMode() {
+    document.removeEventListener('mousedown', this.onMouseDown, false);
+    document.removeEventListener('mouseup', this.onMouseUp, false);
+
     this.suggestion = 'Press enter to interact';
-    this.setViewMode(false);
+    this.forceSuggestion = true;
+    this.ready = false;
   }
 
   createCinematicIntro() {
@@ -518,6 +523,11 @@ export class RabbitHoleComponent {
 
     this.hole.appendChild(this.renderer.domElement);
     this.renderer.domElement.focus();
+  }
+
+  setBlurHandler() {
+    this.controls.setFullscreenMode(false);
+    this.exitFullscreenMode();
   }
 
   setResizeHandler() {
@@ -537,27 +547,6 @@ export class RabbitHoleComponent {
     this.camera.updateProjectionMatrix();
   }
 
-  setFocusHandler() {
-    this.isFocused = true;
-  }
-
-  setBlurHandler() {
-    document.removeEventListener('mousedown', this.onMouseDown, false);
-    document.removeEventListener('mouseup', this.onMouseUp, false);
-
-    this.mouseEvents = false;
-    this.isFocused = false;
-    this.exitViewMode();
-
-    if (this.intro) {
-      this.controls.enable(false);
-    }
-  }
-
-  setErrorHandler() {
-    console.error('Your shitty browser does not support Pointer Lock API.\nYou need to update it or use a better one: https://www.google.it/chrome/browser/desktop/');
-  }
-
   createMessage() {
     this.guidelines = `
       Welcome to the real world.###
@@ -572,15 +561,26 @@ export class RabbitHoleComponent {
       `;
     }
 
+    this.forceSuggestion = false;
     this.guidelines += 'Press  ENTER  when you\'re ready.';
     this.suggestion  = 'Hold left mouse button to open the door';
   }
 
   createControls() {
     const error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
-    if (error) this.setErrorHandler();
 
-    this.controls.setFullscreenCallback(this.exitViewMode.bind(this));
+    if (error) {
+      console.error(
+        'Your shitty browser does not support Pointer Lock API.',
+        'You need to update it or use a better one: https://www.google.it/chrome/browser/desktop/'
+      );
+    }
+
+    this.controls.outFullscreenCallback(() => {
+      this.controls.enable(false);
+      this.exitFullscreenMode();
+    });
+
     this.controls.setBorders({
       front : this.center - 230,
       back  : this.center + 242,
@@ -606,7 +606,7 @@ export class RabbitHoleComponent {
       this.checkFocusDirection();
     }
 
-    if (this.controls) {
+    if (this.controls && this.introPlayed) {
       this.controls.update();
     }
 
@@ -624,10 +624,11 @@ export class RabbitHoleComponent {
     this.camera.fov = this.getCameraFov();
 
     if (this.camera.fov === 50) {
+      this.introStarted = false;
       this.introPlayed = true;
       this.intro = false;
 
-      if (this.isFocused) {
+      if (this.controls.isFullscreen()) {
         this.controls.enable();
       }
     }
@@ -743,6 +744,8 @@ export class RabbitHoleComponent {
   }
 
   gotoNextPage() {
+    this.controls.enable(false);
+    this.exitFullscreenMode();
     this.frame = null;
 
     if (this.experiment && this.selectedDoor) {
@@ -777,7 +780,6 @@ export class RabbitHoleComponent {
     this.onKeyDown   = this.setKeyDownHandler.bind(this);
 
     this.onResize    = this.setResizeHandler.bind(this);
-    this.onFocus     = this.setFocusHandler.bind(this);
     this.onBlur      = this.setBlurHandler.bind(this);
 
     document.addEventListener('mousedown', this.onMouseDown, false);
@@ -785,7 +787,6 @@ export class RabbitHoleComponent {
     document.addEventListener('keydown', this.onKeyDown, false);
 
     window.addEventListener('resize', this.onResize, false);
-    window.addEventListener('focus', this.onFocus, false);
     window.addEventListener('blur', this.onBlur, false);
   }
 
@@ -795,7 +796,6 @@ export class RabbitHoleComponent {
     document.removeEventListener('keydown', this.onKeyDown, false);
 
     window.removeEventListener('resize', this.onResize, false);
-    window.removeEventListener('focus', this.onFocus, false);
     window.removeEventListener('blur', this.onBlur, false);
 
     this.controls.dispose();

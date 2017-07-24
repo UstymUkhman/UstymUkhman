@@ -27,14 +27,13 @@ export class MyWorksComponent {
     this.http             = http;
     this.lettering        = lettering;
     this.worksElement     = works.nativeElement;
-    this.projectsFile     = 'assets/projects.json';
 
     this.getWorksList();
   }
 
   getWorksList() {
     this.http
-      .get(this.projectsFile)
+      .get('assets/projects.json')
       .subscribe(
         res      => this.projects = res.json().projects,
         error    => console.error(error),

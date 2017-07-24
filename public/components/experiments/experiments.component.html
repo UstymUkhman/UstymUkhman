@@ -1,0 +1,35 @@
+<div class="experiments">
+  <screen-overlay [ready]='true'></screen-overlay>
+
+  <div class="works-area"
+       [ngClass]="{'small-list': experiments.length < 6, 'fadeOut': fadeOut}"
+       [ngStyle]="{
+         '-webkit-transform': 'translateY(' + listOffset + ')',
+         '-moz-transform': 'translateY(' + listOffset + ')',
+         '-ms-transform': 'translateY(' + listOffset + ')',
+         '-o-transform': 'translateY(' + listOffset + ')',
+         'transform': 'translateY(' + listOffset + ')'
+       }">
+
+    <div *ngFor="let experiment of experimentsList; let w = index;"
+          class="experiment-source hidden-source" [class.active]='w === currentWork'>
+
+      <div class="selected-project">//</div>
+      <p class="project">{{ experiment.name }}</p>
+
+    </div>
+  </div>
+
+  <div class="works-area matrix-rain">
+    <matrix-rain
+      [removeRain]='removeMatrixRain'
+      [raining]='startRaining'>
+    </matrix-rain>
+  </div>
+
+  <back-button
+    [showBackButton]='showBackButton'
+    [active]='activeBackButton'
+    [backToMenu]='goToMenu'>
+  </back-button>
+</div>

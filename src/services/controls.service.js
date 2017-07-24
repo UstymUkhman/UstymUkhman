@@ -7,8 +7,7 @@ export class ControlsService {
     this.prevTime  = performance.now();
     this.direction = new Vector3();
     this.velocity  = new Vector3();
-    this.enabled   = false;
-    this.callback  = null;
+    this.enabled   = false; // true;
 
     this.controls  = null;
     this.camera    = null;
@@ -24,9 +23,10 @@ export class ControlsService {
   }
 
   init(room, scene, camera) {
-    this.room   = room;
-    this.scene  = scene;
-    this.camera = camera;
+    this.room    = room;
+    this.scene   = scene;
+    this.camera  = camera;
+    this.enabled = true;
 
     this.controls = new PointerControls(this.camera);
     this.scene.add(this.controls.getObject());
@@ -75,28 +75,23 @@ export class ControlsService {
       document.webkitExitPointerLock;
   }
 
-  setFullscreenCallback(callback) {
-    this.callback = callback;
+  onFullscreenCallback(callback = null) {
+    this.goFullscreenCallback = callback;
+  }
+
+  outFullscreenCallback(callback = null) {
+    this.exitFullscreenCallback = callback;
   }
 
   setBorders(borders) {
     this.borders = borders;
   }
 
-  enable(enable = true) {
-    this.controls.enabled = enable;
-    this.enabled = enable;
-  }
-
   changePointerLock() {
-    this.controls.enabled = !this.controls.enabled;
+    this.controls.enabled = !this.enabled;
 
-    if (!this.enabled) {
-      this.controls.enabled = false;
-    }
-
-    if (this.callback && !this.controls.enabled) {
-      this.callback();
+    if (this.isFullscreen() && this.exitFullscreenCallback) {
+      this.exitFullscreenCallback();
     }
   }
 
@@ -104,36 +99,13 @@ export class ControlsService {
     console.error('\'pointerlockerror\' event occured...', event);
   }
 
-  keyDownHandler(event) {
-    this.keyHandler(event.keyCode, true);
+  enable(enable = true) {
+    this.controls.enabled = enable;
+    this.enabled = enable;
   }
 
-  keyUpHandler(event) {
-    this.keyHandler(event.keyCode, false);
-  }
-
-  keyHandler(code, pressed) {
-    switch(code) {
-      case 40: case 83:
-        this.move.backward = pressed;
-      break;
-
-      case 38: case 87:
-        this.move.forward = pressed;
-      break;
-
-      case 39: case 68:
-        this.move.right = pressed;
-      break;
-
-      case 37: case 65:
-        this.move.left = pressed;
-      break;
-    }
-  }
-
-  setFullscreenMode(full = true) {
-    if (full) {
+  setFullscreenMode(fullscreen = true) {
+    if (fullscreen) {
       this.room.requestPointerLock();
       this.room.requestFullscreen();
 
@@ -145,6 +117,11 @@ export class ControlsService {
 
   isFullscreen() {
     return document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen;
+  }
+
+  getCameraDirection() {
+    this.direction.normalize();
+    return this.controls.getDirection(this.direction);
   }
 
   update() {
@@ -180,6 +157,10 @@ export class ControlsService {
     this.prevTime = time;
   }
 
+  checkMovement() {
+    return this.move.forward || this.move.backward || this.move.left || this.move.right;
+  }
+
   checkCollision(current) {
     if (current.position.z < this.borders.front) return true;
     if (current.position.z > this.borders.back)  return true;
@@ -189,13 +170,32 @@ export class ControlsService {
     return false;
   }
 
-  getCameraDirection() {
-   this.direction.normalize();
-   return this.controls.getDirection(this.direction);
+  keyDownHandler(event) {
+    this.keyHandler(event.keyCode, true);
   }
 
-  checkMovement() {
-    return this.move.forward || this.move.backward || this.move.left || this.move.right;
+  keyUpHandler(event) {
+    this.keyHandler(event.keyCode, false);
+  }
+
+  keyHandler(code, pressed) {
+    switch(code) {
+      case 40: case 83:
+        this.move.backward = pressed;
+      break;
+
+      case 38: case 87:
+        this.move.forward = pressed;
+      break;
+
+      case 39: case 68:
+        this.move.right = pressed;
+      break;
+
+      case 37: case 65:
+        this.move.left = pressed;
+      break;
+    }
   }
 
   addEventListeners() {
