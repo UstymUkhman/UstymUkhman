@@ -19,7 +19,6 @@ div.contact-me {
     @include position(absolute, $null null $null);
     @include transition(opacity 1s ease-out);
 
-    pointer-events: none;
     height: 78.5vh;
     margin: auto;
     opacity: 1;
@@ -58,11 +57,23 @@ div.contact-me {
 
           position: relative;
           color: $fade-green;
+
+          @include breakpoint($mobile) {
+            @include transform(translateX(20px));
+          }
+
+          @include breakpoint($phone) {
+            @include transform(translateX(15px));
+          }
         }
 
         span.e-mail {
           @include transform(translateX(25px));
           opacity: 1;
+
+          @include breakpoint($phone) {
+            @include transform(translateX(20px));
+          }
         }
       }
 
@@ -104,6 +115,12 @@ div.contact-me {
         cursor: default;
         width: auto;
         opacity: 0;
+
+        @include breakpoint($phone) {
+          line-height: 16px;
+          font-size: 13px;
+          margin-left: 0;
+        }
       }
     }
   }
@@ -111,6 +128,8 @@ div.contact-me {
   div.matrix-rain {
     @include position(absolute, 0 auto 0 $half);
     @include size($half $max);
+
+    pointer-events: none;
 
     @include breakpoint($mobile) {
       width: 100%;

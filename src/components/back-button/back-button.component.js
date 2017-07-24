@@ -26,7 +26,16 @@ export class BackButtonComponent {
   }
 
   setClickHandler() {
-    this.buttonClicked.emit();
+    let delay = null;
+
+    if (!this.active) {
+      this.active = true;
+      delay = 800;
+    }
+
+    setTimeout(() => {
+      this.buttonClicked.emit();
+    }, delay);
   }
 
   ngOnChanges() {

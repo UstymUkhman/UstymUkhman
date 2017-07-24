@@ -27,7 +27,7 @@ export class RabbitHoleComponent {
     this.intro        = false;
     this.exit         = false;
     this.ready        = false;
-    this.hasKey       = true;
+    this.hasKey       = false;
     this.canTake      = false;
     this.canOpen      = false;
     this.fadeOut      = false;

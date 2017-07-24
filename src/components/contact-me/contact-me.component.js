@@ -122,25 +122,55 @@ export class ContactMeComponent {
       }, delay);
 
     } else if (!this.showBackButton) {
-      this.showBackButton = true;
+      const buttonDelay = this.skipLettering ? 500 : 0;
+
+      setTimeout(() => {
+        this.showBackButton = true;
+      }, buttonDelay);
 
       setTimeout(() => {
         this.startRaining   = true;
         this.currentContact = isMobile ? null : 0;
-      }, 1000);
+      }, buttonDelay + 1000);
     }
+  }
+
+  setClickHandler(index) {
+    if (typeof index !== 'number') {
+      this.setContactsNavigation({ keyCode: 0 });
+      return;
+    }
+
+    this.currentContact = index;
+    setTimeout(() => { this.openContactLink(index); }, 400);
   }
 
   ngAfterViewInit() {
     this.contactsNavigation = this.setContactsNavigation.bind(this);
     document.addEventListener('keydown', this.contactsNavigation, false);
-
     this.contactSources = this.contactsElement.getElementsByClassName('contact-source');
+
+    if (isMobile) {
+      for (let i = 0; i < this.contactSources.length; i++) {
+        this.contactSources[i].addEventListener('click', this.setClickHandler.bind(this, i), false);
+      }
+
+      document.addEventListener('click', this.setClickHandler.bind(this), false);
+    }
+
     this.prepareContactsList();
   }
 
   ngOnDestroy() {
     document.removeEventListener('keydown', this.contactsNavigation, false);
+
+    if (isMobile) {
+      for (let i = 0; i < this.contactSources.length; i++) {
+        this.contactSources[i].removeEventListener('click', this.setClickHandler.bind(this, i), false);
+      }
+
+      document.removeEventListener('click', this.setClickHandler.bind(this), false);
+    }
   }
 
   static get parameters() {
