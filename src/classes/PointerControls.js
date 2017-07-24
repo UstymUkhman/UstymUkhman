@@ -45,5 +45,6 @@ export class PointerControls {
 
   dispose() {
     document.removeEventListener('mousemove', this.onMouseMove, false);
+    this.enabled = false;
   }
 }

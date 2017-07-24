@@ -1,0 +1,95 @@
+$scroll-easing: cubic-bezier(0.390, 0.575, 0.565, 1.000);
+
+div.experiments {
+  @include position(absolute, $null);
+  @include size($max);
+
+  background-color: $black;
+  padding-left: 100px;
+  z-index: 2;
+
+  &.hidden {
+    @include remove-element;
+  }
+
+  div.works-counter {
+    @include position(absolute, 50px auto auto);
+    @include transition(opacity 1s ease-out);
+
+    text-align: center;
+    position: absolute;
+    width: 100%;
+
+    opacity: 0;
+    left: 0;
+
+    &.visible {
+      opacity: 1;
+    }
+
+    &.fadeOut {
+      opacity: 0;
+    }
+
+    span {
+      @include white-rabbit;
+    }
+  }
+
+  div.works-area {
+    @include transition(transform 0.5s $scroll-easing, opacity 1s ease-out);
+    @include position(absolute, $null null $null);
+    @include backface-visibility(hidden);
+
+    opacity: 1;
+
+    &.small-list {
+      @include transition(opacity 1s ease-out);
+      bottom: auto;
+      top: 50%;
+    }
+
+    &.fadeOut {
+      opacity: 0;
+    }
+
+    div.experiment-source {
+      margin: 15vh 0;
+
+      &.hidden-source {
+        @include hidden-element;
+      }
+
+      &.active {
+        div.selected-project {
+          @include visible-element;
+        }
+
+        p.project {
+          @include transform(translateX(25px));
+
+          position: relative;
+          color: $fade-green;
+        }
+      }
+
+      p.project,
+      div.selected-project {
+        @include transition(transform .3s ease-out);
+        @include white-rabbit;
+
+        display: inline-block;
+        font-size: 25px;
+      }
+
+      p.project {
+        line-height: 20px;
+      }
+    }
+  }
+
+  div.matrix-rain {
+    @include position(absolute, 0 auto 0 $half);
+    @include size($half $max);
+  }
+}

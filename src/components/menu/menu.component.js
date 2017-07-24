@@ -19,20 +19,16 @@ export class MenuComponent {
     this.stopRaining   = false;
     this.fadeOutArea   = false;
 
-    this.pages = [
-      'Ab0uT_m3'   ,
-      'My_W0rk5'   ,
-      'C0nT@cT_m3' ,
-      'M0r3'
-    ];
+    this.pages = ['Ab0uT_m3', 'My_W0rk5', 'C0nT@cT_m3'];
+    this.pages.push(isMobile ? '3xp3r!m3nT5' : 'M0r3');
 
-    this.itemIndex   = -1;
-    this.loading     = loading;
-    this.lettering   = lettering;
+    this.itemIndex = -1;
+    this.loading   = loading;
+    this.lettering = lettering;
 
-    this.menu        = menu.nativeElement;
-    this.itemBoxes   = this.menu.getElementsByClassName('button-box');
-    this.menuItems   = this.menu.getElementsByClassName('button-border');
+    this.menu      = menu.nativeElement;
+    this.itemBoxes = this.menu.getElementsByClassName('button-box');
+    this.menuItems = this.menu.getElementsByClassName('button-border');
   }
 
   setMenuSection(section) {
