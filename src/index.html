@@ -12,8 +12,30 @@
   </head>
 
   <body>
+    <!--[if lt IE 11]>
+      <div id="error" class="error-message">
+        <span>
+          This website is too cool for your shitty browser.<br>
+          Consider use of a <a target="_blank" href="https://www.google.it/chrome/browser/desktop/">better one</a> in order to view it.
+        </span>
+      </div>
+    <![endif]-->
+
+    <div id="ie10" class="error-message">
+      <span>
+        This website is too cool for your shitty browser.<br>
+        Consider use of a <a target="_blank" href="https://www.google.it/chrome/browser/desktop/">better one</a> in order to view it.
+      </span>
+    </div>
+
     <app></app>
 
     <script type="text/javascript" src="bundle.js"></script>
+
+    <noscript>
+      <div class="error-message">
+        <span>You have to enable JavaScript to view this website.</span>
+      </div>
+    </noscript>
   </body>
 </html>

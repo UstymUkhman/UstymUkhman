@@ -76,6 +76,8 @@ export class LetteringService {
   }
 
   skipLettering() {
+    if (!this.letters) return;
+
     this.stopLettering();
 
     for (let i = this.index; i < this.letters.length;) {

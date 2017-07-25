@@ -28,6 +28,24 @@ label, span, p {
   padding: $null;
 }
 
-p#loading-message {
-  margin-left: 5px;
+div.error-message {
+  @include position(absolute, $null);
+  @include hidden-overflow;
+  @include white-rabbit;
+  @include size($max);
+
+  background-color: $black;
+  line-height: 20px;
+
+  padding-left: 50px;
+  padding-top: 75px;
+
+  &#ie10 {
+    display: none;
+  }
+
+  a {
+    text-transform: none;
+    color: $green;
+  }
 }

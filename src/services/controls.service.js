@@ -7,7 +7,7 @@ export class ControlsService {
     this.prevTime  = performance.now();
     this.direction = new Vector3();
     this.velocity  = new Vector3();
-    this.enabled   = false; // true;
+    this.enabled   = false;
 
     this.controls  = null;
     this.camera    = null;

@@ -5,7 +5,7 @@ div.main-window {
 }
 
 div.console {
-  @include size(100%);
+  @include size($max);
 
   z-index: $z-console;
   padding-left: 50px;
