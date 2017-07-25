@@ -27,6 +27,7 @@ export class RabbitHoleComponent {
     this.intro        = false;
     this.exit         = false;
     this.ready        = false;
+    this.error        = false;
     this.hasKey       = false;
     this.canTake      = false;
     this.canOpen      = false;
@@ -466,9 +467,7 @@ export class RabbitHoleComponent {
     }
 
     if (ready && !inFullscreen) {
-      if (this.introPlayed) {
-        this.controls.enable(false);
-      }
+      if (this.introPlayed) this.controls.enable(false);
 
       this.controls.setFullscreenMode(true);
       this.enterFullscreenMode();
@@ -567,13 +566,15 @@ export class RabbitHoleComponent {
   }
 
   createControls() {
-    const error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
+    this.error = this.controls.init(this.renderer.domElement, this.scene, this.camera);
 
-    if (error) {
-      console.error(
-        'Your shitty browser does not support Pointer Lock API.',
-        'You need to update it or use a better one: https://www.google.it/chrome/browser/desktop/'
-      );
+    if (this.error) {
+      this.guidelines = `
+        Your shitty browser does not support Fullscreen API or Pointer Lock API.##
+        You need to update it or use a better one: https://www.google.it/chrome/browser/desktop/
+      `;
+
+      return;
     }
 
     this.controls.outFullscreenCallback(() => {
@@ -600,11 +601,8 @@ export class RabbitHoleComponent {
     this.frame = requestAnimationFrame(this.animate.bind(this));
     this.renderer.render(this.scene, this.camera);
 
-    if (this.intro) {
-      this.animateCameraIntro();
-    } else {
-      this.checkFocusDirection();
-    }
+    if (this.intro) this.animateCameraIntro();
+    else this.checkFocusDirection();
 
     if (this.controls && this.introPlayed) {
       this.controls.update();
@@ -802,7 +800,8 @@ export class RabbitHoleComponent {
   }
 
   ngAfterViewInit() {
-    this.createEventHandlers();
+    if (!this.error) this.createEventHandlers();
+
     this.lettering.animate(
       this.hole.children[1].children[1].children[0],
       50, () => { this.activeButton = true; }, 0

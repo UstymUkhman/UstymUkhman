@@ -47,7 +47,8 @@ div.rabbit-hole-component {
     @include back-button;
 
     p.info-text {
-      @include size(835px 70px);
+      // @include size(835px 70px); 920px
+      @include size(920px 70px);
       @include white-rabbit;
 
       position: relative;

@@ -32,7 +32,7 @@ export class ControlsService {
     this.scene.add(this.controls.getObject());
     this.setExperimentalAPIs();
 
-    return !this.pointerLock;
+    return !this.fullscreen && !this.pointerLock;
   }
 
   setExperimentalAPIs() {
