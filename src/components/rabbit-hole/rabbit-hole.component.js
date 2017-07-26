@@ -448,7 +448,7 @@ export class RabbitHoleComponent {
   }
 
   setKeyDownHandler(event) {
-    const ready = this.isFullSize && event.keyCode === 13;
+    const ready = this.initialFullsize && event.keyCode === 13;
     const inFullscreen = this.controls.isFullscreen();
 
     if (this.introStarted) return;
@@ -530,15 +530,18 @@ export class RabbitHoleComponent {
   }
 
   setResizeHandler() {
-    const minWidth  = screen.availWidth  - 16,
+    const fullsize  = this.initialFullsize,
+          minWidth  = screen.availWidth  - 16,
           minHeight = screen.availHeight - 16;
 
     this.WIDTH  = window.innerWidth;
     this.HEIGHT = window.innerHeight;
 
-    if (!this.isFullSize) {
-      this.isFullSize = window.outerWidth  >= minWidth &&
-                        window.outerHeight >= minHeight;
+    this.initialFullsize = window.outerWidth  >= minWidth &&
+                           window.outerHeight >= minHeight;
+
+    if (fullsize !== undefined && this.firstScreenSize) {
+      this.isFullsize = this.initialFullsize;
     }
 
     this.renderer.setSize(this.WIDTH, this.HEIGHT);
@@ -553,7 +556,7 @@ export class RabbitHoleComponent {
       Press left mouse button to interact with the enviroment.#####
     `;
 
-    if (!this.isFullSize) {
+    if (!this.initialFullsize) {
       this.guidelines += `
         It seems that your browser window is not full size.##
         Please, be sure to maximize it in order to fully enjoy this experience.#####
@@ -561,6 +564,8 @@ export class RabbitHoleComponent {
     }
 
     this.forceSuggestion = false;
+    this.firstScreenSize = this.initialFullsize;
+
     this.guidelines += 'Press  ENTER  when you\'re ready.';
     this.suggestion  = 'Hold left mouse button to open the door';
   }

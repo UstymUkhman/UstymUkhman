@@ -4,10 +4,14 @@ import { PointerControls } from '../classes/PointerControls';
 
 export class ControlsService {
   constructor() {
-    this.prevTime  = performance.now();
-    this.direction = new Vector3();
-    this.velocity  = new Vector3();
-    this.enabled   = false;
+    this.isEdge       = navigator.appVersion.includes('Edge');
+    this.prevTime     = performance.now();
+
+    this.direction    = new Vector3();
+    this.velocity     = new Vector3();
+
+    this.inFullscreen = false;
+    this.enabled      = false;
 
     this.controls  = null;
     this.camera    = null;
@@ -32,7 +36,7 @@ export class ControlsService {
     this.scene.add(this.controls.getObject());
     this.setExperimentalAPIs();
 
-    return !this.fullscreen && !this.pointerLock;
+    return !(this.fullscreen && this.pointerLock);
   }
 
   setExperimentalAPIs() {
@@ -88,6 +92,7 @@ export class ControlsService {
   }
 
   changePointerLock() {
+    if (this.isEdge) return;
     this.controls.enabled = !this.enabled;
 
     if (this.isFullscreen() && this.exitFullscreenCallback) {
@@ -97,6 +102,7 @@ export class ControlsService {
 
   pointerLockError(event) {
     console.error('\'pointerlockerror\' event occured...', event);
+    if (this.isEdge) this.enable(false);
   }
 
   enable(enable = true) {
@@ -107,16 +113,25 @@ export class ControlsService {
   setFullscreenMode(fullscreen = true) {
     if (fullscreen) {
       this.room.requestPointerLock();
-      this.room.requestFullscreen();
+
+      if (this.isEdge) this.enableEdgeControls(true);
+      else this.room.requestFullscreen();
 
     } else {
       document.exitPointerLock();
-      document.exitFullscreen();
+
+      if (this.isEdge) this.enableEdgeControls(false);
+      else document.exitFullscreen();
     }
   }
 
+  enableEdgeControls(enable) {
+    this.inFullscreen = enable;
+    this.enable(enable);
+  }
+
   isFullscreen() {
-    return document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen;
+    return this.isEdge ? this.inFullscreen : document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen;
   }
 
   getCameraDirection() {
@@ -180,6 +195,10 @@ export class ControlsService {
 
   keyHandler(code, pressed) {
     switch(code) {
+      case 27:
+        if (this.isEdge) this.setFullscreenMode(false);
+      break;
+
       case 40: case 83:
         this.move.backward = pressed;
       break;

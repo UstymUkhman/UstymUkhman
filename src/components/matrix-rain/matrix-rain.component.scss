@@ -124,10 +124,7 @@ div.matrix-rain-container {
       -o-animation-timing-function: linear;
       animation-timing-function: linear;
 
-      -webkit-animation-delay: $delay;
-      -moz-animation-delay: $delay;
-      -o-animation-delay: $delay;
-      animation-delay: $delay;
+      @include animation-delay($delay);
 
       -webkit-animation-iteration-count: infinite;
       -moz-animation-iteration-count: infinite;

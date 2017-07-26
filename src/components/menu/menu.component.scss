@@ -66,10 +66,7 @@ div.menu-section {
           @include size(100%);
 
           @include breakpoint($mobile) {
-            -webkit-animation-delay: 500ms !important;
-            -moz-animation-delay: 500ms !important;
-            -o-animation-delay: 500ms !important;
-            animation-delay: 500ms !important;
+            @include animation-delay(500ms !important);
           }
         }
 

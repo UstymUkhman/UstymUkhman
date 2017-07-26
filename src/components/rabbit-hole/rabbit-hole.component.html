@@ -6,16 +6,19 @@
   </div>
 
   <div class="guidelines-container" *ngIf='!introPlayed'>
-    <p class="info-text" [class.dissolve]='showOverlay'>{{ guidelines }}</p>
+    <p class="guidelines-text info-text" [class.dissolve]='showOverlay'>{{ guidelines }}</p>
 
-    <!-- <div class="button-border" [class.lower]='!isFullSize'>
-      <div class="button-box" [ngClass]="{'active': true, 'selected': ready}">
+    <p class="guidelines-text warning-text" [class.fade]='isFullsize === false'>
+      It seems that your browser window is not full size.
+      Please, be sure to maximize it in order to fully enjoy this experience.
+    </p>
 
+    <div class="button-border" [ngClass]="{'lower': !firstScreenSize, 'fadeOut': introStarted}">
+      <div class="button-box" [ngClass]="{'active': activeButton, 'selected': ready}">
         <div class="button-background"></div>
         <p class="button" [class.back]='backButton'></p>
-
       </div>
-    </div> -->
+    </div>
   </div>
 
   <screen-overlay [ready]='showScreen'></screen-overlay>
