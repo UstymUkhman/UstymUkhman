@@ -35,7 +35,6 @@ export class LoadingService {
   }
 
   loadExperiment(experiment) {
-    // `${window.location.origin}/experiments/${experiment}`;
     window.open(experiment, '_blank');
   }
 

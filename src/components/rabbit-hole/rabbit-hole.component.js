@@ -42,6 +42,7 @@ export class RabbitHoleComponent {
     this.renderer     = null;
     this.camera       = null;
     this.scene        = null;
+    this.plate        = null;
     this.key          = null;
 
     this.WHITE     = 0xFFFFFF;
@@ -314,11 +315,11 @@ export class RabbitHoleComponent {
     });
 
     this.loader.load('assets/models/keyboard.json', (geometry, materials) => {
-      this.keyboard = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
+      const keyboard = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials));
 
-      this.keyboard.position.set(0, 0, -16.5);
-      this.keyboard.scale.set(0.8, 0.8, 0.8);
-      this.scene.add(this.keyboard);
+      keyboard.position.set(0, 0, -16.5);
+      keyboard.scale.set(0.8, 0.8, 0.8);
+      this.scene.add(keyboard);
     });
 
     this.loader.load('assets/models/monitor.json', (geometry, materials) => {
@@ -333,12 +334,25 @@ export class RabbitHoleComponent {
 
   createKey() {
     this.loader.load('assets/models/key.json', (geometry, materials) => {
+
+      this.plate = new THREE.Mesh(
+        new THREE.PlaneGeometry(5, 5, 1, 1),
+        new THREE.MeshBasicMaterial({
+          transparent: true,
+          opacity: 0
+        })
+      );
+
+      this.plate.position.set(5, -2.8, -15);
+      this.plate.rotateX(-Math.PI / 2);
+
       this.key = new THREE.Mesh(geometry, materials[0]);
 
       this.key.rotation.set(0, -0.5, -Math.PI / 2);
-      this.key.position.set(4, -2.4, -14);
+      this.key.position.set(4, -2.4, -15);
       this.key.scale.set(3, 3, 3);
 
+      this.scene.add(this.plate);
       this.scene.add(this.key);
     });
   }
@@ -658,8 +672,8 @@ export class RabbitHoleComponent {
     this.raycaster.setFromCamera(this.focus, this.camera);
     this.raycaster.ray.direction.copy(direction).applyEuler(this.camera.rotation);
 
-    if (this.keyboard && this.key && !this.hasKey) {
-      this.canTake = !!this.raycaster.intersectObjects([this.keyboard, this.key]).length;
+    if (this.plate && !this.hasKey) {
+      this.canTake = !!this.raycaster.intersectObject(this.plate).length;
 
       if (this.canTake) {
         this.suggestion = this.ready ? 'Take the key' : 'Press enter to interact';
