@@ -1,22 +1,19 @@
 import { Vector3         } from 'three';
 import { PointerControls } from '../classes/PointerControls';
 
-
 export class ControlsService {
   constructor() {
     this.isEdge       = navigator.appVersion.includes('Edge');
     this.prevTime     = performance.now();
-
     this.direction    = new Vector3();
     this.velocity     = new Vector3();
 
     this.inFullscreen = false;
     this.enabled      = false;
-
-    this.controls  = null;
-    this.camera    = null;
-    this.scene     = null;
-    this.room      = null;
+    this.controls     = null;
+    this.camera       = null;
+    this.scene        = null;
+    this.room         = null;
 
     this.move = {
       backward : false,
@@ -219,10 +216,9 @@ export class ControlsService {
 
   addEventListeners() {
     this.onChangePointerLock = this.changePointerLock.bind(this);
-    this.onPointerLockError = this.pointerLockError.bind(this);
-
-    this.onKeyDown = this.keyDownHandler.bind(this);
-    this.onKeyUp = this.keyUpHandler.bind(this);
+    this.onPointerLockError  = this.pointerLockError.bind(this);
+    this.onKeyDown           = this.keyDownHandler.bind(this);
+    this.onKeyUp             = this.keyUpHandler.bind(this);
 
     document.addEventListener('webkitpointerlockchange', this.onChangePointerLock, false);
     document.addEventListener('mozpointerlockchange', this.onChangePointerLock, false);

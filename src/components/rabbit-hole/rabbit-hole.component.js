@@ -128,15 +128,15 @@ export class RabbitHoleComponent {
       texture.needsUpdate = true;
 
       const floorMaterial = new THREE.MeshStandardMaterial({
+        shading: THREE.SmoothShading,
+        premultipliedAlpha: true,
+        color: this.DARKGREEN,
+        transparent: true,
+
         map: texture,
         roughness: 1,
         metalness: 0,
-        opacity: 1,
-
-        transparent: true,
-        color: this.DARKGREEN,
-        premultipliedAlpha: true,
-        shading: THREE.SmoothShading
+        opacity: 1
       });
 
       let floor = new THREE.Mesh(new THREE.PlaneGeometry(50, 500), floorMaterial);
@@ -334,7 +334,6 @@ export class RabbitHoleComponent {
 
   createKey() {
     this.loader.load('assets/models/key.json', (geometry, materials) => {
-
       this.plate = new THREE.Mesh(
         new THREE.PlaneGeometry(5, 5, 1, 1),
         new THREE.MeshBasicMaterial({
@@ -343,13 +342,13 @@ export class RabbitHoleComponent {
         })
       );
 
-      this.plate.position.set(5, -2.8, -15);
+      this.plate.position.set(6, -2.8, -15);
       this.plate.rotateX(-Math.PI / 2);
 
       this.key = new THREE.Mesh(geometry, materials[0]);
 
       this.key.rotation.set(0, -0.5, -Math.PI / 2);
-      this.key.position.set(4, -2.4, -15);
+      this.key.position.set(6, -2.4, -14.75);
       this.key.scale.set(3, 3, 3);
 
       this.scene.add(this.plate);
@@ -565,7 +564,7 @@ export class RabbitHoleComponent {
 
   createMessage() {
     this.guidelines = `
-      Welcome to the real world.###
+      Welcome to the real world.          ###
       Use W, A, S, D keys to move and drag you mouse to look around.##
       Press left mouse button to interact with the enviroment.#####
     `;
@@ -705,9 +704,7 @@ export class RabbitHoleComponent {
   }
 
   openTheDoor(door = this.selectedDoor) {
-    if (!this.selectedDoor) {
-      this.selectedDoor = door;
-    }
+    if (!this.selectedDoor) this.selectedDoor = door;
 
     if (this.pressed && door.pivot.rotation.y < 1.56) {
       if (!door.pivot.rotation.y) {
@@ -751,11 +748,8 @@ export class RabbitHoleComponent {
   playDoorSound(door) {
     const closed = door >= this.experiments.length;
 
-    if (closed) {
-      this.sounds.closedDoor();
-    } else {
-      this.sounds.openedDoor();
-    }
+    if (closed) this.sounds.closedDoor();
+    else this.sounds.openedDoor();
 
     return closed;
   }
