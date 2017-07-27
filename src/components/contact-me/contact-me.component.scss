@@ -86,7 +86,7 @@ div.contact-me {
         font-size: 25px;
 
         @include breakpoint($phone) {
-          font-size: 20px;
+          font-size: 18px;
         }
       }
 
@@ -112,7 +112,6 @@ div.contact-me {
         font-size: 25px;
 
         color: $fade-green;
-        cursor: default;
         width: auto;
         opacity: 0;
 

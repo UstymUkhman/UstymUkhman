@@ -2,14 +2,19 @@ $scroll-easing: cubic-bezier(0.390, 0.575, 0.565, 1.000);
 
 div.my-works {
   @include position(absolute, $null);
+  @include hidden-overflow;
   @include size($max);
 
   background-color: $black;
   padding-left: 100px;
   z-index: 2;
 
-  &.hidden {
-    @include remove-element;
+  // &.hidden {
+  //   @include remove-element;
+  // }
+
+  @include breakpoint($mobile) {
+    padding-left: 0;
   }
 
   div.works-counter {
@@ -43,6 +48,14 @@ div.my-works {
 
     opacity: 1;
 
+    @include breakpoint($mobile) {
+      padding-left: 50px;
+    }
+
+    @include breakpoint($phone) {
+      padding-left: 25px;
+    }
+
     &.small-list {
       @include transition(opacity 1s ease-out);
       bottom: auto;
@@ -54,7 +67,7 @@ div.my-works {
     }
 
     div.project-source {
-      margin: 15vh 0;
+      margin: 14vh 0;
 
       &.hidden-source {
         @include hidden-element;
@@ -70,6 +83,14 @@ div.my-works {
 
           position: relative;
           color: $fade-green;
+
+          @include breakpoint($mobile) {
+            @include transform(translateX(20px));
+          }
+
+          @include breakpoint($phone) {
+            @include transform(translateX(15px));
+          }
         }
       }
 
@@ -80,10 +101,18 @@ div.my-works {
 
         display: inline-block;
         font-size: 25px;
+
+        @include breakpoint($phone) {
+          font-size: 18px;
+        }
       }
 
       p.project {
         line-height: 20px;
+
+        @include breakpoint($phone) {
+          line-height: 15px;
+        }
       }
     }
   }
@@ -91,5 +120,12 @@ div.my-works {
   div.matrix-rain {
     @include position(absolute, 0 auto 0 $half);
     @include size($half $max);
+
+    pointer-events: none;
+
+    @include breakpoint($mobile) {
+      width: $max;
+      left: 0;
+    }
   }
 }

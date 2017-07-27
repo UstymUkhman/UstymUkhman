@@ -12,9 +12,6 @@ div.matrix-code-container {
 
   @include breakpoint($mobile) {
     pointer-events: none;
-    // @include size($max);
-    // left: $null;
-    // top: $null;
   }
 
   div.code-layout {
@@ -118,10 +115,6 @@ div.matrix-code-container {
 
     @for $i from 0 through 99 {
       p.code-#{$i} {
-        @if ($i > 100) {
-          $i: ($i - 100) * 2;
-        }
-
         $top: getRandom(1, 50);
 
         top: unquote("#{-$top}%");
@@ -129,10 +122,6 @@ div.matrix-code-container {
         position: absolute;
 
         @include breakpoint($mobile) {
-          left: unquote("#{$i * 2}%");
-        }
-
-        @include breakpoint($phone) {
           left: unquote("#{$i * 4}%");
         }
       }

@@ -193,7 +193,6 @@
 
   div.button-border {
     @include visible-element;
-    cursor: pointer;
 
     div.button-box {
       text-align: center;

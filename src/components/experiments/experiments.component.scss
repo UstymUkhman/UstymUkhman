@@ -8,40 +8,28 @@ div.experiments {
   padding-left: 100px;
   z-index: 2;
 
-  &.hidden {
-    @include remove-element;
+  // &.hidden {
+  //   @include remove-element;
+  // }
+
+  @include breakpoint($mobile) {
+    padding-left: 0;
   }
 
-  div.works-counter {
-    @include position(absolute, 50px auto auto);
-    @include transition(opacity 1s ease-out);
-
-    text-align: center;
-    position: absolute;
-    width: 100%;
-
-    opacity: 0;
-    left: 0;
-
-    &.visible {
-      opacity: 1;
-    }
-
-    &.fadeOut {
-      opacity: 0;
-    }
-
-    span {
-      @include white-rabbit;
-    }
-  }
-
-  div.works-area {
+  div.experiments-area {
     @include transition(transform 0.5s $scroll-easing, opacity 1s ease-out);
     @include position(absolute, $null null $null);
     @include backface-visibility(hidden);
 
     opacity: 1;
+
+    @include breakpoint($mobile) {
+      padding-left: 50px;
+    }
+
+    @include breakpoint($phone) {
+      padding-left: 25px;
+    }
 
     &.small-list {
       @include transition(opacity 1s ease-out);
@@ -61,35 +49,53 @@ div.experiments {
       }
 
       &.active {
-        div.selected-project {
+        div.selected-experiment {
           @include visible-element;
         }
 
-        p.project {
+        p.experiment {
           @include transform(translateX(25px));
 
           position: relative;
           color: $fade-green;
+
+          @include breakpoint($mobile) {
+            @include transform(translateX(20px));
+          }
+
+          @include breakpoint($phone) {
+            @include transform(translateX(15px));
+          }
         }
       }
 
-      p.project,
-      div.selected-project {
+      p.experiment,
+      div.selected-experiment {
         @include transition(transform .3s ease-out);
         @include white-rabbit;
 
         display: inline-block;
         font-size: 25px;
+
+        @include breakpoint($phone) {
+          font-size: 18px;
+        }
       }
 
-      p.project {
+      p.experiment {
         line-height: 20px;
+
+        @include breakpoint($phone) {
+          line-height: 15px;
+        }
       }
     }
   }
 
   div.matrix-rain {
-    @include position(absolute, 0 auto 0 $half);
-    @include size($half $max);
+    @include position(absolute, 0 auto 0 0);
+    @include size($max);
+
+    pointer-events: none;
   }
 }

@@ -59,6 +59,8 @@ export class MyWorksComponent {
       this.projectsSources = this.worksElement.getElementsByClassName('project-source');
       this.lastScrollingProject = this.projects.length - 4;
       this.lastProject = this.projects.length - 1;
+
+      this.createClickHandlers();
       this.prepareWorksList();
     });
   }
@@ -93,22 +95,29 @@ export class MyWorksComponent {
       }, delay);
 
     } else if (!this.showBackButton) {
-      this.showBackButton = true;
+      const buttonDelay = this.skipLettering ? 500 : 0;
 
       setTimeout(() => {
-        this.currentWork      = 0;
+        this.showBackButton = true;
+      }, buttonDelay);
+
+      setTimeout(() => {
         this.startRaining     = true;
         this.showWorksCounter = true;
-        // this.listOffset       = this.projects.length < 6 ? '-50%' : 0;
-      }, 1000);
+        this.currentWork      = isMobile ? null : 0;
+        this.listOffset       = this.projects.length < 6 ? '-50%' : 0;
+      }, buttonDelay + 1000);
     }
+  }
+
+  openProjectLink(project) {
+    window.open(this.worksList[project].url, '_blank');
   }
 
   setProjectsNavigation(event) {
     if (!this.startRaining) {
       this.lettering.skipLettering();
       this.skipLettering = true;
-      this.listOffset = 0;
       return;
     }
 
@@ -131,7 +140,7 @@ export class MyWorksComponent {
     }
 
     if (code === 13)
-      window.open(this.worksList[project].url, '_blank');
+      this.openProjectLink(project);
 
     else if (code === 38)
       this.currentWork = (!this.currentWork) ? this.lastProject : this.currentWork - 1;
@@ -163,6 +172,9 @@ export class MyWorksComponent {
 
   removeProjectsSection() {
     this.goToMenu = true;
+
+    this.removeClickHandlers();
+    window.removeEventListener('resize', this.onResize, false);
     document.removeEventListener('keydown', this.projectsNavigation, false);
 
     setTimeout(() => {
@@ -172,8 +184,38 @@ export class MyWorksComponent {
     }, 3500);
   }
 
+  createClickHandlers() {
+    if (isMobile) {
+      for (let i = 0; i < this.projectsSources.length; i++) {
+        this.projectsSources[i].addEventListener('click', this.setClickHandler.bind(this, i), false);
+      }
+
+      document.addEventListener('click', this.setClickHandler.bind(this), false);
+    }
+  }
+
+  removeClickHandlers() {
+    if (isMobile && this.projectsSources.length) {
+      for (let i = 0; i < this.projectsSources.length; i++) {
+        this.projectsSources[i].removeEventListener('click', this.setClickHandler.bind(this, i), false);
+      }
+
+      document.removeEventListener('click', this.setClickHandler.bind(this), false);
+    }
+  }
+
+  setClickHandler(index) {
+    if (typeof index !== 'number') {
+      this.setProjectsNavigation({ keyCode: 0 });
+      return;
+    }
+
+    this.currentWork = index;
+    setTimeout(() => { this.openProjectLink(index); }, 400);
+  }
+
   onResizeHandler() {
-    this.listStep = window.innerHeight * 0.15 + 21;
+    this.listStep = window.innerHeight * 0.14 + 21;
   }
 
   ngAfterViewInit() {
@@ -186,6 +228,7 @@ export class MyWorksComponent {
   }
 
   ngOnDestroy() {
+    this.removeClickHandlers();
     window.removeEventListener('resize', this.onResize, false);
     document.removeEventListener('keydown', this.projectsNavigation, false);
   }

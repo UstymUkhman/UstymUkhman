@@ -18,10 +18,12 @@ export class ExperimentsComponent {
     this.showBackButton     = false;
     this.activeBackButton   = false;
 
-    this.projectIndex       = -1;
     this.listOffset         = 0;
+    this.experimentIndex    = -1;
     this.experiments        = [];
     this.experimentsList    = [];
+    this.currentExperiment  = null;
+
     this.http               = http;
     this.lettering          = lettering;
     this.experimentsElement = experiments.nativeElement;
@@ -57,6 +59,8 @@ export class ExperimentsComponent {
       this.experimentsSources = this.experimentsElement.getElementsByClassName('experiment-source');
       this.lastScrollingProject = this.experiments.length - 4;
       this.lastProject = this.experiments.length - 1;
+
+      this.createClickHandlers();
       this.prepareExperimentsList();
     });
   }
@@ -66,8 +70,8 @@ export class ExperimentsComponent {
       const delay = this.skipLettering ? 0 : 1000;
 
       setTimeout(() => {
-        const currentIndex   = this.projectIndex,
-              nextIndex      = ++this.projectIndex,
+        const currentIndex   = this.experimentIndex,
+              nextIndex      = ++this.experimentIndex,
               scrollableList = this.experiments.length > 5 && currentIndex < this.lastScrollingProject;
 
         if (!this.experimentsSources[nextIndex]) {
@@ -91,17 +95,23 @@ export class ExperimentsComponent {
       }, delay);
 
     } else if (!this.showBackButton) {
-      this.showBackButton = true;
+      const buttonDelay = this.skipLettering ? 500 : 0;
 
       setTimeout(() => {
-        this.listOffset   = 0;
+        this.showBackButton = true;
+      }, buttonDelay);
+
+      setTimeout(() => {
         this.startRaining = true;
-      }, 1000);
+        this.listOffset   = this.experiments.length < 6 ? '-50%' : 0;
+      }, buttonDelay + 1000);
     }
   }
 
   removeExperimentsSection() {
     this.goToMenu = true;
+    this.removeClickHandlers();
+    window.removeEventListener('resize', this.onResize, false);
 
     setTimeout(() => {
       this.fadeOut          = true;
@@ -110,19 +120,51 @@ export class ExperimentsComponent {
     }, 3500);
   }
 
-  setClickHandler() {
-    this.lettering.skipLettering();
-    this.skipLettering = true;
-    this.listOffset = 0;
+  createClickHandlers() {
+    for (let i = 0; i < this.experimentsSources.length; i++) {
+      this.experimentsSources[i].addEventListener('click', this.setClickHandler.bind(this, i), false);
+    }
+
+    document.addEventListener('click', this.setClickHandler.bind(this), false);
+  }
+
+  removeClickHandlers() {
+    if (this.experimentsSources.length) {
+      for (let i = 0; i < this.experimentsSources.length; i++) {
+        this.experimentsSources[i].removeEventListener('click', this.setClickHandler.bind(this, i), false);
+      }
+
+      document.removeEventListener('click', this.setClickHandler.bind(this), false);
+    }
+  }
+
+  setClickHandler(index) {
+    const isExperiment = typeof index === 'number';
+
+    if (isExperiment) {
+      this.currentExperiment = index;
+      setTimeout(() => { window.open(this.experimentsList[index].url, '_blank'); }, 400);
+
+    } else if (!isExperiment && !this.startRaining) {
+      this.lettering.skipLettering();
+      this.skipLettering = true;
+    }    
+  }
+
+  setResizeHandler() {
+    this.listStep = window.innerHeight * 0.14 + 21;
   }
 
   ngAfterViewInit() {
-    this.onClick = this.setClickHandler.bind(this);
-    document.addEventListener('click', this.onClick, false);
+    this.setResizeHandler();
+    this.onResize = this.setResizeHandler.bind(this);
+
+    window.addEventListener('resize', this.onResize, false);
   }
 
   ngOnDestroy() {
-    document.removeEventListener('click', this.onClick, false);
+    this.removeClickHandlers();
+    window.removeEventListener('resize', this.onResize, false);
   }
 
   static get parameters() {

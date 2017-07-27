@@ -46,6 +46,8 @@ export class ContactMeComponent {
 
   removeContactsSection() {
     this.goToMenu = true;
+
+    this.removeClickHandler();
     document.removeEventListener('keydown', this.contactsNavigation, false);
 
     setTimeout(() => {
@@ -129,7 +131,7 @@ export class ContactMeComponent {
       }, buttonDelay);
 
       setTimeout(() => {
-        this.startRaining   = true;
+        this.startRaining = true;
         this.currentContact = isMobile ? null : 0;
       }, buttonDelay + 1000);
     }
@@ -145,11 +147,7 @@ export class ContactMeComponent {
     setTimeout(() => { this.openContactLink(index); }, 400);
   }
 
-  ngAfterViewInit() {
-    this.contactsNavigation = this.setContactsNavigation.bind(this);
-    document.addEventListener('keydown', this.contactsNavigation, false);
-    this.contactSources = this.contactsElement.getElementsByClassName('contact-source');
-
+  setClickHandler() {
     if (isMobile) {
       for (let i = 0; i < this.contactSources.length; i++) {
         this.contactSources[i].addEventListener('click', this.setClickHandler.bind(this, i), false);
@@ -157,20 +155,30 @@ export class ContactMeComponent {
 
       document.addEventListener('click', this.setClickHandler.bind(this), false);
     }
-
-    this.prepareContactsList();
   }
 
-  ngOnDestroy() {
-    document.removeEventListener('keydown', this.contactsNavigation, false);
-
-    if (isMobile) {
+  removeClickHandler() {
+    if (isMobile && this.contactSources.length) {
       for (let i = 0; i < this.contactSources.length; i++) {
         this.contactSources[i].removeEventListener('click', this.setClickHandler.bind(this, i), false);
       }
 
       document.removeEventListener('click', this.setClickHandler.bind(this), false);
     }
+  }
+
+  ngAfterViewInit() {
+    this.contactsNavigation = this.setContactsNavigation.bind(this);
+    document.addEventListener('keydown', this.contactsNavigation, false);
+    this.contactSources = this.contactsElement.getElementsByClassName('contact-source');
+
+    this.setClickHandler();
+    this.prepareContactsList();
+  }
+
+  ngOnDestroy() {
+    this.removeClickHandler();
+    document.removeEventListener('keydown', this.contactsNavigation, false);
   }
 
   static get parameters() {

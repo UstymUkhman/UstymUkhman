@@ -33,6 +33,10 @@ div.menu-section {
       margin-left: 0;
     }
 
+    @include breakpoint($phone) {
+      padding: 4vh 0;
+    }
+
     @media only screen and (max-height: 550px) {
       padding: 5vh 0;
     }

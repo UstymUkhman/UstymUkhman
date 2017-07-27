@@ -60,7 +60,7 @@ export class BackButtonComponent {
   }
 
   ngOnDestroy() {
-    if (isMobile) {
+    if (this.buttonBox && isMobile) {
       this.buttonBox.removeEventListener('click', this.onClick, false);
     }
   }

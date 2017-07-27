@@ -19,7 +19,7 @@ export class AppComponent {
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this.audio.playMusic();
+      if (!isMobile) this.audio.playMusic();
       this.loading.finishLoading();
     }, 500);
   }
