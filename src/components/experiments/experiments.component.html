@@ -1,8 +1,7 @@
-<div class="experiments">
+<div class="experiments" [class.smallList]='experiments.length < 6'>
   <screen-overlay [ready]='true'></screen-overlay>
 
-  <div class="experiments-area"
-       [ngClass]="{'small-list': experiments.length < 6, 'fadeOut': fadeOut}"
+  <div class="experiments-area" [class.fadeOut]='fadeOut'
        [ngStyle]="{
          '-webkit-transform': 'translateY(' + listOffset + ')',
          '-moz-transform': 'translateY(' + listOffset + ')',

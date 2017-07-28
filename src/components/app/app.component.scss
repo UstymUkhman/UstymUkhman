@@ -5,7 +5,6 @@ html, body {
   @include text-size-adjust;
   @include prevent-selection;
   @include font-smoothing(antialiased);
-  -webkit-tap-highlight-color: transparent;
 
   min-width:  $max;
   min-height: $max;
@@ -14,6 +13,9 @@ html, body {
 
   margin:     $null;
   padding:    $null;
+
+  cursor: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 canvas {

@@ -2,19 +2,27 @@ $scroll-easing: cubic-bezier(0.390, 0.575, 0.565, 1.000);
 
 div.my-works {
   @include position(absolute, $null);
-  @include hidden-overflow;
   @include size($max);
 
   background-color: $black;
   padding-left: 100px;
   z-index: 2;
 
-  // &.hidden {
-  //   @include remove-element;
-  // }
-
   @include breakpoint($mobile) {
+    @include visible-overflow;
     padding-left: 0;
+  }
+
+  &.smallList {
+    div.works-area {
+      @include transition(opacity 1s ease-out);
+      bottom: auto;
+      top: 50%;
+    }
+
+    @include breakpoint($mobile) {
+      @include hidden-overflow;
+    }
   }
 
   div.works-counter {
@@ -54,12 +62,6 @@ div.my-works {
 
     @include breakpoint($phone) {
       padding-left: 25px;
-    }
-
-    &.small-list {
-      @include transition(opacity 1s ease-out);
-      bottom: auto;
-      top: 50%;
     }
 
     &.fadeOut {
@@ -124,8 +126,15 @@ div.my-works {
     pointer-events: none;
 
     @include breakpoint($mobile) {
+      position: fixed;
       width: $max;
       left: 0;
+    }
+  }
+
+  div#back-button-section div.back-button-container {
+    @include breakpoint($mobile) {
+      position: fixed;
     }
   }
 }

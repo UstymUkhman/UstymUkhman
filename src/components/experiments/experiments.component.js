@@ -57,7 +57,7 @@ export class ExperimentsComponent {
 
     setTimeout(() => {
       this.experimentsSources = this.experimentsElement.getElementsByClassName('experiment-source');
-      this.lastScrollingProject = this.experiments.length - 4;
+      this.lastScrollingProject = this.experiments.length - 5;
       this.lastProject = this.experiments.length - 1;
 
       this.createClickHandlers();
@@ -148,7 +148,7 @@ export class ExperimentsComponent {
     } else if (!isExperiment && !this.startRaining) {
       this.lettering.skipLettering();
       this.skipLettering = true;
-    }    
+    }
   }
 
   setResizeHandler() {

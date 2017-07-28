@@ -25,6 +25,7 @@ export class MyWorksComponent {
     this.showWorksCounter = false;
 
     this.http             = http;
+    this.isMobile         = isMobile;
     this.lettering        = lettering;
     this.worksElement     = works.nativeElement;
 
@@ -57,7 +58,7 @@ export class MyWorksComponent {
 
     setTimeout(() => {
       this.projectsSources = this.worksElement.getElementsByClassName('project-source');
-      this.lastScrollingProject = this.projects.length - 4;
+      this.lastScrollingProject = this.projects.length - (isMobile ? 5 : 4);
       this.lastProject = this.projects.length - 1;
 
       this.createClickHandlers();
@@ -72,7 +73,8 @@ export class MyWorksComponent {
       setTimeout(() => {
         const currentIndex   = this.projectIndex,
               nextIndex      = ++this.projectIndex,
-              scrollableList = this.projects.length > 5 && currentIndex < this.lastScrollingProject;
+              lastProject    = this.lastScrollingProject - (isMobile ? 0 : 1),
+              scrollableList = this.projects.length > 5 && currentIndex < lastProject;
 
         if (!this.projectsSources[nextIndex]) {
           this.prepareWorksList(true);

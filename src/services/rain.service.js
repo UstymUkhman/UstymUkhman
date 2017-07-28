@@ -9,6 +9,8 @@ export class RainService {
   }
 
   createRain(container) {
+    console.log(this.columns);
+
     for (let i = 0; i < this.columns; i++) {
       let column = document.createElement('p'),
           size   = this.createCharCodes(column);

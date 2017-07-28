@@ -7,10 +7,6 @@ div.contact-me {
   padding-left: 100px;
   z-index: 2;
 
-  &.hidden {
-    @include remove-element;
-  }
-
   @include breakpoint($mobile) {
     padding: 0;
   }

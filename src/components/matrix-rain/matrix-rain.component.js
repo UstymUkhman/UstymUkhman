@@ -17,7 +17,6 @@ export class MatrixRainComponent {
 
   ngOnChanges() {
     if (this.raining) {
-      // this.rain.setParams(10);
       this.rain.setParams(isMobile ? 5 : 10);
       this.rain.createRain(this.matrixRain.firstElementChild);
     }

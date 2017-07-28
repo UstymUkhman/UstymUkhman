@@ -2,18 +2,21 @@ $scroll-easing: cubic-bezier(0.390, 0.575, 0.565, 1.000);
 
 div.experiments {
   @include position(absolute, $null);
+  @include visible-overflow;
   @include size($max);
 
   background-color: $black;
-  padding-left: 100px;
+  padding-left: 0;
   z-index: 2;
 
-  // &.hidden {
-  //   @include remove-element;
-  // }
+  &.smallList {
+    @include hidden-overflow;
 
-  @include breakpoint($mobile) {
-    padding-left: 0;
+    div.experiments-area {
+      @include transition(opacity 1s ease-out);
+      bottom: auto;
+      top: 50%;
+    }
   }
 
   div.experiments-area {
@@ -21,20 +24,11 @@ div.experiments {
     @include position(absolute, $null null $null);
     @include backface-visibility(hidden);
 
+    padding-left: 50px;
     opacity: 1;
-
-    @include breakpoint($mobile) {
-      padding-left: 50px;
-    }
 
     @include breakpoint($phone) {
       padding-left: 25px;
-    }
-
-    &.small-list {
-      @include transition(opacity 1s ease-out);
-      bottom: auto;
-      top: 50%;
     }
 
     &.fadeOut {
@@ -42,7 +36,7 @@ div.experiments {
     }
 
     div.experiment-source {
-      margin: 15vh 0;
+      margin: 14vh 0;
 
       &.hidden-source {
         @include hidden-element;
@@ -54,14 +48,10 @@ div.experiments {
         }
 
         p.experiment {
-          @include transform(translateX(25px));
+          @include transform(translateX(20px));
 
           position: relative;
           color: $fade-green;
-
-          @include breakpoint($mobile) {
-            @include transform(translateX(20px));
-          }
 
           @include breakpoint($phone) {
             @include transform(translateX(15px));
@@ -93,9 +83,13 @@ div.experiments {
   }
 
   div.matrix-rain {
-    @include position(absolute, 0 auto 0 0);
+    @include position(fixed, $null);
     @include size($max);
 
     pointer-events: none;
+  }
+
+  div#back-button-section div.back-button-container {
+    position: fixed;
   }
 }
