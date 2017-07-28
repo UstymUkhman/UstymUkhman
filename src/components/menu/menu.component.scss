@@ -29,16 +29,12 @@ div.menu-section {
 
     @include breakpoint($mobile) {
       @include hidden-overflow;
-      padding: 10vh 0;
+      padding: 8vh 0; // 10vh
       margin-left: 0;
     }
 
     @include breakpoint($phone) {
-      padding: 4vh 0;
-    }
-
-    @media only screen and (max-height: 550px) {
-      padding: 5vh 0;
+      padding: 4.5vh 0;
     }
 
     div.button-border {

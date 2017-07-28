@@ -122,6 +122,10 @@ div.matrix-code-container {
         position: absolute;
 
         @include breakpoint($mobile) {
+          left: unquote("#{$i * 2}%");
+        }
+
+        @include breakpoint($phone) {
           left: unquote("#{$i * 4}%");
         }
       }
