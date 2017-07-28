@@ -189,20 +189,21 @@ export class MyWorksComponent {
   createClickHandlers() {
     if (isMobile) {
       for (let i = 0; i < this.projectsSources.length; i++) {
-        this.projectsSources[i].addEventListener('click', this.setClickHandler.bind(this, i), false);
+        this.projectsSources[i].addEventListener('click', this.setClickHandler.bind(this, i));
       }
 
-      document.addEventListener('click', this.setClickHandler.bind(this), false);
+      this.onClick = this.setClickHandler.bind(this);
+      document.addEventListener('click', this.onClick, true);
     }
   }
 
   removeClickHandlers() {
     if (isMobile && this.projectsSources.length) {
       for (let i = 0; i < this.projectsSources.length; i++) {
-        this.projectsSources[i].removeEventListener('click', this.setClickHandler.bind(this, i), false);
+        this.projectsSources[i].removeEventListener('click', this.setClickHandler.bind(this, i));
       }
 
-      document.removeEventListener('click', this.setClickHandler.bind(this), false);
+      document.removeEventListener('click', this.onClick, true);
     }
   }
 

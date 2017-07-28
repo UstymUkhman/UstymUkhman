@@ -11,7 +11,6 @@ div#back-button-section {
     @include size(150px 50px);
     @include back-button;
 
-    pointer-events: all;
     margin: 0 auto 25px;
 
     &.fadeOut {
@@ -20,6 +19,8 @@ div#back-button-section {
 
     @include breakpoint($mobile) {
       @include size(120px 40px);
+      pointer-events: all;
+      cursor: pointer;
     }
 
     @media only screen and (max-height: 550px) {

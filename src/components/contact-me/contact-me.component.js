@@ -27,7 +27,6 @@ export class ContactMeComponent {
       'GitHub',
       'CodePen',
       'E-mail'
-      // 'CV'
     ];
 
     this.contactsLinks = [
@@ -35,7 +34,6 @@ export class ContactMeComponent {
       'https://github.com/UstymUkhman/',
       'https://codepen.io/UstymUkhman/',
       'mailto:ustym.ukhman@gmail.com'
-      // 'assets/curriculum_vitae.pdf'
     ];
   }
 
@@ -137,7 +135,7 @@ export class ContactMeComponent {
     }
   }
 
-  setClickHandler(index) {
+  contactClickHandler(index) {
     if (typeof index !== 'number') {
       this.setContactsNavigation({ keyCode: 0 });
       return;
@@ -150,20 +148,20 @@ export class ContactMeComponent {
   setClickHandler() {
     if (isMobile) {
       for (let i = 0; i < this.contactSources.length; i++) {
-        this.contactSources[i].addEventListener('click', this.setClickHandler.bind(this, i), false);
+        this.contactSources[i].addEventListener('click', this.contactClickHandler.bind(this, i));
       }
 
-      document.addEventListener('click', this.setClickHandler.bind(this), false);
+      document.addEventListener('click', this.contactClickHandler.bind(this));
     }
   }
 
   removeClickHandler() {
     if (isMobile && this.contactSources.length) {
       for (let i = 0; i < this.contactSources.length; i++) {
-        this.contactSources[i].removeEventListener('click', this.setClickHandler.bind(this, i), false);
+        this.contactSources[i].removeEventListener('click', this.contactClickHandler.bind(this, i));
       }
 
-      document.removeEventListener('click', this.setClickHandler.bind(this), false);
+      document.removeEventListener('click', this.contactClickHandler.bind(this));
     }
   }
 

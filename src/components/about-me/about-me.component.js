@@ -48,7 +48,7 @@ export class AboutMeComponent {
     document.removeEventListener('keydown', this.onKeyDown, false);
 
     if (isMobile) {
-      document.removeEventListener('click', this.onKeyDown, false);
+      document.removeEventListener('click', this.onKeyDown);
     }
   }
 
@@ -73,7 +73,7 @@ export class AboutMeComponent {
     document.addEventListener('keydown', this.onKeyDown, false);
 
     if (isMobile) {
-      document.addEventListener('click', this.onKeyDown, false);
+      document.addEventListener('click', this.onKeyDown);
     }
 
     this.aboutMessage = this.aboutElement.firstChild;
@@ -84,7 +84,7 @@ export class AboutMeComponent {
     document.removeEventListener('keydown', this.onKeyDown, false);
 
     if (isMobile) {
-      document.removeEventListener('click', this.onKeyDown, false);
+      document.removeEventListener('click', this.onKeyDown);
     }
   }
 

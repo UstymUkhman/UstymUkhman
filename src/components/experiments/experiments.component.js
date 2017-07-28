@@ -122,19 +122,19 @@ export class ExperimentsComponent {
 
   createClickHandlers() {
     for (let i = 0; i < this.experimentsSources.length; i++) {
-      this.experimentsSources[i].addEventListener('click', this.setClickHandler.bind(this, i), false);
+      this.experimentsSources[i].addEventListener('click', this.setClickHandler.bind(this, i));
     }
 
-    document.addEventListener('click', this.setClickHandler.bind(this), false);
+    document.addEventListener('click', this.setClickHandler.bind(this));
   }
 
   removeClickHandlers() {
     if (this.experimentsSources.length) {
       for (let i = 0; i < this.experimentsSources.length; i++) {
-        this.experimentsSources[i].removeEventListener('click', this.setClickHandler.bind(this, i), false);
+        this.experimentsSources[i].removeEventListener('click', this.setClickHandler.bind(this, i));
       }
 
-      document.removeEventListener('click', this.setClickHandler.bind(this), false);
+      document.removeEventListener('click', this.setClickHandler.bind(this));
     }
   }
 

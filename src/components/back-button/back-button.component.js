@@ -49,7 +49,7 @@ export class BackButtonComponent {
         this.buttonBox = this.button.getElementsByClassName('back-button-container')[0];
 
         this.onClick = this.setClickHandler.bind(this);
-        this.buttonBox.addEventListener('click', this.onClick, false);
+        this.buttonBox.addEventListener('click', this.onClick);
       }
     }
 
@@ -61,7 +61,7 @@ export class BackButtonComponent {
 
   ngOnDestroy() {
     if (this.buttonBox && isMobile) {
-      this.buttonBox.removeEventListener('click', this.onClick, false);
+      this.buttonBox.removeEventListener('click', this.onClick);
     }
   }
 

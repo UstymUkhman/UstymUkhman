@@ -16,6 +16,11 @@ html, body {
 
   cursor: none;
   -webkit-tap-highlight-color: transparent;
+
+  @include breakpoint($mobile) {
+    pointer-events: all;
+    cursor: pointer;
+  }
 }
 
 canvas {

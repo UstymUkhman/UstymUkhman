@@ -37,7 +37,7 @@ export class MenuComponent {
 
     if (isMobile) {
       for (let i = 0; i < this.itemBoxes.length; i++) {
-        this.itemBoxes[i].removeEventListener('click', this.setClickHandler.bind(this, i), false);
+        this.itemBoxes[i].removeEventListener('click', this.setClickHandler.bind(this, i));
       }
     }
 
@@ -86,7 +86,7 @@ export class MenuComponent {
 
       if (isMobile) {
         for (let i = 0; i < this.itemBoxes.length; i++) {
-          this.itemBoxes[i].addEventListener('click', this.setClickHandler.bind(this, i), false);
+          this.itemBoxes[i].addEventListener('click', this.setClickHandler.bind(this, i));
         }
       }
     }

@@ -40,7 +40,7 @@ export class WrittenMessageComponent {
     document.removeEventListener('keydown', this.onKeyDown, false);
 
     if (isMobile) {
-      document.removeEventListener('click', this.onKeyDown, false);
+      document.removeEventListener('click', this.onKeyDown);
     }
 
     setTimeout(() => { this.consoleReady.emit(true); }, 2000);
@@ -70,7 +70,7 @@ export class WrittenMessageComponent {
       document.addEventListener('keydown', this.onKeyDown, false);
 
       if (isMobile) {
-        document.addEventListener('click', this.onKeyDown, false);
+        document.addEventListener('click', this.onKeyDown);
       }
     }
   }
@@ -79,7 +79,7 @@ export class WrittenMessageComponent {
     document.removeEventListener('keydown', this.onKeyDown, false);
 
     if (isMobile) {
-      document.removeEventListener('click', this.onKeyDown, false);
+      document.removeEventListener('click', this.onKeyDown);
     }
   }
 
