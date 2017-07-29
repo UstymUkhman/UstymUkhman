@@ -25,10 +25,7 @@ export class MenuComponent {
     this.itemIndex = -1;
     this.loading   = loading;
     this.lettering = lettering;
-
     this.menu      = menu.nativeElement;
-    this.itemBoxes = this.menu.getElementsByClassName('button-box');
-    this.menuItems = this.menu.getElementsByClassName('button-border');
   }
 
   setMenuSection(section) {
@@ -90,6 +87,11 @@ export class MenuComponent {
         }
       }
     }
+  }
+
+  ngAfterViewInit() {
+    this.itemBoxes = this.menu.getElementsByClassName('button-box');
+    this.menuItems = this.menu.getElementsByClassName('button-border');
   }
 
   ngOnChanges() {

@@ -43,6 +43,12 @@ div.contact-me {
         @include hidden-element;
       }
 
+      &.visible-source {
+        p.contact {
+          visibility: visible;
+        }
+      }
+
       &.active {
         div.selected-contact {
           @include visible-element;

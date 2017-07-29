@@ -75,6 +75,12 @@ div.my-works {
         @include hidden-element;
       }
 
+      &.visible-source {
+        p.project {
+          visibility: visible;
+        }
+      }
+
       &.active {
         div.selected-project {
           @include visible-element;

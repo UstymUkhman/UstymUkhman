@@ -42,6 +42,12 @@ div.experiments {
         @include hidden-element;
       }
 
+      &.visible-source {
+        p.experiment {
+          visibility: visible;
+        }
+      }
+
       &.active {
         div.selected-experiment {
           @include visible-element;

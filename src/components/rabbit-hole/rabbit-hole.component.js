@@ -544,8 +544,8 @@ export class RabbitHoleComponent {
 
   setResizeHandler() {
     const fullsize  = this.initialFullsize,
-          minWidth  = screen.availWidth  - 16,
-          minHeight = screen.availHeight - 16;
+          minWidth  = screen.width  - 16,
+          minHeight = screen.height - 16;
 
     this.WIDTH  = window.innerWidth;
     this.HEIGHT = window.innerHeight;

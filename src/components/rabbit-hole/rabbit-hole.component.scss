@@ -4,6 +4,7 @@ div.rabbit-hole-component {
   @include size($max);
 
   z-index: $z-max;
+  cursor: default;
 
   div.window-overlay {
     @include transition(background-color 1s linear, opacity 2s linear 2.5s);
@@ -38,6 +39,9 @@ div.rabbit-hole-component {
   div.guidelines-container {
     @include middle-align;
     @include back-button;
+
+    z-index: $z-screen + 1;
+    cursor: none;
 
     p.guidelines-text {
       @include size(920px 70px);

@@ -11,7 +11,7 @@
        }">
 
     <div *ngFor="let experiment of experimentsList; let e = index;"
-          class="experiment-source hidden-source" [class.active]='e === currentExperiment'>
+          class="experiment-source hidden-source" [ngClass]="{'visible-source': skipLettering && !showBackButton, 'active': e === currentExperiment}">
 
       <div class="selected-experiment">!</div>
       <p class="experiment">{{ experiment.name }}</p>

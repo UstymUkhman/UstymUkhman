@@ -16,7 +16,7 @@
        }">
 
     <div *ngFor="let work of worksList; let w = index;"
-          class="project-source hidden-source" [class.active]='w === currentWork'>
+          class="project-source hidden-source" [ngClass]="{'visible-source': skipLettering && !showBackButton, 'active': w === currentWork}">
 
       <div class="selected-project">//</div>
       <p class="project">{{ work.name }}</p>

@@ -43,11 +43,12 @@ div.error-message {
 
   background-color: $black;
   line-height: 20px;
+  cursor: default;
 
   padding-left: 50px;
   padding-top: 75px;
 
-  &#ie10 {
+  &#msie {
     display: none;
   }
 

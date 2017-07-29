@@ -1,7 +1,7 @@
-const ie10  = Function('/*@cc_on return document.documentMode===10@*/')();
+const isIE = navigator.userAgent.indexOf('MSIE ')    > -1 ||
+             navigator.userAgent.indexOf('Trident/') > -1;
 
-if (ie10) document.getElementById('ie10').style.display = 'block';
-if (!!document.getElementById('error') || ie10) window.stop();
+if (isIE) document.getElementById('msie').style.display = 'block';
 
 import 'babel-polyfill';
 
@@ -16,4 +16,4 @@ window.isMobile = !!navigator.userAgent.match(/iPad/i)
                || !!navigator.userAgent.match(/BlackBerry/i)
                || !!navigator.userAgent.match(/Windows Phone/i);
 
-platformBrowserDynamic().bootstrapModule(AppModule);
+if (!isIE) platformBrowserDynamic().bootstrapModule(AppModule);

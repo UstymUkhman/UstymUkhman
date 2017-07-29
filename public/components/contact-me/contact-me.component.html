@@ -3,7 +3,7 @@
 
   <div class="contacts-area" [class.fadeOut]='fadeOut'>
     <div *ngFor="let contact of contactsList; let c = index;"
-          class="contact-source hidden-source" [class.active]='c === currentContact'>
+          class="contact-source hidden-source" [ngClass]="{'visible-source': skipLettering && !showBackButton, 'active': c === currentContact}">
 
       <div class="selected-contact">></div><p class="contact">{{ contact }}</p>
       <span *ngIf="c === 3" class="e-mail"> - ustym.ukhman@gmail.com</span>
