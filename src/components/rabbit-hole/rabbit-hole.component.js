@@ -86,10 +86,12 @@ export class RabbitHoleComponent {
     this.createRenderer();
     this.setResizeHandler();
     this.createMessage();
-
     this.createControls();
-    this.getExperiments();
-    this.animate();
+
+    if (!this.error) {
+      this.getExperiments();
+      this.animate();
+    }
   }
 
   createScene() {
@@ -492,6 +494,10 @@ export class RabbitHoleComponent {
       this.introStarted = true;
       this.lettering.skipLettering();
       this.controls.setFullscreenMode();
+
+      if (this.controls.isFirefox) {
+        this.controls.enable(false);
+      }
 
       setTimeout(() => {
         this.showOverlay = true;

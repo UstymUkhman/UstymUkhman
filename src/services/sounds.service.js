@@ -9,7 +9,7 @@ export class SoundsService {
     this.music.loop = true;
     this.music.load();
 
-    this.speach = new Audio('assets/audio/speech.wav');
+    this.speach = new Audio('assets/audio/speech.mp3');
     this.speach.autoplay = false;
     this.speach.loop = false;
     this.speach.volume = 1;

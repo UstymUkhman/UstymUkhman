@@ -27,6 +27,10 @@ div.menu-section {
     margin-left: 100px;
     height: 100%;
 
+    @include breakpoint($small) {
+      margin-left: 0;
+    }
+
     @include breakpoint($mobile) {
       @include hidden-overflow;
       padding: 8vh 0; // 10vh
@@ -34,7 +38,7 @@ div.menu-section {
     }
 
     @include breakpoint($phone) {
-      padding: 4.5vh 0;
+      padding: 5vh 0;
     }
 
     div.button-border {

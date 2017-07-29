@@ -3,7 +3,9 @@ import { PointerControls } from '../classes/PointerControls';
 
 export class ControlsService {
   constructor() {
+    this.isFirefox    = navigator.userAgent.toLowerCase().includes('firefox');
     this.isEdge       = navigator.appVersion.includes('Edge');
+
     this.prevTime     = performance.now();
     this.direction    = new Vector3();
     this.velocity     = new Vector3();
@@ -89,7 +91,7 @@ export class ControlsService {
   }
 
   changePointerLock() {
-    if (this.isEdge) return;
+    if (this.isEdge || this.isFirefox) return;
     this.controls.enabled = !this.enabled;
 
     if (this.isFullscreen() && this.exitFullscreenCallback) {
@@ -99,7 +101,7 @@ export class ControlsService {
 
   pointerLockError(event) {
     console.error('\'pointerlockerror\' event occured...', event);
-    if (this.isEdge) this.enable(false);
+    if (this.isEdge || this.isFirefox) this.enable(false);
   }
 
   enable(enable = true) {
@@ -111,13 +113,13 @@ export class ControlsService {
     if (fullscreen) {
       this.room.requestPointerLock();
 
-      if (this.isEdge) this.enableEdgeControls(true);
+      if (this.isEdge || this.isFirefox) this.enableEdgeControls(true);
       else this.room.requestFullscreen();
 
     } else {
       document.exitPointerLock();
 
-      if (this.isEdge) this.enableEdgeControls(false);
+      if (this.isEdge || this.isFirefox) this.enableEdgeControls(false);
       else document.exitFullscreen();
     }
   }
@@ -128,7 +130,8 @@ export class ControlsService {
   }
 
   isFullscreen() {
-    return this.isEdge ? this.inFullscreen : document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen;
+    return (this.isEdge || this.isFirefox)
+      ? this.inFullscreen : document.fullscreen || document.mozFullScreen || document.webkitIsFullScreen;
   }
 
   getCameraDirection() {
@@ -193,7 +196,7 @@ export class ControlsService {
   keyHandler(code, pressed) {
     switch(code) {
       case 27:
-        if (this.isEdge) this.setFullscreenMode(false);
+        if (this.isEdge || this.isFirefox) this.setFullscreenMode(false);
       break;
 
       case 40: case 83:

@@ -22,6 +22,10 @@ div#about-me {
       opacity: 0;
     }
 
+    @include breakpoint($small) {
+      width: 900px;
+    }
+
     @include breakpoint($mobile) {
       line-height: 20px;
       font-size: 13px;

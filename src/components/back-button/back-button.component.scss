@@ -1,5 +1,6 @@
 div#back-button-section {
   @include position(absolute, $null);
+  @include hidden-overflow;
   @include size($max);
 
   pointer-events: none;

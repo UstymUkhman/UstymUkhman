@@ -2,6 +2,7 @@ $COLUMNS: 9;
 
 div.matrix-rain-container {
   @include transition(transform 5000ms ease-out);
+  @include hidden-overflow;
   @include martix-code-nfi;
   @include middle-align;
   @include size($max);
@@ -113,6 +114,7 @@ div.matrix-rain-container {
       position: absolute;
       left: unquote("#{$i * 10}%");
       transform: translateY(-110%);
+      // transform: translateY(-150%);
 
       -webkit-animation-duration: $duration;
       -moz-animation-duration: $duration;
@@ -131,6 +133,10 @@ div.matrix-rain-container {
       -o-animation-iteration-count: infinite;
       animation-iteration-count: infinite;
 
+      // &.column-size-12 {
+      //   transform: translateY(-200%);
+      // }
+
       @include breakpoint($mobile) {
         left: unquote("#{$i * 20}%");
       }
@@ -147,3 +153,13 @@ div.matrix-rain-container {
   from { transform: translateY(-100%); }
   to   { transform: translateY(175%);  }
 }
+
+// @keyframes drop {
+//   from { transform: translateY(-150%); }
+//   to   { transform: translateY(100%);  }
+// }
+
+// @keyframes deep-drop {
+//   from { transform: translateY(-200%); }
+//   to   { transform: translateY(175%);  }
+// }

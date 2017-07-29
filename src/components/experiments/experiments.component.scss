@@ -12,7 +12,7 @@ div.experiments {
   &.smallList {
     @include hidden-overflow;
 
-    div.experiments-area {
+    div.experiments-projects {
       @include transition(opacity 1s ease-out);
       bottom: auto;
       top: 50%;

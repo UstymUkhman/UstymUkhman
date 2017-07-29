@@ -13,12 +13,12 @@
       Please, be sure to maximize it in order to fully enjoy this experience.
     </p>
 
-    <div class="button-border" [ngClass]="{'lower': !firstScreenSize, 'fadeOut': introStarted}">
+    <!-- <div *ngIf='!error' class="button-border" [ngClass]="{'lower': !firstScreenSize, 'fadeOut': introStarted}">
       <div class="button-box" [ngClass]="{'active': activeButton && !controls.isFullscreen(), 'selected': showOverlay}">
         <div class="button-background"></div>
         <p class="button" [class.back]='backButton'></p>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <screen-overlay [ready]='showScreen'></screen-overlay>

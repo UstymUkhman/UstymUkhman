@@ -117,10 +117,15 @@ div.contact-me {
         width: auto;
         opacity: 0;
 
+        @include breakpoint($mobile) {
+          line-height: 25px;
+          margin-top: 5px;
+        }
+
         @include breakpoint($phone) {
-          line-height: 16px;
           font-size: 13px;
           margin-left: 0;
+          margin-top: 0;
         }
       }
     }
@@ -133,8 +138,9 @@ div.contact-me {
     pointer-events: none;
 
     @include breakpoint($mobile) {
-      width: 100%;
-      left: 0;
+      margin: $null;
+      width: $max;
+      left: $null;
     }
   }
 }
