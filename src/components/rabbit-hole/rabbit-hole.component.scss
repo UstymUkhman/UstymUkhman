@@ -38,7 +38,6 @@ div.rabbit-hole-component {
 
   div.guidelines-container {
     @include middle-align;
-    @include back-button;
 
     z-index: $z-screen + 1;
     cursor: none;
@@ -65,20 +64,6 @@ div.rabbit-hole-component {
       }
 
       span { @include dissolve-text(365); }
-    }
-
-    div.button-border {
-      @include position(absolute, 207px null null 106px);
-      @include transition(opacity 0.5s ease-out 0.5s);
-      @include size(64px 28px);
-
-      &.lower { top: 305px; }
-      &.fadeOut { opacity: 0; }
-
-      div.button-box div.button-background {
-        @include animation-delay(100ms);
-        @include size(64px 28px);
-      }
     }
   }
 }

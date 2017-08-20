@@ -1,7 +1,7 @@
 {
   "experiments": [
-    { "Nuova Dacia Sandero"      : "http://nuovasandero.dacia.it/"      },
-    { "Peugeot Sensation Driver" : "http://peugeotsensationdriver.it/"  },
-    { "Jagermeister"             : "https://www.bethenightmeister.com/" }
+    { "Audioreactive"      : "http://ustymukhman.com/experiments/audioreactive/"      },
+    { "Dynamic.css" : "http://ustymukhman.com/experiments/Dynamic.css"  },
+    { "ImageDrawer.js"             : "http://ustymukhman.com/experiments/ImageDrawer.js" }
   ]
 }

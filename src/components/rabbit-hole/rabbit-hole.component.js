@@ -549,19 +549,15 @@ export class RabbitHoleComponent {
   }
 
   setResizeHandler() {
-    const fullsize  = this.initialFullsize,
-          minWidth  = screen.width  - 16,
-          minHeight = screen.height - 16;
-
-    this.WIDTH  = window.innerWidth;
-    this.HEIGHT = window.innerHeight;
-
-    this.initialFullsize = window.outerWidth  >= minWidth &&
-                           window.outerHeight >= minHeight;
+    const fullsize = this.initialFullsize;
+    this.initialFullsize = window.outerWidth >= (screen.width - 16);
 
     if (fullsize !== undefined && this.firstScreenSize) {
       this.isFullsize = this.initialFullsize;
     }
+
+    this.HEIGHT = window.innerHeight;
+    this.WIDTH  = window.innerWidth;
 
     this.renderer.setSize(this.WIDTH, this.HEIGHT);
     this.camera.aspect = this.WIDTH / this.HEIGHT;

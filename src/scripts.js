@@ -6,9 +6,13 @@ if (isIE) document.getElementById('msie').style.display = 'block';
 
 import 'babel-polyfill';
 
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { AppModule              } from './components/app/app.module';
 import { enableProdMode         } from '@angular/core';
+import { AppModule              } from './components/app/app.module';
+<<<<<<< HEAD
+import { enableProdMode         } from '@angular/core';
+=======
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+>>>>>>> a883f8e84ce22c428119fe35cb17575024a6c5d2
 
 
 window.isMobile = !!navigator.userAgent.match(/iPad/i)
