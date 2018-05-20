@@ -2,34 +2,50 @@
 <html class="no-js" id="html-element">
   <head>
     <meta charset="utf-8">
+
+    <!-- Favicon: -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/static/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/static/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/static/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/favicon/apple-icon-76x76.png">
+
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/static/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/static/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/static/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-icon-180x180.png">
+
+    <link rel="icon" type="image/png" sizes="192x192"  href="/static/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
+
+    <!-- Fonts: -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:200,400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
+
+    <link rel="manifest" href="/static/favicon/manifest.json">
+
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-    <!-- include modernizr built by webpack -->
+    <meta name="msapplication-TileImage" content="/static/favicon/ms-icon-144x144.png">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Initial Setup: -->
     <script type="text/javascript" src="<%= htmlWebpackPlugin.files.chunks['modernizr.'].entry %>"></script>
-    <!-- initial js, handles modernizr classes in conjunction with pre-rendering system -->
     <script type="text/javascript" src="/static/js/initial.js"></script>
-    <!-- initial css, used mostly to define preloader style -->
     <link href="/static/css/initial.css" rel="stylesheet">
   </head>
+
   <body>
-    <div id="app"
-    version=<%= htmlWebpackPlugin.options.gitRevision.version %>
-    commit-hash=<%= htmlWebpackPlugin.options.gitRevision.commitHash %>
-    deploy-flag=<%= htmlWebpackPlugin.options.gitRevision.deployFlag %>
-    target-domain=<%= htmlWebpackPlugin.options.gitRevision.targetDomain %>
-    ></div>
-    <!-- this is the preloader of the app -->
-    <!-- it is placed here because it is instantly available -->
-    <transition id="app-loading-container">
-      <div id="app-loading" v-if="visible">
-        <svg class="spinner" viewBox="0 0 50 50">
-          <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
-        </svg>
-      </div>
-    </transition>
+    <div id="app" version=<%= htmlWebpackPlugin.options.gitRevision.version %> commit-hash=<%= htmlWebpackPlugin.options.gitRevision.commitHash %> deploy-flag=<%= htmlWebpackPlugin.options.gitRevision.deployFlag %> target-domain=<%= htmlWebpackPlugin.options.gitRevision.targetDomain %>></div>
+
     <div class="not-supported-msg">
-      <h1>Sorry This Browser is not Supported</h1>
-      <p>Please make sure you enabled javascript and use an updated browser to experience this website</p>
+      <div class="not-supported-msg-copy">
+        <h1>Sorry This Browser is not Supported.</h1>
+        <p>Please make sure you enabled JavaScript and use an updated browser to visit this website.</p>
+      </div>
     </div>
-    <!-- built files will be auto injected -->
   </body>
 </html>

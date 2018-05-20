@@ -53,7 +53,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   },
   plugins: [
     gitRevisionPlugin,
-    new SpritesmithPlugin(spriteConfig),
+    // new SpritesmithPlugin(spriteConfig),
     new webpack.DefinePlugin({
       'process.env': require('../config/dev.env')
     }),

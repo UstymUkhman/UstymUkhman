@@ -1,23 +1,17 @@
 @font-face {
-  font-family: 'Lato';
-  font-style: normal;
-  font-weight: 700;
-  src: url('assets/fonts/lato-bold-webfont.woff2') format('woff2'),
-    url('assets/fonts/lato-bold-webfont.woff') format('woff');
-}
-
-@font-face {
-  font-family: 'Lato';
-  font-style: normal;
   font-weight: 400;
-  src: url('assets/fonts/lato-regular-webfont.woff2') format('woff2'),
-    url('assets/fonts/lato-regular-webfont.woff') format('woff');
+  font-style: normal;
+  font-family: 'Martix Code NFI';
+  src: url('./assets/fonts/matrix-code/Matrix-Code-NFI.otf') format('opentype'),
+    url('./assets/fonts/matrix-code/Matrix-Code-NFI.ttf') format('truetype');
 }
 
 @font-face {
-  font-family: 'Lato';
+  font-weight: 400;
   font-style: normal;
-  font-weight: 300;
-  src: url('assets/fonts/lato-light-webfont.woff2') format('woff2'),
-    url('assets/fonts/lato-light-webfont.woff') format('woff');
+  font-family: 'White Rabbit';
+  src: url('./assets/fonts/white-rabbit/White-Rabbit.eot?') format('eot'),
+    url('./assets/fonts/white-rabbit/White-Rabbit.woff') format('woff'),
+    url('./assets/fonts/white-rabbit/White-Rabbit.ttf') format('truetype'),
+    url('./assets/fonts/white-rabbit/White-Rabbit.svg#WhiteRabbit') format('svg');
 }

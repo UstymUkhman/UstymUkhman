@@ -1,22 +1,29 @@
-$c-white: rgba(255, 255, 255, 1);
+$white         : rgb(255, 255, 255);
+$silver        : rgb(221, 221, 221);
+$gray          : rgb(170, 170, 170);
+$dark-gray     : rgb(31, 31, 31);
+$black         : rgb(0, 0, 0);
 
-$c-aqua    : rgb(127, 219, 255);
-$c-blue    : rgb(0, 116, 217);
-$c-navy    : rgb(0, 31, 63);
-$c-teal    : rgb(57, 204, 204);
-$c-green   : rgb(46, 204, 64);
-$c-olive   : rgb(61, 153, 112);
-$c-lime    : rgb(1, 255, 112);
+$aqua          : rgb(127, 219, 255);
+$blue          : rgb(0, 116, 217);
+$navy          : rgb(0, 31, 63);
 
-$c-yellow  : rgb(255, 220, 0);
-$c-orange  : rgb(255, 133, 27);
-$c-red     : rgb(255, 65, 54);
-$c-fuchsia : rgb(240, 18, 190);
-$c-purple  : rgb(177, 13, 201);
-$c-maroon  : rgb(133, 20, 75);
+$teal          : rgb(57, 204, 204);
+$green         : rgb(0, 204, 0);
+$olive         : rgb(61, 153, 112);
+$lime          : rgb(1, 255, 112);
 
-$c-white   : rgb(255, 255, 255);
-$c-silver  : rgb(221, 221, 221);
-$c-gray    : rgb(170, 170, 170);
+$yellow        : rgb(255, 220, 0);
+$orange        : rgb(255, 133, 27);
+$red           : rgb(255, 65, 54);
 
-$c-black   : rgb(31, 31, 31);
+$fuchsia       : rgb(240, 18, 190);
+$purple        : rgb(177, 13, 201);
+$maroon        : rgb(133, 20, 75);
+
+$fade-green    : rgb(136, 255, 136);
+$light-green   : rgb(187, 255, 187);
+$energy-green  : rgb(221, 255, 221);
+
+$dark-green    : rgba(0, 68, 0, 0.5);
+$green-overlay : rgba(0, 34, 0, 0.25);

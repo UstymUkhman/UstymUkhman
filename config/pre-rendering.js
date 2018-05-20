@@ -1,18 +1,17 @@
-// define base routes
-let baseRoutes = ['/', '/service', '/threejs']
+let routes = []
 
-// create a copy of base routes (to be augmented by languages)
-let routes = baseRoutes.concat()
+routes.push('/')
+routes.push('/about')
+routes.push('/works')
+routes.push('/contacts')
+routes.push('/more')
+routes.push('/hole')
+routes.push('/experiments')
 
-// multilanguage support
-// DISABLE / COMMENT if you dont' use multilanguage
-// loop available languages
-let languages = require('../src/assets/data/availableLanguages.json')
-for (let code in languages) {
-  baseRoutes.forEach((baseRoute) => {
-    routes.push('/' + code + baseRoute)
-  })
+const experiments = require('../src/assets/data/experiments.json')
+
+for (let i = 0; i < experiments.length; i++) {
+  routes.push(`/experiments/${experiments[i].route}`)
 }
-// end multilanguage support
 
 module.exports = routes

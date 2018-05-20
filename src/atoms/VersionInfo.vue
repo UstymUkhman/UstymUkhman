@@ -7,19 +7,23 @@
 <script>
 export default {
   name: 'VersionInfo',
+
   props: {
     version: {
       type: String,
       required: true,
       default: 'untagged',
+
       validator: function (value) {
         return value.length > 0
       }
     },
+
     commitHash: {
       type: String,
       required: false,
       default: 'nohash',
+
       validator: function (value) {
         return value.length > 0
       }
@@ -34,16 +38,17 @@ export default {
 
 .version-info {
   position: fixed;
+  z-index: 1000;
   bottom: 0;
   right: 0;
+
   font-size: 9px;
   padding: 3px;
-  background-color: $c-black;
-  color: $c-white;
-  z-index: 10000;
+
+  background-color: $black;
+  color: $white;
 
   @include breakpoint($xs) {
-    // display: none;
     font-size: 6px;
   }
 }

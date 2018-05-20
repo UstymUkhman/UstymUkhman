@@ -1,83 +1,107 @@
 <template>
-  <transition appear name="slide-from-top">
-    <header class="header">
-      <router-link class="header-title" :to="{name: 'Home', params: {language:$language.current}}">MONOGRID Boilerplate</router-link>
-      <transition appear name="slide-from-right">
-        <NavigationMenu class="nav"></NavigationMenu>
-      </transition>
+  <transition appear name="header">
+    <header class="header" :class="{'scrollable': scroll}">
+      <PageTitle :title="page" />
+
+      <HeaderButtons
+        v-if="currentExperiment"
+        :repo="currentExperiment.github"
+        :showDownload="'code' in currentExperiment"
+        @download="downloadExperiment" />
     </header>
   </transition>
 </template>
 
 <script>
-import NavigationMenu from '@/molecules/NavigationMenu'
+import Experiments from '../assets/data/experiments.json'
+import find from 'lodash/find'
+
+import HeaderButtons from '@/molecules/HeaderButtons'
+import PageTitle from '@/atoms/PageTitle'
 
 export default {
   name: 'SiteHeader',
+
   components: {
-    NavigationMenu
+    HeaderButtons,
+    PageTitle
   },
 
-  mounted: function () {
+  props: {
+    page: {
+      type: String,
+      default: null,
+      required: false
+    },
 
+    scroll: {
+      type: Boolean,
+      default: false,
+      required: false
+    }
+  },
+
+  data () {
+    return {
+      currentExperiment: null,
+      experiments: Experiments
+    }
   },
 
   methods: {
+    downloadExperiment () {
+      window.open(this.currentExperiment.code, '_blank')
+    }
+  },
 
+  mounted () {
+    this.currentExperiment = find(this.experiments, { name: this.page })
   }
 }
 </script>
 
 <style scoped lang="scss">
-@import 'app-colors';
-@import 'mixins';
 @import 'breakpoints';
+@import 'app-colors';
 @import 'z-index';
 
 .header {
+  background-image: linear-gradient($black, rgba($black, 0.9));
   position: fixed;
+  z-index: $top;
+
+  line-height: 80px;
+  height: 80px;
   width: 100%;
-  background-color: $c-navy;
-  padding: 1rem 2rem;
-  box-sizing: border-box;
-  display: table;
 
-  z-index: $z-header-footer;
+  left: 0;
+  top: 0;
+
+  &.scrollable {
+    width: calc(100% - 5px);
+  }
 
   @include breakpoint($xs) {
-    padding: 0.5rem 1rem;
+    line-height: 50px;
+    height: 50px;
+  }
+
+  .title-container {
+    width: 50%;
+  }
+
+  .buttons-container {
+    width: 50%;
   }
 }
 
-.header-title {
-  font-size: 1.5rem;
-  display: table-cell;
-  vertical-align: middle;
-  width: 10%;
-  white-space: nowrap;
-  @include breakpoint($xs) {
-    font-size: 1rem;
-  }
-}
-
-.nav {
-  display: table-cell;
-  vertical-align: middle;
-  text-align: right;
-}
-
-.slide-from-top-enter {
+.header-enter,
+.header-leave-to {
   transform: translateY(-100%);
 }
-.slide-from-top-enter-active {
-  transition: transform 0.5s;
-}
 
-.slide-from-right-enter {
-  transform: translate(200%);
+.header-enter-active,
+.header-leave-active {
+  transition: transform 0.5s ease-out 0.5s;
 }
-.slide-from-right-enter-active {
-  transition: transform 0.5s ease 0.5s;
-}
-
 </style>

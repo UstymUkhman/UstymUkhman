@@ -1,86 +1,172 @@
 <template>
-  <transition appear name="slide-in">
-    <footer class="footer">
-      <LanguageSwitcher class="language-switcher" @change="onLanguageChange" />
-      <MarkdownBlock class="about" tag="span" :inline="true" :text="aboutText" />
+  <transition appear name="footer">
+    <footer class="footer" :class="{'scrollable': scroll}">
+      <div class="page-links buttons">
+        <WebsitePage @click.native="onWebsiteClick" class="website" />
+
+        <router-link title="Experiments" :to="{name: 'Experiments'}">
+          <ExperimentsPage class="experiments" />
+        </router-link>
+      </div>
+
+      <div class="social-share buttons">
+        <FacebookShare @click.native="facebookShare" class="facebook" />
+        <TwitterShare @click.native="twitterShare" class="twitter" />
+      </div>
     </footer>
   </transition>
 </template>
 
 <script>
-import LanguageSwitcher from '@/molecules/LanguageSwitcher'
-import MarkdownBlock from '@/atoms/MarkdownBlock'
+import WebsitePage from '@/assets/svg/website.svg'
+import ExperimentsPage from '@/assets/svg/experiments.svg'
+import FacebookShare from '@/assets/svg/facebook.svg'
+import TwitterShare from '@/assets/svg/twitter.svg'
+import Loading from '@/services/Loading'
 
 export default {
-
   name: 'SiteFooter',
 
   components: {
-    LanguageSwitcher,
-    MarkdownBlock
+    WebsitePage,
+    ExperimentsPage,
+    FacebookShare,
+    TwitterShare
+  },
+
+  props: {
+    scroll: {
+      type: Boolean,
+      default: false,
+      required: false
+    }
   },
 
   methods: {
-    onLanguageChange: function (val) {
-      this.$router.push({
-        name: this.$route.name,
-        params: {
-          language: val
-        }
-      })
-    }
-  },
+    onWebsiteClick () {
+      Loading.checkActiveItem()
+      this.$router.push({name: 'Console'})
+    },
 
-  computed: {
-    aboutText: function () {
-      // displayed in the footer, about text
-      return this.$gettext('Built with ♥ by [MONOGRID](http://www.mono-grid.com)')
+    facebookShare () {
+      const url = `https://facebook.com/sharer.php?u=${encodeURIComponent(window.location)}`
+      window.open(url, '_blank', 'width=640,height=400,status=no,toolbar=no,titlebar=no')
+    },
+
+    twitterShare () {
+      const description = document.querySelector('meta[name="twitter:description"]').getAttribute('content')
+      const url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location)}&text=${description}`
+      window.open(url, '_blank', 'width=640,height=400,status=no,toolbar=no,titlebar=no')
     }
   }
-
 }
 </script>
 
 <style scoped lang="scss">
 @import 'app-colors';
-@import 'mixins';
-@import 'breakpoints';
 @import 'z-index';
 
 .footer {
+  background-color: rgba($black, 0.9);
   position: fixed;
-  bottom: 0;
+  z-index: $top;
+
+  line-height: 25px;
+  height: 25px;
   width: 100%;
 
-  z-index: $z-header-footer;
+  bottom: 0;
+  left: 0;
 
-  box-sizing: border-box;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  background-color: $c-navy;
-  color: $c-white;
+  &.scrollable {
+    width: calc(100% - 5px);
+  }
 
-  @include breakpoint($xs) {
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
+  .buttons {
+    position: absolute;
+    height: 100%;
+    width: 100px;
+
+    &.page-links {
+      text-align: left;
+      left: 0;
+    }
+
+    &.social-share {
+      text-align: right;
+      right: 0;
+    }
   }
 }
 
-.language-switcher {
-  display: inline-block;
+svg {
+  transition: stroke 0.5s;
+  position: absolute;
+  cursor: pointer;
+  width: 18px;
+
+  &.website {
+    height: 22px;
+    width: 21px;
+
+    left: 25px;
+    top: 2px;
+  }
+
+  &.experiments {
+    width: 20px;
+    left: 55px;
+    top: 3px;
+  }
+
+  &.facebook {
+    height: 17px;
+    right: 55px;
+    top: 4px;
+  }
+
+  &.twitter {
+    height: 20px;
+    right: 25px;
+    top: 3px;
+  }
+
+  &.website,
+  &.experiments {
+    transition: fill 0.5s;
+    fill: $gray;
+  }
+
+  &.twitter,
+  &.facebook {
+    /deep/ .path {
+      transition: fill 0.5s;
+      fill: $gray;
+    }
+  }
+
+  &:hover {
+    &.website,
+    &.experiments {
+      fill: $white;
+    }
+
+    &.twitter,
+    &.facebook {
+      /deep/ .path {
+        fill: $white;
+      }
+    }
+  }
 }
 
-.about {
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
-.slide-in-enter-active {
-  transition: transform 0.5s;
-}
-
-.slide-in-enter {
+.footer-enter,
+.footer-leave-to {
   transform: translateY(100%);
 }
 
+.footer-enter-active,
+.footer-leave-active {
+  transition: transform 0.5s ease-out 0.5s;
+}
 </style>

@@ -1,128 +1,114 @@
 <template>
-  <div
-    id="app"
-    v-show="!platform.prerenderer && isReady"
-    :version="version"
-    :commit-hash="commitHash"
-    :deploy-flag="deployFlag"
-    :target-domain="targetDomain"
-    >
-    <SiteHeader />
-    <transition name="pages">
-      <router-view class="page" v-if="isReady" />
+  <div id="app" v-show="!platform.prerenderer && isReady" :version="version" :commit-hash="commitHash" :deploy-flag="deployFlag" :target-domain="targetDomain">
+
+    <transition appear>
+      <router-view v-if="isReady" itemprop="mainEntity" @set:background="htmlClasses.add('black')" class="page" />
     </transition>
-    <SiteFooter />
+
     <VersionInfo :version="version" v-if="!deployFlag" :commit-hash="commitHash" />
   </div>
 </template>
 
 <script>
-import VersionInfo from '@/atoms/VersionInfo.vue'
-import SiteHeader from '@/organisms/SiteHeader'
-import SiteFooter from '@/organisms/SiteFooter'
+import VersionInfo from '@/atoms/VersionInfo'
 import Platform from '@/platform'
 
 export default {
   name: 'App',
 
   components: {
-    VersionInfo,
-    SiteHeader,
-    SiteFooter
+    VersionInfo
   },
 
   props: {
-    // version string of this specific build
     version: {
       type: String,
       required: true
     },
-    // commit hash of this specific build
+
     commitHash: {
       type: String,
       required: true
     },
-    // this is the domain where the site will stay
-    // it varies from build to build so the site can be built to be hosted
-    // on various domains
-    // it can be set by using
-    // npm run build --domain="http://www.example.com"
+
     targetDomain: {
       type: String,
       required: true
     },
-    // this is a flag set to true
-    // by the build system (or if you build the site with --deploy)
-    // use this to enable debug stuff that needs to be hidden in the deploy version
+
     deployFlag: {
       type: Boolean,
       required: true
     },
-    // the preloader instance used by the root app
-    // set preloader.visible to show it / hide it
+
     preloader: {
       type: Object,
       required: true
     }
   },
 
-  data: function () {
+  data () {
     return {
-      // this flag is used to show the app once the preloading
-      // (if present) is finished
-      isReady: false,
-      // platform, accessible with an import statement
-      // or by using this.$root.platform
-      // NOTE: import statement is preferred
-      platform: Platform
+      htmlClasses: document.getElementById('html-element').classList,
+      platform: Platform,
+      isReady: false
     }
   },
 
-  mounted: function () {
-    // set this.isReady = true
-    // when all stuff that needs to be loaded for the app is loaded
-    // if you need to preload stuff, delete this line and set to true later
-    this.isReady = true
-  },
-
   watch: {
-    isReady: function (value) {
-      // hide / show preloader
+    isReady (value) {
       this.preloader.visible = !value
     }
   },
 
-  metaInfo: function () {
+  mounted () {
+    if (this.$route.name !== 'Console') {
+      this.htmlClasses.add('black')
+    }
+
+    console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
+    this.isReady = true
+  },
+
+  metaInfo () {
     return {
-      // if no subcomponents specify a metaInfo.title, this title will be used
-      title: ' ',
-      // all titles will be injected into this template
-      titleTemplate: '%s | ' + this.$gettext('MONOGRID'),
       base: { href: '/' },
+      title: 'Ustym Ukhman',
+      titleTemplate: this.$route.name === 'Console' ? '' : '%s | Ustym Ukhman',
+
       meta: [
         { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
         { name: 'fragment', content: '!' },
-        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' },
+
+        { name: 'theme-color', content: '#000000' },
         { name: 'mobile-web-app-capable', content: 'yes' },
+        { name: 'apple-mobile-web-app-capable', content: 'yes' },
+
         { name: 'msapplication-tap-highlight', content: 'no' },
-        { name: 'msapplication-TileColor', content: '#100E17' },
+        { name: 'msapplication-TileColor', content: '#000000' },
         { name: 'msapplication-TileImage', content: '/ms-icon-144x144.png' },
-        { name: 'theme-color', content: '#100E17' },
-        // twitter
-        { name: 'twitter:card', content: 'summary_large_image' },
-        { name: 'twitter:site', content: '@monogridstudio' },
-        { name: 'twitter:creator', content: '@monogridstudio' },
-        // generic description
-        { vmid: 'description', name: 'description', content: this.$gettext('A Vue.js Boilerplate buit and mantained by MONOGRID') },
-        // og tags
+
+        { name: 'twitter:site', content: '@ustymukhman' },
+        { name: 'twitter:creator', content: '@ustymukhman' },
+
+        { vmid: 'twittertitle', name: 'twitter:title', content: 'Ustym Ukhman' },
+        { vmid: 'ogtitle', property: 'og:title', itemprop: 'name', content: 'Ustym Ukhman' },
+
+        { vmid: 'description', name: 'description', content: '' },
+        { vmid: 'ogdescription', property: 'og:description', content: '' },
+        { vmid: 'twitterdescription', name: 'twitter:description', content: '' },
+
         { vmid: 'ogtype', property: 'og:type', content: 'website' },
-        { vmid: 'ogurl', property: 'og:url', content: this.targetDomain + this.$route.fullPath + '/' },
-        { vmid: 'ogtitle', property: 'og:title', itemprop: 'name', content: 'MONOGRID Digital & VR Creative Studio' },
-        { vmid: 'ogdescription', property: 'og:description', content: this.$gettext('A Vue.js Boilerplate buit and mantained by MONOGRID') },
-        { vmid: 'ogimage', property: 'og:image', content: this.targetDomain + '/static/img/share.jpg' }
+        { vmid: 'twittercard', name: 'twitter:card', content: 'summary_large_image' },
+
+        { vmid: 'ogurl', property: 'og:url', content: `${window.location.origin}${this.$route.fullPath}` },
+        { vmid: 'ogimage', property: 'og:image', content: `${window.location.origin}/static/img/subject.jpg` },
+        { vmid: 'twitterimage', name: 'twitter:image', content: `${window.location.origin}/static/img/subject.jpg` }
       ],
+
       htmlAttrs: {
-        lang: this.$language.current
+        lang: 'en'
       }
     }
   }
@@ -130,107 +116,172 @@ export default {
 </script>
 
 <style lang="scss">
-
-// either use this (to normalize css)
-// @import '~normalize-scss';
-// or this (to reset css)
 @import '~node-reset-scss/scss/reset';
-// IMPORTANT: don't import both
-
-@import 'breakpoints';
-@import 'app-colors';
-@import 'easings';
-@import 'fonts';
-@import 'mixins';
-@import 'sprite';
 @import 'z-index';
+@import 'mixins';
+@import 'fonts';
 
-//
-//
-// Default app CSS layout
-// NOTE: please change this to fit your needs
-//
-//
 html {
-  height: 100%;
-  font-family: 'Lato', 'Open Sans', sans-serif;
-  font-weight: 300;
-  color: $c-white;
-  background-color: $c-blue;
-  overflow: auto;
+  font-family: 'Roboto', 'Open Sans', sans-serif;
+  font-weight: 400;
+
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-touch-callout: none;
+
+  background-color: $white;
+  appearance: none;
+  color: $green;
+
+  text-size-adjust: none;
+  user-select: none;
+  cursor: none;
+
   overflow-x: hidden;
+  overflow-y: auto;
+
+  max-height: 100%;
+  min-height: 100%;
+
+  max-width: 100%;
+  min-width: 100%;
+
+  height: 100%;
+  width: 100%;
+
+  padding: 0;
+  margin: 0;
+
+  &.black {
+    background-color: $black;
+  }
+
+  @include breakpoint($sm-down) {
+    pointer-events: all;
+  }
+}
+
+.app-container {
+  height: 100%;
+
+  .background-video {
+    position: fixed;
+
+    @include breakpoint($sm-down) {
+      display: none;
+    }
+  }
 }
 
 .page {
-  padding-bottom: 70px !important;
-  padding-top: 70px !important;
-  z-index: $z-content;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
   box-sizing: border-box;
+  position: absolute;
+
+  height: 100%;
+  width: 100%;
+
+  left: 0;
+  top: 0;
 }
 
-//
-//
-// Default styles
-// NOTE: delete these and re-write them in your app
-//
-//
+.sound-particles-page canvas {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+
+  padding: 0;
+  margin: 0;
+
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+
 h1 {
   font-weight: 700;
-  font-size: 3rem;
-  margin: 1rem;
+  font-size: 48px;
+  cursor: default;
+  margin: 0px;
 
   @include breakpoint($xs) {
-    font-size: 2rem;
+    font-size: 32px;
   }
 }
 
 h2 {
   font-weight: 400;
-  font-size: 2rem;
-  margin: 0.5rem;
+  font-size: 32px;
+  cursor: default;
+  margin: 0px;
 
   @include breakpoint($xs) {
-    font-size: 1.5rem;
+    font-size: 25px;
   }
 }
 
 p {
-  margin: 0.5rem;
+  @include console-message;
+  @include back-button;
+
+  @include rain-column;
+  @include code-column;
+
+  cursor: default;
+  margin: 0px;
 }
 
-a {
-  color: $c-white;
-  text-decoration: none;
+span {
+  &.function {
+    color: #66d9ef;
+  }
 
-  &:hover {
-    color: $c-blue;
+  &.string {
+    color: #e6db74;
+  }
+
+  &.number {
+    color: #ae81ff;
   }
 }
 
-strong,
-em {
+a {
+  text-decoration: none;
+  cursor: pointer;
+  color: $white;
+
+  &:hover {
+    color: $blue;
+  }
+}
+
+em,
+strong {
   font-weight: 600;
 }
 
-button,
 input,
+button,
 select {
+  background-color: $white;
+  padding: 4px;
   border: 0;
-  padding: 0.2rem;
-  background-color: $c-white;
 }
 
-//
-//
-// this is the default transition
-// when a component is enclosed in a <transition> tab with no "name" specified
-// this is the transition which is triggered by default
-//
-//
+canvas {
+  position: absolute;
+  z-index: $pills;
+
+  left: 0;
+  top: 0;
+}
+
+br::selection {
+  background-color: $silver;
+  color: $black;
+}
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s;
@@ -241,21 +292,26 @@ select {
   opacity: 0;
 }
 
-//
-//
-// this is the page to page transition
-//
-//
-.pages-enter-active,
-.pages-leave-active {
-  transition: transform 0.5s $ease-in-out-cubic;
-  // position: absolute;
+.fade-out-leave-active {
+  transition: opacity 1s;
 }
 
-.pages-enter {
-  transform: translateX(100%);
+.fade-out-leave-to {
+  opacity: 0;
 }
-.pages-leave-to {
-  transform: translateX(-100%);
+
+::-webkit-scrollbar {
+  background-color: rgba($black, 0.8);
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  transition: background-color 0.5s;
+  background-color: $silver;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background-color: $white;
 }
 </style>

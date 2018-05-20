@@ -1,129 +1,107 @@
 .not-supported-msg {
-  display: none;
+  background-color: #000000;
   text-align: center;
-  text-transform: uppercase;
+  cursor: default;
+
+  overflow: hidden;
+  display: none;
+
+  height: 100%;
+  width: 100%;
 }
 
-#app-loading,
-#app-loading-container {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-}
 .no-es5object .not-supported-msg,
 .no-js .not-supported-msg {
   display: block !important;
 }
 
-.no-es5object #app,
-.no-js #app,
-.no-es5object #app-loading,
-.no-js #app-loading {
+.no-js #app
+.no-es5object #app {
   display: none !important;
 }
 
+.no-js body,
+.no-es5object body {
+  height: 100%;
+}
 
-.spinner {
-  -moz-animation: rotate 2s linear infinite;
-  -ms-animation: rotate 2s linear infinite;
-  -webkit-animation: rotate 2s linear infinite;
-  animation: rotate 2s linear infinite;
-  z-index: 2;
+.not-supported-msg .not-supported-msg-copy {
+  font-family: 'White Rabbit';
+  color: #00cc00;
+
   position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -25px 0 0 -25px;
-  width: 50px;
-  height: 50px;
+  margin: auto;
+
+  height: 65px;
+  width: 100%;
+
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
 }
 
-.spinner .path {
-  stroke: #0094FF;
-  stroke-linecap: round;
-  -moz-animation: dash 1.5s ease-in-out infinite;
-  -ms-animation: dash 1.5s ease-in-out infinite;
-  -webkit-animation: dash 1.5s ease-in-out infinite;
-  animation: dash 1.5s ease-in-out infinite;
+.not-supported-msg .not-supported-msg-copy h1 {
+  letter-spacing: 5px;
+  margin-bottom: 20px;
+  line-height: 25px;
+  font-size: 20px;
 }
 
-@-ms-keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-@-moz-keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-@keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
+.not-supported-msg .not-supported-msg-copy p {
+  letter-spacing: 3px;
+  line-height: 20px;
+  font-size: 16px;
 }
 
-@-ms-keyframes dash {
-  0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
-  }
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
-  }
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
-  }
+body .stats {
+  top: 80px !important;
 }
 
-@-moz-keyframes dash {
-  0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
-  }
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
-  }
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
-  }
+body .dg.a {
+  width: 260px !important;
+  margin-right: 0;
+  top: 80px;
+
+  overflow-x: initial;
+  position: relative;
 }
-@-webkit-keyframes dash {
-  0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
+
+body .dg.a .close-button {
+  width: 260px !important;
+}
+
+@media (max-width: 991px) {
+  .not-supported-msg .not-supported-msg-copy {
+    height: 95px;
+    width: 90%;
   }
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
-  }
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
+
+  .not-supported-msg .not-supported-msg-copy h1 {
+    margin-bottom: 30px;
   }
 }
 
-@keyframes dash {
-  0% {
-    stroke-dasharray: 1, 150;
-    stroke-dashoffset: 0;
+@media (max-width: 767px) {
+  .not-supported-msg .not-supported-msg-copy {
+    height: 150px;
+    width: 90%;
   }
-  50% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -35;
+
+  .not-supported-msg .not-supported-msg-copy h1 {
+    margin-bottom: 30px;
   }
-  100% {
-    stroke-dasharray: 90, 150;
-    stroke-dashoffset: -124;
+
+  .not-supported-msg .not-supported-msg-copy p {
+    line-height: 18px;
+    font-size: 14px;
+  }
+
+  body .stats {
+    top: 50px !important;
+  }
+
+  body .dg.a {
+    top: 50px;
   }
 }
