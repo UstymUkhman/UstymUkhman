@@ -1,9 +1,18 @@
 [
   {
-    "github": "https://github.com/UstymUkhman/Dynamic.css",
-    "code": "/static/downloads/DynamicCSS.zip",
-    "route": "DynamicCss",
-    "name": "Dynamic.css"
+    "github": "https://github.com/UstymUkhman/FBOParticles",
+    "route": "FBOParticles",
+    "name": "FBOParticles"
+  },
+  {
+    "github": "https://github.com/UstymUkhman/VideoGlitch",
+    "route": "VideoGlitch",
+    "name": "VideoGlitch"
+  },
+  {
+    "github": "https://github.com/UstymUkhman/SoundParticles",
+    "route": "SoundParticles",
+    "name": "SoundParticles"
   },
   {
     "github": "https://github.com/UstymUkhman/ImageDrawer.js",
@@ -12,18 +21,9 @@
     "name": "ImageDrawer.js"
   },
   {
-    "github": "https://github.com/UstymUkhman/SoundParticles",
-    "route": "SoundParticles",
-    "name": "SoundParticles"
-  },
-  {
-    "github": "https://github.com/UstymUkhman/VideoGlitch",
-    "route": "VideoGlitch",
-    "name": "VideoGlitch"
-  },
-  {
-    "github": "https://github.com/UstymUkhman/FBOParticles",
-    "route": "FBOParticles",
-    "name": "FBOParticles"
+    "github": "https://github.com/UstymUkhman/Dynamic.css",
+    "code": "/static/downloads/DynamicCSS.zip",
+    "route": "DynamicCss",
+    "name": "Dynamic.css"
   }
 ]

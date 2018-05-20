@@ -84,13 +84,13 @@ const routes = [
       // },
       {
         path: '*',
-        redirect: to => { return '/' }
+        redirect: to => { return '/experiments' }
       }
     ]
   },
   {
     path: '/*',
-    redirect: to => { return '/experiments' }
+    redirect: to => { return '/' }
   },
   {
     path: '*',

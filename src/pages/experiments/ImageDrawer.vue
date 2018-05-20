@@ -51,10 +51,8 @@ export default {
 
   data () {
     return {
-      // imageDrawerCss: '/static/css/imagedrawer.min.css',
-      // imageDrawerJs: '/static/js/imagedrawer.min.js',
-      imageDrawerCss: '../../assets/css/imagedrawer.min.css',
-      imageDrawerJs: '../../assets/js/imagedrawer.min.js',
+      imageDrawerCss: '/static/css/imagedrawer.min.css',
+      imageDrawerJs: '/static/js/imagedrawer.min.js',
       imagePencil: '/static/img/pencil.png',
       imageSrc: '/static/img/subject.jpg',
 

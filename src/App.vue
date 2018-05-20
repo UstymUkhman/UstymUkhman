@@ -138,8 +138,9 @@ html {
   user-select: none;
   cursor: none;
 
-  overflow-x: hidden;
-  overflow-y: auto;
+  // overflow-x: hidden;
+  // overflow-y: auto;
+  overflow: hidden;
 
   max-height: 100%;
   min-height: 100%;
@@ -301,7 +302,7 @@ br::selection {
 }
 
 ::-webkit-scrollbar {
-  background-color: rgba($black, 0.8);
+  background-color: $black;
   width: 5px;
 }
 

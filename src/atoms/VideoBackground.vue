@@ -87,6 +87,9 @@ export default {
 .video-background-container {
   transform: translate(-50%, -50%);
 
+  position: fixed;
+  margin: auto;
+
   left: 50%;
   top: 50%;
 
