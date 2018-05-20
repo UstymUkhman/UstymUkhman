@@ -1,8 +1,0 @@
-<div class="main-window">
-  <preloader (loaded)='loadingFinished($event)'></preloader>
-
-  <div class="console" [ngClass]="{'ready': showConsole}">
-    <written-message (consoleReady)='showMenu()' [start]='hiddenLoading'></written-message>
-    <menu-component [showOverlay]='visibleOverlay' [activeItem]='lastActiveItem' [showMenu]='menuReady'></menu-component>
-  </div>
-</div>

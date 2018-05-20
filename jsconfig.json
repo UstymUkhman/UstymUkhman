@@ -1,0 +1,23 @@
+  {
+    "typeAcquisition": {
+      "include": [
+        "three",
+        "lodash",
+        "vue",
+        "axios"
+      ]
+    },
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "es6"
+    },
+    "include": [
+      "src/**/*"
+    ],
+    "exclude": [
+      "dist",
+      "build",
+      "config",
+      "node_modules"
+    ]
+  }

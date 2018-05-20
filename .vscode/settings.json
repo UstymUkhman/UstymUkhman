@@ -1,0 +1,29 @@
+{
+  "vsicons.presets.angular": false,
+  "eslint.options": {
+      "extensions": [".html", ".js", ".vue", ".jsx"]
+  },
+  "eslint.validate": [
+      {
+          "language": "html",
+          "autoFix": true
+      },
+      {
+          "language": "vue",
+          "autoFix": true
+      },
+      {
+          "language": "javascript",
+          "autoFix": true
+      },
+      {
+          "language": "javascriptreact",
+          "autoFix": true
+      }
+  ],
+  "eslint.autoFixOnSave": true,
+  "stylelint.enable": true,
+  "stylelint.additionalDocumentSelectors": ["vue", "scss"],
+  "css.validate": false,
+  "scss.validate": false
+}

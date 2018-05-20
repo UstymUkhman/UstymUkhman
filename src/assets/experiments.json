@@ -1,7 +1,0 @@
-{
-  "experiments": [
-    { "Audioreactive"      : "http://ustymukhman.com/experiments/audioreactive/"      },
-    { "Dynamic.css" : "http://ustymukhman.com/experiments/Dynamic.css"  },
-    { "ImageDrawer.js"             : "http://ustymukhman.com/experiments/ImageDrawer.js" }
-  ]
-}

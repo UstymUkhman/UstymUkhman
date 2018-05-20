@@ -1,8 +1,6 @@
+.DS_Store
 node_modules/
-public/*
-.git/
-
-src/assets/music.mp3
-!public/components
-.editorconfig
-*.log.*
+dist/
+npm-debug.log
+yarn-error.log
+*.sublime-workspace

@@ -1,8 +1,0 @@
-canvas#preloader {
-  @include hidden-overflow;
-  @include size(100%);
-
-  background-color: $black;
-  z-index: $z-preloader;
-  position: absolute;
-}

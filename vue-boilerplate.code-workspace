@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+    "js-import.filesToScan": "**/*.{jsx,js,tsx,ts,vue}",
+    "js-import.plainFileSuffix": "css,less,sass,svg",
+    "js-import.semicolon": false
+	}
+}
