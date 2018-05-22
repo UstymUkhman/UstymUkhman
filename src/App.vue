@@ -1,8 +1,8 @@
 <template>
-  <div id="app" v-show="!platform.prerenderer && isReady" :version="version" :commit-hash="commitHash" :deploy-flag="deployFlag" :target-domain="targetDomain">
+  <div id="app" v-show="!platform.prerenderer" :version="version" :commit-hash="commitHash" :deploy-flag="deployFlag" :target-domain="targetDomain">
 
     <transition appear>
-      <router-view v-if="isReady" itemprop="mainEntity" @set:background="htmlClasses.add('black')" class="page" />
+      <router-view itemprop="mainEntity" class="page" />
     </transition>
 
     <VersionInfo :version="version" v-if="!deployFlag" :commit-hash="commitHash" />
@@ -49,25 +49,12 @@ export default {
 
   data () {
     return {
-      htmlClasses: document.getElementById('html-element').classList,
-      platform: Platform,
-      isReady: false
-    }
-  },
-
-  watch: {
-    isReady (value) {
-      this.preloader.visible = !value
+      platform: Platform
     }
   },
 
   mounted () {
-    if (this.$route.name !== 'Console') {
-      this.htmlClasses.add('black')
-    }
-
     console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
-    this.isReady = true
   },
 
   metaInfo () {
@@ -130,7 +117,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-touch-callout: none;
 
-  background-color: $white;
+  background-color: $black;
   appearance: none;
   color: $green;
 
@@ -153,14 +140,6 @@ html {
 
   padding: 0;
   margin: 0;
-
-  &.black {
-    background-color: $black;
-  }
-
-  @include breakpoint($sm-down) {
-    pointer-events: all;
-  }
 }
 
 .app-container {

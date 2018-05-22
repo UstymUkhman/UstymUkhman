@@ -1,10 +1,10 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="home-page">
     <transition appear>
-      <router-view @show:overlay="checkHomeOverlay(true)" @hide:overlay="homeOverlay = false" class="page" />
+      <router-view @hide:overlay="visibleOverlay = false" class="page" />
     </transition>
 
-    <ScreenOverlay v-if="(homeOverlay || pageOverlay) && !platform.prerenderer" />
+    <ScreenOverlay v-if="visibleOverlay && !platform.prerenderer" />
   </article>
 </template>
 
@@ -22,28 +22,8 @@ export default {
 
   data () {
     return {
-      platform: Platform,
-      homeOverlay: false
-    }
-  },
-
-  computed: {
-    pageOverlay () {
-      const home = this.$route.name === 'Console'
-      const hole = this.$route.name === 'RabbitHole'
-
-      this.checkHomeOverlay()
-      return !home && !hole
-    }
-  },
-
-  methods: {
-    checkHomeOverlay (visible = false) {
-      this.homeOverlay = (this.$route.name === 'Console' && visible)
-
-      if (this.homeOverlay) {
-        this.$emit('set:background')
-      }
+      visibleOverlay: true,
+      platform: Platform
     }
   },
 
