@@ -5,7 +5,7 @@ export default class Loading {
     const routes = ['About', 'Works', 'Contacts']
     const experiments = Platform.ie11 || Platform.mobile
 
-    routes.push(experiments ? 'Experiments' : 'PillChoice')
+    routes.push(experiments ? 'Experiments' : 'Pills')
     this.activeItem = item
     return routes[item]
   }

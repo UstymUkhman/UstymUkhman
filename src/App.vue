@@ -136,7 +136,7 @@ html {
 
   text-size-adjust: none;
   user-select: none;
-  cursor: none;
+  // cursor: none;
 
   // overflow-x: hidden;
   // overflow-y: auto;
@@ -294,7 +294,7 @@ br::selection {
 }
 
 .fade-out-leave-active {
-  transition: opacity 1s;
+  transition: opacity 1s !important;
 }
 
 .fade-out-leave-to {

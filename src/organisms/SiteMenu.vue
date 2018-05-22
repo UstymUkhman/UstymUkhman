@@ -6,7 +6,7 @@
 
           <div ref="items" class="button-box" :class="{'active': p === currentItem && !hiddenItems, 'selected': p === settedSection}">
             <div class="button-background"></div>
-            <p class="button">{{page}}</p>
+            <p class="button">{{ page }}</p>
           </div>
 
         </div>

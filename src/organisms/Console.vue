@@ -38,6 +38,7 @@ export default {
     if (!this.loading) {
       this.$emit('show:overlay')
       this.showMenu = true
+      this.loading = true
     }
   }
 }

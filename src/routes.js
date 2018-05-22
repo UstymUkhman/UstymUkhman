@@ -1,13 +1,13 @@
-// import Platform from '@/platform'
+import Platform from '@/platform'
 
-// const checkWebGLCompatibility = (to, from, next) => {
-//   if (Platform.ie11 || Platform.mobile) {
-//     next({name: 'Experiments'})
-//     return
-//   }
+const checkWebGLCompatibility = (to, from, next) => {
+  if (Platform.ie11 || Platform.mobile) {
+    next({name: 'Experiments'})
+    return
+  }
 
-//   next()
-// }
+  next()
+}
 
 const routes = [
   {
@@ -33,13 +33,13 @@ const routes = [
         path: 'contacts',
         name: 'Contacts',
         component: () => import(/* webpackChunkName: "contacts-page" */ './pages/Contacts')
+      },
+      {
+        path: 'more',
+        name: 'Pills',
+        beforeEnter: checkWebGLCompatibility,
+        component: () => import(/* webpackChunkName: "pills-page" */ './pages/Pills')
       } // ,
-      // {
-      //   path: 'more',
-      //   name: 'Pills',
-      //   beforeEnter: checkWebGLCompatibility,
-      //   component: () => import(/* webpackChunkName: "pills-page" */ './pages/Pills')
-      // },
       // {
       //   path: 'hole',
       //   name: 'RabbitHole',

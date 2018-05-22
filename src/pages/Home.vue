@@ -49,7 +49,7 @@ export default {
 
   mounted () {
     setTimeout(() => {
-      const playMusic = this.$route.name !== 'PillChoice' && this.$route.name !== 'RabbitHole'
+      const playMusic = this.$route.name !== 'Pills' && this.$route.name !== 'RabbitHole'
 
       if (!Platform.mobile && !Platform.prerenderer && playMusic) {
         Sounds.playMusic()

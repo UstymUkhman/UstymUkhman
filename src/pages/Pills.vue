@@ -13,19 +13,19 @@
 </template>
 
 <script>
-import {
-  Mesh,
-  Scene,
-  SpotLight,
-  JSONLoader,
-  AmbientLight,
-  WebGLRenderer,
-  DirectionalLight,
-  PerspectiveCamera,
-  MeshStandardMaterial
-} from 'three'
+import { MeshStandardMaterial } from '@three/materials/MeshStandardMaterial'
+import { JSONLoader } from '@three/loaders/JSONLoader'
+import { Mesh } from '@three/objects/Mesh'
 
-import { SmoothShading } from 'three/src/constants.js'
+import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
+import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
+import { Scene } from '@three/scenes/Scene'
+
+import { DirectionalLight } from '@three/lights/DirectionalLight'
+import { AmbientLight } from '@three/lights/AmbientLight'
+import { SpotLight } from '@three/lights/SpotLight'
+
+import { SmoothShading } from '@three/constants.js'
 
 import MatrixRain from '@/molecules/MatrixRain'
 import MatrixCode from '@/molecules/MatrixCode'
@@ -35,7 +35,7 @@ import Sounds from '@/services/Sounds'
 import Platform from '@/platform'
 
 export default {
-  name: 'PillChoice',
+  name: 'Pills',
 
   components: {
     MatrixRain,
@@ -178,7 +178,7 @@ export default {
       } else {
         setTimeout(() => {
           Loading.checkActiveItem()
-          // this.$ua.trackEvent('PillChoice', 'Chosen', 'Pill', this.choice ? 'Red' : 'Blue')
+          // this.$ua.trackEvent('Pills', 'Chosen', 'Pill', this.choice ? 'Red' : 'Blue')
           this.$router.push({ name: this.choice ? 'RabbitHole' : 'Console' })
         }, 8500)
 
@@ -201,7 +201,7 @@ export default {
     loadPill (color) {
       const jsonLoader = new JSONLoader()
       const pillMaterial = {
-        shading: SmoothShading,
+        flatShading: SmoothShading,
         emissiveIntensity: 1,
         emissive: 0x000000,
         color: color,
