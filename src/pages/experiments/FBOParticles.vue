@@ -74,7 +74,7 @@ export default {
   },
 
   metaInfo: {
-    title: 'FBOParticles',
+    title: 'FBOParticles |',
 
     meta: [
       { vmid: 'ogtitle', property: 'og:title', content: 'FBOParticles' },

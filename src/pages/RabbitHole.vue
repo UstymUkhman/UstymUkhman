@@ -834,7 +834,7 @@ export default {
   },
 
   metaInfo: {
-    title: 'Rabbit Hole'
+    title: 'Rabbit Hole |'
   }
 }
 </script>

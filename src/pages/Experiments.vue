@@ -59,7 +59,7 @@ export default {
   },
 
   metaInfo: {
-    title: 'Experiments'
+    title: 'Experiments |'
   }
 }
 </script>

@@ -348,7 +348,7 @@ export default {
   },
 
   metaInfo: {
-    title: 'ImageDrawerJs',
+    title: 'ImageDrawer |',
 
     meta: [
       { vmid: 'ogtitle', property: 'og:title', content: 'ImageDrawer.js' },

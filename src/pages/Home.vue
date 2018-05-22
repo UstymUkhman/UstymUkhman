@@ -35,6 +35,10 @@ export default {
         Sounds.playMusic()
       }
     }, 500)
+  },
+
+  metaInfo: {
+    title: ' '
   }
 }
 </script>

@@ -33,7 +33,7 @@ export default {
   mixins: [ExternalPages],
 
   metaInfo: {
-    title: 'Contacts'
+    title: 'Contacts |'
   }
 }
 </script>

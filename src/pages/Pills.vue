@@ -304,7 +304,7 @@ export default {
   },
 
   metaInfo: {
-    title: 'Pills'
+    title: 'Pills |'
   }
 }
 </script>

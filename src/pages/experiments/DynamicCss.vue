@@ -80,7 +80,7 @@ export default {
   },
 
   metaInfo: {
-    title: 'Dynamic.css',
+    title: 'Dynamic.css |',
 
     meta: [
       { vmid: 'ogtitle', property: 'og:title', content: 'Dynamic.css' },

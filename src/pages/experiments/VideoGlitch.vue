@@ -37,7 +37,7 @@ export default {
   },
 
   metaInfo: {
-    title: 'VideoGlitch',
+    title: 'VideoGlitch |',
 
     meta: [
       { vmid: 'ogtitle', property: 'og:title', content: 'VideoGlitch' },

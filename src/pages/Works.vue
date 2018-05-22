@@ -52,7 +52,7 @@ export default {
   },
 
   metaInfo: {
-    title: 'Works'
+    title: 'Works |'
   }
 }
 </script>

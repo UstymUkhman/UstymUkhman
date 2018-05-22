@@ -75,7 +75,7 @@ export default {
   },
 
   metaInfo: {
-    title: 'SoundParticles',
+    title: 'SoundParticles |',
 
     meta: [
       { vmid: 'ogtitle', property: 'og:title', content: 'SoundParticles' },

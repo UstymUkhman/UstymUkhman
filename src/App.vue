@@ -61,12 +61,11 @@ export default {
     return {
       base: { href: '/' },
       title: 'Ustym Ukhman',
-      titleTemplate: this.$route.name === 'Console' ? '' : '%s | Ustym Ukhman',
+      titleTemplate: '%s Ustym Ukhman',
 
       meta: [
         { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
         { name: 'fragment', content: '!' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' },
 
         { name: 'theme-color', content: '#000000' },
         { name: 'mobile-web-app-capable', content: 'yes' },
