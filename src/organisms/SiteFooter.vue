@@ -18,11 +18,11 @@
 </template>
 
 <script>
-import WebsitePage from '@/assets/svg/website.svg'
 import ExperimentsPage from '@/assets/svg/experiments.svg'
 import FacebookShare from '@/assets/svg/facebook.svg'
 import TwitterShare from '@/assets/svg/twitter.svg'
-import Loading from '@/services/Loading'
+import WebsitePage from '@/assets/svg/website.svg'
+import Loading from '@/utils/Loading'
 
 export default {
   name: 'SiteFooter',

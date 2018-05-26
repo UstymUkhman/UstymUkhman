@@ -56,11 +56,11 @@ import { Color } from '@three/math/Color'
 import Experiments from '@/assets/data/experiments.json'
 import ScreenOverlay from '@/atoms/ScreenOverlay'
 
-import Controls from '@/services/Controls'
-import Loading from '@/services/Loading'
-import Sounds from '@/services/Sounds'
-
+import Controls from '@/3D/utils/Controls'
 import Lettering from '@/utils/Lettering'
+import Loading from '@/utils/Loading'
+import Sounds from '@/utils/Sounds'
+
 import Viewport from '@/mixins/Viewport'
 import Platform from '@/platform'
 

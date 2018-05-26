@@ -30,8 +30,8 @@ import { SmoothShading } from '@three/constants.js'
 import MatrixRain from '@/molecules/MatrixRain'
 import MatrixCode from '@/molecules/MatrixCode'
 
-import Loading from '@/services/Loading'
-import Sounds from '@/services/Sounds'
+import Loading from '@/utils/Loading'
+import Sounds from '@/utils/Sounds'
 import Platform from '@/platform'
 
 export default {

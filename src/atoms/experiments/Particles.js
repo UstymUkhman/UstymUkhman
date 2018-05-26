@@ -1,5 +1,5 @@
+import Fbo from '@/3D/utils/FBO'
 import * as THREE from 'three'
-import Fbo from '@/utils/FBO'
 
 const OrbitControls = require('three-orbit-controls')(THREE)
 
@@ -92,8 +92,8 @@ export default class Particles {
         loader.load('/static/img/black.jpg',
           (black) => {
             this.sphereMaterial = new THREE.ShaderMaterial({
-              fragmentShader: require('../../assets/glsl/FBO/noise/sphere.frag'),
-              vertexShader: require('../../assets/glsl/FBO/noise/sphere.vert'),
+              fragmentShader: require('../../3D/glsl/FBO/noise/sphere.frag'),
+              vertexShader: require('../../3D/glsl/FBO/noise/sphere.vert'),
               shading: THREE.SmoothShading,
 
               uniforms: {
@@ -150,8 +150,8 @@ export default class Particles {
     texture.needsUpdate = true
 
     this.simulationShader = new THREE.ShaderMaterial({
-      fragmentShader: require('../../assets/glsl/FBO/noise/particles.frag'),
-      vertexShader: require('../../assets/glsl/FBO/noise/particles.vert'),
+      fragmentShader: require('../../3D/glsl/FBO/noise/particles.frag'),
+      vertexShader: require('../../3D/glsl/FBO/noise/particles.vert'),
 
       uniforms: {
         distance: { type: 'f', value: this.distance },
@@ -162,8 +162,8 @@ export default class Particles {
     })
 
     this.renderShader = new THREE.ShaderMaterial({
-      fragmentShader: require('../../assets/glsl/FBO/noise/render.frag'),
-      vertexShader: require('../../assets/glsl/FBO/noise/render.vert'),
+      fragmentShader: require('../../3D/glsl/FBO/noise/render.frag'),
+      vertexShader: require('../../3D/glsl/FBO/noise/render.vert'),
 
       uniforms: {
         color: { type: 'v3', value: this.particleColor },

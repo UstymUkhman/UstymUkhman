@@ -20,7 +20,7 @@
 <script>
 import MatrixCode from '@/molecules/MatrixCode'
 import Lettering from '@/utils/Lettering'
-import Loading from '@/services/Loading'
+import Loading from '@/utils/Loading'
 
 export default {
   name: 'BackButton',

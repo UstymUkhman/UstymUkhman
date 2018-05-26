@@ -1,9 +1,9 @@
 import * as PIXI from 'pixi.js'
 import { mat4 } from 'gl-matrix'
 
-import Detector from 'three/examples/js/Detector'
-import AudioReactive from '@/services/AudioReactive'
-import OrbitalCameraControl from '@/utils/OrbitalCameraControl'
+import Detector from '@three/helpers/Detector'
+import AudioReactive from '@/3D/utils/AudioReactive'
+import OrbitalCameraControl from '@/3D/utils/OrbitalCameraControl'
 
 const RAD = Math.PI / 180
 
@@ -38,8 +38,8 @@ export default class SoundParticles {
       .addAttribute('uv', uvs, 2)
       .addIndex(indices)
 
-    const vs = require('../../assets/glsl/SoundParticles/background.vert')
-    const fs = require('../../assets/glsl/SoundParticles/background.frag')
+    const vs = require('../../3D/glsl/SoundParticles/background.vert')
+    const fs = require('../../3D/glsl/SoundParticles/background.frag')
 
     this._backgroundUniforms = {
       aspect: this._ratio,
@@ -117,8 +117,8 @@ export default class SoundParticles {
       view
     }
 
-    const vsRender = require(`../../assets/glsl/SoundParticles/${vertShader}.vert`)
-    const fsRender = require('../../assets/glsl/SoundParticles/particles.frag')
+    const vsRender = require(`../../3D/glsl/SoundParticles/${vertShader}.vert`)
+    const fsRender = require('../../3D/glsl/SoundParticles/particles.frag')
 
     const particlesGeometry = new PIXI.mesh.Geometry()
       .addAttribute('startPosition', minFrequencies, 3)

@@ -1,5 +1,5 @@
-import AudioReactive from '@/services/AudioReactive'
-import Fbo from '@/utils/FBO'
+import AudioReactive from '@/3D/utils/AudioReactive'
+import Fbo from '@/3D/utils/FBO'
 import * as THREE from 'three'
 
 const OrbitControls = require('three-orbit-controls')(THREE)
@@ -72,8 +72,8 @@ export default class AudioreactiveParticles {
     positions.needsUpdate = true
 
     this.simulationShader = new THREE.ShaderMaterial({
-      fragmentShader: require('../../assets/glsl/FBO/image/particles.frag'),
-      vertexShader: require('../../assets/glsl/FBO/image/particles.vert'),
+      fragmentShader: require('../../3D/glsl/FBO/image/particles.frag'),
+      vertexShader: require('../../3D/glsl/FBO/image/particles.vert'),
 
       uniforms: {
         positions: { type: 't', value: positions },
@@ -82,8 +82,8 @@ export default class AudioreactiveParticles {
     })
 
     const renderShader = new THREE.ShaderMaterial({
-      fragmentShader: require('../../assets/glsl/FBO/image/render.frag'),
-      vertexShader: require('../../assets/glsl/FBO/image/render.vert'),
+      fragmentShader: require('../../3D/glsl/FBO/image/render.frag'),
+      vertexShader: require('../../3D/glsl/FBO/image/render.vert'),
 
       uniforms: {
         positions: { type: 't', value: null }

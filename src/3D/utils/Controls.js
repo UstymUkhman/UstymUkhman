@@ -1,4 +1,4 @@
-import PointerControls from '@/utils/PointerControls'
+import PointerControls from './PointerControls'
 import { Vector3 } from '@three/math/Vector3'
 import Platform from '@/platform'
 

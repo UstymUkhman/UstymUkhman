@@ -10,7 +10,7 @@
 
 <script>
 import ScreenOverlay from '@/atoms/ScreenOverlay'
-import Sounds from '@/services/Sounds'
+import Sounds from '@/utils/Sounds'
 import Platform from '@/platform'
 
 export default {

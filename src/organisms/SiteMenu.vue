@@ -30,7 +30,7 @@ import MatrixRain from '@/molecules/MatrixRain'
 import MatrixCode from '@/molecules/MatrixCode'
 
 import Lettering from '@/utils/Lettering'
-import Loading from '@/services/Loading'
+import Loading from '@/utils/Loading'
 import Platform from '@/platform'
 
 export default {

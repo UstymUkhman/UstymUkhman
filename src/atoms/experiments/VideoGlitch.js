@@ -174,8 +174,8 @@ export default class VideoGlitch {
 
     this.glitch = new THREE.ShaderPass(
       new THREE.ShaderMaterial({
-        fragmentShader: require('../../assets/glsl/VideoGlitch/glitch.frag'),
-        vertexShader: require('../../assets/glsl/VideoGlitch/glitch.vert'),
+        fragmentShader: require('../../3D/glsl/VideoGlitch/glitch.frag'),
+        vertexShader: require('../../3D/glsl/VideoGlitch/glitch.vert'),
         uniforms: this.glitchUniforms
       })
     )

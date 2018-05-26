@@ -10,7 +10,7 @@
 <script>
 import WrittenMessage from '@/atoms/WrittenMessage'
 import SiteMenu from '@/organisms/SiteMenu'
-import Loading from '@/services/Loading'
+import Loading from '@/utils/Loading'
 
 export default {
   name: 'Console',
