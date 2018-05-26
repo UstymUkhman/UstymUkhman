@@ -1,4 +1,6 @@
-import { Object3D, Euler, Vector3 } from 'three'
+import { Object3D } from '@three/core/Object3D'
+import { Vector3 } from '@three/math/Vector3'
+import { Euler } from '@three/math/Euler'
 
 export default class PointerControls {
   constructor (camera, height = 10) {

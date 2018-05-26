@@ -39,13 +39,13 @@ const routes = [
         name: 'Pills',
         beforeEnter: checkWebGLCompatibility,
         component: () => import(/* webpackChunkName: "pills-page" */ './pages/Pills')
-      } // ,
-      // {
-      //   path: 'hole',
-      //   name: 'RabbitHole',
-      //   beforeEnter: checkWebGLCompatibility,
-      //   component: () => import(/* webpackChunkName: "rabbit-hole-page" */ './pages/RabbitHole')
-      // }
+      },
+      {
+        path: 'hole',
+        name: 'RabbitHole',
+        beforeEnter: checkWebGLCompatibility,
+        component: () => import(/* webpackChunkName: "rabbit-hole-page" */ './pages/RabbitHole')
+      }
     ]
   },
   {

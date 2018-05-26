@@ -1,6 +1,6 @@
 import PointerControls from '@/utils/PointerControls'
+import { Vector3 } from '@three/math/Vector3'
 import Platform from '@/platform'
-import { Vector3 } from 'three'
 
 export default class Controls {
   constructor () {

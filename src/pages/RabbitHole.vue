@@ -30,6 +30,29 @@
 </template>
 
 <script>
+import { MeshStandardMaterial } from '@three/materials/MeshStandardMaterial'
+import { MeshBasicMaterial } from '@three/materials/MeshBasicMaterial'
+
+import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
+import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
+
+import { PlaneGeometry } from '@three/geometries/PlaneGeometry'
+import { Scene } from '@three/scenes/Scene'
+import { Mesh } from '@three/objects/Mesh'
+
+import { TextureLoader } from '@three/loaders/TextureLoader'
+import { JSONLoader } from '@three/loaders/JSONLoader'
+
+import { AmbientLight } from '@three/lights/AmbientLight'
+import { SpotLight } from '@three/lights/SpotLight'
+
+import { Raycaster } from '@three/core/Raycaster'
+import { Object3D } from '@three/core/Object3D'
+import { Clock } from '@three/core/Clock'
+
+import { Vector2 } from '@three/math/Vector2'
+import { Color } from '@three/math/Color'
+
 import Experiments from '@/assets/data/experiments.json'
 import ScreenOverlay from '@/atoms/ScreenOverlay'
 
@@ -40,7 +63,11 @@ import Sounds from '@/services/Sounds'
 import Lettering from '@/utils/Lettering'
 import Viewport from '@/mixins/Viewport'
 import Platform from '@/platform'
-import * as THREE from 'three'
+
+import {
+  SmoothShading,
+  MirroredRepeatWrapping
+} from '@three/constants.js'
 
 export default {
   name: 'RabbitHole',
@@ -139,8 +166,6 @@ export default {
           Your shitty browser does not support Fullscreen API or Pointer Lock API.##
           You need to update it or use a better one: https://www.google.it/chrome/browser/desktop/
         `
-
-        this.showResizeMessage = false
       }
 
       return guidelines
@@ -149,19 +174,19 @@ export default {
 
   methods: {
     createScene () {
-      this.scene = new THREE.Scene()
+      this.scene = new Scene()
     },
 
     createCamera () {
-      this.camera = new THREE.PerspectiveCamera(7, this.viewPort.width / this.viewPort.height, 1, 1000)
+      this.camera = new PerspectiveCamera(7, this.viewPort.width / this.viewPort.height, 1, 1000)
       this.camera.rotation.x = -Math.PI / 4.465
       this.camera.position.z = -5
       this.scene.add(this.camera)
     },
 
     createLight () {
-      const ambientLight = new THREE.AmbientLight(this.WHITE, 0.25)
-      const firstLight = new THREE.SpotLight(this.WHITE)
+      const ambientLight = new AmbientLight(this.WHITE, 0.25)
+      const firstLight = new SpotLight(this.WHITE)
 
       firstLight.target.position.set(0, 0, this.center)
       firstLight.target.updateMatrixWorld()
@@ -177,14 +202,14 @@ export default {
     },
 
     createFloor () {
-      const textureLoader = new THREE.TextureLoader()
+      const textureLoader = new TextureLoader()
 
       textureLoader.load('/static/img/textures/floor.jpg', (texture) => {
-        texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping
+        texture.wrapS = texture.wrapT = MirroredRepeatWrapping
         texture.needsUpdate = true
 
-        const floorMaterial = new THREE.MeshStandardMaterial({
-          shading: THREE.SmoothShading,
+        const floorMaterial = new MeshStandardMaterial({
+          flatShading: SmoothShading,
           premultipliedAlpha: true,
           color: this.DARKGREEN,
           transparent: true,
@@ -195,7 +220,7 @@ export default {
           opacity: 1
         })
 
-        let floor = new THREE.Mesh(new THREE.PlaneGeometry(50, 500), floorMaterial)
+        let floor = new Mesh(new PlaneGeometry(50, 500), floorMaterial)
 
         floor.position.set(0, -14, this.center)
         floor.rotation.x = -Math.PI / 2
@@ -204,20 +229,20 @@ export default {
     },
 
     createWalls () {
-      let textureLoader = new THREE.TextureLoader()
+      let textureLoader = new TextureLoader()
 
       textureLoader.load('/static/img/textures/wall.png', (emptyWall) => {
         textureLoader.load('/static/img/textures/wall.jpg', (fullWall) => {
           const PI_2 = Math.PI / 2
 
-          const lightGeometry = new THREE.PlaneGeometry(510, 75, 1, 1)
-          const lightMaterial = new THREE.MeshBasicMaterial({
+          const lightGeometry = new PlaneGeometry(510, 75, 1, 1)
+          const lightMaterial = new MeshBasicMaterial({
             transparent: true,
             color: this.WHITE,
             opacity: 0
           })
 
-          this.leftLight = new THREE.Mesh(lightGeometry, lightMaterial)
+          this.leftLight = new Mesh(lightGeometry, lightMaterial)
           this.leftLight.position.set(-25.5, 18.5, this.center)
           this.leftLight.rotateY(PI_2)
 
@@ -228,8 +253,8 @@ export default {
           this.scene.add(this.rightLight)
           this.scene.add(this.leftLight)
 
-          emptyWall.wrapS = emptyWall.wrapT = THREE.MirroredRepeatWrapping
-          fullWall.wrapS = fullWall.wrapT = THREE.MirroredRepeatWrapping
+          emptyWall.wrapS = emptyWall.wrapT = MirroredRepeatWrapping
+          fullWall.wrapS = fullWall.wrapT = MirroredRepeatWrapping
 
           emptyWall.needsUpdate = true
           fullWall.needsUpdate = true
@@ -237,17 +262,17 @@ export default {
           emptyWall.repeat.set(1, 1)
           fullWall.repeat.set(1, 1)
 
-          const geometry = new THREE.PlaneGeometry(50, 65, 1, 1)
-          const fullMaterial = new THREE.MeshBasicMaterial({ map: fullWall })
-          const emptyMaterial = new THREE.MeshBasicMaterial({
+          const geometry = new PlaneGeometry(50, 65, 1, 1)
+          const fullMaterial = new MeshBasicMaterial({ map: fullWall })
+          const emptyMaterial = new MeshBasicMaterial({
             alphaMap: emptyWall,
             transparent: true,
             map: emptyWall,
             opacity: 10
           })
 
-          const backWall = new THREE.Mesh(geometry, emptyMaterial)
-          const frontWall = new THREE.Mesh(geometry, fullMaterial)
+          const backWall = new Mesh(geometry, emptyMaterial)
+          const frontWall = new Mesh(geometry, fullMaterial)
 
           frontWall.position.set(0, 18.5, this.center - 250)
           backWall.position.set(0, 18.5, this.center + 250)
@@ -255,7 +280,7 @@ export default {
 
           this.backLight = backWall.clone()
 
-          this.backLight.geometry = new THREE.PlaneGeometry(50, 75, 1, 1)
+          this.backLight.geometry = new PlaneGeometry(50, 75, 1, 1)
           this.backLight.material = lightMaterial
           this.backLight.position.z += 0.5
 
@@ -265,7 +290,7 @@ export default {
 
           for (let i = 0; i < 20; i++) {
             const material = (i % 4 > 1) ? emptyMaterial : fullMaterial
-            const wall = new THREE.Mesh(geometry, material)
+            const wall = new Mesh(geometry, material)
 
             let positionZ = i * 25
             let rotationY = PI_2
@@ -288,25 +313,25 @@ export default {
     createCeiling () {
       const PI_2 = Math.PI / 2
 
-      const ceiling = new THREE.Mesh(
-        new THREE.PlaneGeometry(50, 500),
-        new THREE.MeshBasicMaterial({ color: this.WHITE })
+      const ceiling = new Mesh(
+        new PlaneGeometry(50, 500),
+        new MeshBasicMaterial({ color: this.WHITE })
       )
 
       ceiling.position.set(0, 51, this.center)
       ceiling.rotateX(PI_2)
       this.scene.add(ceiling)
 
-      let frontCeilLoader = new THREE.TextureLoader()
+      let frontCeilLoader = new TextureLoader()
 
       frontCeilLoader.load('/static/img/textures/front_ceiling.jpg', (texture) => {
-        texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping
+        texture.wrapS = texture.wrapT = MirroredRepeatWrapping
         texture.needsUpdate = true
         texture.repeat.set(1, 1)
 
-        let material = new THREE.MeshBasicMaterial({ map: texture })
-        let geometry = new THREE.PlaneGeometry(50, 6, 1, 10)
-        let frontCeil = new THREE.Mesh(geometry, material)
+        let material = new MeshBasicMaterial({ map: texture })
+        let geometry = new PlaneGeometry(50, 6, 1, 10)
+        let frontCeil = new Mesh(geometry, material)
         let backCeil = frontCeil.clone()
 
         frontCeil.position.set(0, 50.8, this.center - 247)
@@ -319,16 +344,16 @@ export default {
         this.scene.add(backCeil)
       })
 
-      let sideCeilLoader = new THREE.TextureLoader()
+      let sideCeilLoader = new TextureLoader()
 
       sideCeilLoader.load('/static/img/textures/side_ceiling.jpg', (texture) => {
-        texture.wrapS = texture.wrapT = THREE.MirroredRepeatWrapping
+        texture.wrapS = texture.wrapT = MirroredRepeatWrapping
         texture.needsUpdate = true
         texture.repeat.set(10, 1)
 
-        let material = new THREE.MeshBasicMaterial({ map: texture })
-        let geometry = new THREE.PlaneGeometry(500, 6, 1, 10)
-        let leftCeil = new THREE.Mesh(geometry, material)
+        let material = new MeshBasicMaterial({ map: texture })
+        let geometry = new PlaneGeometry(500, 6, 1, 10)
+        let leftCeil = new Mesh(geometry, material)
         let rightCeil = leftCeil.clone()
 
         leftCeil.position.set(-22, 50.9, this.center)
@@ -344,8 +369,8 @@ export default {
 
     createTable () {
       this.loader.load('/static/models/table.json', (geometry) => {
-        const material = new THREE.MeshStandardMaterial({
-          shading: THREE.SmoothShading,
+        const material = new MeshStandardMaterial({
+          flatShading: SmoothShading,
           transparent: false,
           color: 0xBDBDBD,
           metalness: 0.1,
@@ -353,7 +378,7 @@ export default {
           opacity: 1
         })
 
-        const table = new THREE.Mesh(geometry, material)
+        const table = new Mesh(geometry, material)
 
         table.position.set(0, -19.8, -14.1)
         table.rotateY(Math.PI / 2)
@@ -364,7 +389,7 @@ export default {
 
     createComputer () {
       this.loader.load('/static/models/case.json', (geometry, materials) => {
-        const systemUnit = new THREE.Mesh(geometry, materials)
+        const systemUnit = new Mesh(geometry, materials)
 
         systemUnit.position.set(-1, 0, -19)
         systemUnit.scale.set(0.8, 0.8, 0.8)
@@ -372,7 +397,7 @@ export default {
       })
 
       this.loader.load('/static/models/keyboard.json', (geometry, materials) => {
-        const keyboard = new THREE.Mesh(geometry, materials)
+        const keyboard = new Mesh(geometry, materials)
 
         keyboard.position.set(0, 0, -16.5)
         keyboard.scale.set(0.8, 0.8, 0.8)
@@ -380,7 +405,7 @@ export default {
       })
 
       this.loader.load('/static/models/monitor.json', (geometry, materials) => {
-        const monitor = new THREE.Mesh(geometry, materials)
+        const monitor = new Mesh(geometry, materials)
 
         monitor.position.set(0, 0, -16.5)
         monitor.rotation.set(-0.05, 0, 0)
@@ -392,14 +417,14 @@ export default {
     createDoors () {
       this.loader.load('/static/models/frame.json', (frameGeometry, frameMaterials) => {
         this.loader.load('/static/models/door.json', (doorGeometry, doorMaterials) => {
-          frameMaterials[0].color = new THREE.Color(this.GREEN)
-          frameMaterials[1].color = new THREE.Color(this.GREEN)
+          frameMaterials[0].color = new Color(this.GREEN)
+          frameMaterials[1].color = new Color(this.GREEN)
 
-          doorMaterials[0].color = new THREE.Color(this.LIGHTGRAY)
-          doorMaterials[1].color = new THREE.Color(this.GREEN)
+          doorMaterials[0].color = new Color(this.LIGHTGRAY)
+          doorMaterials[1].color = new Color(this.GREEN)
 
-          const frontFrame = new THREE.Mesh(frameGeometry, frameMaterials)
-          const frontDoor = new THREE.Mesh(doorGeometry, doorMaterials)
+          const frontFrame = new Mesh(frameGeometry, frameMaterials)
+          const frontDoor = new Mesh(doorGeometry, doorMaterials)
           const OFFSET = 8.75
 
           frontFrame.position.set(0, -10.5, 475)
@@ -413,8 +438,8 @@ export default {
           this.scene.add(frontFrame)
           this.scene.add(frontDoor)
 
-          const pitch = new THREE.Object3D()
-          const pivot = new THREE.Object3D()
+          const pitch = new Object3D()
+          const pivot = new Object3D()
           const PI_2 = Math.PI / 2
 
           pivot.position.set(-OFFSET, -10.4, 474.75)
@@ -433,8 +458,8 @@ export default {
             const sideFrame = frontFrame.clone()
             const sideDoor = frontDoor.clone()
 
-            const pitch = new THREE.Object3D()
-            const pivot = new THREE.Object3D()
+            const pitch = new Object3D()
+            const pivot = new Object3D()
 
             let rotationY = PI_2
             let rotation = OFFSET
@@ -503,12 +528,12 @@ export default {
         this.intro = true
       }, 1000)
 
-      this.clock = new THREE.Clock()
+      this.clock = new Clock()
       this.elapsedSpeed = 4.0
     },
 
     createRenderer () {
-      this.renderer = new THREE.WebGLRenderer({ canvas: this.$refs.hole, antialias: true })
+      this.renderer = new WebGLRenderer({ canvas: this.$refs.hole, antialias: true })
       this.renderer.setSize(this.viewPort.width, this.viewPort.height)
       this.renderer.setPixelRatio(window.devicePixelRatio || 1)
       this.renderer.setClearColor(this.BLACK, 0)
@@ -517,7 +542,11 @@ export default {
 
     createControls () {
       this.error = this.controls.init(this.renderer.domElement, this.scene, this.camera)
-      if (this.error) return
+
+      if (this.error) {
+        this.showResizeMessage = false
+        return
+      }
 
       this.controls.setBorders({
         front: this.center - 230,
@@ -782,9 +811,9 @@ export default {
 
   mounted () {
     if (!Platform.prerenderer) {
-      this.raycaster = new THREE.Raycaster()
-      this.loader = new THREE.JSONLoader()
-      this.focus = new THREE.Vector2()
+      this.raycaster = new Raycaster()
+      this.loader = new JSONLoader()
+      this.focus = new Vector2()
 
       this.lettering = new Lettering()
       this.controls = new Controls()
@@ -948,7 +977,6 @@ export default {
   }
 }
 </style>
-
 
 <style lang="scss">
 @import 'mixins';

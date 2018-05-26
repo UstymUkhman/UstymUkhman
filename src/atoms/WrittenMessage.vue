@@ -33,9 +33,6 @@ export default {
       }
 
       if (this.messageList[++this.currentIndex]) {
-        // console.log('done')
-        // debugger
-
         this.showTimeout = setTimeout(this.showMessage.bind(this), 1500)
       } else if (this.currentIndex === this.messageList.length) {
         this.currentIndex--
