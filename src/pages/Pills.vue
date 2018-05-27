@@ -30,9 +30,11 @@ import { SmoothShading } from '@three/constants.js'
 import MatrixRain from '@/molecules/MatrixRain'
 import MatrixCode from '@/molecules/MatrixCode'
 
+import load from '@/3D/utils/assetsLoader'
 import Loading from '@/utils/Loading'
 import Sounds from '@/utils/Sounds'
 import Platform from '@/platform'
+import to from 'await-to-js'
 
 export default {
   name: 'Pills',
@@ -60,7 +62,9 @@ export default {
       goToMenu: false,
 
       width: window.innerWidth,
-      height: window.innerHeight
+      height: window.innerHeight,
+
+      pill: import('@/3D/assets/models/pill.json')
     }
   },
 
@@ -198,25 +202,32 @@ export default {
       Sounds.playSpeach()
     },
 
-    loadPill (color) {
-      const jsonLoader = new JSONLoader()
-      const pillMaterial = {
-        flatShading: SmoothShading,
-        emissiveIntensity: 1,
-        emissive: 0x000000,
-        color: color,
+    async createPill (color) {
+      return new Promise(async (resolve, reject) => {
+        let error, model
 
-        transparent: true,
-        depthWrite: true,
-        depthTest: true,
+        [error, model] = await to(load(new JSONLoader(), this.pill, false))
 
-        roughness: 0.2,
-        metalness: 0,
-        opacity: 0
-      }
+        if (error) {
+          reject(error)
+          return
+        }
 
-      jsonLoader.load('/static/models/pill.json', (geometry) => {
-        const pill = new Mesh(geometry, new MeshStandardMaterial(pillMaterial))
+        const pill = new Mesh(model.geometry, new MeshStandardMaterial({
+          flatShading: SmoothShading,
+          emissiveIntensity: 1,
+          emissive: 0x000000,
+          color: color,
+
+          transparent: true,
+          depthWrite: true,
+          depthTest: true,
+
+          roughness: 0.2,
+          metalness: 0,
+          opacity: 0
+        }))
+
         const wait = Loading.getActiveItem() === false ? 0 : 1200
 
         if (color === 0x003FFF) {
@@ -226,7 +237,7 @@ export default {
 
           setTimeout(() => {
             this.showBlue = true
-          }, 1600 + wait)
+          }, 1000 + wait)
         } else {
           pill.rotation.set(-0.05, 1.3, 0.4)
           pill.position.set(-2.5, 0.2, 2)
@@ -235,11 +246,12 @@ export default {
           setTimeout(() => {
             this.showRed = true
             setTimeout(this.createChoice.bind(this), 8500)
-          }, 8100 + wait)
+          }, 7500 + wait)
         }
 
         pill.scale.set(0.2, 0.2, 0.2)
         this.scene.add(pill)
+        resolve(pill)
       })
     },
 
@@ -270,8 +282,8 @@ export default {
     },
 
     onResize () {
-      this.height = window.innerHeight
       this.width = window.innerWidth
+      this.height = window.innerHeight
 
       this.renderer.setSize(this.width, this.height)
       this.camera.aspect = this.width / this.height
@@ -286,8 +298,8 @@ export default {
       this.createLights()
       this.createSpeech()
 
-      this.loadPill(0x003FFF)
-      this.loadPill(0xB40000)
+      this.createPill(0x003FFF)
+      this.createPill(0xB40000)
 
       this._onResize = this.onResize.bind(this)
       window.addEventListener('resize', this._onResize, false)
