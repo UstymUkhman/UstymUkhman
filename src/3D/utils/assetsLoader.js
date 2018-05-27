@@ -29,7 +29,7 @@ const _parse = (loader, wait, ...args) => {
   return _execute.apply(null, [loader, 'parse', wait].concat(args))
 }
 
-const load = async (loader, object, wait = true) => {
+const _loadAsset = async (loader, object, wait) => {
   return new Promise(async (resolve, reject) => {
     let asset, error
 
@@ -51,6 +51,25 @@ const load = async (loader, object, wait = true) => {
     if (error) {
       reject(error)
       return
+    }
+
+    resolve(asset)
+  })
+}
+
+const load = async (loader, object, callback, wait = true) => {
+  return new Promise(async (resolve, reject) => {
+    let error, asset
+
+    [error, asset] = await to(_loadAsset(loader, object, wait))
+
+    if (error) {
+      reject(error)
+      return
+    }
+
+    if (typeof callback === 'function') {
+      callback(asset)
     }
 
     resolve(asset)

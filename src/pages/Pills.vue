@@ -26,6 +26,7 @@ import { AmbientLight } from '@three/lights/AmbientLight'
 import { SpotLight } from '@three/lights/SpotLight'
 
 import { SmoothShading } from '@three/constants.js'
+import PILL from '@/3D/assets/models/pill.json'
 
 import MatrixRain from '@/molecules/MatrixRain'
 import MatrixCode from '@/molecules/MatrixCode'
@@ -62,9 +63,7 @@ export default {
       goToMenu: false,
 
       width: window.innerWidth,
-      height: window.innerHeight,
-
-      pill: import('@/3D/assets/models/pill.json')
+      height: window.innerHeight
     }
   },
 
@@ -203,16 +202,7 @@ export default {
     },
 
     async createPill (color) {
-      return new Promise(async (resolve, reject) => {
-        let error, model
-
-        [error, model] = await to(load(new JSONLoader(), this.pill, false))
-
-        if (error) {
-          reject(error)
-          return
-        }
-
+      const setPill = (model) => {
         const pill = new Mesh(model.geometry, new MeshStandardMaterial({
           flatShading: SmoothShading,
           emissiveIntensity: 1,
@@ -251,8 +241,9 @@ export default {
 
         pill.scale.set(0.2, 0.2, 0.2)
         this.scene.add(pill)
-        resolve(pill)
-      })
+      }
+
+      await to(load(new JSONLoader(), PILL, setPill, false))
     },
 
     createChoice () {

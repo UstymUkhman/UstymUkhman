@@ -61,13 +61,25 @@ import Lettering from '@/utils/Lettering'
 import Loading from '@/utils/Loading'
 import Sounds from '@/utils/Sounds'
 
+import load from '@/3D/utils/assetsLoader'
 import Viewport from '@/mixins/Viewport'
 import Platform from '@/platform'
+import to from 'await-to-js'
+
+// import KEYBOARD from '@/3D/assets/models/keyboard.json'
+// import MONITOR from '@/3D/assets/models/monitor.json'
+import TABLE from '@/3D/assets/models/table.json'
+// import FRAME from '@/3D/assets/models/frame.json'
+// import DOOR from '@/3D/assets/models/door.json'
+// import CASE from '@/3D/assets/models/case.json'
 
 import {
   SmoothShading,
   MirroredRepeatWrapping
 } from '@three/constants.js'
+
+const GREEN = 0x496F61
+const WHITE = 0xFFFFFF
 
 export default {
   name: 'RabbitHole',
@@ -106,13 +118,7 @@ export default {
       backLight: null,
       renderer: null,
       camera: null,
-      scene: null,
-
-      WHITE: 0xFFFFFF,
-      LIGHTGRAY: 0xEEEEEE,
-      GREEN: 0x496F61,
-      DARKGREEN: 0x406550,
-      BLACK: 0x000000
+      scene: null
     }
   },
 
@@ -185,8 +191,8 @@ export default {
     },
 
     createLight () {
-      const ambientLight = new AmbientLight(this.WHITE, 0.25)
-      const firstLight = new SpotLight(this.WHITE)
+      const ambientLight = new AmbientLight(WHITE, 0.25)
+      const firstLight = new SpotLight(WHITE)
 
       firstLight.target.position.set(0, 0, this.center)
       firstLight.target.updateMatrixWorld()
@@ -211,8 +217,8 @@ export default {
         const floorMaterial = new MeshStandardMaterial({
           flatShading: SmoothShading,
           premultipliedAlpha: true,
-          color: this.DARKGREEN,
           transparent: true,
+          color: 0x406550,
 
           map: texture,
           roughness: 1,
@@ -238,7 +244,7 @@ export default {
           const lightGeometry = new PlaneGeometry(510, 75, 1, 1)
           const lightMaterial = new MeshBasicMaterial({
             transparent: true,
-            color: this.WHITE,
+            color: WHITE,
             opacity: 0
           })
 
@@ -315,7 +321,7 @@ export default {
 
       const ceiling = new Mesh(
         new PlaneGeometry(50, 500),
-        new MeshBasicMaterial({ color: this.WHITE })
+        new MeshBasicMaterial({ color: WHITE })
       )
 
       ceiling.position.set(0, 51, this.center)
@@ -367,24 +373,25 @@ export default {
       })
     },
 
-    createTable () {
-      this.loader.load('/static/models/table.json', (geometry) => {
-        const material = new MeshStandardMaterial({
+    async createTable () {
+      const setTable = (model) => {
+        const table = new Mesh(model.geometry, new MeshStandardMaterial({
           flatShading: SmoothShading,
           transparent: false,
           color: 0xBDBDBD,
           metalness: 0.1,
           roughness: 1,
           opacity: 1
-        })
-
-        const table = new Mesh(geometry, material)
+        }))
 
         table.position.set(0, -19.8, -14.1)
         table.rotateY(Math.PI / 2)
         table.scale.set(6, 6, 6)
+
         this.scene.add(table)
-      })
+      }
+
+      await to(load(new JSONLoader(), TABLE, setTable, false))
     },
 
     createComputer () {
@@ -417,11 +424,11 @@ export default {
     createDoors () {
       this.loader.load('/static/models/frame.json', (frameGeometry, frameMaterials) => {
         this.loader.load('/static/models/door.json', (doorGeometry, doorMaterials) => {
-          frameMaterials[0].color = new Color(this.GREEN)
-          frameMaterials[1].color = new Color(this.GREEN)
+          frameMaterials[0].color = new Color(GREEN)
+          frameMaterials[1].color = new Color(GREEN)
 
-          doorMaterials[0].color = new Color(this.LIGHTGRAY)
-          doorMaterials[1].color = new Color(this.GREEN)
+          doorMaterials[0].color = new Color(0xEEEEEE)
+          doorMaterials[1].color = new Color(GREEN)
 
           const frontFrame = new Mesh(frameGeometry, frameMaterials)
           const frontDoor = new Mesh(doorGeometry, doorMaterials)
@@ -536,7 +543,7 @@ export default {
       this.renderer = new WebGLRenderer({ canvas: this.$refs.hole, antialias: true })
       this.renderer.setSize(this.viewPort.width, this.viewPort.height)
       this.renderer.setPixelRatio(window.devicePixelRatio || 1)
-      this.renderer.setClearColor(this.BLACK, 0)
+      this.renderer.setClearColor(0x000000, 0)
       this.renderer.domElement.focus()
     },
 
@@ -969,7 +976,7 @@ export default {
   }
 
   .screen-overlay {
-    cursor: none;
+    // cursor: none;
   }
 
   .on-top {
