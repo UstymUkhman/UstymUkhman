@@ -1,4 +1,6 @@
 import to from 'await-to-js'
+const base64 = /data:image\/([a-zA-Z]*);base64,([^"]*)/
+const imageFile = /^\.|\.bmp|\.jpg$|\.gif$|.png$|.gif$/
 
 const _execute = (loader, fn, wait, ...args) => {
   return new Promise((resolve, reject) => {
@@ -21,9 +23,9 @@ const _execute = (loader, fn, wait, ...args) => {
   })
 }
 
-// const _load = (loader, wait, ...args) => {
-//   return _execute.apply(null, [loader, 'load', wait].concat(args))
-// }
+const _load = (loader, wait, ...args) => {
+  return _execute.apply(null, [loader, 'load', wait].concat(args))
+}
 
 const _parse = (loader, wait, ...args) => {
   return _execute.apply(null, [loader, 'parse', wait].concat(args))
@@ -46,7 +48,11 @@ const _loadAsset = async (loader, object, wait) => {
       asset = object
     }
 
-    [error, asset] = await to(_parse(loader, wait, asset))
+    if (imageFile.test(object) || base64.test(object)) {
+      [error, asset] = await to(_load(loader, wait, asset))
+    } else {
+      [error, asset] = await to(_parse(loader, wait, asset))
+    }
 
     if (error) {
       reject(error)

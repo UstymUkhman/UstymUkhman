@@ -66,6 +66,12 @@ import Viewport from '@/mixins/Viewport'
 import Platform from '@/platform'
 import to from 'await-to-js'
 
+import FRONT_CEILING from '@/3D/assets/textures/front_ceiling.jpg'
+import SIDE_CEILING from '@/3D/assets/textures/side_ceiling.jpg'
+import DOOR_WALL from '@/3D/assets/textures/door_wall.png'
+import FLOOR from '@/3D/assets/textures/floor.jpg'
+import WALL from '@/3D/assets/textures/wall.jpg'
+
 import KEYBOARD from '@/3D/assets/models/keyboard.json'
 import MONITOR from '@/3D/assets/models/monitor.json'
 import TABLE from '@/3D/assets/models/table.json'
@@ -77,6 +83,8 @@ import {
   SmoothShading,
   MirroredRepeatWrapping
 } from '@three/constants.js'
+
+const PI_2 = Math.PI / 2
 
 const GREEN = 0x496F61
 const WHITE = 0xFFFFFF
@@ -207,10 +215,8 @@ export default {
       this.scene.add(ambientLight)
     },
 
-    createFloor () {
-      const textureLoader = new TextureLoader()
-
-      textureLoader.load('/static/img/textures/floor.jpg', (texture) => {
+    async createFloor () {
+      const setFloor = (texture) => {
         texture.wrapS = texture.wrapT = MirroredRepeatWrapping
         texture.needsUpdate = true
 
@@ -231,94 +237,103 @@ export default {
         floor.position.set(0, -14, this.center)
         floor.rotation.x = -Math.PI / 2
         this.scene.add(floor)
-      })
+      }
+
+      await to(load(this.textureLoader, FLOOR, setFloor, true))
     },
 
     createWalls () {
-      let textureLoader = new TextureLoader()
+      return new Promise(async (resolve, reject) => {
+        let error, emptyWall, fullWall
+        [error, emptyWall] = await to(load(this.textureLoader, DOOR_WALL))
 
-      textureLoader.load('/static/img/textures/wall.png', (emptyWall) => {
-        textureLoader.load('/static/img/textures/wall.jpg', (fullWall) => {
-          const PI_2 = Math.PI / 2
+        if (error) {
+          reject(error)
+          return
+        }
 
-          const lightGeometry = new PlaneGeometry(510, 75, 1, 1)
-          const lightMaterial = new MeshBasicMaterial({
-            transparent: true,
-            color: WHITE,
-            opacity: 0
-          })
+        [error, fullWall] = await to(load(this.textureLoader, WALL))
 
-          this.leftLight = new Mesh(lightGeometry, lightMaterial)
-          this.leftLight.position.set(-25.5, 18.5, this.center)
-          this.leftLight.rotateY(PI_2)
+        if (error) {
+          reject(error)
+          return
+        }
 
-          this.rightLight = this.leftLight.clone()
-          this.rightLight.rotation.y = -PI_2
-          this.rightLight.position.x = 25.5
-
-          this.scene.add(this.rightLight)
-          this.scene.add(this.leftLight)
-
-          emptyWall.wrapS = emptyWall.wrapT = MirroredRepeatWrapping
-          fullWall.wrapS = fullWall.wrapT = MirroredRepeatWrapping
-
-          emptyWall.needsUpdate = true
-          fullWall.needsUpdate = true
-
-          emptyWall.repeat.set(1, 1)
-          fullWall.repeat.set(1, 1)
-
-          const geometry = new PlaneGeometry(50, 65, 1, 1)
-          const fullMaterial = new MeshBasicMaterial({ map: fullWall })
-          const emptyMaterial = new MeshBasicMaterial({
-            alphaMap: emptyWall,
-            transparent: true,
-            map: emptyWall,
-            opacity: 10
-          })
-
-          const backWall = new Mesh(geometry, emptyMaterial)
-          const frontWall = new Mesh(geometry, fullMaterial)
-
-          frontWall.position.set(0, 18.5, this.center - 250)
-          backWall.position.set(0, 18.5, this.center + 250)
-          backWall.rotateY(Math.PI)
-
-          this.backLight = backWall.clone()
-
-          this.backLight.geometry = new PlaneGeometry(50, 75, 1, 1)
-          this.backLight.material = lightMaterial
-          this.backLight.position.z += 0.5
-
-          this.scene.add(this.backLight)
-          this.scene.add(frontWall)
-          this.scene.add(backWall)
-
-          for (let i = 0; i < 20; i++) {
-            const material = (i % 4 > 1) ? emptyMaterial : fullMaterial
-            const wall = new Mesh(geometry, material)
-
-            let positionZ = i * 25
-            let rotationY = PI_2
-            let positionX = -25
-
-            if (i % 2) {
-              positionX = 25
-              rotationY = -PI_2
-              positionZ = (i - 1) * 25
-            }
-
-            wall.position.set(positionX, 18.5, positionZ)
-            wall.rotateY(rotationY)
-            this.scene.add(wall)
-          }
+        const lightGeometry = new PlaneGeometry(510, 75, 1, 1)
+        const lightMaterial = new MeshBasicMaterial({
+          transparent: true,
+          color: WHITE,
+          opacity: 0
         })
+
+        this.leftLight = new Mesh(lightGeometry, lightMaterial)
+        this.leftLight.position.set(-25.5, 18.5, this.center)
+        this.leftLight.rotateY(PI_2)
+
+        this.rightLight = this.leftLight.clone()
+        this.rightLight.rotation.y = -PI_2
+        this.rightLight.position.x = 25.5
+
+        this.scene.add(this.rightLight)
+        this.scene.add(this.leftLight)
+
+        emptyWall.wrapS = emptyWall.wrapT = MirroredRepeatWrapping
+        fullWall.wrapS = fullWall.wrapT = MirroredRepeatWrapping
+
+        emptyWall.needsUpdate = true
+        fullWall.needsUpdate = true
+
+        emptyWall.repeat.set(1, 1)
+        fullWall.repeat.set(1, 1)
+
+        const geometry = new PlaneGeometry(50, 65, 1, 1)
+        const fullMaterial = new MeshBasicMaterial({ map: fullWall })
+        const emptyMaterial = new MeshBasicMaterial({
+          alphaMap: emptyWall,
+          transparent: true,
+          map: emptyWall,
+          opacity: 10
+        })
+
+        const backWall = new Mesh(geometry, emptyMaterial)
+        const frontWall = new Mesh(geometry, fullMaterial)
+
+        frontWall.position.set(0, 18.5, this.center - 250)
+        backWall.position.set(0, 18.5, this.center + 250)
+        backWall.rotateY(Math.PI)
+
+        this.backLight = backWall.clone()
+
+        this.backLight.geometry = new PlaneGeometry(50, 75, 1, 1)
+        this.backLight.material = lightMaterial
+        this.backLight.position.z += 0.5
+
+        this.scene.add(this.backLight)
+        this.scene.add(frontWall)
+        this.scene.add(backWall)
+
+        for (let i = 0; i < 20; i++) {
+          const material = (i % 4 > 1) ? emptyMaterial : fullMaterial
+          const wall = new Mesh(geometry, material)
+
+          let positionZ = i * 25
+          let rotationY = PI_2
+          let positionX = -25
+
+          if (i % 2) {
+            positionX = 25
+            rotationY = -PI_2
+            positionZ = (i - 1) * 25
+          }
+
+          wall.position.set(positionX, 18.5, positionZ)
+          wall.rotateY(rotationY)
+          this.scene.add(wall)
+        }
       })
     },
 
-    createCeiling () {
-      const PI_2 = Math.PI / 2
-
+    async createCeiling () {
       const ceiling = new Mesh(
         new PlaneGeometry(50, 500),
         new MeshBasicMaterial({ color: WHITE })
@@ -328,17 +343,15 @@ export default {
       ceiling.rotateX(PI_2)
       this.scene.add(ceiling)
 
-      let frontCeilLoader = new TextureLoader()
-
-      frontCeilLoader.load('/static/img/textures/front_ceiling.jpg', (texture) => {
+      const setFrontCeiling = (texture) => {
         texture.wrapS = texture.wrapT = MirroredRepeatWrapping
         texture.needsUpdate = true
         texture.repeat.set(1, 1)
 
-        let material = new MeshBasicMaterial({ map: texture })
-        let geometry = new PlaneGeometry(50, 6, 1, 10)
-        let frontCeil = new Mesh(geometry, material)
-        let backCeil = frontCeil.clone()
+        const material = new MeshBasicMaterial({ map: texture })
+        const geometry = new PlaneGeometry(50, 6, 1, 10)
+        const frontCeil = new Mesh(geometry, material)
+        const backCeil = frontCeil.clone()
 
         frontCeil.position.set(0, 50.8, this.center - 247)
         frontCeil.rotateX(PI_2)
@@ -348,11 +361,9 @@ export default {
 
         this.scene.add(frontCeil)
         this.scene.add(backCeil)
-      })
+      }
 
-      let sideCeilLoader = new TextureLoader()
-
-      sideCeilLoader.load('/static/img/textures/side_ceiling.jpg', (texture) => {
+      const setSideCeiling = (texture) => {
         texture.wrapS = texture.wrapT = MirroredRepeatWrapping
         texture.needsUpdate = true
         texture.repeat.set(10, 1)
@@ -370,7 +381,10 @@ export default {
 
         this.scene.add(rightCeil)
         this.scene.add(leftCeil)
-      })
+      }
+
+      await to(load(this.textureLoader, FRONT_CEILING, setFrontCeiling, true))
+      await to(load(this.textureLoader, SIDE_CEILING, setSideCeiling, true))
     },
 
     async createTable () {
@@ -391,7 +405,7 @@ export default {
         this.scene.add(table)
       }
 
-      await to(load(this.loader, TABLE, setTable))
+      await to(load(this.jsonLoader, TABLE, setTable))
     },
 
     async createComputer () {
@@ -420,22 +434,22 @@ export default {
         this.scene.add(keyboard)
       }
 
-      await to(load(this.loader, CASE, setCase))
-      await to(load(this.loader, MONITOR, setMonitor))
-      await to(load(this.loader, KEYBOARD, setKeyboard))
+      await to(load(this.jsonLoader, CASE, setCase))
+      await to(load(this.jsonLoader, MONITOR, setMonitor))
+      await to(load(this.jsonLoader, KEYBOARD, setKeyboard))
     },
 
     async createDoors () {
       return new Promise(async (resolve, reject) => {
         let error, frame, door
-        [error, frame] = await to(load(this.loader, FRAME))
+        [error, frame] = await to(load(this.jsonLoader, FRAME))
 
         if (error) {
           reject(error)
           return
         }
 
-        [error, door] = await to(load(this.loader, DOOR))
+        [error, door] = await to(load(this.jsonLoader, DOOR))
 
         if (error) {
           reject(error)
@@ -465,7 +479,6 @@ export default {
 
         const pitch = new Object3D()
         const pivot = new Object3D()
-        const PI_2 = Math.PI / 2
 
         pivot.position.set(-OFFSET, -10.4, 474.75)
         pivot.rotation.y = 0
@@ -835,8 +848,10 @@ export default {
 
   mounted () {
     if (!Platform.prerenderer) {
+      this.textureLoader = new TextureLoader()
+      this.jsonLoader = new JSONLoader()
+
       this.raycaster = new Raycaster()
-      this.loader = new JSONLoader()
       this.focus = new Vector2()
 
       this.lettering = new Lettering()
