@@ -66,12 +66,12 @@ import Viewport from '@/mixins/Viewport'
 import Platform from '@/platform'
 import to from 'await-to-js'
 
-// import KEYBOARD from '@/3D/assets/models/keyboard.json'
-// import MONITOR from '@/3D/assets/models/monitor.json'
+import KEYBOARD from '@/3D/assets/models/keyboard.json'
+import MONITOR from '@/3D/assets/models/monitor.json'
 import TABLE from '@/3D/assets/models/table.json'
-// import FRAME from '@/3D/assets/models/frame.json'
-// import DOOR from '@/3D/assets/models/door.json'
-// import CASE from '@/3D/assets/models/case.json'
+import FRAME from '@/3D/assets/models/frame.json'
+import DOOR from '@/3D/assets/models/door.json'
+import CASE from '@/3D/assets/models/case.json'
 
 import {
   SmoothShading,
@@ -391,126 +391,143 @@ export default {
         this.scene.add(table)
       }
 
-      await to(load(new JSONLoader(), TABLE, setTable, false))
+      await to(load(this.loader, TABLE, setTable))
     },
 
-    createComputer () {
-      this.loader.load('/static/models/case.json', (geometry, materials) => {
-        const systemUnit = new Mesh(geometry, materials)
+    async createComputer () {
+      const setCase = (model) => {
+        const systemUnit = new Mesh(model.geometry, model.materials)
 
         systemUnit.position.set(-1, 0, -19)
         systemUnit.scale.set(0.8, 0.8, 0.8)
         this.scene.add(systemUnit)
-      })
+      }
 
-      this.loader.load('/static/models/keyboard.json', (geometry, materials) => {
-        const keyboard = new Mesh(geometry, materials)
-
-        keyboard.position.set(0, 0, -16.5)
-        keyboard.scale.set(0.8, 0.8, 0.8)
-        this.scene.add(keyboard)
-      })
-
-      this.loader.load('/static/models/monitor.json', (geometry, materials) => {
-        const monitor = new Mesh(geometry, materials)
+      const setMonitor = (model) => {
+        const monitor = new Mesh(model.geometry, model.materials)
 
         monitor.position.set(0, 0, -16.5)
         monitor.rotation.set(-0.05, 0, 0)
         monitor.scale.set(0.8, 0.8, 0.8)
         this.scene.add(monitor)
-      })
+      }
+
+      const setKeyboard = (model) => {
+        const keyboard = new Mesh(model.geometry, model.materials)
+
+        keyboard.position.set(0, 0, -16.5)
+        keyboard.scale.set(0.8, 0.8, 0.8)
+        this.scene.add(keyboard)
+      }
+
+      await to(load(this.loader, CASE, setCase))
+      await to(load(this.loader, MONITOR, setMonitor))
+      await to(load(this.loader, KEYBOARD, setKeyboard))
     },
 
-    createDoors () {
-      this.loader.load('/static/models/frame.json', (frameGeometry, frameMaterials) => {
-        this.loader.load('/static/models/door.json', (doorGeometry, doorMaterials) => {
-          frameMaterials[0].color = new Color(GREEN)
-          frameMaterials[1].color = new Color(GREEN)
+    async createDoors () {
+      return new Promise(async (resolve, reject) => {
+        let error, frame, door
+        [error, frame] = await to(load(this.loader, FRAME))
 
-          doorMaterials[0].color = new Color(0xEEEEEE)
-          doorMaterials[1].color = new Color(GREEN)
+        if (error) {
+          reject(error)
+          return
+        }
 
-          const frontFrame = new Mesh(frameGeometry, frameMaterials)
-          const frontDoor = new Mesh(doorGeometry, doorMaterials)
-          const OFFSET = 8.75
+        [error, door] = await to(load(this.loader, DOOR))
 
-          frontFrame.position.set(0, -10.5, 475)
-          frontFrame.rotation.y = Math.PI
-          frontFrame.scale.set(4, 4, 4)
+        if (error) {
+          reject(error)
+          return
+        }
 
-          frontDoor.position.set(OFFSET, 0, 0)
-          frontDoor.rotation.y = Math.PI
-          frontDoor.scale.set(4, 4, 4)
+        frame.materials[0].color = new Color(GREEN)
+        frame.materials[1].color = new Color(GREEN)
 
-          this.scene.add(frontFrame)
-          this.scene.add(frontDoor)
+        door.materials[0].color = new Color(0xEEEEEE)
+        door.materials[1].color = new Color(GREEN)
+
+        const frontFrame = new Mesh(frame.geometry, frame.materials)
+        const frontDoor = new Mesh(door.geometry, door.materials)
+        const OFFSET = 8.75
+
+        frontFrame.position.set(0, -10.5, 475)
+        frontFrame.rotation.y = Math.PI
+        frontFrame.scale.set(4, 4, 4)
+
+        frontDoor.position.set(OFFSET, 0, 0)
+        frontDoor.rotation.y = Math.PI
+        frontDoor.scale.set(4, 4, 4)
+
+        this.scene.add(frontFrame)
+        this.scene.add(frontDoor)
+
+        const pitch = new Object3D()
+        const pivot = new Object3D()
+        const PI_2 = Math.PI / 2
+
+        pivot.position.set(-OFFSET, -10.4, 474.75)
+        pivot.rotation.y = 0
+
+        pivot.add(frontDoor)
+        pitch.add(pivot)
+
+        this.scene.add(pitch)
+        this.doors.push({
+          door: frontDoor,
+          pivot: pivot
+        })
+
+        for (let i = 0; i < 10; i++) {
+          const sideFrame = frontFrame.clone()
+          const sideDoor = frontDoor.clone()
 
           const pitch = new Object3D()
           const pivot = new Object3D()
-          const PI_2 = Math.PI / 2
 
-          pivot.position.set(-OFFSET, -10.4, 474.75)
+          let rotationY = PI_2
+          let rotation = OFFSET
+
+          let framePositionX = -25
+          let doorPositionX = -24.8
+
+          let positionZ = i * 50 + 50
+          let pivotRotation = positionZ - OFFSET
+
+          if (i % 2) {
+            rotation = -OFFSET
+            rotationY = -rotationY
+
+            doorPositionX = -doorPositionX
+            framePositionX = -framePositionX
+
+            positionZ = (i - 1) * 50 + 50
+            pivotRotation = positionZ + OFFSET
+          }
+
+          sideFrame.position.set(framePositionX, -10.5, positionZ)
+          sideDoor.position.set(0, 0, rotation)
+
+          sideFrame.rotation.y = rotationY
+          sideDoor.rotation.y = rotationY
+          sideDoor.index = i
+
+          pivot.position.set(doorPositionX, -10.4, pivotRotation)
           pivot.rotation.y = 0
 
-          pivot.add(frontDoor)
+          this.scene.add(sideFrame)
+          this.scene.add(sideDoor)
+          this.scene.add(pitch)
+
+          pivot.add(sideDoor)
           pitch.add(pivot)
 
-          this.scene.add(pitch)
           this.doors.push({
-            door: frontDoor,
+            door: sideDoor,
             pivot: pivot
           })
-
-          for (let i = 0; i < 10; i++) {
-            const sideFrame = frontFrame.clone()
-            const sideDoor = frontDoor.clone()
-
-            const pitch = new Object3D()
-            const pivot = new Object3D()
-
-            let rotationY = PI_2
-            let rotation = OFFSET
-
-            let framePositionX = -25
-            let doorPositionX = -24.8
-
-            let positionZ = i * 50 + 50
-            let pivotRotation = positionZ - OFFSET
-
-            if (i % 2) {
-              rotation = -OFFSET
-              rotationY = -rotationY
-
-              doorPositionX = -doorPositionX
-              framePositionX = -framePositionX
-
-              positionZ = (i - 1) * 50 + 50
-              pivotRotation = positionZ + OFFSET
-            }
-
-            sideFrame.position.set(framePositionX, -10.5, positionZ)
-            sideDoor.position.set(0, 0, rotation)
-
-            sideFrame.rotation.y = rotationY
-            sideDoor.rotation.y = rotationY
-            sideDoor.index = i
-
-            pivot.position.set(doorPositionX, -10.4, pivotRotation)
-            pivot.rotation.y = 0
-
-            this.scene.add(sideFrame)
-            this.scene.add(sideDoor)
-            this.scene.add(pitch)
-
-            pivot.add(sideDoor)
-            pitch.add(pivot)
-
-            this.doors.push({
-              door: sideDoor,
-              pivot: pivot
-            })
-          }
-        })
+        }
       })
     },
 

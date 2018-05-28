@@ -243,7 +243,7 @@ export default {
         this.scene.add(pill)
       }
 
-      await to(load(new JSONLoader(), PILL, setPill, false))
+      await to(load(new JSONLoader(), PILL, setPill))
     },
 
     createChoice () {

@@ -57,7 +57,7 @@ const _loadAsset = async (loader, object, wait) => {
   })
 }
 
-const load = async (loader, object, callback, wait = true) => {
+const load = async (loader, object, callback, wait = false) => {
   return new Promise(async (resolve, reject) => {
     let error, asset
 
