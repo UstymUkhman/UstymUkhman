@@ -221,9 +221,7 @@
   }
 }
 
-@mixin rain-column {
-  $COLUMNS: 9;
-
+@mixin rain-column($columns: 9) {
   &.rain-column {
     position: absolute;
     height: auto;
@@ -233,6 +231,10 @@
     line-height: 25px;
 
     $code-sizes: (12, 25, 60);
+
+    @if $columns > 24 {
+      $code-sizes: (8, 20, 40);
+    }
 
     @for $i from 1 through 3 {
       $current-size: #{nth($code-sizes, $i)};
@@ -315,13 +317,15 @@
     }
   }
 
-  @for $i from 0 through $COLUMNS {
+  $step: 100 / ($columns + 1);
+
+  @for $i from 0 through $columns {
     &.rain-column.code-#{$i} {
       $duration: get-random(1000ms, 15000ms);
       $delay: get-random(0ms, 1000ms);
 
+      left: unquote('#{$i * $step}%');
       transform: translateY(-110%);
-      left: unquote('#{$i * 10}%');
       position: absolute;
 
       animation-delay: $delay;
@@ -330,7 +334,7 @@
       animation-iteration-count: infinite;
 
       @include breakpoint($xs) {
-        left: unquote('#{$i * 20}%');
+        left: unquote('#{$i * $step * 2}%');
       }
     }
   }

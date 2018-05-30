@@ -9,9 +9,17 @@ import Rain from '@/utils/Rain'
 export default {
   name: 'MatrixRain',
 
+  props: {
+    dense: {
+      type: Boolean,
+      default: false,
+      required: false
+    }
+  },
+
   mounted () {
     const rain = new Rain(Platform.phone ? 5 : 10)
-    rain.createRain(this.$refs.rain, 'rain')
+    rain.createRain(this.$refs.rain, 'rain', this.dense)
   }
 }
 </script>
@@ -22,10 +30,10 @@ export default {
 
 div.matrix-rain-container {
   @include martix-code-nfi;
-  @include rain-column;
 
   transition: transform 5s ease-out;
   background-color: transparent;
+  pointer-events: none;
 
   position: absolute;
   overflow: hidden;

@@ -4,23 +4,33 @@ export default class Rain {
     this.columns = columns
   }
 
-  createRain (container, name) {
+  createRain (container, name, dense = false) {
+    if (dense) {
+      this.columns *= 5
+    }
+
     for (let i = 0; i < this.columns; i++) {
       const column = document.createElement('p')
-      const size = this.createCharCodes(column)
+      const size = this.createCharCodes(column, dense)
 
-      column.className = `${name}-column column-size-${size} code-${i}`
+      column.className = `${name}-column column-size-${size} code-${i} ${dense ? 'dense' : ''}`
       container.appendChild(column)
     }
   }
 
-  createCharCodes (drop) {
+  createCharCodes (drop, small = false) {
     let size = Math.floor(Math.random() * 13)
     const codes = this.getCharCodes()
 
-    if (size < 10) size = 25
-    else if (size < 12) size = 12
-    else size = 60
+    if (small) {
+      if (size < 10) size = 20
+      else if (size < 12) size = 8
+      else size = 40
+    } else {
+      if (size < 10) size = 25
+      else if (size < 12) size = 12
+      else size = 60
+    }
 
     this.setCharCodes(drop, codes, size)
     return size

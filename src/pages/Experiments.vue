@@ -1,14 +1,16 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="experiments-page">
-    <transition appear>
+    <!-- <transition appear>
       <VideoBackground v-show="visibleBackground && !platform.prerenderer" class="background-video" />
-    </transition>
+    </transition> -->
+
+    <MatrixRain dense />
 
     <SiteHeader v-if="currentPage" :page="currentPage" :scroll="scrollable" />
 
+    <!-- @hide:background="visibleBackground = !$event" -->
     <transition appear>
       <router-view
-        @hide:background="visibleBackground = !$event"
         @update:title="currentPage = $event"
         class="page experiment-page"
       />
@@ -19,27 +21,29 @@
 </template>
 
 <script>
-import VideoBackground from '@/atoms/VideoBackground'
+// import VideoBackground from '@/atoms/VideoBackground'
 import SiteHeader from '@/organisms/SiteHeader'
 import SiteFooter from '@/organisms/SiteFooter'
-import Platform from '@/platform'
+import MatrixRain from '@/molecules/MatrixRain'
+// import Platform from '@/platform'
 
 export default {
   name: 'Experiments',
 
   components: {
-    VideoBackground,
+    // VideoBackground,
     SiteHeader,
-    SiteFooter
+    SiteFooter,
+    MatrixRain
   },
 
   data () {
     return {
       scrollable: this.$route.name === 'DynamicCss',
-      visibleBackground: !Platform.mobile,
-      routes: ['Home', 'Experiments'],
+      // visibleBackground: !Platform.mobile,
+      // routes: ['Home', 'Experiments'],
 
-      platform: Platform,
+      // platform: Platform,
       currentPage: null
     }
   },
@@ -48,13 +52,17 @@ export default {
     '$route' (route) {
       this.scrollable = this.$route.name === 'DynamicCss'
 
-      if (this.routes.includes(route.name)) {
+      // if (this.routes.includes(route.name)) {
+      //   this.currentPage = null
+      // }
+
+      if (route.name === 'Experiments') {
         this.currentPage = null
       }
 
-      if (route.name === this.routes[1]) {
-        this.visibleBackground = !Platform.mobile
-      }
+      // if (route.name === this.routes[1]) {
+      //   this.visibleBackground = !Platform.mobile
+      // }
     }
   },
 
@@ -65,7 +73,13 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import 'z-index';
+
 .experiments-page {
   cursor: auto;
+
+  .experiment-page {
+    z-index: $screen;
+  }
 }
 </style>

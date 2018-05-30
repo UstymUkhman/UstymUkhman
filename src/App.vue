@@ -207,6 +207,10 @@ p {
   @include rain-column;
   @include code-column;
 
+  &.dense {
+    @include rain-column(49);
+  }
+
   cursor: default;
   margin: 0px;
 }
@@ -259,6 +263,10 @@ canvas {
 br::selection {
   background-color: $silver;
   color: $black;
+}
+
+div.dg.ac {
+  z-index: 25;
 }
 
 .v-enter-active,

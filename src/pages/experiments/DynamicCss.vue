@@ -192,6 +192,10 @@ export default {
     }
   }
 
+  &.hvr-rectangle-out {
+    background-color: $black;
+  }
+
   &.hvr-ripple-in::before {
     border-color: $silver;
     border-width: 1px;

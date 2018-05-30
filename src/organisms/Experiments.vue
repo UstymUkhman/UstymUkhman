@@ -1,6 +1,8 @@
 <template>
   <div class="experiments" v-scroll-container:experiments>
-    <div v-for="(experiment, e) in experiments" :key="experiment.name" class="experiment" :class="{'right': !!(e % 2), 'in-view': e < 4}" :style="{'height': previewHeight}" v-scroll-element:experiments>
+    <div v-for="(experiment, e) in experiments" :key="experiment.name"
+         class="experiment" :class="{'right': !!(e % 2), 'in-view': e < 4}"
+         :style="{'height': previewHeight}" v-scroll-element:experiments>
 
       <ExperimentPreview
         @mouse:over="$emit('hide:background', $event)"
