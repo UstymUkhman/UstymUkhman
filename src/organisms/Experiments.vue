@@ -5,7 +5,7 @@
          :style="{'height': previewHeight}" v-scroll-element:experiments>
 
       <ExperimentPreview
-        @mouse:over="$emit('hide:background', $event)"
+        @mouse:over="$emit('obscure:background', $event)"
         :route="experiment.route"
         :name="experiment.name"
         :right="!!(e % 2)"

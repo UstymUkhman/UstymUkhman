@@ -20,6 +20,9 @@ export default {
   position: absolute;
   z-index: $screen;
 
+  height: 100%;
+  width: 100%;
+
   bottom: 0;
   right: 0;
   left: 0;

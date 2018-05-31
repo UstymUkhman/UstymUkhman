@@ -12,7 +12,7 @@
 
 @keyframes flash {
   0% {
-    background-color: $dark-green;
+    background-color: $green-background;
   }
 
   50% {
@@ -20,13 +20,13 @@
   }
 
   100% {
-    background-color: $dark-green;
+    background-color: $green-background;
   }
 }
 
 @keyframes hvr-back-pulse {
   50% {
-    background-color: rgba($silver, 0.5);
+    background-color: rgba($green, 0.5);
   }
 }
 

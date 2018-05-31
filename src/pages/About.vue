@@ -72,7 +72,6 @@ export default {
       if (this.activeBackButton && event.keyCode === 13) {
         this.removeAboutMeSection()
       } else if (!this.showBackButton) {
-        // this.$ua.trackEvent('AboutMe', 'Skipped', 'Yes')
         this.lettering.skipLettering()
       }
     },

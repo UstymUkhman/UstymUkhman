@@ -5,7 +5,7 @@ import Vue from 'vue'
 import App from './App'
 import Platform from './platform'
 
-import './plugins/analytics.js'
+// import './plugins/analytics.js'
 import router from './plugins/router.js'
 
 import axios from 'axios'

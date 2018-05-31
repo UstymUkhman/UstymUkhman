@@ -10,8 +10,8 @@
           <div v-for="(row, r) in category.animations" :key="r" class="category-row">
 
             <AnimationButton
-              v-for="animation in row"
               class="button-element"
+              v-for="animation in row"
               :class="animation.classes"
               :key="animation.classes[0]"
               :animation="animation.name"
@@ -54,7 +54,6 @@ export default {
 
   methods: {
     onAnimationClick (animation) {
-      // this.$ua.trackEvent('DynamicCss', 'Clicked', 'Animation', animation)
       this.currentAnimation = animation
     },
 
@@ -66,7 +65,7 @@ export default {
   },
 
   mounted () {
-    this.$emit('hide:background', false)
+    this.$emit('obscure:background', true)
     this.$emit('update:title', 'Dynamic.css')
 
     setTimeout(() => { this.scrollable = true }, 500)
@@ -112,7 +111,9 @@ export default {
   }
 
   .element-container {
+    pointer-events: none;
     position: fixed;
+
     height: 100%;
     width: 33%;
     left: 0;
@@ -179,7 +180,7 @@ export default {
 
 .button-element {
   &.jump::before {
-    background-color: $silver;
+    background-color: $green;
   }
 
   &.blink {
@@ -188,27 +189,30 @@ export default {
     &:hover,
     &:focus,
     &:active {
-      background-color: $silver;
+      background-color: $green;
     }
   }
 
-  &.hvr-rectangle-out {
+  &.hvr-radial-out,
+  &.hvr-rectangle-out,
+  &.hvr-shutter-out-vertical,
+  &.hvr-shutter-out-horizontal {
     background-color: $black;
   }
 
   &.hvr-ripple-in::before {
-    border-color: $silver;
+    border-color: $dark-green;
     border-width: 1px;
   }
 
   &.hvr-ripple-out::before {
-    border-color: $silver;
+    border-color: $dark-green;
     border-width: 1px;
   }
 
   &.hvr-shutter-in-vertical,
   &.hvr-rectangle-in {
-    background-color: $silver;
+    background-color: $green;
 
     &::before {
       background: $black;
@@ -231,7 +235,7 @@ export default {
   &.hvr-sweep-to-right::before,
   &.hvr-radial-out::before,
   &.hvr-radial-in {
-    background: $silver;
+    background: $green;
   }
 
   &.hvr-shutter-in-vertical::before,

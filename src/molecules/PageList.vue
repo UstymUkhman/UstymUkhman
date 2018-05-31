@@ -121,7 +121,6 @@ export default {
 
     onKeyDown ($event) {
       if (!this.skipLettering) {
-        // this.$ua.trackEvent(this.$route.name, 'Skipped', 'Yes')
         this.lettering.skipLettering()
         this.skipLettering = true
         return
@@ -187,7 +186,6 @@ export default {
     },
 
     openPageUrl (page) {
-      // this.$ua.trackEvent(this.$route.name, 'Opened', 'Page', this.pagesList[page].name)
       window.open(this.pagesList[page].url, '_blank')
     },
 

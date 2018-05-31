@@ -22,7 +22,7 @@ export default {
 
   mounted () {
     this.$emit('update:title', 'VideoGlitch')
-    this.$emit('hide:background', false)
+    this.$emit('obscure:background', true)
 
     this.glitch = new VideoGlitch()
     this.glitch.startExperiment(this.$refs.container, 'VideoGlitch')

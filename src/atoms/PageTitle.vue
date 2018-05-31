@@ -35,6 +35,7 @@ export default {
 
   .page-title {
     font-family: 'Kaushan Script';
+    color: $dark-green;
     font-size: 35px;
 
     @include breakpoint($xs) {

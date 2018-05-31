@@ -121,18 +121,15 @@ export default {
     },
 
     onImageLoad () {
-      // this.$ua.trackEvent('ImageDrawerJS', 'Loaded', 'Image')
       this.imageSrc = this.reader.result
     },
 
     showCode () {
-      // this.$ua.trackEvent('ImageDrawerJS', 'Visible', 'Code')
       this.callbackAnimation = 'code'
       this.visibleCode = true
     },
 
     hideCode () {
-      // this.$ua.trackEvent('ImageDrawerJS', 'Hidden', 'Code')
       this.callbackAnimation = ''
       this.visibleCode = false
     },
@@ -178,7 +175,6 @@ export default {
       }
 
       if (this.activeDraw) {
-        // this.$ua.trackEvent('ImageDrawerJS', 'Clicked', 'Draw')
         jquery(this.$refs.container).drawImage(settings)
         this.activeDraw = false
       }
@@ -314,8 +310,8 @@ export default {
 
   mounted () {
     this.$emit('update:title', 'ImageDrawer.js')
+    this.$emit('obscure:background', true)
     this.reader.onload = this.onImageLoad
-    this.$emit('hide:background', false)
 
     this.pluginJs = document.createElement('script')
     this.pluginJs.src = this.imageDrawerJs

@@ -12,7 +12,7 @@ export default {
 @import 'app-colors';
 
 img {
-  border: solid 3px $white;
+  border: solid 1px $black;
   border-radius: 50%;
 
   position: relative;

@@ -1,16 +1,14 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="experiments-page">
-    <!-- <transition appear>
-      <VideoBackground v-show="visibleBackground && !platform.prerenderer" class="background-video" />
-    </transition> -->
-
     <MatrixRain dense />
+
+    <ScreenOverlay v-if="!platform.prerenderer" :class="{'obscured': obscured}" />
 
     <SiteHeader v-if="currentPage" :page="currentPage" :scroll="scrollable" />
 
-    <!-- @hide:background="visibleBackground = !$event" -->
     <transition appear>
       <router-view
+        @obscure:background="obscured = $event"
         @update:title="currentPage = $event"
         class="page experiment-page"
       />
@@ -21,17 +19,17 @@
 </template>
 
 <script>
-// import VideoBackground from '@/atoms/VideoBackground'
+import ScreenOverlay from '@/atoms/ScreenOverlay'
 import SiteHeader from '@/organisms/SiteHeader'
 import SiteFooter from '@/organisms/SiteFooter'
 import MatrixRain from '@/molecules/MatrixRain'
-// import Platform from '@/platform'
+import Platform from '@/platform'
 
 export default {
   name: 'Experiments',
 
   components: {
-    // VideoBackground,
+    ScreenOverlay,
     SiteHeader,
     SiteFooter,
     MatrixRain
@@ -40,11 +38,10 @@ export default {
   data () {
     return {
       scrollable: this.$route.name === 'DynamicCss',
-      // visibleBackground: !Platform.mobile,
-      // routes: ['Home', 'Experiments'],
+      platform: Platform,
 
-      // platform: Platform,
-      currentPage: null
+      currentPage: null,
+      obscured: false
     }
   },
 
@@ -52,17 +49,9 @@ export default {
     '$route' (route) {
       this.scrollable = this.$route.name === 'DynamicCss'
 
-      // if (this.routes.includes(route.name)) {
-      //   this.currentPage = null
-      // }
-
       if (route.name === 'Experiments') {
         this.currentPage = null
       }
-
-      // if (route.name === this.routes[1]) {
-      //   this.visibleBackground = !Platform.mobile
-      // }
     }
   },
 
@@ -73,10 +62,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import 'app-colors';
 @import 'z-index';
 
 .experiments-page {
   cursor: auto;
+
+  .screen-overlay {
+    background-color: rgba($black, 0.5);
+    transition: background-color 0.5s;
+
+    &.obscured {
+      background-color: rgba($black, 0.8);
+    }
+  }
 
   .experiment-page {
     z-index: $screen;

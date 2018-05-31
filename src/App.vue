@@ -164,19 +164,19 @@ html {
   top: 0;
 }
 
-.sound-particles-page canvas {
-  position: absolute;
-  height: 100%;
-  width: 100%;
+// .sound-particles-page canvas {
+//   position: absolute;
+//   height: 100%;
+//   width: 100%;
 
-  padding: 0;
-  margin: 0;
+//   padding: 0;
+//   margin: 0;
 
-  bottom: 0;
-  right: 0;
-  left: 0;
-  top: 0;
-}
+//   bottom: 0;
+//   right: 0;
+//   left: 0;
+//   top: 0;
+// }
 
 h1 {
   font-weight: 700;
@@ -215,41 +215,9 @@ p {
   margin: 0px;
 }
 
-span {
-  &.function {
-    color: #66d9ef;
-  }
-
-  &.string {
-    color: #e6db74;
-  }
-
-  &.number {
-    color: #ae81ff;
-  }
-}
-
 a {
   text-decoration: none;
   cursor: pointer;
-  color: $white;
-
-  &:hover {
-    color: $blue;
-  }
-}
-
-em,
-strong {
-  font-weight: 600;
-}
-
-input,
-button,
-select {
-  background-color: $white;
-  padding: 4px;
-  border: 0;
 }
 
 canvas {
@@ -258,6 +226,20 @@ canvas {
 
   left: 0;
   top: 0;
+
+  .sound-particles-page & {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    padding: 0;
+    margin: 0;
+
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+  }
 }
 
 br::selection {
@@ -294,11 +276,11 @@ div.dg.ac {
 
 ::-webkit-scrollbar-thumb {
   transition: background-color 0.5s;
-  background-color: $silver;
+  background-color: $dark-green;
 }
 
 ::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-thumb:active {
-  background-color: $white;
+  background-color: $green;
 }
 </style>

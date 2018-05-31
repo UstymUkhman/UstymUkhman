@@ -137,7 +137,6 @@ export default {
   mounted () {
     const experiments = Platform.ie11 || Platform.mobile
     this.pages.push(experiments ? '3xp3r!m3nT5' : 'M0r3')
-    // this.$ua.trackEvent('SiteMenu', 'Visited', 'Yes')
 
     setTimeout(() => {
       this.items = this.$refs.items

@@ -100,7 +100,6 @@ export default {
 }
 
 svg {
-  transition: stroke 0.5s;
   position: absolute;
   cursor: pointer;
   width: 18px;
@@ -134,27 +133,27 @@ svg {
   &.website,
   &.experiments {
     transition: fill 0.5s;
-    fill: $gray;
+    fill: $dark-green;
   }
 
   &.twitter,
   &.facebook {
     /deep/ .path {
       transition: fill 0.5s;
-      fill: $gray;
+      fill: $dark-green;
     }
   }
 
   &:hover {
     &.website,
     &.experiments {
-      fill: $white;
+      fill: $green;
     }
 
     &.twitter,
     &.facebook {
       /deep/ .path {
-        fill: $white;
+        fill: $green;
       }
     }
   }

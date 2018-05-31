@@ -25,7 +25,7 @@ export default {
 @import 'app-colors';
 
 .animation-button {
-  border: solid 1px $silver;
+  border: solid 1px $dark-green;
   background-color: $black;
   padding: 5px 16px;
   border-radius: 0;
@@ -38,7 +38,7 @@ export default {
   letter-spacing: 1px;
   text-align: center;
   line-height: 20px;
-  color: $silver;
+  color: $dark-green;
 
   min-height: 20px;
   min-width: 125px;
@@ -57,14 +57,14 @@ export default {
   }
 
   &.hvr-ripple-in:hover {
-    color: $silver;
+    color: $green;
   }
 
   &.hvr-ripple-out {
     border-width: 0px;
 
     &:hover {
-      color: $silver;
+      color: $green;
     }
   }
 

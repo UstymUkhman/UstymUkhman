@@ -28,7 +28,6 @@ export default {
   methods: {
     prepareMessage () {
       if (this.stopLettering) {
-        // this.$ua.trackEvent('WrittenMessage', 'Overcame', 'Yes')
         return
       }
 

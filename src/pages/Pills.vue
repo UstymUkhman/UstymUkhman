@@ -181,7 +181,6 @@ export default {
       } else {
         setTimeout(() => {
           Loading.checkActiveItem()
-          // this.$ua.trackEvent('Pills', 'Chosen', 'Pill', this.choice ? 'Red' : 'Blue')
           this.$router.push({ name: this.choice ? 'RabbitHole' : 'Console' })
         }, 8500)
 

@@ -734,18 +734,14 @@ export default {
         const index = this.selectedDoor.door.index
         const experiment = Experiments[index].route
 
-        // this.$ua.trackEvent('RabbitHole', 'Chosen', 'Door', Experiments[index].name)
-
         this.fadeOut = false
         this.exit = false
 
         this.selectedDoor.pivot.rotation.y = 0
         this.$router.push({ name: experiment })
       } else {
-        Loading.checkActiveItem(true)
         Sounds.playMusic()
-
-        // this.$ua.trackEvent('RabbitHole', 'Chosen', 'Door', 'Exit')
+        Loading.checkActiveItem(true)
         this.$router.push({ name: 'Console' })
       }
     },
@@ -785,12 +781,10 @@ export default {
       }
 
       if (this.isFullsize && !this.introPlayed && !this.messageEnded) {
-        // this.$ua.trackEvent('RabbitHole', 'Skipped', 'IntroMessage')
         this.lettering.skipLettering()
       }
 
       if (ready && !this.introPlayed) {
-        // this.$ua.trackEvent('RabbitHole', 'Played', 'Intro')
         const delay = this.messageEnded ? 0 : 2500
 
         this.controls.setFullscreenMode(true)

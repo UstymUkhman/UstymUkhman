@@ -52,8 +52,8 @@ export default {
   transform: translateY(-50%);
 
   position: absolute;
+  fill: $dark-green;
   cursor: pointer;
-  fill: $gray;
 
   height: 25px;
   width: 25px;
@@ -65,7 +65,7 @@ export default {
   }
 
   &:hover {
-    fill: $white;
+    fill: $green;
   }
 
   &.github {

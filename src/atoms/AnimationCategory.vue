@@ -23,7 +23,7 @@ h2 {
   font-weight: 200;
   font-size: 40px;
 
-  border-bottom: solid 1px $silver;
+  border-bottom: solid 1px $dark-green;
   padding-bottom: 10px;
   margin: 0 auto 50px;
   display: table;
@@ -31,6 +31,6 @@ h2 {
   text-decoration: none;
   letter-spacing: 3px;
   text-align: center;
-  color: $silver;
+  color: $dark-green;
 }
 </style>
