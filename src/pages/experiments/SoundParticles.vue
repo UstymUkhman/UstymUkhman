@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import SoundParticles from '@/atoms/experiments/SoundParticles'
+import SoundParticles from '@/3D/experiments/SoundParticles'
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import Viewport from '@/mixins/Viewport'
 
@@ -23,7 +23,7 @@ export default {
 
   data () {
     return {
-      track: '/static/audio/John Newman - Love Me Again.mp3',
+      track: '/static/audio/love_me_again.mp3',
       showWarning: false,
       showTrack: false,
       experiment: null

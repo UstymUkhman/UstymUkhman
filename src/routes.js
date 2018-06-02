@@ -67,11 +67,11 @@ const routes = [
         path: 'ImageDrawerJs',
         component: () => import(/* webpackChunkName: "image-drawer" */ './pages/experiments/ImageDrawer')
       },
-      // {
-      //   path: 'SoundParticles',
-      //   name: 'SoundParticles',
-      //   component: () => import(/* webpackChunkName: "sound-particles" */ './pages/experiments/SoundParticles')
-      // },
+      {
+        path: 'SoundParticles',
+        name: 'SoundParticles',
+        component: () => import(/* webpackChunkName: "sound-particles" */ './pages/experiments/SoundParticles')
+      },
       // {
       //   path: 'VideoGlitch',
       //   name: 'VideoGlitch',

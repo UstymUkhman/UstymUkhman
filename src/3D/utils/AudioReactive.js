@@ -5,7 +5,8 @@
  * |-----------------------------------------------------------| *
  */
 
-const analyser = require('web-audio-analyser')
+import analyser from 'web-audio-analyser'
+
 const MAX_DECIBELS = 255
 
 export default class AudioReactive {
@@ -117,7 +118,6 @@ export default class AudioReactive {
       max += MAX_DECIBELS + i
     }
 
-    console.clear()
     this.AVERAGE_POWER = (max / this._frequencyRange - 1) / 100
     console.info(`Average audio power  = ${this.AVERAGE_POWER * 100}`)
     this._setFrequenciesRange()

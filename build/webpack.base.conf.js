@@ -75,9 +75,8 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        loader: 'vue-svg-loader', // `vue-svg` for webpack 1.x
+        loader: 'vue-svg-loader',
         options: {
-          // optional [svgo](https://github.com/svg/svgo) options
           svgo: {
             plugins: [
               {removeViewBox: false}
@@ -93,17 +92,26 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       },
+      // {
+      //   test: /\.(glsl|vert|frag)$/,
+      //   loader: 'threejs-glsl-loader'
+      // },
       {
         test: /\.(glsl|vert|frag)$/,
-        loader: 'threejs-glsl-loader'
+        loader: 'raw-loader',
+        exclude: '/node_modules/'
       },
-      // GLTF configuration (above normal image loaders)
+      {
+        test: /\.(glsl|vert|frag)$/,
+        loader: 'glslify',
+        exclude: '/node_modules/'
+      },
       {
         test: /\.(gltf)$/,
         loader: 'gltf-loader-2'
       },
       {
-        test: /3d(\\|\/)assets.*\.(bin|png|jpe?g|gif)$/, // all 3d assets
+        test: /3d(\\|\/)assets.*\.(bin|png|jpe?g|gif)$/,
         use: [
           {
             loader: 'file-loader',
@@ -113,19 +121,14 @@ module.exports = {
           }
         ]
       }
-      // end GLTF configuration
     ]
   },
   node: {
-    // prevent webpack from injecting useless setImmediate polyfill because Vue
-    // source contains it (although only uses it if it's native).
+    child_process: 'empty',
     setImmediate: false,
-    // prevent webpack from injecting mocks to Node native modules
-    // that does not make sense for the client
     dgram: 'empty',
-    fs: 'empty',
     net: 'empty',
     tls: 'empty',
-    child_process: 'empty'
+    fs: 'empty'
   }
 }
