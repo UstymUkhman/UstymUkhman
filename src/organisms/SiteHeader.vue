@@ -1,23 +1,30 @@
 <template>
-  <transition appear name="header">
-    <header class="header" :class="{'scrollable': scroll}">
-      <PageTitle :title="page" />
+  <header @mouseover="visible = true" @mouseout="visible = false" class="header" :class="{'scrollable': scroll}">
 
-      <HeaderButtons
-        v-if="currentExperiment"
-        :repo="currentExperiment.github"
-        :showDownload="'code' in currentExperiment"
-        @download="downloadExperiment" />
-    </header>
-  </transition>
+    <transition appear name="header">
+      <div v-show="visible" class="header-container">
+        <PageTitle :title="page" />
+
+        <HeaderButtons
+          :showDownload="'code' in currentExperiment"
+          :repo="currentExperiment.github"
+          @download="downloadExperiment"
+          v-if="currentExperiment"
+        />
+      </div>
+    </transition>
+
+    <div class="header-trigger" :class="{'hidden': visible}"></div>
+  </header>
 </template>
 
 <script>
 import Experiments from '../assets/data/experiments.json'
-import find from 'lodash/find'
-
 import HeaderButtons from '@/molecules/HeaderButtons'
 import PageTitle from '@/atoms/PageTitle'
+
+import Platform from '@/platform'
+import find from 'lodash/find'
 
 export default {
   name: 'SiteHeader',
@@ -43,8 +50,9 @@ export default {
 
   data () {
     return {
-      currentExperiment: null,
-      experiments: Experiments
+      visible: !Platform.mobile,
+      experiments: Experiments,
+      currentExperiment: null
     }
   },
 
@@ -56,6 +64,7 @@ export default {
 
   mounted () {
     this.currentExperiment = find(this.experiments, { name: this.page })
+    setTimeout(() => { this.visible = !this.visible }, 2500)
   }
 }
 </script>
@@ -64,9 +73,9 @@ export default {
 @import 'breakpoints';
 @import 'app-colors';
 @import 'z-index';
+@import 'easings';
 
 .header {
-  background-image: linear-gradient($black, rgba($black, 0.9));
   position: fixed;
   z-index: $top;
 
@@ -79,6 +88,26 @@ export default {
 
   &.scrollable {
     width: calc(100% - 5px);
+  }
+
+  .header-container {
+    background-image: linear-gradient($black, rgba($black, 0.9));
+    height: 100%;
+    width: 100%;
+  }
+
+  .header-trigger {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    &.hidden {
+      pointer-events: none;
+    }
+
+    @include breakpoint($sm-down) {
+      display: none;
+    }
   }
 
   @include breakpoint($xs) {
@@ -95,13 +124,16 @@ export default {
   }
 }
 
+.header-enter-active {
+  transition: transform 0.5s $ease-out-quad;
+}
+
+.header-leave-active {
+  transition: transform 0.5s $ease-in-quad;
+}
+
 .header-enter,
 .header-leave-to {
   transform: translateY(-100%);
-}
-
-.header-enter-active,
-.header-leave-active {
-  transition: transform 0.5s ease-out 0.5s;
 }
 </style>

@@ -22,6 +22,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import 'breakpoints';
 @import 'app-colors';
 
 .animation-button {
@@ -45,6 +46,11 @@ export default {
 
   cursor: pointer;
   outline: none;
+
+  @include breakpoint($xs) {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
 
   &.text-color {
     transition: color 1s 0.25s;

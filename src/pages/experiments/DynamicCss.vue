@@ -99,6 +99,7 @@ export default {
 <style scoped lang="scss">
 @import '../../assets/css/dynamic.min.css';
 @import '~hover.css/scss/hover';
+@import 'breakpoints';
 @import 'animations';
 
 .dynamic-css-page {
@@ -118,6 +119,18 @@ export default {
     width: 33%;
     left: 0;
 
+    @include breakpoint($sm-down) {
+      height: 100px;
+      width: 100%;
+
+      top: 100px;
+      z-index: 1;
+    }
+
+    @include breakpoint($xs) {
+      top: 75px;
+    }
+
     .element {
       position: absolute;
       margin: auto;
@@ -136,6 +149,18 @@ export default {
     height: 100%;
     width: 66%;
     right: 0;
+
+    @include breakpoint($sm-down) {
+      margin-top: 250px;
+      width: 80%;
+      left: 10%;
+    }
+
+    @include breakpoint($xs) {
+      margin-top: 200px;
+      width: 95%;
+      left: 2.5%;
+    }
   }
 
   .category-container {
@@ -143,8 +168,16 @@ export default {
     margin: 0 0 100px;
     padding: 15px 0;
 
+    @include breakpoint($xs) {
+      margin-bottom: 50px;
+    }
+
     &:last-child {
       margin-bottom: 150px;
+
+      @include breakpoint($sm-down) {
+        margin-bottom: 50px;
+      }
     }
 
     .category-row {
@@ -154,6 +187,10 @@ export default {
 
       height: 30px;
       width: 600px;
+
+      @include breakpoint($sm-down) {
+        width: 100%;
+      }
     }
 
     .button-element {

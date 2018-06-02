@@ -43,7 +43,7 @@ export default {
   right: 0;
 
   @include breakpoint($xs) {
-    padding-right: 20px;
+    padding-right: 10px;
   }
 }
 
@@ -72,14 +72,14 @@ export default {
     right: 75px;
 
     @include breakpoint($xs) {
-      right: 60px;
+      right: 45px;
     }
 
     &.single {
       right: 25px;
 
       @include breakpoint($xs) {
-        right: 20px;
+        right: 10px;
       }
     }
   }
@@ -88,7 +88,7 @@ export default {
     right: 25px;
 
     @include breakpoint($xs) {
-      right: 20px;
+      right: 10px;
     }
   }
 }

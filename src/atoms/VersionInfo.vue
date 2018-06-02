@@ -37,16 +37,17 @@ export default {
 @import 'app-colors';
 
 .version-info {
-  position: fixed;
-  z-index: 1000;
-  bottom: 0;
-  right: 0;
+  background-color: $black;
+  pointer-events: none;
+  color: $white;
 
   font-size: 9px;
   padding: 3px;
 
-  background-color: $black;
-  color: $white;
+  position: fixed;
+  z-index: 1000;
+  bottom: 0;
+  right: 0;
 
   @include breakpoint($xs) {
     font-size: 6px;

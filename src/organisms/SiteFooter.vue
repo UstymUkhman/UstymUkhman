@@ -1,20 +1,25 @@
 <template>
-  <transition appear name="footer">
-    <footer class="footer" :class="{'scrollable': scroll}">
-      <div class="page-links buttons">
-        <WebsitePage @click.native="onWebsiteClick" class="website" />
+  <footer @mouseover="visible = true" @mouseout="visible = false" class="footer" :class="{'scrollable': scroll}">
 
-        <router-link title="Experiments" :to="{name: 'Experiments'}">
-          <ExperimentsPage class="experiments" />
-        </router-link>
-      </div>
+    <transition appear name="footer">
+      <div v-show="visible" class="footer-container">
+        <div class="page-links buttons">
+          <WebsitePage @click.native="onWebsiteClick" class="website" />
 
-      <div class="social-share buttons">
-        <FacebookShare @click.native="facebookShare" class="facebook" />
-        <TwitterShare @click.native="twitterShare" class="twitter" />
+          <router-link title="Experiments" :to="{name: 'Experiments'}">
+            <ExperimentsPage class="experiments" />
+          </router-link>
+        </div>
+
+        <div class="social-share buttons">
+          <FacebookShare @click.native="facebookShare" class="facebook" />
+          <TwitterShare @click.native="twitterShare" class="twitter" />
+        </div>
       </div>
-    </footer>
-  </transition>
+    </transition>
+
+    <div class="footer-trigger" :class="{'hidden': visible}"></div>
+  </footer>
 </template>
 
 <script>
@@ -22,7 +27,9 @@ import ExperimentsPage from '@/assets/svg/experiments.svg'
 import FacebookShare from '@/assets/svg/facebook.svg'
 import TwitterShare from '@/assets/svg/twitter.svg'
 import WebsitePage from '@/assets/svg/website.svg'
+
 import Loading from '@/utils/Loading'
+import Platform from '@/platform'
 
 export default {
   name: 'SiteFooter',
@@ -42,6 +49,12 @@ export default {
     }
   },
 
+  data () {
+    return {
+      visible: !Platform.mobile
+    }
+  },
+
   methods: {
     onWebsiteClick () {
       Loading.checkActiveItem()
@@ -58,16 +71,21 @@ export default {
       const url = `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location)}&text=${description}`
       window.open(url, '_blank', 'width=640,height=400,status=no,toolbar=no,titlebar=no')
     }
+  },
+
+  mounted () {
+    setTimeout(() => { this.visible = !this.visible }, 2500)
   }
 }
 </script>
 
 <style scoped lang="scss">
+@import 'breakpoints';
 @import 'app-colors';
 @import 'z-index';
+@import 'easings';
 
 .footer {
-  background-color: rgba($black, 0.9);
   position: fixed;
   z-index: $top;
 
@@ -80,6 +98,26 @@ export default {
 
   &.scrollable {
     width: calc(100% - 5px);
+  }
+
+  .footer-container {
+    background-color: rgba($black, 0.9);
+    height: 100%;
+    width: 100%;
+  }
+
+  .footer-trigger {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    &.hidden {
+      pointer-events: none;
+    }
+
+    @include breakpoint($sm-down) {
+      display: none;
+    }
   }
 
   .buttons {
@@ -159,13 +197,16 @@ svg {
   }
 }
 
+.footer-enter-active {
+  transition: transform 0.5s $ease-out-quad;
+}
+
+.footer-leave-active {
+  transition: transform 0.5s $ease-in-quad;
+}
+
 .footer-enter,
 .footer-leave-to {
   transform: translateY(100%);
-}
-
-.footer-enter-active,
-.footer-leave-active {
-  transition: transform 0.5s ease-out 0.5s;
 }
 </style>

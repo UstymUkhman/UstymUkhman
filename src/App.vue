@@ -39,11 +39,6 @@ export default {
     deployFlag: {
       type: Boolean,
       required: true
-    },
-
-    preloader: {
-      type: Object,
-      required: true
     }
   },
 
@@ -109,24 +104,25 @@ export default {
 
 html {
   font-family: 'Roboto', 'Open Sans', sans-serif;
-  font-weight: 400;
-
-  -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  -webkit-tap-highlight-color: transparent;
+  -webkit-overflow-scrolling: touch;
   -webkit-touch-callout: none;
+
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: none;
+  text-size-adjust: none;
+  font-weight: 400;
 
   background-color: $black;
   appearance: none;
   color: $green;
 
-  text-size-adjust: none;
   user-select: none;
-  // cursor: none;
-
-  // overflow-x: hidden;
-  // overflow-y: auto;
   overflow: hidden;
+  // cursor: none;
 
   max-height: 100%;
   min-height: 100%;
@@ -248,7 +244,19 @@ br::selection {
 }
 
 div.dg.ac {
-  z-index: 25;
+  z-index: $screen;
+}
+
+article.image-drawer-js-page .code-container .code-preview {
+  @include code-editor;
+}
+
+.fade-out-leave-active {
+  transition: opacity 1s !important;
+}
+
+.fade-out-leave-to {
+  opacity: 0;
 }
 
 .v-enter-active,
@@ -258,14 +266,6 @@ div.dg.ac {
 
 .v-enter,
 .v-leave-to {
-  opacity: 0;
-}
-
-.fade-out-leave-active {
-  transition: opacity 1s !important;
-}
-
-.fade-out-leave-to {
   opacity: 0;
 }
 

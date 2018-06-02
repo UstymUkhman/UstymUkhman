@@ -9,6 +9,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import 'breakpoints';
 @import 'app-colors';
 
 img {
@@ -18,5 +19,10 @@ img {
   position: relative;
   height: 150px;
   width: 150px;
+
+  @include breakpoint($sm-down) {
+    height: 100px;
+    width: 100px;
+  }
 }
 </style>

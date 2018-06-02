@@ -30,7 +30,7 @@ export default {
   left: 0;
 
   @include breakpoint($xs) {
-    padding-left: 20px;
+    padding-left: 10px;
   }
 
   .page-title {

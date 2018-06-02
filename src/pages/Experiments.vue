@@ -14,7 +14,7 @@
       />
     </transition>
 
-    <SiteFooter v-if="currentPage" :page="currentPage" :scroll="scrollable" />
+    <SiteFooter v-if="currentPage" :scroll="scrollable" />
   </article>
 </template>
 

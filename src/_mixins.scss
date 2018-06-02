@@ -26,12 +26,6 @@
   }
 }
 
-//
-//
-// Custom Mixins:
-//
-//
-
 @mixin white-rabbit {
   font-family: 'White Rabbit';
   font-size: 18px;
@@ -449,5 +443,19 @@
         left: unquote('#{$i * 5}%');
       }
     }
+  }
+}
+
+@mixin code-editor {
+  span.number {
+    color: #AE81FF;
+  }
+
+  span.string {
+    color: #E6DB74;
+  }
+
+  span.function {
+    color: #66D9EF;
   }
 }

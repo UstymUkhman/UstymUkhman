@@ -16,6 +16,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import 'breakpoints';
 @import 'app-colors';
 
 h2 {
@@ -32,5 +33,10 @@ h2 {
   letter-spacing: 3px;
   text-align: center;
   color: $dark-green;
+
+  @include breakpoint($xs) {
+    letter-spacing: 1px;
+    font-size: 30px;
+  }
 }
 </style>
