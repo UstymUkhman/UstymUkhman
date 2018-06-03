@@ -54,14 +54,13 @@
   font-size: 16px;
 }
 
-body .stats {
-  top: 80px !important;
+body .dg.ac {
+  z-index: 100;
 }
 
 body .dg.a {
   width: 260px !important;
   margin-right: 0;
-  top: 80px;
 
   overflow-x: initial;
   position: relative;

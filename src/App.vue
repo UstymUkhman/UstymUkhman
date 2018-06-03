@@ -229,10 +229,6 @@ br::selection {
   color: $black;
 }
 
-div.dg.ac {
-  z-index: $screen;
-}
-
 article.image-drawer-js-page .code-container .code-preview {
   @include code-editor;
 }

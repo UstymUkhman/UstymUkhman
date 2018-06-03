@@ -63,6 +63,9 @@ float snoise (vec2 v) {
   return 130.0 * dot(m, g);
 }
 
+// #pragma glslify: horizontalBlur = require('../glsl-random')
+// horizontalBlur(tDiffuse, vUv, blur)
+
 vec4 horizontalBlur () {
   vec4 res = vec4(0.0);
 

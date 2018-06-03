@@ -6,7 +6,7 @@
 
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
-import VideoGlitch from '@/atoms/experiments/VideoGlitch'
+import VideoGlitch from '@/3D/experiments/VideoGlitch'
 import Viewport from '@/mixins/Viewport'
 
 export default {
@@ -53,7 +53,6 @@ export default {
   }
 }
 </script>
-
 
 <style scoped lang="scss">
 @import 'app-colors';

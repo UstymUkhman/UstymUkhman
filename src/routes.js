@@ -72,11 +72,11 @@ const routes = [
         name: 'SoundParticles',
         component: () => import(/* webpackChunkName: "sound-particles" */ './pages/experiments/SoundParticles')
       },
-      // {
-      //   path: 'VideoGlitch',
-      //   name: 'VideoGlitch',
-      //   component: () => import(/* webpackChunkName: "video-glitch" */ './pages/experiments/VideoGlitch')
-      // },
+      {
+        path: 'VideoGlitch',
+        name: 'VideoGlitch',
+        component: () => import(/* webpackChunkName: "video-glitch" */ './pages/experiments/VideoGlitch')
+      },
       // {
       //   path: 'FBOParticles',
       //   name: 'FBOParticles',

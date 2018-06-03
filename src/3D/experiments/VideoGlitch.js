@@ -1,16 +1,26 @@
-import dat from 'three/examples/js/libs/dat.gui.min'
-import Detector from 'three/examples/js/Detector'
+import { MeshBasicMaterial } from '@three/materials/MeshBasicMaterial'
+import { ShaderMaterial } from '@three/materials/ShaderMaterial'
 
-import * as THREE from 'three'
-window.THREE = THREE
+import { VerticalBlurShader } from '@three/shaders/VerticalBlurShader'
+import { CopyShader } from '@three/shaders/CopyShader'
 
-require('three/examples/js/postprocessing/EffectComposer')
-require('three/examples/js/postprocessing/RenderPass')
-require('three/examples/js/postprocessing/ShaderPass')
-require('three/examples/js/postprocessing/MaskPass')
+import { EffectComposer } from '@three/postprocessing/EffectComposer'
+import { RenderPass } from '@three/postprocessing/RenderPass'
+import { ShaderPass } from '@three/postprocessing/ShaderPass'
 
-require('three/examples/js/shaders/VerticalBlurShader')
-require('three/examples/js/shaders/CopyShader')
+import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
+import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
+
+import { PlaneGeometry } from '@three/geometries/PlaneGeometry'
+import { Detector } from '@three/helpers/Detector'
+import { Texture } from '@three/textures/Texture'
+
+import { Scene } from '@three/scenes/Scene'
+import { Mesh } from '@three/objects/Mesh'
+import { Color } from '@three/math/Color'
+
+import { LinearFilter } from '@three/constants.js'
+import * as dat from 'dat.gui'
 
 export default class VideoGlitch {
   constructor () {
@@ -63,7 +73,7 @@ export default class VideoGlitch {
     this.video.width = this.width
     this.video.height = this.height
 
-    this.renderer = new THREE.WebGLRenderer({
+    this.renderer = new WebGLRenderer({
       antialias: true,
       alpha: true
     })
@@ -84,9 +94,9 @@ export default class VideoGlitch {
   }
 
   createWebGLEnvironment () {
-    this.scene = new THREE.Scene()
+    this.scene = new Scene()
 
-    this.camera = new THREE.PerspectiveCamera(45, this.ratio, 1, 10000)
+    this.camera = new PerspectiveCamera(45, this.ratio, 1, 10000)
     this.camera.position.z = Math.round(this.height / 0.8275862)
     this.camera.updateProjectionMatrix()
 
@@ -94,19 +104,19 @@ export default class VideoGlitch {
     this.renderer.setPixelRatio(window.devicePixelRatio)
     this.container.appendChild(this.renderer.domElement)
 
-    this.composer = new THREE.EffectComposer(this.renderer)
-    this.composer.addPass(new THREE.RenderPass(this.scene, this.camera))
+    this.composer = new EffectComposer(this.renderer)
+    this.composer.addPass(new RenderPass(this.scene, this.camera))
   }
 
   createVideoGeometry () {
-    this.videoTexture = new THREE.Texture(this.video)
+    this.videoTexture = new Texture(this.video)
 
-    this.videoTexture.minFilter = THREE.LinearFilter
-    this.videoTexture.magFilter = THREE.LinearFilter
+    this.videoTexture.minFilter = LinearFilter
+    this.videoTexture.magFilter = LinearFilter
 
-    this.scene.add(new THREE.Mesh(
-      new THREE.PlaneGeometry(this.width, this.height, 1, 1),
-      new THREE.MeshBasicMaterial({ map: this.videoTexture })
+    this.scene.add(new Mesh(
+      new PlaneGeometry(this.width, this.height, 1, 1),
+      new MeshBasicMaterial({ map: this.videoTexture })
     ))
   }
 
@@ -127,7 +137,7 @@ export default class VideoGlitch {
       },
 
       glitch: {
-        filterColor: new THREE.Color(0.0),
+        filterColor: new Color(0.0),
         amount: 0.0,
         snow: 0.0
       },
@@ -172,8 +182,8 @@ export default class VideoGlitch {
       show: { type: 'i', value: 1 }
     }
 
-    this.glitch = new THREE.ShaderPass(
-      new THREE.ShaderMaterial({
+    this.glitch = new ShaderPass(
+      new ShaderMaterial({
         fragmentShader: require('../../3D/glsl/VideoGlitch/glitch.frag'),
         vertexShader: require('../../3D/glsl/VideoGlitch/glitch.vert'),
         uniforms: this.glitchUniforms
@@ -185,13 +195,13 @@ export default class VideoGlitch {
   }
 
   createBlurShader () {
-    THREE.VerticalBlurShader.uniforms.v.value = this.effects.blur / 512.0
-    this.verticalBlur = new THREE.ShaderPass(THREE.VerticalBlurShader)
+    VerticalBlurShader.uniforms.v.value = this.effects.blur / 512.0
+    this.verticalBlur = new ShaderPass(VerticalBlurShader)
     this.composer.addPass(this.verticalBlur)
   }
 
   createCopyShader () {
-    this.copy = new THREE.ShaderPass(THREE.CopyShader)
+    this.copy = new ShaderPass(CopyShader)
     this.composer.addPass(this.copy)
     this.copy.renderToScreen = true
   }
@@ -248,7 +258,7 @@ export default class VideoGlitch {
 
     overlay.addColor(settings, 'color').name('Filter Color').onChange((value) => {
       const color = parseInt(`0x${value.slice(1, 7)}`, 16)
-      this.effects.glitch.filterColor = new THREE.Color(color)
+      this.effects.glitch.filterColor = new Color(color)
     })
 
     overlay.add(settings, 'lines').name('Lines Overlay').onChange((lines) => {
