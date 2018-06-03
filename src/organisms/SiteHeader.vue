@@ -1,6 +1,5 @@
 <template>
   <header @mouseover="visible = true" @mouseout="visible = false" class="header" :class="{'scrollable': scroll}">
-
     <transition appear name="header">
       <div v-show="visible" class="header-container">
         <PageTitle :title="page" />

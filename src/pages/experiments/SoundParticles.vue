@@ -1,19 +1,20 @@
 <template>
   <article ref="container" itemscope itemtype="http://schema.org/WebPageElement" class="sound-particles-page">
-    <div class="music-label-container" :class="{'visible': showTrack}">
-      <span>Music by John Newman - Love Me Again</span>
-    </div>
+    <TrackLabel author="Music by John Newman" track="Love Me Again" />
 
-    <div class="warning-label-container" :class="{'visible': showWarning}">
-      <span>Please, be aware than this experiment is running in low performance mode (128 particles)<br>
-      'cause it seem that your GPU cannot handle its normal version (1024 particles).</span>
-    </div>
+    <transition appear name="warning">
+      <div v-show="warning" class="warning-label-container">
+        <span>Please, be aware than this experiment is running in low performance mode (128 particles)<br>
+        'cause it seem that your GPU cannot handle its normal version (1024 particles).</span>
+      </div>
+    </transition>
   </article>
 </template>
 
 <script>
-import SoundParticles from '@/3D/experiments/SoundParticles'
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
+import SoundParticles from '@/3D/experiments/SoundParticles'
+import TrackLabel from '@/atoms/TrackLabel'
 import Viewport from '@/mixins/Viewport'
 
 export default {
@@ -21,12 +22,15 @@ export default {
 
   mixins: [Viewport, FirePrerenderEvent],
 
+  components: {
+    TrackLabel
+  },
+
   data () {
     return {
       track: '/static/audio/love_me_again.mp3',
-      showWarning: false,
-      showTrack: false,
-      experiment: null
+      experiment: null,
+      warning: false
     }
   },
 
@@ -34,15 +38,14 @@ export default {
     createExperiment (weak) {
       this.experiment = new SoundParticles(this.$refs.container, this.track, weak)
       window.addEventListener('resize', this._onResize)
-      setTimeout(() => { this.showTrack = true }, 1500)
 
       this.experiment.startExperiment()
       this.onResize()
     },
 
     onError () {
-      setTimeout(() => { this.showWarning = true }, 2000)
       window.removeEventListener('resize', this._onResize)
+      setTimeout(() => { this.warning = true }, 2000)
 
       if (this.experiment) {
         this.experiment.destroy()
@@ -95,8 +98,7 @@ export default {
 <style scoped lang="scss">
 @import 'app-colors';
 @import 'z-index';
-
-$label-background: rgba($black, 0.3);
+@import 'easings';
 
 .sound-particles-page {
   filter: sepia(10%);
@@ -116,54 +118,35 @@ $label-background: rgba($black, 0.3);
   left: 0;
   top: 0;
 
-  div.music-label-container {
-    transition: transform 0.5s ease-out;
-    transform: translateY(-43px);
-
-    background-color: $label-background;
-    border-bottom-left-radius: 10px;
-
-    padding: 15px 10px;
-    font-size: 13px;
-    color: $silver;
-
-    position: absolute;
-    z-index: $code;
-    right: 0;
-    top: 0;
-
-    &.visible {
-      transform: translateY(80px);
-    }
-  }
-
-  div.warning-label-container {
-    transition: transform 0.5s ease-out;
-    transform: translateY(91px);
-
-    background-color: $label-background;
+  .warning-label-container {
+    background-color: rgba($black, 0.3);
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
 
     letter-spacing: 0.5px;
     text-align: center;
     line-height: 18px;
+    font-weight: 300;
     font-size: 13px;
     color: $silver;
 
     position: absolute;
     padding: 15px 10px;
+    z-index: $code;
     margin: 0 auto;
     width: 600px;
-    z-index: 1;
 
     bottom: 0;
     right: 0;
     left: 0;
-
-    &.visible {
-      transform: translateY(-25px);
-    }
   }
+}
+
+.warning-enter-active {
+  transition: transform 0.5s $ease-out-quad;
+}
+
+.warning-enter {
+  transform: translateY(100%);
 }
 </style>
