@@ -1,7 +1,7 @@
 <template>
   <div class="experiment-container">
     <div class="experiment-preview" :class="{'right': right}" @mouseover="onMouseOver" @mouseout="onMouseOut">
-      <video v-if="!platform.mobile" ref="video" :src="'/static/video/experiments/' + route + '.mp4'" preload="auto" muted loop></video>
+      <video v-if="!platform.mobile" ref="video" :src="'/static/video/' + route + '.mp4'" preload="auto" muted loop></video>
 
       <router-link :title="name" :to="{name: route}" class="experiment-link">
         <div class="cover-image" :class="{'zoom': zoom}" :style="{'background-image': 'url(/static/img/experiments/' + route + '.jpg)'}"></div>
