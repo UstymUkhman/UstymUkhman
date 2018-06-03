@@ -5,13 +5,13 @@
   "author": "Ustym Ukhman <ustym.ukhman@gmail.com>",
   "private": true,
   "scripts": {
-    "start": "npm rebuild node-sass && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
     "build": "node build/build.js",
-    "locale:extract": "node node_modules/vue-webpack-gettext/extract --output locale/template.pot --src src",
-    "locale:compile": "node node_modules/vue-webpack-gettext/compile --output src/assets/data/locale --src locale/translated --multiple",
     "lint:js": "eslint --ext .js,.vue src",
-    "lint:scss": "stylelint --syntax scss \"src/**/*.scss\" \"src/**/*.vue\""
+    "lint:scss": "stylelint --syntax scss \"src/**/*.scss\" \"src/**/*.vue\"",
+    "locale:extract": "node node_modules/vue-webpack-gettext/extract --output locale/template.pot --src src",
+    "dev": "npm rebuild node-sass && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
+    "start": "npm rebuild node-sass && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
+    "locale:compile": "node node_modules/vue-webpack-gettext/compile --output src/assets/data/locale --src locale/translated --multiple"
   },
   "dependencies": {
     "await-to-js": "^2.0.1",

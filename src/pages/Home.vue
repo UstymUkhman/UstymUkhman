@@ -1,10 +1,12 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="home-page">
     <transition appear>
-      <router-view @hide:overlay="visibleOverlay = false" class="page" />
+      <router-view @toggle:overlay="visibleOverlay = $event" class="page" />
     </transition>
 
-    <ScreenOverlay v-if="visibleOverlay && !platform.prerenderer" />
+    <transition appear name="overlay">
+      <ScreenOverlay v-if="visibleOverlay && !platform.prerenderer" />
+    </transition>
   </article>
 </template>
 
@@ -42,3 +44,18 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.overlay-enter-active {
+  transition: opacity 0.1s 0.5s;
+}
+
+.overlay-leave-active {
+  transition: opacity 0.1s;
+}
+
+.overlay-enter,
+.overlay-leave-to {
+  opacity: 0;
+}
+</style>

@@ -4,8 +4,9 @@
 
     <transition appear name="overlay">
       <div v-if="showFilter" class="filter-overlay" :class="{'fade-out': fadeOut}">
-        <transition v-if="showSuggestion" appear>
-          <div class="suggestions">
+
+        <transition appear>
+          <div v-if="showSuggestion" class="suggestions">
             <span>{{ suggestion }}</span>
           </div>
         </transition>
@@ -152,7 +153,7 @@ export default {
 
   computed: {
     showSuggestion () {
-      return this.canOpen || this.forceSuggestion
+      return !this.exit && (this.canOpen || this.forceSuggestion)
     },
 
     suggestion () {
@@ -837,7 +838,7 @@ export default {
   },
 
   beforeCreate () {
-    this.$emit('hide:overlay')
+    this.$emit('toggle:overlay', false)
   },
 
   mounted () {
@@ -890,6 +891,7 @@ export default {
   },
 
   beforeDestroy () {
+    this.$emit('toggle:overlay', true)
     cancelAnimationFrame(this.frame)
     this.removeEventListeners()
     this.controls = null
@@ -1002,35 +1004,11 @@ export default {
   }
 
   .screen-overlay {
-    // cursor: none;
+    cursor: none;
   }
 
   .on-top {
     z-index: $max;
-  }
-}
-</style>
-
-<style lang="scss">
-@import 'mixins';
-
-.rabbit-hole-page {
-  .filter-overlay .suggestions {
-    @include white-rabbit;
-  }
-
-  .guidelines-text {
-    @include white-rabbit;
-
-    span {
-      @include dissolve-text(400);
-    }
-
-    &.dissolve {
-      span {
-        opacity: 0;
-      }
-    }
   }
 }
 </style>

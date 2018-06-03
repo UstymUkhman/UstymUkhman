@@ -54,8 +54,8 @@ export default {
 
   metaInfo () {
     return {
+      title: ' ',
       base: { href: '/' },
-      title: 'Ustym Ukhman',
       titleTemplate: '%s Ustym Ukhman',
 
       meta: [
@@ -160,20 +160,6 @@ html {
   top: 0;
 }
 
-// .sound-particles-page canvas {
-//   position: absolute;
-//   height: 100%;
-//   width: 100%;
-
-//   padding: 0;
-//   margin: 0;
-
-//   bottom: 0;
-//   right: 0;
-//   left: 0;
-//   top: 0;
-// }
-
 h1 {
   font-weight: 700;
   font-size: 48px;
@@ -249,6 +235,26 @@ div.dg.ac {
 
 article.image-drawer-js-page .code-container .code-preview {
   @include code-editor;
+}
+
+article.rabbit-hole-page {
+  .filter-overlay .suggestions {
+    @include white-rabbit;
+  }
+
+  .guidelines-text {
+    @include white-rabbit;
+
+    span {
+      @include dissolve-text(400);
+    }
+
+    &.dissolve {
+      span {
+        opacity: 0;
+      }
+    }
+  }
 }
 
 .fade-out-leave-active {

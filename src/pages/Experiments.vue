@@ -1,6 +1,6 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="experiments-page">
-    <MatrixRain dense />
+    <MatrixRain v-if="rain" dense />
 
     <ScreenOverlay v-if="!platform.prerenderer" :class="{'obscured': obscured}" />
 
@@ -41,7 +41,8 @@ export default {
       platform: Platform,
 
       currentPage: null,
-      obscured: false
+      obscured: false,
+      rain: false
     }
   },
 
@@ -53,6 +54,10 @@ export default {
         this.currentPage = null
       }
     }
+  },
+
+  mounted () {
+    setTimeout(() => { this.rain = true }, 2000)
   },
 
   metaInfo: {
