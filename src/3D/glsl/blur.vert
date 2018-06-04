@@ -1,4 +1,7 @@
-// THREE.js Blur Shader
+// THREE.js BlurShader (vertex shader is the same for Vertical & Horizontal blur):
+// https://github.com/mrdoob/three.js/blob/dev/examples/js/shaders/VerticalBlurShader.js
+// https://github.com/mrdoob/three.js/blob/dev/examples/js/shaders/HorizontalBlurShader.js
+
 precision mediump float;
 
 varying vec2 vUv;

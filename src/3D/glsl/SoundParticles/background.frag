@@ -1,3 +1,6 @@
+#include ...//blend.glsl;
+#include ...//random.glsl;
+
 precision highp float;
 
 uniform float progress;
@@ -6,10 +9,7 @@ uniform bool dark;
 
 varying vec2 vUv;
 
-#pragma glslify: random = require('glsl-random')
-#pragma glslify: blend = require('glsl-blend-overlay')
-
-void main(void) {
+void main (void) {
   const vec3 white = vec3(0.8, 0.8, 0.8);
   const vec3 black = vec3(0.0, 0.0, 0.0);
 
@@ -18,10 +18,10 @@ void main(void) {
   vec2 scale = vec2(1.0, 1.0);
   vec2 pos = vUv;
 
-  pos -= 0.5;
+  pos   -= 0.5;
   pos.x *= aspect;
-  pos /= scale;
-  pos -= offset;
+  pos   /= scale;
+  pos   -= offset;
 
   float dist = length(pos);
   float prog = 0.0;

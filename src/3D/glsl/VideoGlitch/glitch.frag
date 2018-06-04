@@ -1,4 +1,6 @@
 #include <common>
+#include ...//horizontalBlur.frag;
+
 precision highp float;
 
 uniform sampler2D tDiffuse;
@@ -63,27 +65,6 @@ float snoise (vec2 v) {
   return 130.0 * dot(m, g);
 }
 
-// #pragma glslify: horizontalBlur = require('../glsl-random')
-// horizontalBlur(tDiffuse, vUv, blur)
-
-vec4 horizontalBlur () {
-  vec4 res = vec4(0.0);
-
-  res += texture2D(tDiffuse, vec2(vUv.x - 4.0 * blur, vUv.y)) * 0.051;
-  res += texture2D(tDiffuse, vec2(vUv.x - 3.0 * blur, vUv.y)) * 0.0918;
-  res += texture2D(tDiffuse, vec2(vUv.x - 2.0 * blur, vUv.y)) * 0.12245;
-  res += texture2D(tDiffuse, vec2(vUv.x - 1.0 * blur, vUv.y)) * 0.1531;
-
-  res += texture2D(tDiffuse, vec2(vUv.x, vUv.y)) * 0.1633;
-
-  res += texture2D(tDiffuse, vec2(vUv.x + 1.0 * blur, vUv.y)) * 0.1531;
-  res += texture2D(tDiffuse, vec2(vUv.x + 2.0 * blur, vUv.y)) * 0.12245;
-  res += texture2D(tDiffuse, vec2(vUv.x + 3.0 * blur, vUv.y)) * 0.0918;
-  res += texture2D(tDiffuse, vec2(vUv.x + 4.0 * blur, vUv.y)) * 0.051;
-
-  return res;
-}
-
 void main (void) {
   vec4 color = texture2D(tDiffuse, vUv);
 
@@ -112,7 +93,7 @@ void main (void) {
       result = mix(dist.rgb, result, 0.5);
     }
 
-    result = mix(result, horizontalBlur().rgb, 0.5);
+    result = mix(result, horizontalBlur(tDiffuse, vUv, blur).rgb, 0.5);
     result += result * (filterColor * 2.0);
     color = vec4(result, 1.0);
 

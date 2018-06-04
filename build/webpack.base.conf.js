@@ -92,19 +92,9 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       },
-      // {
-      //   test: /\.(glsl|vert|frag)$/,
-      //   loader: 'threejs-glsl-loader'
-      // },
       {
         test: /\.(glsl|vert|frag)$/,
-        loader: 'raw-loader',
-        exclude: '/node_modules/'
-      },
-      {
-        test: /\.(glsl|vert|frag)$/,
-        loader: 'glslify',
-        exclude: '/node_modules/'
+        loader: 'threejs-glsl-loader'
       },
       {
         test: /\.(gltf)$/,

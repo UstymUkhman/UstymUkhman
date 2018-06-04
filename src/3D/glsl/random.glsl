@@ -1,6 +1,8 @@
 // glsl-random by mattdesl:
 // https://github.com/mattdesl/glsl-random
 
+precision highp float;
+
 highp float random(vec2 co)
 {
     highp float a  = 12.9898;
@@ -11,5 +13,3 @@ highp float random(vec2 co)
     highp float sn = mod(dt,3.14);
     return fract(sin(sn) * c);
 }
-
-#pragma glslify: export(random)

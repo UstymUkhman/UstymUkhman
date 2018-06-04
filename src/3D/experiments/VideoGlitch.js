@@ -22,6 +22,9 @@ import { Color } from '@three/math/Color'
 import { LinearFilter } from '@three/constants.js'
 import * as dat from 'dat.gui'
 
+import vertGlitch from '@/3D/glsl/VideoGlitch/glitch.vert'
+import fragGlitch from '@/3D/glsl/VideoGlitch/glitch.frag'
+
 export default class VideoGlitch {
   constructor () {
     this.width = 1920
@@ -184,8 +187,8 @@ export default class VideoGlitch {
 
     this.glitch = new ShaderPass(
       new ShaderMaterial({
-        fragmentShader: require('../../3D/glsl/VideoGlitch/glitch.frag'),
-        vertexShader: require('../../3D/glsl/VideoGlitch/glitch.vert'),
+        vertexShader: vertGlitch,
+        fragmentShader: fragGlitch,
         uniforms: this.glitchUniforms
       })
     )
