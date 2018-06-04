@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import AudioreactiveParticles from '@/atoms/experiments/AudioreactiveParticles'
+import AudioreactiveParticles from '@/3D/experiments/AudioreactiveParticles'
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
-import Particles from '@/atoms/experiments/Particles'
+import Particles from '@/3D/experiments/Particles'
 
 export default {
   name: 'FBOParticles',

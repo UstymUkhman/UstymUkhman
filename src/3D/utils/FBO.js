@@ -1,4 +1,13 @@
-import * as THREE from 'three'
+import { OrthographicCamera } from '@three/cameras/OrthographicCamera'
+import { WebGLRenderTarget } from '@three/renderers/WebGLRenderTarget'
+import { BufferAttribute } from '@three/core/BufferAttribute'
+import { BufferGeometry } from '@three/core/BufferGeometry'
+
+import { Points } from '@three/objects/Points'
+import { Scene } from '@three/scenes/Scene'
+import { Mesh } from '@three/objects/Mesh'
+
+import { RGBFormat, FloatType, NearestFilter } from '@three/constants.js'
 
 export default class Fbo {
   constructor (width, height, renderer, simulationMaterial, renderMaterial) {
@@ -15,26 +24,26 @@ export default class Fbo {
     }
 
     // 3. Render To Texture setup:
-    this.scene = new THREE.Scene()
-    this.camera = new THREE.OrthographicCamera(
+    this.scene = new Scene()
+    this.camera = new OrthographicCamera(
       -1, 1, 1, -1, 1 / Math.pow(2, 53), 1
     )
 
     // 4. Target texture setup:
     const options = {
-      minFilter: THREE.NearestFilter, // Sample square pixels
-      magFilter: THREE.NearestFilter, // Sample square pixels
-      format: THREE.RGBFormat, // Could be also RGBAFormat
-      type: THREE.FloatType // Precise coordinates (not ints)
+      minFilter: NearestFilter, // Sample square pixels
+      magFilter: NearestFilter, // Sample square pixels
+      format: RGBFormat, // Could be also RGBAFormat
+      type: FloatType // Precise coordinates (not ints)
     }
 
-    this.target = new THREE.WebGLRenderTarget(width, height, options)
+    this.target = new WebGLRenderTarget(width, height, options)
 
     // 5. Simulation setup:
     // (Creates a bi-unit quadrilateral and uses the simulation material to update the Float Texture
-    const geometry = new THREE.BufferGeometry()
+    const geometry = new BufferGeometry()
 
-    geometry.addAttribute('position', new THREE.BufferAttribute(
+    geometry.addAttribute('position', new BufferAttribute(
       new Float32Array([
         // Bottom Left Triangle
         -1, -1, 0, 1, 1, 0, -1, 1, 0,
@@ -44,7 +53,7 @@ export default class Fbo {
       ]), 3
     ))
 
-    geometry.addAttribute('uv', new THREE.BufferAttribute(
+    geometry.addAttribute('uv', new BufferAttribute(
       new Float32Array([
         // Bottom Left Triangle
         0, 0, 0, 1, 1, 1,
@@ -54,7 +63,7 @@ export default class Fbo {
       ]), 2
     ))
 
-    this.scene.add(new THREE.Mesh(geometry, simulationMaterial))
+    this.scene.add(new Mesh(geometry, simulationMaterial))
 
     // 6. Particles setup:
     const size = width * height
@@ -68,10 +77,10 @@ export default class Fbo {
       vertices[i3 + 1] = (i / width) / height
     }
 
-    const particles = new THREE.BufferGeometry()
-    particles.addAttribute('position', new THREE.BufferAttribute(vertices, 3))
+    const particles = new BufferGeometry()
+    particles.addAttribute('position', new BufferAttribute(vertices, 3))
 
-    this.particles = new THREE.Points(particles, renderMaterial)
+    this.particles = new Points(particles, renderMaterial)
     this.renderer = renderer
   }
 

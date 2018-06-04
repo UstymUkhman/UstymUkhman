@@ -1,11 +1,21 @@
-import OrbitControls from '@three/controls/OrbitControls'
+import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
+import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
+
+import { ShaderMaterial } from '@three/materials/ShaderMaterial'
+import { DataTexture } from '@three/textures/DataTexture'
+import { Scene } from '@three/scenes/Scene'
+
+import { RGBFormat, FloatType } from '@three/constants.js'
+
+import { OrbitControls } from '@three/controls/OrbitControls'
 import AudioReactive from '@/3D/utils/AudioReactive'
 import Fbo from '@/3D/utils/FBO'
 
-import { Scene } from '@three/scenes/Scene'
+import vertParticles from '@/3D/glsl/FBO/noise/particles.vert'
+import fragParticles from '@/3D/glsl/FBO/noise/particles.frag'
 
-// const OrbitControls = require('three-orbit-controls')(THREE)
-// import * as THREE from 'three'
+import vertRenderer from '@/3D/glsl/FBO/noise/render.vert'
+import fragRenderer from '@/3D/glsl/FBO/noise/render.frag'
 
 export default class AudioreactiveParticles {
   constructor (container, track) {
@@ -42,12 +52,12 @@ export default class AudioreactiveParticles {
   }
 
   createCamera () {
-    this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000)
+    this.camera = new PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000)
     this.camera.position.z = 500
   }
 
   createRenderer () {
-    this.renderer = new THREE.WebGLRenderer({
+    this.renderer = new WebGLRenderer({
       antialias: true,
       alpha: true
     })
@@ -64,19 +74,19 @@ export default class AudioreactiveParticles {
   }
 
   createImage () {
-    const positions = new THREE.DataTexture(
+    const positions = new DataTexture(
       this.getDataImage(),
       this.image.width,
       this.image.height,
-      THREE.RGBFormat,
-      THREE.FloatType
+      RGBFormat,
+      FloatType
     )
 
     positions.needsUpdate = true
 
-    this.simulationShader = new THREE.ShaderMaterial({
-      fragmentShader: require('../../3D/glsl/FBO/image/particles.frag'),
-      vertexShader: require('../../3D/glsl/FBO/image/particles.vert'),
+    this.simulationShader = new ShaderMaterial({
+      vertexShader: vertParticles,
+      fragmentShader: fragParticles,
 
       uniforms: {
         positions: { type: 't', value: positions },
@@ -84,9 +94,9 @@ export default class AudioreactiveParticles {
       }
     })
 
-    const renderShader = new THREE.ShaderMaterial({
-      fragmentShader: require('../../3D/glsl/FBO/image/render.frag'),
-      vertexShader: require('../../3D/glsl/FBO/image/render.vert'),
+    const renderShader = new ShaderMaterial({
+      vertexShader: vertRenderer,
+      fragmentShader: fragRenderer,
 
       uniforms: {
         positions: { type: 't', value: null }

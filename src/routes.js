@@ -77,11 +77,11 @@ const routes = [
         name: 'VideoGlitch',
         component: () => import(/* webpackChunkName: "video-glitch" */ './pages/experiments/VideoGlitch')
       },
-      // {
-      //   path: 'FBOParticles',
-      //   name: 'FBOParticles',
-      //   component: () => import(/* webpackChunkName: "fbo-particles" */ './pages/experiments/FBOParticles')
-      // },
+      {
+        path: 'FBOParticles',
+        name: 'FBOParticles',
+        component: () => import(/* webpackChunkName: "fbo-particles" */ './pages/experiments/FBOParticles')
+      },
       {
         path: '*',
         redirect: to => { return '/experiments' }

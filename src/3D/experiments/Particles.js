@@ -1,7 +1,32 @@
-import Fbo from '@/3D/utils/FBO'
-import * as THREE from 'three'
+import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
+import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
 
-const OrbitControls = require('three-orbit-controls')(THREE)
+import { WireframeGeometry } from '@three/geometries/WireframeGeometry'
+import { SphereGeometry } from '@three/geometries/SphereGeometry'
+
+import { LineBasicMaterial } from '@three/materials/LineBasicMaterial'
+import { ShaderMaterial } from '@three/materials/ShaderMaterial'
+import { LineSegments } from '@three/objects/LineSegments'
+
+import { TextureLoader } from '@three/loaders/TextureLoader'
+import { DataTexture } from '@three/textures/DataTexture'
+import { Vector3 } from '@three/math/Vector3'
+
+import { Scene } from '@three/scenes/Scene'
+import { Mesh } from '@three/objects/Mesh'
+import { Color } from '@three/math/Color'
+
+import {
+  FloatType,
+  RGBFormat,
+  UVMapping,
+  DoubleSide,
+  SmoothShading,
+  RepeatWrapping
+} from '@three/constants.js'
+
+import { OrbitControls } from '@three/controls/OrbitControls'
+import Fbo from '@/3D/utils/FBO'
 
 export default class Particles {
   constructor (container, overlay) {
@@ -34,16 +59,16 @@ export default class Particles {
   }
 
   createScene () {
-    this.scene = new THREE.Scene()
+    this.scene = new Scene()
   }
 
   createCamera () {
-    this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000)
+    this.camera = new PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000)
     this.camera.position.z = 500
   }
 
   createRenderer () {
-    this.renderer = new THREE.WebGLRenderer({
+    this.renderer = new WebGLRenderer({
       antialias: true,
       alpha: true
     })
@@ -59,7 +84,7 @@ export default class Particles {
 
   getSphere (size, length) {
     const data = new Float32Array(length)
-    const point = new THREE.Vector3()
+    const point = new Vector3()
 
     for (let i = 0; i < length; i += 3) {
       this.getPoint(point, size)
@@ -85,16 +110,16 @@ export default class Particles {
   }
 
   createSphere () {
-    const loader = new THREE.TextureLoader()
+    const loader = new TextureLoader()
 
     loader.load('/static/img/white.jpg',
       (white) => {
         loader.load('/static/img/black.jpg',
           (black) => {
-            this.sphereMaterial = new THREE.ShaderMaterial({
+            this.sphereMaterial = new ShaderMaterial({
               fragmentShader: require('../../3D/glsl/FBO/noise/sphere.frag'),
               vertexShader: require('../../3D/glsl/FBO/noise/sphere.vert'),
-              shading: THREE.SmoothShading,
+              flatShading: SmoothShading,
 
               uniforms: {
                 progress: { type: 'f', value: 0.0 },
@@ -103,14 +128,14 @@ export default class Particles {
               }
             })
 
-            this.sphere = new THREE.Mesh(
-              new THREE.SphereGeometry(1, 32, 32),
+            this.sphere = new Mesh(
+              new SphereGeometry(1, 32, 32),
               this.sphereMaterial
             )
 
-            this.wireframes = new THREE.LineSegments(
-              new THREE.WireframeGeometry(this.sphere.geometry),
-              new THREE.LineBasicMaterial({
+            this.wireframes = new LineSegments(
+              new WireframeGeometry(this.sphere.geometry),
+              new LineBasicMaterial({
                 transparent: true,
                 color: 0xFFFFFF,
                 linewidth: 1
@@ -132,16 +157,16 @@ export default class Particles {
     const length = Math.pow(size, 2) * 3
 
     const data = this.getSphere(size / 4, length)
-    const texture = new THREE.DataTexture(
+    const texture = new DataTexture(
       data, size, size,
-      THREE.RGBFormat,
-      THREE.FloatType,
-      THREE.DEFAULT_MAPPING,
-      THREE.RepeatWrapping,
-      THREE.RepeatWrapping
+      RGBFormat,
+      FloatType,
+      UVMapping,
+      RepeatWrapping,
+      RepeatWrapping
     )
 
-    this.particleColor = new THREE.Vector3(0.0, 0.0, 0.0)
+    this.particleColor = new Vector3(0.0, 0.0, 0.0)
 
     this.controls.minDistance = 400
     this.controls.maxDistance = 400
@@ -149,7 +174,7 @@ export default class Particles {
     this.camera.position.z = 400
     texture.needsUpdate = true
 
-    this.simulationShader = new THREE.ShaderMaterial({
+    this.simulationShader = new ShaderMaterial({
       fragmentShader: require('../../3D/glsl/FBO/noise/particles.frag'),
       vertexShader: require('../../3D/glsl/FBO/noise/particles.vert'),
 
@@ -161,7 +186,7 @@ export default class Particles {
       }
     })
 
-    this.renderShader = new THREE.ShaderMaterial({
+    this.renderShader = new ShaderMaterial({
       fragmentShader: require('../../3D/glsl/FBO/noise/render.frag'),
       vertexShader: require('../../3D/glsl/FBO/noise/render.vert'),
 
@@ -170,8 +195,8 @@ export default class Particles {
         positions: { type: 't', value: null }
       },
 
-      side: THREE.DoubleSide,
-      transparent: true
+      transparent: true,
+      side: DoubleSide
     })
 
     this.fbo = new Fbo(
@@ -232,7 +257,7 @@ export default class Particles {
     const hex = 1 - progress
 
     this.wireframes.material.opacity = Math.max(0.5 - progress, 0.25)
-    this.wireframes.material.color = new THREE.Color(hex, hex, hex)
+    this.wireframes.material.color = new Color(hex, hex, hex)
 
     let scale = this.lightSpeed * 4.0 + 20
 
