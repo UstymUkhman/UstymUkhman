@@ -1,7 +1,5 @@
 <template>
   <article ref="container" itemscope itemtype="http://schema.org/WebPageElement" class="fbo-particles-page">
-    <div ref="overlay" class="background-overlay" :class="{'fade': fadeOverlay}"></div>
-
     <div class="switch-container">
       <div @click="setParticlesExperiment" class="button" :class="{'active': !audioreactive}">Noise Particles</div>
       <div @click="setAudioreactiveExperiment" class="button" :class="{'active': audioreactive}">Audioreactive Particles</div>
@@ -9,9 +7,7 @@
 
     <div ref="container" class="experiment-container"></div>
 
-    <div class="music-label-container" :class="{'visible': showTrack}">
-      <span>Music by Linkin Park - Faint</span>
-    </div>
+    <TrackLabel author="Linkin Park" track="Faint" />
   </article>
 </template>
 
@@ -19,17 +15,21 @@
 import AudioreactiveParticles from '@/3D/experiments/AudioreactiveParticles'
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import Particles from '@/3D/experiments/Particles'
+import TrackLabel from '@/atoms/TrackLabel'
 
 export default {
   name: 'FBOParticles',
 
   mixins: [FirePrerenderEvent],
 
+  components: {
+    TrackLabel
+  },
+
   data () {
     return {
-      track: '/static/audio/Linkin Park - Faint.mp3',
+      track: '/static/audio/faint.mp3',
       audioreactive: false,
-      fadeOverlay: false,
       showTrack: false
     }
   },
@@ -37,28 +37,18 @@ export default {
   methods: {
     setParticlesExperiment () {
       this.audioreactive = false
-      this.fadeOverlay = true
       this.showTrack = false
 
       this.experiment.destroy()
       this.experiment = new Particles(this.$refs.container, this.$refs.overlay)
-
-      setTimeout(() => {
-        this.fadeOverlay = false
-      }, 500)
     },
 
     setAudioreactiveExperiment () {
       this.audioreactive = true
-      this.fadeOverlay = false
       this.showTrack = true
 
       this.experiment.destroy()
       this.experiment = new AudioreactiveParticles(this.$refs.container, this.track)
-
-      setTimeout(() => {
-        this.fadeOverlay = true
-      }, 500)
     }
   },
 
@@ -95,10 +85,7 @@ export default {
 @import 'app-colors';
 @import 'z-index';
 
-$label-background: rgba($black, 0.3);
-
 .fbo-particles-page {
-  background-image: radial-gradient(circle, #666, $black);
   background-color: $black;
   overflow: hidden;
 
@@ -108,32 +95,13 @@ $label-background: rgba($black, 0.3);
   padding: 0;
   margin: 0;
 
-  .background-overlay {
-    background-color: $black;
-    overflow: hidden;
-
-    height: 100%;
-    width: 100%;
-
-    padding: 0;
-    margin: 0;
-
-    pointer-events: none;
-    opacity: 1;
-
-    &.fade {
-      transition: opacity 0.5s linear;
-      opacity: 0;
-    }
-  }
-
   .switch-container {
-    border: 1px solid $silver;
+    border: 1px solid $green;
 
     font-family: monospace;
     line-height: 25px;
     font-size: 14px;
-    color: $silver;
+    color: $green;
 
     margin: 100px auto 0;
     position: fixed;
@@ -155,11 +123,11 @@ $label-background: rgba($black, 0.3);
       width: 200px;
 
       &:first-child {
-        border-right: 1px solid $silver;
+        border-right: 1px solid $green;
       }
 
       &.active {
-        background-color: $silver;
+        background-color: $green;
         color: $black;
 
         pointer-events: none;
@@ -183,27 +151,6 @@ $label-background: rgba($black, 0.3);
     right: 0;
     left: 0;
     top: 0;
-  }
-
-  .music-label-container {
-    transition: transform 0.5s ease-out;
-    transform: translateY(-43px);
-
-    background-color: $label-background;
-    border-bottom-left-radius: 10px;
-
-    padding: 15px 10px;
-    font-size: 13px;
-    color: $silver;
-
-    position: absolute;
-    z-index: $code;
-    right: 0;
-    top: 0;
-
-    &.visible {
-      transform: translateY(80px);
-    }
   }
 }
 </style>

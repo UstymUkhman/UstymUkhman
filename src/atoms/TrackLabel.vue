@@ -1,7 +1,7 @@
 <template>
   <transition appear name="label">
     <div class="label-container">
-      <span>{{ author }}</span><span v-if="track"> - {{ track }}</span>
+      <span>Music by: {{ author }}</span><span v-if="track"> - {{ track }}</span>
     </div>
   </transition>
 </template>

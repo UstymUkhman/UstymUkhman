@@ -90,6 +90,6 @@ export default class Fbo {
     this.renderer.render(this.scene, this.camera, this.target, true)
 
     // Uses the result of the swap as the new position for the particles' renderer:
-    this.particles.material.uniforms.positions.value = this.target
+    this.particles.material.uniforms.positions.value = this.target.texture
   }
 }

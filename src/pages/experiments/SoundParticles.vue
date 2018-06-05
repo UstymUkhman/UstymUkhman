@@ -1,6 +1,6 @@
 <template>
   <article ref="container" itemscope itemtype="http://schema.org/WebPageElement" class="sound-particles-page">
-    <TrackLabel author="Music by John Newman" track="Love Me Again" />
+    <TrackLabel author="John Newman" track="Love Me Again" />
 
     <transition appear name="warning">
       <div v-show="warning" class="warning-label-container">

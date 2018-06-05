@@ -11,11 +11,13 @@ import { OrbitControls } from '@three/controls/OrbitControls'
 import AudioReactive from '@/3D/utils/AudioReactive'
 import Fbo from '@/3D/utils/FBO'
 
-import vertParticles from '@/3D/glsl/FBO/noise/particles.vert'
-import fragParticles from '@/3D/glsl/FBO/noise/particles.frag'
+import vertParticles from '@/3D/glsl/FBO/image/particles.vert'
+import fragParticles from '@/3D/glsl/FBO/image/particles.frag'
 
-import vertRenderer from '@/3D/glsl/FBO/noise/render.vert'
-import fragRenderer from '@/3D/glsl/FBO/noise/render.frag'
+import vertRenderer from '@/3D/glsl/FBO/image/render.vert'
+import fragRenderer from '@/3D/glsl/FBO/image/render.frag'
+
+import HEIGHT_MAP from '@/3D/assets/textures/FBO/height.jpg'
 
 export default class AudioreactiveParticles {
   constructor (container, track) {
@@ -24,6 +26,8 @@ export default class AudioreactiveParticles {
     this.audio.setSongFrequencies(510.5, 633.55)
 
     this.simulationShader = null
+    this.renderShader = null
+
     this.distance = 50.0
     this.pressed = null
     this.speed = 10.0
@@ -41,9 +45,7 @@ export default class AudioreactiveParticles {
     this.image = new Image()
     this.image.onload = this.createImage.bind(this)
 
-    this.image.src = '/static/img/height.jpg'
-    this.image.crossOrigin = 'anonymous'
-
+    this.image.src = HEIGHT_MAP
     this.bindEvents()
   }
 
@@ -57,15 +59,10 @@ export default class AudioreactiveParticles {
   }
 
   createRenderer () {
-    this.renderer = new WebGLRenderer({
-      antialias: true,
-      alpha: true
-    })
-
+    this.renderer = new WebGLRenderer({ antialias: true })
     this.renderer.setClearColor(0x000000)
     this.renderer.setPixelRatio(window.devicePixelRatio || 1)
     this.renderer.setSize(window.innerWidth, window.innerHeight)
-
     this.container.appendChild(this.renderer.domElement)
   }
 
@@ -94,18 +91,19 @@ export default class AudioreactiveParticles {
       }
     })
 
-    const renderShader = new ShaderMaterial({
+    this.renderShader = new ShaderMaterial({
       vertexShader: vertRenderer,
       fragmentShader: fragRenderer,
 
       uniforms: {
-        positions: { type: 't', value: null }
+        positions: { type: 't', value: null },
+        frequency: { type: 'f', value: 0.0 }
       }
     })
 
     this.fbo = new Fbo(
       this.image.width, this.image.height,
-      this.renderer, this.simulationShader, renderShader
+      this.renderer, this.simulationShader, this.renderShader
     )
 
     this.scene.add(this.fbo.particles)
@@ -154,6 +152,7 @@ export default class AudioreactiveParticles {
     const angle = Math.PI / 180
     const audioValue = this.audio.getAverageValue()
 
+    this.renderShader.uniforms.frequency.value = audioValue
     this.simulationShader.uniforms.time.value = audioValue
 
     this.fbo.particles.rotation.y -= angle * 0.1

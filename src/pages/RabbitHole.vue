@@ -281,9 +281,6 @@ export default {
         emptyWall.wrapS = emptyWall.wrapT = MirroredRepeatWrapping
         fullWall.wrapS = fullWall.wrapT = MirroredRepeatWrapping
 
-        emptyWall.needsUpdate = true
-        fullWall.needsUpdate = true
-
         emptyWall.repeat.set(1, 1)
         fullWall.repeat.set(1, 1)
 

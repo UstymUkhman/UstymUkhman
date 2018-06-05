@@ -26,7 +26,21 @@ import {
 } from '@three/constants.js'
 
 import { OrbitControls } from '@three/controls/OrbitControls'
+import load from '@/3D/utils/assetsLoader'
 import Fbo from '@/3D/utils/FBO'
+import to from 'await-to-js'
+
+import vertSphere from '@/3D/glsl/FBO/noise/sphere.vert'
+import fragSphere from '@/3D/glsl/FBO/noise/sphere.frag'
+
+import vertParticles from '@/3D/glsl/FBO/noise/particles.vert'
+import fragParticles from '@/3D/glsl/FBO/noise/particles.frag'
+
+import vertRender from '@/3D/glsl/FBO/noise/render.vert'
+import fragRender from '@/3D/glsl/FBO/noise/render.frag'
+
+import BLACK_SPHERE from '@/3D/assets/textures/FBO/black.jpg'
+import WHITE_SPHERE from '@/3D/assets/textures/FBO/white.jpg'
 
 export default class Particles {
   constructor (container, overlay) {
@@ -68,11 +82,7 @@ export default class Particles {
   }
 
   createRenderer () {
-    this.renderer = new WebGLRenderer({
-      antialias: true,
-      alpha: true
-    })
-
+    this.renderer = new WebGLRenderer({ antialias: true })
     this.renderer.setSize(window.innerWidth, window.innerHeight)
     this.renderer.setPixelRatio(window.devicePixelRatio || 1)
     this.container.appendChild(this.renderer.domElement)
@@ -109,47 +119,56 @@ export default class Particles {
     return vertex.normalize().multiplyScalar(size)
   }
 
-  createSphere () {
+  async createSphere () {
     const loader = new TextureLoader()
 
-    loader.load('/static/img/white.jpg',
-      (white) => {
-        loader.load('/static/img/black.jpg',
-          (black) => {
-            this.sphereMaterial = new ShaderMaterial({
-              fragmentShader: require('../../3D/glsl/FBO/noise/sphere.frag'),
-              vertexShader: require('../../3D/glsl/FBO/noise/sphere.vert'),
-              flatShading: SmoothShading,
+    return new Promise(async (resolve, reject) => {
+      let error, black, white
+      [error, black] = await to(load(loader, BLACK_SPHERE))
 
-              uniforms: {
-                progress: { type: 'f', value: 0.0 },
-                white: { type: 't', value: white },
-                black: { type: 't', value: black }
-              }
-            })
-
-            this.sphere = new Mesh(
-              new SphereGeometry(1, 32, 32),
-              this.sphereMaterial
-            )
-
-            this.wireframes = new LineSegments(
-              new WireframeGeometry(this.sphere.geometry),
-              new LineBasicMaterial({
-                transparent: true,
-                color: 0xFFFFFF,
-                linewidth: 1
-              })
-            )
-
-            this.sphere.position.set(0, 0, 0)
-            this.sphere.add(this.wireframes)
-            this.scene.add(this.sphere)
-            this.update()
-          }
-        )
+      if (error) {
+        reject(error)
+        return
       }
-    )
+
+      [error, white] = await to(load(loader, WHITE_SPHERE))
+
+      if (error) {
+        reject(error)
+        return
+      }
+
+      this.sphereMaterial = new ShaderMaterial({
+        vertexShader: vertSphere,
+        fragmentShader: fragSphere,
+        flatShading: SmoothShading,
+
+        uniforms: {
+          progress: { type: 'f', value: 0.0 },
+          black: { type: 't', value: black },
+          white: { type: 't', value: white }
+        }
+      })
+
+      this.sphere = new Mesh(
+        new SphereGeometry(1, 32, 32),
+        this.sphereMaterial
+      )
+
+      this.wireframes = new LineSegments(
+        new WireframeGeometry(this.sphere.geometry),
+        new LineBasicMaterial({
+          transparent: true,
+          color: 0xFFFFFF,
+          linewidth: 1
+        })
+      )
+
+      this.sphere.position.set(0, 0, 0)
+      this.sphere.add(this.wireframes)
+      this.scene.add(this.sphere)
+      this.update()
+    })
   }
 
   createParticles () {
@@ -175,8 +194,8 @@ export default class Particles {
     texture.needsUpdate = true
 
     this.simulationShader = new ShaderMaterial({
-      fragmentShader: require('../../3D/glsl/FBO/noise/particles.frag'),
-      vertexShader: require('../../3D/glsl/FBO/noise/particles.vert'),
+      vertexShader: vertParticles,
+      fragmentShader: fragParticles,
 
       uniforms: {
         distance: { type: 'f', value: this.distance },
@@ -187,8 +206,8 @@ export default class Particles {
     })
 
     this.renderShader = new ShaderMaterial({
-      fragmentShader: require('../../3D/glsl/FBO/noise/render.frag'),
-      vertexShader: require('../../3D/glsl/FBO/noise/render.vert'),
+      vertexShader: vertRender,
+      fragmentShader: fragRender,
 
       uniforms: {
         color: { type: 'v3', value: this.particleColor },
@@ -268,7 +287,6 @@ export default class Particles {
     this.sphereMaterial.uniforms.progress.value = progress
     this.sphere.rotation.y += this.lightSpeed / 50.0
     this.sphere.scale.set(scale, scale, scale)
-    this.overlay.style.opacity = hex
   }
 
   animate (pressed = false) {
@@ -358,9 +376,7 @@ export default class Particles {
     this.renderer.domElement.removeEventListener('mouseup', this.onMouseUp.bind(this))
 
     window.removeEventListener('resize', this.onResize.bind(this))
-    cancelAnimationFrame(this.frame)
-
     this.container.removeChild(this.renderer.domElement)
-    this.overlay.style.opacity = ''
+    cancelAnimationFrame(this.frame)
   }
 }
