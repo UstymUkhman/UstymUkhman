@@ -1,4 +1,3 @@
-#include ...//blend.glsl;
 #include ...//random.glsl;
 
 precision highp float;
@@ -41,7 +40,5 @@ void main (void) {
   color.rgb = mix(black, centerColor, dist);
 
   vec3 noise = vec3(random(vUv * 1.5), random(vUv * 2.5), random(vUv));
-  color.rgb = mix(color.rgb, blend(color.rgb, noise), 0.1);
-
   gl_FragColor = color;
 }
