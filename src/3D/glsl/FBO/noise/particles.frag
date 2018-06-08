@@ -1,4 +1,4 @@
-#include ...//...//curl.glsl;
+#include ../../curl.glsl;
 
 precision highp float;
 

@@ -1,4 +1,4 @@
-#include ./cnoise.glsl;
+#include cnoise.glsl;
 
 precision highp float;
 

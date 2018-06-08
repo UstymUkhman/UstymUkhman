@@ -1,8 +1,7 @@
 // Classic Perlin 3D noise by hughsk:
 // https://github.com/hughsk/glsl-noise/blob/master/classic/3d.glsl
 
-#include ./mod289.glsl;
-#include ./permute.glsl;
+#include permute.glsl;
 
 precision highp float;
 

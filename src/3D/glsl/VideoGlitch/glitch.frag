@@ -1,6 +1,6 @@
 #include <common>
-#include ...//snoise.glsl;
-#include ...//horizontalBlur.frag;
+#include ../snoise.glsl;
+#include ../horizontalBlur.frag;
 
 precision highp float;
 

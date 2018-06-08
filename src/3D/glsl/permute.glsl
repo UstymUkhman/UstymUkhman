@@ -1,4 +1,4 @@
-#include ./mod289.glsl;
+#include mod289.glsl;
 
 precision highp float;
 
