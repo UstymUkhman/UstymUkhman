@@ -1,6 +1,5 @@
 precision mediump float;
 
-varying float fragDepth;
 varying vec2 vUv;
 
 void main (void) {

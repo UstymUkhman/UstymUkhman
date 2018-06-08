@@ -6,10 +6,12 @@ import { SphereGeometry } from '@three/geometries/SphereGeometry'
 
 import { LineBasicMaterial } from '@three/materials/LineBasicMaterial'
 import { ShaderMaterial } from '@three/materials/ShaderMaterial'
+import { SpriteMaterial } from '@three/materials/SpriteMaterial'
 import { LineSegments } from '@three/objects/LineSegments'
 
 import { TextureLoader } from '@three/loaders/TextureLoader'
 import { DataTexture } from '@three/textures/DataTexture'
+import { Sprite } from '@three/objects/Sprite'
 import { Vector3 } from '@three/math/Vector3'
 
 import { Scene } from '@three/scenes/Scene'
@@ -22,7 +24,8 @@ import {
   UVMapping,
   DoubleSide,
   SmoothShading,
-  RepeatWrapping
+  RepeatWrapping,
+  AdditiveBlending
 } from '@three/constants.js'
 
 import { OrbitControls } from '@three/controls/OrbitControls'
@@ -41,6 +44,7 @@ import fragRender from '@/3D/glsl/FBO/noise/render.frag'
 
 import BLACK_SPHERE from '@/3D/assets/textures/FBO/black.jpg'
 import WHITE_SPHERE from '@/3D/assets/textures/FBO/white.jpg'
+import GLOW_TEXTURE from '@/3D/assets/textures/FBO/glow.png'
 
 export default class Particles {
   constructor (container, overlay) {
@@ -123,7 +127,7 @@ export default class Particles {
     const loader = new TextureLoader()
 
     return new Promise(async (resolve, reject) => {
-      let error, black, white
+      let error, black, white, glow
       [error, black] = await to(load(loader, BLACK_SPHERE))
 
       if (error) {
@@ -132,6 +136,13 @@ export default class Particles {
       }
 
       [error, white] = await to(load(loader, WHITE_SPHERE))
+
+      if (error) {
+        reject(error)
+        return
+      }
+
+      [error, glow] = await to(load(loader, GLOW_TEXTURE))
 
       if (error) {
         reject(error)
@@ -164,6 +175,18 @@ export default class Particles {
         })
       )
 
+      const spriteMaterial = new SpriteMaterial({
+        blending: AdditiveBlending,
+        transparent: false,
+        color: 0xFFFFFF,
+        opacity: 0.0,
+        map: glow
+      })
+
+      this.sprite = new Sprite(spriteMaterial)
+      this.sprite.scale.set(3, 3, 1)
+      this.sphere.add(this.sprite)
+
       this.sphere.position.set(0, 0, 0)
       this.sphere.add(this.wireframes)
       this.scene.add(this.sphere)
@@ -194,8 +217,9 @@ export default class Particles {
     texture.needsUpdate = true
 
     this.simulationShader = new ShaderMaterial({
-      vertexShader: vertParticles,
       fragmentShader: fragParticles,
+      vertexShader: vertParticles,
+      transparent: true,
 
       uniforms: {
         distance: { type: 'f', value: this.distance },
@@ -206,8 +230,8 @@ export default class Particles {
     })
 
     this.renderShader = new ShaderMaterial({
-      vertexShader: vertRender,
       fragmentShader: fragRender,
+      vertexShader: vertRender,
 
       uniforms: {
         color: { type: 'v3', value: this.particleColor },
@@ -233,6 +257,13 @@ export default class Particles {
     this.fbo.particles.rotation.y -= angle * 0.1
     this.fbo.update()
 
+    const speedFrac = Math.max(0, this.speed - 110.0)
+    const scale = this.sprite.scale.x + speedFrac / 25000.0
+
+    this.sprite.material.opacity = speedFrac / 100.0
+    this.sprite.scale.x = Math.min(4, scale)
+    this.sprite.scale.y = Math.min(4, scale)
+
     this.simulationShader.uniforms.distance.value = this.distance
     this.simulationShader.uniforms.speed.value = this.speed
     this.simulationShader.uniforms.timer.value += 0.01
@@ -243,9 +274,23 @@ export default class Particles {
     this.updateSphereAspect(time)
 
     if (this.pressed === null) {
-      if (this.lightSpeed > 0) this.lightSpeed -= 0.05
-      if (this.distance > 90) this.distance -= 1.5
-      if (this.speed > 10) this.speed -= 4.0
+      if (this.lightSpeed > 0) {
+        this.lightSpeed -= 0.05
+      }
+
+      if (this.distance > 90) {
+        this.distance -= 1.5
+      }
+
+      if (this.speed > 500) {
+        this.speed -= 5.0
+      } else if (this.speed > 10) {
+        this.speed -= 2.5
+      } else {
+        this.sprite.material.opacity = 0
+        this.sprite.scale.set(3, 3, 1)
+        this.speed = 10
+      }
 
       const step = this.speed > 10 ? 0.002 : 0.01
 
@@ -281,7 +326,7 @@ export default class Particles {
     let scale = this.lightSpeed * 4.0 + 20
 
     if (!this.pressed) {
-      scale -= 0.5
+      scale -= 1.0
     }
 
     this.sphereMaterial.uniforms.progress.value = progress
@@ -300,8 +345,8 @@ export default class Particles {
       this.particleColor.z += 0.001
     }
 
-    this.speed = power * 340 + 10
     this.distance = power * 20 + 90
+    this.speed = power * 340 + 10
     this.lightSpeed = power * 5
   }
 
@@ -325,7 +370,7 @@ export default class Particles {
 
   onMouseUp (event) {
     if (event.which === 1) {
-      this.onLeftRelease()
+      this.pressed = null
     } else if (event.which === 3) {
       this.controls.enabled = true
     }
@@ -344,18 +389,6 @@ export default class Particles {
     }
 
     this.animate(true)
-  }
-
-  onLeftRelease (event) {
-    const delay = !(this.down - this.pressed) ? 1000 : 0
-
-    if (Date.now() - this.down >= 1000) {
-      this.pressed = null
-    }
-
-    setTimeout(() => {
-      this.pressed = null
-    }, delay)
   }
 
   onResize () {

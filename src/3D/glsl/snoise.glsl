@@ -1,4 +1,3 @@
-#include mod289.glsl;
 #include permute.glsl;
 
 precision highp float;

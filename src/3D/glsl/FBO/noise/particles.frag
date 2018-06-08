@@ -20,5 +20,6 @@ void main (void) {
   float d = length(position - tar) / distance;
   position = mix(position, tar, pow(d, 5.0));
 
-  gl_FragColor = vec4(position, 1.0);
+  float alpha = clamp(speed + 40.0, 0.0, 250.0) / 250.0;
+  gl_FragColor = vec4(position, alpha);
 }
