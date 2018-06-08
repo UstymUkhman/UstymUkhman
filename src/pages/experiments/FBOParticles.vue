@@ -7,7 +7,9 @@
 
     <div ref="container" class="experiment-container"></div>
 
-    <TrackLabel author="Linkin Park" track="Faint" />
+    <transition appear>
+      <TrackLabel v-show="audioreactive" author="Linkin Park" track="Faint" />
+    </transition>
   </article>
 </template>
 
@@ -29,24 +31,19 @@ export default {
   data () {
     return {
       track: '/static/audio/faint.mp3',
-      audioreactive: false,
-      showTrack: false
+      audioreactive: false
     }
   },
 
   methods: {
     setParticlesExperiment () {
       this.audioreactive = false
-      this.showTrack = false
-
       this.experiment.destroy()
       this.experiment = new Particles(this.$refs.container, this.$refs.overlay)
     },
 
     setAudioreactiveExperiment () {
       this.audioreactive = true
-      this.showTrack = true
-
       this.experiment.destroy()
       this.experiment = new AudioreactiveParticles(this.$refs.container, this.track)
     }

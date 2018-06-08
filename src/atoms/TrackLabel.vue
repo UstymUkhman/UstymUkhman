@@ -38,7 +38,7 @@ export default {
   padding: 15px 10px;
   font-weight: 300;
   font-size: 13px;
-  color: $silver;
+  color: $green;
 
   position: absolute;
   z-index: $code;

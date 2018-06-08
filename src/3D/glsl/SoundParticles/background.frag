@@ -1,3 +1,4 @@
+#include ../blend.glsl;
 #include ../random.glsl;
 
 precision highp float;

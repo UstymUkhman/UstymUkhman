@@ -25,7 +25,7 @@ export default {
     this.$emit('obscure:background', true)
 
     this.glitch = new VideoGlitch()
-    this.glitch.startExperiment(this.$refs.container, 'VideoGlitch')
+    this.glitch.startExperiment(this.$refs.container, 'lake')
 
     this._onResize = this.onResize.bind(this)
     window.addEventListener('resize', this._onResize)
