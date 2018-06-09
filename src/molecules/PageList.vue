@@ -1,6 +1,9 @@
 <template>
-  <div class="list-area" :style="{'-webkit-transform': 'translateY(' + listOffset + ')', 'transform': 'translateY(' + listOffset + ')'}">
-    <div v-for="(page, p) in pagesList" :key="page.name" ref="urls" class="page-container" :class="{'active': enableNavigation && (currentPage === p)}">
+  <div :style="{'-webkit-transform': 'translateY(' + listOffset + ')', 'transform': 'translateY(' + listOffset + ')'}"
+       @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onKeyDown" class="list-area">
+
+    <div v-for="(page, p) in pagesList" :key="page.name" ref="urls" @touchend="onTouchend(p)"
+         class="page-container" :class="{'active': enableNavigation && (currentPage === p)}">
 
       <span class="selected-page">{{cursor}}</span>
       <p class="page-name">{{page.name}}</p>
@@ -12,10 +15,15 @@
 
 <script>
 import Lettering from '@/utils/Lettering'
+import Viewport from '@/mixins/Viewport'
+
+import { phone } from '@/_variables.scss'
 import Platform from '@/platform'
 
 export default {
   name: 'PageList',
+
+  mixins: [Viewport],
 
   props: {
     urls: {
@@ -43,14 +51,29 @@ export default {
 
   data () {
     return {
+      visibleList: (window.innerHeight * 0.14 + 18) * 5,
       currentPage: Platform.mobile ? null : 0,
+
+      listHeight: null,
       listOffset: null,
 
       enableNavigation: false,
       skipLettering: false,
+      touchStart: null,
 
       pageIndex: -1,
       pagesList: []
+    }
+  },
+
+  watch: {
+    viewPort () {
+      const margin = this.viewPort.height * 0.14
+      const height = this.viewPort.width < phone ? 18 : 21
+
+      this.listStep = margin + height
+      this.listHeight = this.listStep * this.urls.length
+      this.listLength = this.listHeight + margin
     }
   },
 
@@ -73,8 +96,6 @@ export default {
         this.pages = this.$refs.urls
         this.lastPage = this.urls.length - (Platform.mobile ? 5 : 4)
         this.lastUrl = this.urls.length - 1
-
-        this.createClickHandler()
         this.preparePages()
       })
     },
@@ -179,9 +200,6 @@ export default {
 
     removePagesList () {
       document.removeEventListener('keydown', this._onKeyDown, false)
-      window.removeEventListener('resize', this._onResize, false)
-
-      this.removeClickHandler()
       this.$emit('remove:pages')
     },
 
@@ -189,47 +207,31 @@ export default {
       window.open(this.pagesList[page].url, '_blank')
     },
 
-    onResize () {
-      this.listStep = window.innerHeight * 0.14 + 21
+    onTouchStart ($event) {
+      if (this.urls.length > 5) {
+        this.touchStart = $event.changedTouches[0].clientY
+      }
     },
 
-    createClickHandler () {
-      if (Platform.mobile) {
-        for (let i = 0; i < this.pages.length; i++) {
-          this.pages[i].addEventListener('touchend', this.onClick.bind(this, i))
+    onTouchMove ($event) {
+      if (this.urls.length > 5) {
+        const offset = $event.changedTouches[0].clientY
+        const distance = Math.max(0, this.touchStart - offset)
+
+        if (this.visibleList + distance <= this.listLength) {
+          this.listOffset = `${-distance}px`
         }
-
-        this._onClick = this.onClick.bind(this)
-        document.addEventListener('touchend', this._onClick, true)
       }
     },
 
-    removeClickHandler () {
-      if (Platform.mobile && this.pages.length) {
-        for (let i = 0; i < this.pages.length; i++) {
-          this.pages[i].removeEventListener('touchend', this.onClick.bind(this, i))
-        }
-
-        document.removeEventListener('touchend', this._onClick, true)
-      }
-    },
-
-    onClick (index) {
-      if (typeof index !== 'number') {
-        this.onKeyDown({ keyCode: 0 })
-      } else {
-        this.currentPage = index
-        setTimeout(() => { this.openPageUrl(index) }, 400)
-      }
+    onTouchend (page) {
+      this.currentPage = page
+      setTimeout(() => { this.openPageUrl(page) }, 400)
     }
   },
 
   mounted () {
-    this.onResize()
-    this._onResize = this.onResize.bind(this)
     this._onKeyDown = this.onKeyDown.bind(this)
-
-    window.addEventListener('resize', this._onResize, false)
     document.addEventListener('keydown', this._onKeyDown, false)
 
     this.lettering = new Lettering()
@@ -237,8 +239,6 @@ export default {
   },
 
   beforeDestroy () {
-    this.removeClickHandler()
-    window.removeEventListener('resize', this._onResize, false)
     document.removeEventListener('keydown', this._onKeyDown, false)
   }
 }
@@ -248,7 +248,7 @@ export default {
 @import 'mixins';
 
 .list-area {
-  transition: transform 0.5s cubic-bezier(0.39, 0.575, 0.565, 1.0);
+  transition: transform 0.5s $ease-out-sine;
   backface-visibility: hidden;
   position: absolute;
 
@@ -256,7 +256,9 @@ export default {
   top: 0;
 
   @include breakpoint($sm-down) {
+    transition-duration: 250ms;
     padding-left: 50px;
+    width: 100%;
   }
 
   @include breakpoint($xs) {
@@ -319,7 +321,7 @@ export default {
     line-height: 20px;
 
     @include breakpoint($xs) {
-      line-height: 15px;
+      line-height: 18px;
     }
   }
 

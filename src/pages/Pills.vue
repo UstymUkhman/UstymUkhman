@@ -32,13 +32,17 @@ import MatrixRain from '@/molecules/MatrixRain'
 import MatrixCode from '@/molecules/MatrixCode'
 
 import load from '@/3D/utils/assetsLoader'
+import Viewport from '@/mixins/Viewport'
 import Loading from '@/utils/Loading'
 import Sounds from '@/utils/Sounds'
+
 import Platform from '@/platform'
 import to from 'await-to-js'
 
 export default {
   name: 'Pills',
+
+  mixins: [Viewport],
 
   components: {
     MatrixRain,
@@ -64,6 +68,17 @@ export default {
 
       width: window.innerWidth,
       height: window.innerHeight
+    }
+  },
+
+  watch: {
+    viewPort () {
+      this.width = this.viewPort.width
+      this.height = this.viewPort.height
+
+      this.renderer.setSize(this.width, this.height)
+      this.camera.aspect = this.width / this.height
+      this.camera.updateProjectionMatrix()
     }
   },
 
@@ -269,15 +284,6 @@ export default {
         document.removeEventListener('keydown', this._onKeyDown, false)
         this.animateChosenPill()
       }
-    },
-
-    onResize () {
-      this.width = window.innerWidth
-      this.height = window.innerHeight
-
-      this.renderer.setSize(this.width, this.height)
-      this.camera.aspect = this.width / this.height
-      this.camera.updateProjectionMatrix()
     }
   },
 
@@ -291,9 +297,6 @@ export default {
       this.createPill(0x003FFF)
       this.createPill(0xB40000)
 
-      this._onResize = this.onResize.bind(this)
-      window.addEventListener('resize', this._onResize, false)
-
       this.createRenderer()
       this.animate()
     }
@@ -301,7 +304,6 @@ export default {
 
   beforeDestroy () {
     Sounds.endSpeach(!this.choice)
-    window.removeEventListener('resize', this._onResize, false)
     document.removeEventListener('keydown', this._onKeyDown, false)
   },
 

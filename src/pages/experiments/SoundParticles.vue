@@ -34,17 +34,19 @@ export default {
     }
   },
 
+  watch: {
+    viewPort () {
+      this.experiment.resize(this.viewPort.width, this.viewPort.height)
+    }
+  },
+
   methods: {
     createExperiment (weak) {
       this.experiment = new SoundParticles(this.$refs.container, this.track, weak)
-      window.addEventListener('resize', this._onResize)
-
       this.experiment.startExperiment()
-      this.onResize()
     },
 
     onError () {
-      window.removeEventListener('resize', this._onResize)
       setTimeout(() => { this.warning = true }, 2000)
 
       if (this.experiment) {
@@ -52,24 +54,18 @@ export default {
       }
 
       this.createExperiment(true)
-    },
-
-    onResize () {
-      this.experiment.resize(this.viewPort.width, this.viewPort.height)
     }
   },
 
   mounted () {
-    this._onResize = this.onResize.bind(this)
     this._onError = this.onError.bind(this)
-
     window.addEventListener('error', this._onError)
+
     this.$emit('update:title', 'SoundParticles')
     this.createExperiment()
   },
 
   beforeDestroy () {
-    window.removeEventListener('resize', this._onResize)
     window.removeEventListener('error', this._onError)
 
     if (this.experiment) {

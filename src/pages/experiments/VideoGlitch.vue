@@ -14,8 +14,8 @@ export default {
 
   mixins: [Viewport, FirePrerenderEvent],
 
-  methods: {
-    onResize () {
+  watch: {
+    viewPort () {
       this.glitch.resize(this.viewPort.width, this.viewPort.height)
     }
   },
@@ -26,13 +26,9 @@ export default {
 
     this.glitch = new VideoGlitch()
     this.glitch.startExperiment(this.$refs.container, 'lake')
-
-    this._onResize = this.onResize.bind(this)
-    window.addEventListener('resize', this._onResize)
   },
 
   beforeDestroy () {
-    window.removeEventListener('resize', this._onResize)
     this.glitch.destroy()
   },
 
