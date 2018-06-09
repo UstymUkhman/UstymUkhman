@@ -79,8 +79,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'app-colors';
-@import 'z-index';
+@import 'variables';
 
 .fbo-particles-page {
   background-color: $black;

@@ -362,9 +362,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'breakpoints';
 @import 'animations';
-@import 'easings';
+@import 'variables';
 
 .image-drawer-js-page {
   overflow: hidden;

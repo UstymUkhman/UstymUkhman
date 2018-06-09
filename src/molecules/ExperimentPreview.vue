@@ -79,9 +79,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'breakpoints';
-@import 'app-colors';
-@import 'easings';
+@import 'variables';
 
 .experiment-container {
   transform-style: preserve-3d;

@@ -9,8 +9,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'breakpoints';
-@import 'app-colors';
+@import 'variables';
 
 img {
   border: solid 1px $black;

@@ -98,7 +98,6 @@ export default {
 
 <style lang="scss">
 @import '~node-reset-scss/scss/reset';
-@import 'z-index';
 @import 'mixins';
 @import 'fonts';
 

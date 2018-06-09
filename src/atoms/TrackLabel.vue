@@ -26,9 +26,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'app-colors';
-@import 'z-index';
-@import 'easings';
+@import 'variables';
 
 .label-container {
   background-color: rgba($black, 0.3);

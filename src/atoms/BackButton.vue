@@ -91,7 +91,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'breakpoints';
 @import 'mixins';
 
 .back-button {

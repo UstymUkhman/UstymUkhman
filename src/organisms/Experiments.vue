@@ -19,6 +19,8 @@
 <script>
 import ExperimentPreview from '@/molecules/ExperimentPreview'
 import Experiments from '@/assets/data/experiments'
+
+import { mobile } from '@/_variables.scss'
 import Viewport from '@/mixins/Viewport'
 
 export default {
@@ -39,7 +41,7 @@ export default {
   computed: {
     previewHeight () {
       const _width = this.viewPort.width
-      const width = (_width < 992) ? _width : _width / 2
+      const width = (_width < mobile) ? _width : _width / 2
 
       return `${width / 16 * 9}px`
     }
@@ -48,8 +50,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'breakpoints';
-@import 'easings';
+@import 'variables';
 
 .experiments {
   overflow-x: hidden;

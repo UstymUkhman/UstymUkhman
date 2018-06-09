@@ -18,8 +18,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'breakpoints';
-@import 'app-colors';
+@import 'variables';
 
 .title-container {
   padding-left: 25px;

@@ -25,7 +25,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'z-index';
 @import 'mixins';
 
 div.matrix-rain-container {

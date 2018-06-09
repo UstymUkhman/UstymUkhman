@@ -16,8 +16,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'breakpoints';
-@import 'app-colors';
+@import 'variables';
 
 h2 {
   font-family: 'Raleway', Verdana, sans-serif;

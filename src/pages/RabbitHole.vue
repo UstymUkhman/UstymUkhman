@@ -901,8 +901,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'app-colors';
-@import 'z-index';
+@import 'variables';
 
 .rabbit-hole-page {
   background-color: $black;

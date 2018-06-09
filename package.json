@@ -8,9 +8,9 @@
     "build": "node build/build.js",
     "lint:js": "eslint --ext .js,.vue src",
     "lint:scss": "stylelint --syntax scss \"src/**/*.scss\" \"src/**/*.vue\"",
+    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
+    "start": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
     "locale:extract": "node node_modules/vue-webpack-gettext/extract --output locale/template.pot --src src",
-    "dev": "npm rebuild node-sass && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
-    "start": "npm rebuild node-sass && webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
     "locale:compile": "node node_modules/vue-webpack-gettext/compile --output src/assets/data/locale --src locale/translated --multiple"
   },
   "dependencies": {

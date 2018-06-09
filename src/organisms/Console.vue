@@ -34,8 +34,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'breakpoints';
-@import 'app-colors';
+@import 'variables';
 
 .main-window {
   position: absolute;

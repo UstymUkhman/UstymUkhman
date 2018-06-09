@@ -55,7 +55,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'app-colors';
+@import 'variables';
 
 .video-glitch-page {
   position: absolute;

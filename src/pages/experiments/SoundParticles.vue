@@ -96,9 +96,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'app-colors';
-@import 'z-index';
-@import 'easings';
+@import 'variables';
 
 .sound-particles-page {
   filter: sepia(10%);

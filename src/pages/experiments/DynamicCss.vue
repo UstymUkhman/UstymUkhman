@@ -99,8 +99,8 @@ export default {
 <style scoped lang="scss">
 @import '../../assets/css/dynamic.min.css';
 @import '~hover.css/scss/hover';
-@import 'breakpoints';
 @import 'animations';
+@import 'variables';
 
 .dynamic-css-page {
   overflow: hidden;

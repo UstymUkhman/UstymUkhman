@@ -80,10 +80,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'breakpoints';
-@import 'app-colors';
-@import 'z-index';
-@import 'easings';
+@import 'variables';
 
 .footer {
   position: fixed;

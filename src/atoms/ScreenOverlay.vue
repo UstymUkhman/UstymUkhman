@@ -9,8 +9,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import 'breakpoints';
-@import 'z-index';
+@import 'variables';
 
 .screen-overlay {
   background-image: url('../assets/img/overlay.png');
