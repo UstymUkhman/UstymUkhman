@@ -18,11 +18,12 @@ import AudioreactiveParticles from '@/3D/experiments/AudioreactiveParticles'
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import Particles from '@/3D/experiments/Particles'
 import TrackLabel from '@/atoms/TrackLabel'
+import Viewport from '@/mixins/Viewport'
 
 export default {
   name: 'FBOParticles',
 
-  mixins: [FirePrerenderEvent],
+  mixins: [Viewport, FirePrerenderEvent],
 
   components: {
     TrackLabel
@@ -32,6 +33,12 @@ export default {
     return {
       track: '/static/audio/faint.mp3',
       audioreactive: false
+    }
+  },
+
+  watch: {
+    viewPort () {
+      this.experiment.onResize()
     }
   },
 

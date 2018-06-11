@@ -43,10 +43,8 @@ export default class AudioreactiveParticles {
     this.createOrbitControls()
 
     this.image = new Image()
-    this.image.onload = this.createImage.bind(this)
-
     this.image.src = HEIGHT_MAP
-    this.bindEvents()
+    this.image.onload = this.createImage.bind(this)
   }
 
   createScene () {
@@ -165,10 +163,6 @@ export default class AudioreactiveParticles {
     this.frame = requestAnimationFrame(this.update.bind(this))
   }
 
-  bindEvents () {
-    window.addEventListener('resize', this.onResize.bind(this))
-  }
-
   onResize () {
     this.size = {
       width: window.innerWidth,
@@ -182,14 +176,12 @@ export default class AudioreactiveParticles {
   }
 
   destroy () {
-    window.removeEventListener('resize', this.onResize.bind(this))
-    cancelAnimationFrame(this.frame)
-
     this.audio._soundSource.pause()
     this.audio._soundSource.remove()
     this.audio._soundSource = null
     this.audio = null
 
+    cancelAnimationFrame(this.frame)
     this.container.removeChild(this.renderer.domElement)
   }
 }

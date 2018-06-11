@@ -92,7 +92,7 @@ export default class VideoGlitch {
     this.createControls()
     this.video.play()
 
-    this.resize()
+    this.onResize()
     this.render()
   }
 
@@ -383,26 +383,26 @@ export default class VideoGlitch {
     this.glitchUniforms.show.value = (this.effects.fixed || isSliding || isFading) ? 1 : 0
   }
 
-  resize (width = window.innerWidth, height = window.innerHeight) {
-    let _width = width
-    let _height = height
+  onResize () {
+    let _height = window.innerHeight
+    let _width = window.innerWidth
 
-    if (width > height) {
-      _height = width / 16 * 9
+    if (window.innerWidth > window.innerHeight) {
+      _height = window.innerWidth / 16 * 9
     } else {
-      _width = height / 9 * 16
+      _width = window.innerHeight / 9 * 16
     }
 
     this.video.width = _width
     this.video.height = _height
 
-    this.renderer.setSize(_width, _height)
+    if (this.renderer) {
+      this.renderer.setSize(_width, _height)
+    }
   }
 
   destroy () {
-    window.removeEventListener('resize', this.gui.__resizeHandler)
     cancelAnimationFrame(this.frame)
-
     this.gui.domElement.remove()
     delete this.gui
 

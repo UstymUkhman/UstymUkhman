@@ -354,8 +354,6 @@ export default class Particles {
     this.renderer.domElement.addEventListener('contextmenu', this.onMouseDown.bind(this))
     this.renderer.domElement.addEventListener('mousedown', this.onMouseDown.bind(this))
     this.renderer.domElement.addEventListener('mouseup', this.onMouseUp.bind(this))
-
-    window.addEventListener('resize', this.onResize.bind(this))
   }
 
   onMouseDown (event) {
@@ -408,7 +406,6 @@ export default class Particles {
     this.renderer.domElement.removeEventListener('mousedown', this.onMouseDown.bind(this))
     this.renderer.domElement.removeEventListener('mouseup', this.onMouseUp.bind(this))
 
-    window.removeEventListener('resize', this.onResize.bind(this))
     this.container.removeChild(this.renderer.domElement)
     cancelAnimationFrame(this.frame)
   }

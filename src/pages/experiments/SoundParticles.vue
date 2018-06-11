@@ -36,7 +36,7 @@ export default {
 
   watch: {
     viewPort () {
-      this.experiment.resize(this.viewPort.width, this.viewPort.height)
+      this.experiment.onResize()
     }
   },
 

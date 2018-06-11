@@ -190,9 +190,9 @@ export default class SoundParticles {
     this._audio.play(this._render.bind(this))
   }
 
-  resize (width, height) {
-    this._width = width
-    this._height = height
+  onResize () {
+    this._width = window.innerWidth
+    this._height = window.innerHeight
 
     this._ratio = this._width / this._height
     this._backgroundUniforms.aspect = this._ratio

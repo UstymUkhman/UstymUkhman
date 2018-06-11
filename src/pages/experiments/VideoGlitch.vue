@@ -16,7 +16,7 @@ export default {
 
   watch: {
     viewPort () {
-      this.glitch.resize(this.viewPort.width, this.viewPort.height)
+      this.glitch.onResize()
     }
   },
 
