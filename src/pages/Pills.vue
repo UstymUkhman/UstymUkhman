@@ -290,8 +290,6 @@ export default {
       this.runMatrixCode = true
 
       setTimeout(() => {
-        if (this.choice) Sounds.stopMusic()
-
         this.raining = false
         this.fadeOut = true
       }, 3500)
@@ -304,7 +302,7 @@ export default {
 
     render () {
       this.renderer.render(this.scene, this.camera)
-      this.frame = requestAnimationFrame(this.render.bind(this))
+      this.raf = requestAnimationFrame(this.render.bind(this))
     }
   },
 
@@ -322,8 +320,8 @@ export default {
   },
 
   beforeDestroy () {
-    Sounds.endSpeach(!this.choice)
-    cancelAnimationFrame(this.frame)
+    Sounds.endSpeach()
+    cancelAnimationFrame(this.raf)
     document.removeEventListener('keydown', this._onKeyDown, false)
   },
 

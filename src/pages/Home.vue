@@ -1,7 +1,9 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="home-page">
+    <ScreenAnimation v-if="visibleAnimation && !platform.prerenderer" @complete:animation="showConsoleMenu" />
+
     <transition appear>
-      <router-view @toggle:overlay="visibleOverlay = $event" class="page" />
+      <router-view v-show="!visibleAnimation" @hide:overlay="visibleOverlay = false" class="page" />
     </transition>
 
     <transition appear name="overlay">
@@ -11,32 +13,39 @@
 </template>
 
 <script>
+import ScreenAnimation from '@/atoms/ScreenAnimation'
 import ScreenOverlay from '@/atoms/ScreenOverlay'
-import Sounds from '@/utils/Sounds'
 import Platform from '@/platform'
 
 export default {
   name: 'Home',
 
   components: {
+    ScreenAnimation,
     ScreenOverlay
   },
 
   data () {
     return {
+      visibleAnimation: false,
       visibleOverlay: true,
       platform: Platform
     }
   },
 
-  mounted () {
-    setTimeout(() => {
-      const playMusic = this.$route.name !== 'Pills' && this.$route.name !== 'RabbitHole'
+  watch: {
+    $route (current, last) {
+      const restart = last.name === 'RabbitHole'
+      this.visibleAnimation = restart
+      this.visibleOverlay = !restart
+    }
+  },
 
-      if (!Platform.mobile && !Platform.prerenderer && playMusic) {
-        Sounds.playMusic()
-      }
-    }, 500)
+  methods: {
+    showConsoleMenu () {
+      this.visibleAnimation = false
+      this.visibleOverlay = true
+    }
   },
 
   metaInfo: {
@@ -47,7 +56,7 @@ export default {
 
 <style scoped lang="scss">
 .overlay-enter-active {
-  transition: opacity 0.1s 0.5s;
+  transition: opacity 0.1s 0.4s;
 }
 
 .overlay-leave-active {

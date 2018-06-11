@@ -738,7 +738,7 @@ export default {
         this.selectedDoor.pivot.rotation.y = 0
         this.$router.push({ name: experiment })
       } else {
-        Sounds.playMusic()
+        // Sounds.playMusic()
         Loading.checkActiveItem(true)
         this.$router.push({ name: 'Console' })
       }
@@ -835,7 +835,7 @@ export default {
   },
 
   beforeCreate () {
-    this.$emit('toggle:overlay', false)
+    this.$emit('hide:overlay')
   },
 
   mounted () {
@@ -888,7 +888,6 @@ export default {
   },
 
   beforeDestroy () {
-    this.$emit('toggle:overlay', true)
     cancelAnimationFrame(this.frame)
     this.removeEventListeners()
     this.controls = null
