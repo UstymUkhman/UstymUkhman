@@ -104,6 +104,8 @@ export default {
 
   .message-text {
     @include white-rabbit;
+
+    backface-visibility: hidden;
     position: absolute;
 
     @include breakpoint($sm-down) {

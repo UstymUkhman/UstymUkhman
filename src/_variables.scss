@@ -2,27 +2,18 @@
 @import 'breakpoint-sass';
 @include breakpoint-set('transform resolutions', false);
 
-$xs: 0 767px;
+$xs-screen : 768;
+$sm-screen : 992;
+$md-screen : 1200;
 
-$sm: 768px 991px;
-$sm-down: 0 991px;
+$desktop   : min-width 992px;
+$xs        : 0 $xs-screen - 1px;
 
-$md: 992px 1199px;
-$md-down: 0 1199px;
+$sm        : $xs-screen + 0px $sm-screen - 1px;
+$sm-down   : 0 $sm-screen - 1px;
 
-$lg: 1200px 1399px;
-$lg-down: 0 1399px;
-
-$mlg: 1400px 1699px;
-$mlg-down: 0 1699px;
-
-$xmlg: 1700px;
-$xmlg-down: 0 1700px;
-
-$xlg: 0 1800px;
-$xxlg: 2000px 5000px;
-
-$desktop: min-width 992px;
+$md        : $sm-screen + 0px $md-screen - 1px;
+$md-down   : 0 $md-screen - 1px;
 
 // colors
 
@@ -97,6 +88,6 @@ $pills  : 8;
 $rain   : 7;
 
 :export {
-  mobile: 992;
-  phone: 768;
+  mobile: $sm-screen;
+  phone: $xs-screen;
 }

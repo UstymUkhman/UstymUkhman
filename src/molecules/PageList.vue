@@ -1,14 +1,15 @@
 <template>
-  <div :style="{'-webkit-transform': 'translateY(' + listOffset + ')', 'transform': 'translateY(' + listOffset + ')'}"
-       @touchstart="onTouchStart" @touchmove="onTouchMove" @touchend="onKeyDown" class="list-area">
+  <div @touchstart="onTouchStart" @touchend="onTouchEnd" class="list-area">
+    <div class="list-container" :style="{'-webkit-transform': 'translateY(' + listOffset + ')', 'transform': 'translateY(' + listOffset + ')'}">
 
-    <div v-for="(page, p) in pagesList" :key="page.name" ref="urls" @touchend="onTouchend(p)"
-         class="page-container" :class="{'active': enableNavigation && (currentPage === p)}">
+      <div v-for="(page, p) in pagesList" :key="page.name" ref="urls" @click="onPageClick(p)"
+           class="page-container" :class="{'active': enableNavigation && (currentPage === p)}">
 
-      <span class="selected-page">{{cursor}}</span>
-      <p class="page-name">{{page.name}}</p>
-      <span v-if="p === emailIndex" class="e-mail"> - ustym.ukhman@gmail.com</span>
+        <span class="selected-page">{{cursor}}</span>
+        <p class="page-name">{{page.name}}</p>
+        <span v-if="p === emailIndex" class="e-mail"> - ustym.ukhman@gmail.com</span>
 
+      </div>
     </div>
   </div>
 </template>
@@ -51,15 +52,14 @@ export default {
 
   data () {
     return {
-      visibleList: (window.innerHeight * 0.14 + 18) * 5,
       currentPage: Platform.mobile ? null : 0,
-
-      listHeight: null,
-      listOffset: null,
-
       enableNavigation: false,
       skipLettering: false,
       touchStart: null,
+
+      scrollOffset: null,
+      listOffset: null,
+      listStep: null,
 
       pageIndex: -1,
       pagesList: []
@@ -68,12 +68,8 @@ export default {
 
   watch: {
     viewPort () {
-      const margin = this.viewPort.height * 0.14
-      const height = this.viewPort.width < phone ? 18 : 21
-
-      this.listStep = margin + height
-      this.listHeight = this.listStep * this.urls.length
-      this.listLength = this.listHeight + margin
+      this.listStep = this.viewPort.height * 0.14 + (this.viewPort.width < phone ? 18 : 21)
+      this.scrollOffset = (this.urls.length - 5) * -this.listStep
     }
   },
 
@@ -135,7 +131,7 @@ export default {
         setTimeout(() => {
           this.enableNavigation = true
           this.$emit('show:components')
-          this.listOffset = this.urls.length < 6 ? '-50%' : 0
+          this.listOffset = this.urls.length < 6 ? '-50%' : '0px'
         })
       }
     },
@@ -179,8 +175,7 @@ export default {
       this.$emit('update:index', this.currentPage)
 
       if (this.urls.length > 5) {
-        this.listOffset = (this.currentPage < this.lastPage)
-          ? `${this.currentPage * -this.listStep}px` : this.listOffset
+        this.listOffset = (this.currentPage < this.lastPage) ? `${this.currentPage * -this.listStep}px` : this.listOffset
       } else {
         this.listOffset = '-50%'
       }
@@ -213,18 +208,26 @@ export default {
       }
     },
 
-    onTouchMove ($event) {
-      if (this.urls.length > 5) {
-        const offset = $event.changedTouches[0].clientY
-        const distance = Math.max(0, this.touchStart - offset)
+    onTouchEnd ($event) {
+      this.onKeyDown($event)
 
-        if (this.visibleList + distance <= this.listLength) {
-          this.listOffset = `${-distance}px`
+      if (this.urls.length > 5) {
+        const distance = this.touchStart - $event.changedTouches[0].clientY
+        let scroll = +this.listOffset.slice(0, -2)
+        const direction = distance > 0 ? 3 : -3
+
+        if ((scroll <= this.scrollOffset && direction === 3) || (!scroll && direction === -3)) {
+          return
+        }
+
+        if (Math.abs(distance) > 100) {
+          scroll = scroll - this.listStep * direction
+          this.listOffset = `${+scroll.toFixed(1)}px`
         }
       }
     },
 
-    onTouchend (page) {
+    onPageClick (page) {
       this.currentPage = page
       setTimeout(() => { this.openPageUrl(page) }, 400)
     }
@@ -248,21 +251,43 @@ export default {
 @import 'mixins';
 
 .list-area {
-  transition: transform 0.5s $ease-out-sine;
-  backface-visibility: hidden;
-  position: absolute;
+  padding-left: 100px;
+  position: fixed;
+  margin: auto;
+
+  height: 100%;
+  width: 100%;
 
   bottom: 0;
+  right: 0;
+  left: 0;
   top: 0;
 
-  @include breakpoint($sm-down) {
-    transition-duration: 250ms;
+  @include breakpoint($md) {
     padding-left: 50px;
-    width: 100%;
   }
 
-  @include breakpoint($xs) {
-    padding-left: 25px;
+  @include breakpoint($sm-down) {
+    pointer-events: all;
+    padding-left: 0;
+  }
+
+  .list-container {
+    transition: transform 0.5s $ease-out-sine;
+    backface-visibility: hidden;
+    position: absolute;
+
+    bottom: 0;
+    top: 0;
+
+    @include breakpoint($sm-down) {
+      padding-left: 50px;
+      width: 100%;
+    }
+
+    @include breakpoint($xs) {
+      padding-left: 25px;
+    }
   }
 }
 

@@ -62,8 +62,6 @@ export default {
 
 .my-works-page {
   background-color: $black;
-  padding-left: 100px;
-
   position: absolute;
   overflow: hidden;
   z-index: 2;
@@ -76,13 +74,8 @@ export default {
   left: 0;
   top: 0;
 
-  @include breakpoint($md) {
-    padding-left: 50px;
-  }
-
   @include breakpoint($sm-down) {
     overflow: visible;
-    padding-left: 0;
   }
 
   &.small-list {

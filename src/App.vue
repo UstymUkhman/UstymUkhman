@@ -115,6 +115,7 @@ html {
   text-size-adjust: none;
   font-weight: 400;
 
+  backface-visibility: hidden;
   background-color: $black;
   appearance: none;
   color: $green;

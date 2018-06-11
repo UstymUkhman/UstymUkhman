@@ -39,7 +39,7 @@ export default {
 
       if (this.radius > 0) {
         this.drawCircle()
-        requestAnimationFrame(this.animate.bind(this))
+        this.raf = requestAnimationFrame(this.animate.bind(this))
       } else {
         this.$emit('complete:animation')
       }
