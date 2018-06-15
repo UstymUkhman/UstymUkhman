@@ -203,7 +203,7 @@ export default {
 
       anime({
         targets: this.redPill.scale,
-        easing: 'linear',
+        easing: 'easeInQuad',
         duration: 500,
         x: scaleRed,
         y: scaleRed,
@@ -219,7 +219,7 @@ export default {
 
       anime({
         targets: this.bluePill.scale,
-        easing: 'linear',
+        easing: 'easeInQuad',
         duration: 500,
         x: scaleBlue,
         y: scaleBlue,
@@ -239,16 +239,16 @@ export default {
         anime({
           complete: this.faceChosenPill.bind(this),
           targets: this.redPill.position,
-          easing: 'linear',
-          duration: 500,
+          easing: 'easeOutQuad',
+          duration: 800,
           x: 0,
           z: 5
         })
 
         anime({
           targets: this.redPill.rotation,
-          easing: 'linear',
-          duration: 500,
+          easing: 'easeOutQuad',
+          duration: 800,
           y: 0.7875,
           z: 1.525
         })
@@ -263,16 +263,16 @@ export default {
         anime({
           complete: this.faceChosenPill.bind(this),
           targets: this.bluePill.position,
-          easing: 'linear',
-          duration: 500,
+          easing: 'easeOutQuad',
+          duration: 800,
           x: 0,
           z: 5
         })
 
         anime({
           targets: this.bluePill.rotation,
-          easing: 'linear',
-          duration: 500,
+          easing: 'easeOutQuad',
+          duration: 800,
           y: -1.5,
           z: -0.9
         })

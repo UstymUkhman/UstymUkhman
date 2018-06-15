@@ -49,7 +49,6 @@ import { SpotLight } from '@three/lights/SpotLight'
 
 import { Raycaster } from '@three/core/Raycaster'
 import { Object3D } from '@three/core/Object3D'
-import { Clock } from '@three/core/Clock'
 
 import { Vector2 } from '@three/math/Vector2'
 import { Color } from '@three/math/Color'
@@ -66,6 +65,7 @@ import load from '@/3D/utils/assetsLoader'
 import Viewport from '@/mixins/Viewport'
 import Platform from '@/platform'
 import to from 'await-to-js'
+import anime from 'animejs'
 
 import FRONT_CEILING from '@/3D/assets/textures/front_ceiling.jpg'
 import SIDE_CEILING from '@/3D/assets/textures/side_ceiling.jpg'
@@ -114,7 +114,7 @@ export default {
       experiment: false,
       rightDoor: false,
       pressed: false,
-      intro: false,
+      // intro: false,
       exit: false,
       ready: false,
       error: false,
@@ -559,12 +559,26 @@ export default {
     },
 
     createCinematicIntro () {
-      setTimeout(() => {
-        this.intro = true
-      }, 1000)
+      anime({
+        easing: 'easeInOutQuad',
+        targets: this.camera,
+        duration: 4000,
+        delay: 1000,
+        fov: 50,
 
-      this.clock = new Clock()
-      this.elapsedSpeed = 4.0
+        update: () => {
+          this.camera.updateProjectionMatrix()
+        },
+
+        complete: () => {
+          this.introStarted = false
+          this.introPlayed = true
+
+          if (this.controls.isFullscreen()) {
+            this.controls.enable(true)
+          }
+        }
+      })
     },
 
     createRenderer () {
@@ -592,21 +606,8 @@ export default {
     },
 
     animate () {
-      this.frame = requestAnimationFrame(this.animate.bind(this))
-      this.renderer.render(this.scene, this.camera)
-
-      if (this.intro) {
-        this.animateCameraIntro()
-
-        this.controls.exitFullscreenCallback(() => {
-          this.controls.enable(false)
-          this.exitFullscreenMode()
-        })
-      } else {
-        this.checkFocusDirection()
-      }
-
       if (this.controls && this.introPlayed) {
+        this.checkFocusDirection()
         this.controls.update()
       }
 
@@ -618,34 +619,9 @@ export default {
 
         this.lightFadeIn()
       }
-    },
 
-    animateCameraIntro () {
-      this.camera.fov = this.getCameraFov()
-
-      if (this.camera.fov === 50) {
-        this.introStarted = false
-        this.introPlayed = true
-        this.intro = false
-
-        if (this.controls.isFullscreen()) {
-          this.controls.enable(true)
-        }
-      }
-
-      this.renderer.setViewport(0, 0, this.viewPort.width, this.viewPort.height)
-      this.renderer.setScissor(0, 0, this.viewPort.width, this.viewPort.height)
-      this.camera.updateProjectionMatrix()
-    },
-
-    getCameraFov () {
-      this.elapsedSpeed += this.camera.fov < 20 ? 0.01 : 0.06
-
-      const elapsedTime = this.clock.getElapsedTime()
-      const zoomSpeed = elapsedTime * this.elapsedSpeed
-      const cameraFov = zoomSpeed + 7
-
-      return (cameraFov < 50) ? cameraFov : 50
+      this.renderer.render(this.scene, this.camera)
+      this.frame = requestAnimationFrame(this.animate.bind(this))
     },
 
     checkFocusDirection () {
@@ -823,6 +799,11 @@ export default {
       document.addEventListener('mouseup', this._onMouseUp, false)
       document.addEventListener('keydown', this._onKeyDown, false)
       window.addEventListener('blur', this._onBlur, false)
+
+      this.controls.exitFullscreenCallback(() => {
+        this.controls.enable(false)
+        this.exitFullscreenMode()
+      })
     },
 
     removeEventListeners () {
@@ -890,7 +871,7 @@ export default {
   beforeDestroy () {
     cancelAnimationFrame(this.frame)
     this.removeEventListeners()
-    this.controls = null
+    delete this.controls
   },
 
   metaInfo: {

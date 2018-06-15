@@ -11,8 +11,10 @@ export default class Sounds {
   }
 
   static endSpeach () {
-    this.speach.pause()
-    delete this.speach
+    if (this.speach) {
+      this.speach.pause()
+      delete this.speach
+    }
   }
 
   static openedDoor () {
