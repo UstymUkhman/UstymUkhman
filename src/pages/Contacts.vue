@@ -25,12 +25,13 @@
 </template>
 
 <script>
+import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import ExternalPages from '@/mixins/ExternalPages'
 
 export default {
   name: 'Contacts',
 
-  mixins: [ExternalPages],
+  mixins: [ExternalPages, FirePrerenderEvent],
 
   metaInfo: {
     title: 'Contacts |'

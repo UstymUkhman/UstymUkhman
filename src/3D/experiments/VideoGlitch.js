@@ -57,6 +57,7 @@ export default class VideoGlitch {
     this.video.src = `/static/video/${file}.mp4`
 
     this.video.loop = true
+    this.video.muted = true
     this.video.preload = true
 
     this.video.width = this.width

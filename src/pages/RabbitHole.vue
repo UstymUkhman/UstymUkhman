@@ -53,6 +53,7 @@ import { Object3D } from '@three/core/Object3D'
 import { Vector2 } from '@three/math/Vector2'
 import { Color } from '@three/math/Color'
 
+import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import Experiments from '@/assets/data/experiments.json'
 import ScreenOverlay from '@/atoms/ScreenOverlay'
 
@@ -93,7 +94,7 @@ const WHITE = 0xFFFFFF
 export default {
   name: 'RabbitHole',
 
-  mixins: [Viewport],
+  mixins: [Viewport, FirePrerenderEvent],
 
   components: {
     ScreenOverlay
@@ -114,7 +115,6 @@ export default {
       experiment: false,
       rightDoor: false,
       pressed: false,
-      // intro: false,
       exit: false,
       ready: false,
       error: false,
@@ -562,7 +562,7 @@ export default {
       anime({
         easing: 'easeInOutQuad',
         targets: this.camera,
-        duration: 4000,
+        duration: 5000,
         delay: 1000,
         fov: 50,
 
@@ -613,8 +613,9 @@ export default {
 
       if (this.exit) {
         if (this.fadeOut) {
-          cancelAnimationFrame(this.frame)
           setTimeout(this.gotoNextPage.bind(this), 1500)
+          cancelAnimationFrame(this.frame)
+          return
         }
 
         this.lightFadeIn()
@@ -652,8 +653,8 @@ export default {
       }
 
       if (this.pressed && door.pivot.rotation.y < 1.56) {
-        if (!door.pivot.rotation.y) {
-          if (this.playDoorSound(door.door.index)) return
+        if (!door.pivot.rotation.y && this.playDoorSound(door.door.index)) {
+          return
         }
 
         door.pivot.rotation.y += 0.01
@@ -714,7 +715,6 @@ export default {
         this.selectedDoor.pivot.rotation.y = 0
         this.$router.push({ name: experiment })
       } else {
-        // Sounds.playMusic()
         Loading.checkActiveItem(true)
         this.$router.push({ name: 'Console' })
       }

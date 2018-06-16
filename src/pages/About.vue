@@ -15,12 +15,15 @@
 </template>
 
 <script>
+import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import BackButton from '@/atoms/BackButton'
 import Lettering from '@/utils/Lettering'
 import Platform from '@/platform'
 
 export default {
   name: 'About',
+
+  mixins: [FirePrerenderEvent],
 
   components: {
     BackButton

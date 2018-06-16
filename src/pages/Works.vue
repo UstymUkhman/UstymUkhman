@@ -31,13 +31,14 @@
 </template>
 
 <script>
+import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import ExternalPages from '@/mixins/ExternalPages'
 import Platform from '@/platform'
 
 export default {
   name: 'Works',
 
-  mixins: [ExternalPages],
+  mixins: [ExternalPages, FirePrerenderEvent],
 
   data () {
     return {

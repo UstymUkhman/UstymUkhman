@@ -3,7 +3,11 @@
     <ScreenAnimation v-if="visibleAnimation && !platform.prerenderer" @complete:animation="showConsoleMenu" />
 
     <transition appear>
-      <router-view v-show="!visibleAnimation" @hide:overlay="visibleOverlay = false" class="page" />
+      <router-view
+        v-show="!visibleAnimation"
+        @hide:overlay="visibleOverlay = false"
+        :skip="skipIntro" class="page"
+      />
     </transition>
 
     <transition appear name="overlay">
@@ -13,12 +17,15 @@
 </template>
 
 <script>
+import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import ScreenAnimation from '@/atoms/ScreenAnimation'
 import ScreenOverlay from '@/atoms/ScreenOverlay'
 import Platform from '@/platform'
 
 export default {
   name: 'Home',
+
+  mixins: [FirePrerenderEvent],
 
   components: {
     ScreenAnimation,
@@ -29,7 +36,8 @@ export default {
     return {
       visibleAnimation: false,
       visibleOverlay: true,
-      platform: Platform
+      platform: Platform,
+      skipIntro: false
     }
   },
 
@@ -38,6 +46,7 @@ export default {
       const restart = last.name === 'RabbitHole'
       this.visibleAnimation = restart
       this.visibleOverlay = !restart
+      this.skipIntro = restart
     }
   },
 

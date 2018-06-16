@@ -28,13 +28,13 @@ import { SpotLight } from '@three/lights/SpotLight'
 import { SmoothShading } from '@three/constants.js'
 import PILL from '@/3D/assets/models/pill.json'
 
+import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import MatrixRain from '@/molecules/MatrixRain'
 import MatrixCode from '@/molecules/MatrixCode'
 
 import load from '@/3D/utils/assetsLoader'
 import Viewport from '@/mixins/Viewport'
 import Loading from '@/utils/Loading'
-import Sounds from '@/utils/Sounds'
 
 import Platform from '@/platform'
 import to from 'await-to-js'
@@ -43,7 +43,7 @@ import anime from 'animejs'
 export default {
   name: 'Pills',
 
-  mixins: [Viewport],
+  mixins: [Viewport, FirePrerenderEvent],
 
   components: {
     MatrixRain,
@@ -58,9 +58,7 @@ export default {
       renderer: null,
 
       redPill: null,
-      // showRed: false,
       bluePill: null,
-      // showBlue: false,
 
       choice: true,
       fadeOut: false,
@@ -104,10 +102,6 @@ export default {
       light = new SpotLight(0xFFFFFF, 1, 100, 1, 0, 1)
       light.position.set(-25, 25, 5)
       this.scene.add(light)
-    },
-
-    createSpeech () {
-      Sounds.playSpeach()
     },
 
     createRenderer () {
@@ -311,7 +305,6 @@ export default {
       this.createScene()
       this.createCamera()
       this.createLights()
-      this.createSpeech()
       this.createRenderer()
 
       this.createPill(0x003FFF)
@@ -320,7 +313,6 @@ export default {
   },
 
   beforeDestroy () {
-    Sounds.endSpeach()
     cancelAnimationFrame(this.raf)
     document.removeEventListener('keydown', this._onKeyDown, false)
   },

@@ -2,7 +2,7 @@
   <div class="experiments" v-scroll-container:experiments>
     <div v-for="(experiment, e) in experiments" :key="experiment.name"
          class="experiment" :class="{'right': !!(e % 2), 'in-view': e < 4}"
-         :style="{'height': previewHeight}" v-scroll-element:experiments>
+         :style="{'height': previewHeight + 'px'}" v-scroll-element:experiments>
 
       <ExperimentPreview
         @mouse:over="$emit('obscure:background', $event)"
@@ -43,7 +43,7 @@ export default {
       const _width = this.viewPort.width
       const width = (_width < mobile) ? _width : _width / 2
 
-      return `${width / 16 * 9}px`
+      return width / 16 * 9
     }
   }
 }
@@ -79,12 +79,18 @@ export default {
   @include breakpoint($sm-down) {
     transition: transform 0.5s $ease-out-quart, opacity 0.3s 0.1s;
     transform: translateY(100%);
+
+    display: block;
     width: 100%;
 
     @for $i from 1 through 3 {
       &:nth-child(#{$i}) {
         transition: none;
       }
+    }
+
+    &:last-child {
+      margin-bottom: 20px;
     }
 
     &.right {

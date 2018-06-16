@@ -1,8 +1,8 @@
 <template>
   <div class="main-window">
     <div class="console">
-      <WrittenMessage v-if="!showMenu" @ready:console="showMenu = true" />
-      <SiteMenu v-else :activeItem="lastActiveItem" />
+      <WrittenMessage v-if="!showMenu && !skip" @ready:console="showMenu = true" />
+      <SiteMenu v-else :wait="skip ? 2000 : 500" :activeItem="lastActiveItem" />
     </div>
   </div>
 </template>
@@ -18,6 +18,14 @@ export default {
   components: {
     WrittenMessage,
     SiteMenu
+  },
+
+  props: {
+    skip: {
+      type: Boolean,
+      default: false,
+      required: false
+    }
   },
 
   data () {

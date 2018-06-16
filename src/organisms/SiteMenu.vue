@@ -42,6 +42,12 @@ export default {
   },
 
   props: {
+    wait: {
+      type: Number,
+      default: 500,
+      required: false
+    },
+
     activeItem: {
       default: null,
       required: false
@@ -141,7 +147,7 @@ export default {
     setTimeout(() => {
       this.items = this.$refs.items
       this.showMenuItems()
-    }, 500)
+    }, this.wait)
   }
 }
 </script>

@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import ScreenOverlay from '@/atoms/ScreenOverlay'
 import SiteHeader from '@/organisms/SiteHeader'
 import SiteFooter from '@/organisms/SiteFooter'
@@ -27,6 +28,8 @@ import Platform from '@/platform'
 
 export default {
   name: 'Experiments',
+
+  mixins: [FirePrerenderEvent],
 
   components: {
     ScreenOverlay,
@@ -70,6 +73,7 @@ export default {
 @import 'variables';
 
 .experiments-page {
+  -webkit-overflow-scrolling: touch;
   cursor: auto;
 
   .screen-overlay {

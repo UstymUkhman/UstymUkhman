@@ -1,3 +1,4 @@
+import Sounds from '@/utils/Sounds'
 import Platform from '@/platform'
 
 export default class Loading {
@@ -7,6 +8,11 @@ export default class Loading {
 
     routes.push(experiments ? 'Experiments' : 'Pills')
     this.activeItem = item
+
+    if (item === 3 && !experiments) {
+      setTimeout(Sounds.playSpeach.bind(Sounds), 500)
+    }
+
     return routes[item]
   }
 
