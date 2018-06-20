@@ -83,6 +83,11 @@ const routes = [
         component: () => import(/* webpackChunkName: "fbo-particles" */ './pages/experiments/FBOParticles')
       },
       {
+        path: 'ColorGrading',
+        name: 'ColorGrading',
+        component: () => import(/* webpackChunkName: "color-grading" */ './pages/experiments/ColorGrading')
+      },
+      {
         path: '*',
         redirect: to => { return '/experiments' }
       }

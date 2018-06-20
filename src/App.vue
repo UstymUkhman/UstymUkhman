@@ -222,6 +222,10 @@ canvas {
     left: 0;
     top: 0;
   }
+
+  .color-grading-page & {
+    position: relative;
+  }
 }
 
 br::selection {

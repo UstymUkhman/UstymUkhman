@@ -4,10 +4,11 @@
 
     <ScreenOverlay v-if="!platform.prerenderer" :class="{'obscured': obscured}" />
 
-    <SiteHeader v-if="currentPage" :page="currentPage" :scroll="scrollable" />
+    <SiteHeader v-if="currentPage" :page="currentPage" :scroll="scrollable" :experiment="currentExperiment" />
 
     <transition appear>
       <router-view
+        @set:experiment="currentExperiment = $event"
         @obscure:background="obscured = $event"
         @update:title="currentPage = $event"
         class="page experiment-page"
@@ -41,6 +42,7 @@ export default {
   data () {
     return {
       scrollable: this.$route.name === 'DynamicCss',
+      currentExperiment: null,
       platform: Platform,
 
       currentPage: null,

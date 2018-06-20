@@ -44,14 +44,26 @@ export default {
       type: Boolean,
       default: false,
       required: false
+    },
+
+    experiment: {
+      type: Object,
+      default: null,
+      required: false
     }
   },
 
   data () {
     return {
-      visible: !Platform.mobile,
       experiments: Experiments,
-      currentExperiment: null
+      visible: !Platform.mobile,
+      currentExperiment: this.experiment
+    }
+  },
+
+  watch: {
+    experiment () {
+      this.currentExperiment = this.experiment
     }
   },
 
