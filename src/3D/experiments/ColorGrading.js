@@ -23,6 +23,8 @@ import Warm from '@/3D/assets/lut-tables/Warm.png'
 import Night1 from '@/3D/assets/lut-tables/Night1.png'
 import Night2 from '@/3D/assets/lut-tables/Night2.png'
 import Night3 from '@/3D/assets/lut-tables/Night3.png'
+import SunSet from '@/3D/assets/lut-tables/SunSet.jpg'
+import Evening from '@/3D/assets/lut-tables/Evening.png'
 import Filmic1 from '@/3D/assets/lut-tables/Filmic1.png'
 import Filmic2 from '@/3D/assets/lut-tables/Filmic2.png'
 import Filmic3 from '@/3D/assets/lut-tables/Filmic3.png'
@@ -38,6 +40,8 @@ import CandleLight from '@/3D/assets/lut-tables/CandleLight.png'
 import MatrixGreen from '@/3D/assets/lut-tables/MatrixGreen.png'
 import MissEtikate from '@/3D/assets/lut-tables/MissEtikate.png'
 import StrongAmber from '@/3D/assets/lut-tables/StrongAmber.png'
+import YellowToRed from '@/3D/assets/lut-tables/YellowToRed.png'
+import StrongYellow from '@/3D/assets/lut-tables/StrongYellow.png'
 import BleachBypass from '@/3D/assets/lut-tables/BleachBypass.png'
 import CoolContrast from '@/3D/assets/lut-tables/CoolContrast.png'
 import WarmContrast from '@/3D/assets/lut-tables/WarmContrast.png'
@@ -164,7 +168,6 @@ export default class ColorGrading {
   createTables () {
     const lutTables = {
       Standard: Standard,
-      Fall: Fall,
 
       Filmic1: Filmic1,
       Filmic2: Filmic2,
@@ -183,10 +186,16 @@ export default class ColorGrading {
       MatrixBlue: MatrixBlue,
       MatrixGreen: MatrixGreen,
 
+      Fall: Fall,
+      SunSet: SunSet,
+      Evening: Evening,
+
       Warm: Warm,
       WarmContrast: WarmContrast,
 
       StrongAmber: StrongAmber,
+      YellowToRed: YellowToRed,
+      StrongYellow: StrongYellow,
       CandleLight: CandleLight,
       CoolContrast: CoolContrast,
       BleachBypass: BleachBypass,
