@@ -1,5 +1,5 @@
 #include ../blend.glsl;
-#include ../random.glsl;
+#include ../utils.glsl;
 
 precision highp float;
 

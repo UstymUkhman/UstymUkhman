@@ -1,5 +1,10 @@
 [
   {
+    "github": "https://github.com/UstymUkhman/video-transition",
+    "route": "VideoTransition",
+    "name": "VideoTransition"
+  },
+  {
     "github": "https://github.com/UstymUkhman/fbo-particles",
     "route": "FBOParticles",
     "name": "FBOParticles"

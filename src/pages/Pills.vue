@@ -96,7 +96,6 @@ export default {
 
       let light = new DirectionalLight(0xFFFFFF, 0.5)
       light.position.set(25, 50, -50)
-      light.castShadow = true
       this.scene.add(light)
 
       light = new SpotLight(0xFFFFFF, 1, 100, 1, 0, 1)

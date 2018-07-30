@@ -91,8 +91,6 @@ const PI_2 = Math.PI / 2
 const GREEN = 0x496F61
 const WHITE = 0xFFFFFF
 
-console.log(DOOR_WALL)
-
 export default {
   name: 'RabbitHole',
 
