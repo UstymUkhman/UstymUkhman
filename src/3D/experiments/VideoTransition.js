@@ -4,6 +4,7 @@ import fragTransition from '@/3D/glsl/VideoTransition/transition.frag'
 export default class VideoTransition {
   constructor (planeElement) {
     this.pixelRatio = window.devicePixelRatio || 1.0
+    this.curtains = new window.Curtains('canvas')
     this.planeElement = planeElement
 
     this.mouseLastPosition = { x: 0, y: 0 }
@@ -17,7 +18,7 @@ export default class VideoTransition {
     this.mouseDelta = 0
     this.offsetTop = 0
 
-    this.plane = new window.Curtains('canvas').addPlane(this.planeElement, {
+    this.plane = this.curtains.addPlane(this.planeElement, {
       fragmentShader: fragTransition,
       vertexShader: vertTransition,
 
@@ -79,9 +80,7 @@ export default class VideoTransition {
           value: 0
         }
       }
-    })
-
-    this.plane.onReady(this.onPlaneReady.bind(this)).onRender(this.onPlaneRender.bind(this))
+    }).onReady(this.onPlaneReady.bind(this)).onRender(this.onPlaneRender.bind(this))
 
     planeElement.children[1].addEventListener('canplay', this.onReady.bind(this))
     planeElement.children[1].addEventListener('canplay', this.onReady.bind(this))
@@ -90,9 +89,27 @@ export default class VideoTransition {
   onPlaneReady () {
     this.plane.setPerspective(35)
 
+    this.planeElement.addEventListener('mouseout', this.onMouseOut.bind(this))
     this.planeElement.addEventListener('mousemove', this.onMouseMove.bind(this))
     this.planeElement.addEventListener('mouseup', this.toggleActiveTexture.bind(this))
     this.planeElement.addEventListener('mousedown', this.toggleActiveTexture.bind(this))
+  }
+
+  onMouseOut () {
+    this.plane.uniforms.transitionTimer.value = 0
+    this.plane.uniforms.strength.value = 0
+    this.plane.uniforms.time.value = 0
+
+    this.mouseLastPosition = { x: 0, y: 0 }
+    this.mousePosition = { x: 0, y: 0 }
+
+    this.activeTexture = false
+    this.cliccked = false
+
+    this.transitionTimer = 0
+    this.loadedVideos = 0
+    this.mouseDelta = 0
+    this.offsetTop = 0
   }
 
   onMouseMove (event) {
@@ -179,6 +196,7 @@ export default class VideoTransition {
 
   destroy () {
     this.planeElement = null
+    this.curtains.dispose()
     delete this.plane
   }
 }
