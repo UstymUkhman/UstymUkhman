@@ -4,6 +4,11 @@ export default {
       viewPort: {
         width: window.innerWidth,
         height: window.innerHeight
+      },
+
+      videoViewPort: {
+        width: window.innerWidth,
+        height: window.innerHeight
       }
     }
   },
@@ -28,9 +33,23 @@ export default {
 
   methods: {
     __updateViewPort: function () {
+      let height = window.innerHeight
+      let width = window.innerWidth
+
+      if (window.innerWidth > window.innerHeight) {
+        height = window.innerWidth / 16 * 9
+      } else {
+        width = window.innerHeight / 9 * 16
+      }
+
       this.viewPort = {
         width: window.innerWidth,
         height: window.innerHeight
+      }
+
+      this.videoViewPort = {
+        width: width,
+        height: height
       }
     }
   }

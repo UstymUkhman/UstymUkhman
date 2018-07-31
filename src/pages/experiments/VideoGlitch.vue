@@ -15,8 +15,8 @@ export default {
   mixins: [Viewport, FirePrerenderEvent],
 
   watch: {
-    viewPort () {
-      this.glitch.onResize()
+    videoViewPort () {
+      this.glitch.onResize(this.videoViewPort.width, this.videoViewPort.height)
     }
   },
 

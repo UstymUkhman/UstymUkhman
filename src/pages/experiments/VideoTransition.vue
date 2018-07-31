@@ -22,8 +22,8 @@ export default {
   mixins: [Viewport, FirePrerenderEvent],
 
   watch: {
-    viewPort () {
-      this.transition.onResize()
+    videoViewPort () {
+      this.transition.onResize(this.videoViewPort.width, this.videoViewPort.height)
     }
   },
 
@@ -69,16 +69,17 @@ export default {
   }
 
   .canvas-plane {
+    transform: translate(-50%, -50%);
     position: absolute;
+
+    cursor: none;
     margin: auto;
 
-    height: 45vw;
-    width: 80vw;
+    height: 100%;
+    width: 100%;
 
-    bottom: 0;
-    right: 0;
-    left: 0;
-    top: 0;
+    left: 50%;
+    top: 50%;
 
     img,
     video {
