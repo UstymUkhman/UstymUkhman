@@ -1,10 +1,12 @@
 import vertTransition from '@/3D/glsl/VideoTransition/transition.vert'
 import fragTransition from '@/3D/glsl/VideoTransition/transition.frag'
 
+import Curtains from 'curtainsjs'
+
 export default class VideoTransition {
   constructor (planeElement) {
     this.pixelRatio = window.devicePixelRatio || 1.0
-    this.curtains = new window.Curtains('canvas')
+    this.curtains = new Curtains('canvas')
     this.planeElement = planeElement
 
     this.mouseLastPosition = { x: 0, y: 0 }

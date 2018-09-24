@@ -15,4 +15,5 @@ for (let i = 0; i < experiments.length; i++) {
 }
 
 routes.push('/experiments/ColorGrading')
+routes.push('/experiments/FaceTracking')
 module.exports = routes

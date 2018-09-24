@@ -2930,6 +2930,10 @@ currently-unhandled@^0.4.1:
   dependencies:
     array-find-index "^1.0.1"
 
+curtainsjs@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/curtainsjs/-/curtainsjs-1.2.0.tgz#009f4a45021cf6a3ebe5f35b56a88750de35fa2c"
+
 cwise-compiler@^1.0.0, cwise-compiler@^1.1.1, cwise-compiler@^1.1.2:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/cwise-compiler/-/cwise-compiler-1.1.3.tgz#f4d667410e850d3a313a7d2db7b1e505bb034cc5"
@@ -5839,6 +5843,10 @@ lodash.clonedeep@^4.3.2:
 lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
+
+lodash.find@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/lodash.find/-/lodash.find-4.6.0.tgz#cb0704d47ab71789ffa0de8b97dd926fb88b13b1"
 
 lodash.isplainobject@^4.0.6:
   version "4.0.6"
@@ -9355,9 +9363,9 @@ three-full@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/three-full/-/three-full-6.0.0.tgz#92f664dd4761e01233ba869782d50787fdd0baeb"
 
-threejs-glsl-loader@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/threejs-glsl-loader/-/threejs-glsl-loader-1.0.3.tgz#a5bba0792b5f5a06e8d37849de13a840c4bae3c6"
+threejs-glsl-loader@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/threejs-glsl-loader/-/threejs-glsl-loader-1.0.4.tgz#b6b11f64c3783619029861c5e89ca322ec8b0525"
   dependencies:
     loader-utils "^1.1.0"
     string-replace-async "^1.2.1"

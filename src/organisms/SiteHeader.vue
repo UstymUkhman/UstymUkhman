@@ -23,7 +23,7 @@ import HeaderButtons from '@/molecules/HeaderButtons'
 import PageTitle from '@/atoms/PageTitle'
 
 import Platform from '@/platform'
-import find from 'lodash/find'
+import find from 'lodash.find'
 
 export default {
   name: 'SiteHeader',
