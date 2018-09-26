@@ -1,7 +1,7 @@
 <template>
   <section class="menu-section" :class="{'menu-section-background': activeItem !== false}">
     <transition appear name="fade-out">
-      <div v-if="visible" class="menu-area menu-items" :class="{'hidden': hiddenItems}">
+      <div v-if="visible" class="menu-items" :class="{'hidden': hiddenItems}">
         <div v-for="(page, p) in pages" :key="p" class="button-border">
 
           <div ref="items" class="button-box" :class="{'active': p === currentItem && !hiddenItems, 'selected': p === settedSection}">
@@ -14,9 +14,11 @@
     </transition>
 
     <transition appear name="fade-out">
-      <div v-if="visible && showRain" class="menu-area matrix-rain">
+      <!-- <div v-if="visible && showRain" class="matrix-rain">
         <MatrixRain />
-      </div>
+      </div> -->
+
+      <CanvasMatrixCode v-if="visible && showRain" :ratio="2" class="matrix-rain" />
     </transition>
 
     <div class="matrix-code">
@@ -26,6 +28,8 @@
 </template>
 
 <script>
+import CanvasMatrixCode from '@/molecules/CanvasMatrixCode'
+
 import MatrixRain from '@/molecules/MatrixRain'
 import MatrixCode from '@/molecules/MatrixCode'
 
@@ -37,6 +41,7 @@ export default {
   name: 'SiteMenu',
 
   components: {
+    CanvasMatrixCode,
     MatrixRain,
     MatrixCode
   },
@@ -167,13 +172,13 @@ export default {
   left: 0;
   top: 0;
 
-  @include breakpoint($sm-down) {
-    .menu-area {
-      position: absolute;
-      z-index: $pills;
-      width: 100%;
-    }
-  }
+  // @include breakpoint($sm-down) {
+  //   .menu-area {
+  //     position: absolute;
+  //     z-index: $pills;
+  //     width: 100%;
+  //   }
+  // }
 
   &-background {
     background-color: $black;
@@ -190,10 +195,14 @@ export default {
 
     @include breakpoint($sm-down) {
       transform: translateY(-50%);
+      position: absolute;
       overflow: hidden;
+      z-index: $pills;
 
       margin-left: 0;
       height: auto;
+
+      width: 100%;
       top: 50%;
     }
 
@@ -224,25 +233,30 @@ export default {
   }
 
   .matrix-rain {
-    pointer-events: none;
-    position: absolute;
-    right: auto;
-    left: 50%;
-
-    height: 100%;
-    width: 50%;
-
-    bottom: 0;
-    top: 0;
-
-    @include breakpoint($sm-down) {
-      overflow: hidden;
-      width: 100%;
-
-      right: 0;
-      left: 0;
-    }
+    left: auto;
+    right: 0;
   }
+
+  // .matrix-rain {
+  //   pointer-events: none;
+  //   position: absolute;
+  //   right: auto;
+  //   left: 50%;
+
+  //   height: 100%;
+  //   width: 50%;
+
+  //   bottom: 0;
+  //   top: 0;
+
+  //   @include breakpoint($sm-down) {
+  //     overflow: hidden;
+  //     width: 100%;
+
+  //     right: 0;
+  //     left: 0;
+  //   }
+  // }
 
   .matrix-code {
     pointer-events: none;

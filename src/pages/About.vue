@@ -1,6 +1,8 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="about-me-page">
-    <transition appear name="description">
+    <CanvasMatrixCode />
+
+    <!-- <transition appear name="description">
       <p v-if="!goToMenu" ref="text" itemprop="text" class="about-description">
         {{ aboutDescription }}
       </p>
@@ -10,15 +12,17 @@
       v-if="showBackButton"
       :active="activeBackButton"
       :backToMenu.sync="goToMenu"
-    />
+    /> -->
   </article>
 </template>
 
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import BackButton from '@/atoms/BackButton'
-import Lettering from '@/utils/Lettering'
+// import Lettering from '@/utils/Lettering'
 import Platform from '@/platform'
+
+import CanvasMatrixCode from '@/molecules/CanvasMatrixCode'
 
 export default {
   name: 'About',
@@ -26,6 +30,7 @@ export default {
   mixins: [FirePrerenderEvent],
 
   components: {
+    CanvasMatrixCode,
     BackButton
   },
 
@@ -90,15 +95,15 @@ export default {
   },
 
   mounted () {
-    this._onKeyDown = this.onKeyDown.bind(this)
-    document.addEventListener('keydown', this._onKeyDown, false)
+    // this._onKeyDown = this.onKeyDown.bind(this)
+    // document.addEventListener('keydown', this._onKeyDown, false)
 
-    if (Platform.mobile) {
-      document.addEventListener('touchend', this._onKeyDown)
-    }
+    // if (Platform.mobile) {
+    //   document.addEventListener('touchend', this._onKeyDown)
+    // }
 
-    this.lettering = new Lettering()
-    this.showMessage()
+    // this.lettering = new Lettering()
+    // this.showMessage()
   },
 
   beforeDestroy () {

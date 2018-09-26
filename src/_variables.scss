@@ -17,7 +17,11 @@ $md-down   : 0 $md-screen - 1px;
 
 // colors
 
-$white            : rgb(255, 255, 255);
+$white-code       : '255, 255, 255';
+$light-green-code : '187, 255, 187';
+$green-code       : '0, 204, 0';
+
+$white            : unquote('rgb(#{$white-code})');
 $silver           : rgb(221, 221, 221);
 $gray             : rgb(170, 170, 170);
 $dark-gray        : rgb(31, 31, 31);
@@ -28,7 +32,6 @@ $blue             : rgb(0, 116, 217);
 $navy             : rgb(0, 31, 63);
 
 $teal             : rgb(57, 204, 204);
-$green            : rgb(0, 204, 0);
 $olive            : rgb(61, 153, 112);
 $lime             : rgb(1, 255, 112);
 
@@ -40,8 +43,9 @@ $fuchsia          : rgb(240, 18, 190);
 $purple           : rgb(177, 13, 201);
 $maroon           : rgb(133, 20, 75);
 
+$light-green      : unquote('rgb(#{$light-green-code})');
+$green            : unquote('rgb(#{$green-code})');
 $energy-green     : rgb(221, 255, 221);
-$light-green      : rgb(187, 255, 187);
 $fade-green       : rgb(136, 255, 136);
 $dark-green       : rgb(0, 102, 0);
 
@@ -88,6 +92,10 @@ $pills  : 8;
 $rain   : 7;
 
 :export {
+  lightGreen: unquote($light-green-code);
+  green: unquote($green-code);
+  white: unquote($white-code);
+
   mobile: $sm-screen;
   phone: $xs-screen;
 }

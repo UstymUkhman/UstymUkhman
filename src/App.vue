@@ -102,7 +102,7 @@ export default {
 @import 'fonts';
 
 html {
-  font-family: 'Roboto', 'Open Sans', sans-serif;
+  font-family: 'White Rabbit', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 

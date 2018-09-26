@@ -1,4 +1,4 @@
-import { Shader, RawMesh, Geometry, Container, DRAW_MODES } from 'pixi.js'
+import { Shader, Mesh, Geometry, Container, DRAW_MODES } from 'pixi.js'
 import { autoDetectRenderer } from 'pixi.js-legacy'
 import { mat4 } from 'gl-matrix'
 
@@ -53,7 +53,7 @@ export default class SoundParticles {
     }
 
     const shader = Shader.from(vertBackground, fragBackground, this._backgroundUniforms)
-    const mesh = new RawMesh(geometry, shader)
+    const mesh = new Mesh(geometry, shader)
 
     this._stage.addChild(mesh)
   }
@@ -128,7 +128,7 @@ export default class SoundParticles {
       .addIndex(indices)
 
     const shaderRender = Shader.from(this._low ? vertLowParticles : vertParticles, fragParticles, this._particleUniforms)
-    const particles = new RawMesh(particlesGeometry, shaderRender, null, DRAW_MODES.POINTS)
+    const particles = new Mesh(particlesGeometry, shaderRender, null, DRAW_MODES.POINTS)
 
     particles.state.depthTest = true
     this._stage.addChild(particles)

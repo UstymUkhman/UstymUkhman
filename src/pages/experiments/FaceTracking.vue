@@ -1,6 +1,6 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="face-tracking-page">
-    <iframe name="Face Tracking" src="https://ustymukhman.github.io/face-tracking.github.io/" :width="viewPort.width" :height="viewPort.height" allow="camera *;" allowfullscreen />
+    <iframe name="Face Tracking" src="https://ustymukhman.github.io/face-tracking.github.io/" :width="viewPort.width" :height="viewPort.height" allow="camera *;" />
   </article>
 </template>
 
@@ -12,17 +12,6 @@ export default {
   name: 'FaceTracking',
 
   mixins: [Viewport, FirePrerenderEvent],
-
-  // watch: {
-  //   viewPort () {
-  //   }
-  // },
-
-  // mounted () {
-  // },
-
-  // beforeDestroy () {
-  // },
 
   metaInfo: {
     title: 'FaceTracking |',

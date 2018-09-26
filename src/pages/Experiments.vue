@@ -1,6 +1,7 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="experiments-page">
-    <MatrixRain v-if="rain" dense />
+    <!-- <MatrixRain v-if="rain" dense /> -->
+    <CanvasMatrixCode />
 
     <ScreenOverlay v-if="!platform.prerenderer" :class="{'obscured': obscured}" />
 
@@ -21,6 +22,7 @@
 
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
+import CanvasMatrixCode from '@/molecules/CanvasMatrixCode'
 import ScreenOverlay from '@/atoms/ScreenOverlay'
 import SiteHeader from '@/organisms/SiteHeader'
 import SiteFooter from '@/organisms/SiteFooter'
@@ -33,6 +35,7 @@ export default {
   mixins: [FirePrerenderEvent],
 
   components: {
+    CanvasMatrixCode,
     ScreenOverlay,
     SiteHeader,
     SiteFooter,
@@ -52,7 +55,7 @@ export default {
   },
 
   watch: {
-    '$route' (route) {
+    $route (route) {
       this.scrollable = this.$route.name === 'DynamicCss'
 
       if (route.name === 'Experiments') {

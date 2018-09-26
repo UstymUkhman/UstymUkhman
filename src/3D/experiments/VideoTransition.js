@@ -1,7 +1,7 @@
 import vertTransition from '@/3D/glsl/VideoTransition/transition.vert'
 import fragTransition from '@/3D/glsl/VideoTransition/transition.frag'
 
-import Curtains from 'curtainsjs'
+import Curtains from 'curtainsjs/build/curtains.min.js'
 
 export default class VideoTransition {
   constructor (planeElement) {
