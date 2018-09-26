@@ -16,8 +16,8 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'Console',
-        component: () => import(/* webpackChunkName: "console" */ './organisms/Console')
+        name: 'SiteMenu',
+        component: () => import(/* webpackChunkName: "menu" */ './organisms/SiteMenu')
       },
       {
         path: 'about',

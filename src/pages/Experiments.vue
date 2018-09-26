@@ -1,20 +1,18 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="experiments-page">
-    <!-- <MatrixRain v-if="rain" dense /> -->
     <CanvasMatrixCode />
-
+    <!-- <CanvasMatrixCode v-if="rain" /> -->
     <ScreenOverlay v-if="!platform.prerenderer" :class="{'obscured': obscured}" />
-
     <SiteHeader v-if="currentPage" :page="currentPage" :scroll="scrollable" :experiment="currentExperiment" />
 
-    <transition appear>
+    <!-- <transition appear>
       <router-view
         @set:experiment="currentExperiment = $event"
         @obscure:background="obscured = $event"
         @update:title="currentPage = $event"
         class="page experiment-page"
       />
-    </transition>
+    </transition> -->
 
     <SiteFooter v-if="currentPage" :scroll="scrollable" />
   </article>
@@ -26,7 +24,6 @@ import CanvasMatrixCode from '@/molecules/CanvasMatrixCode'
 import ScreenOverlay from '@/atoms/ScreenOverlay'
 import SiteHeader from '@/organisms/SiteHeader'
 import SiteFooter from '@/organisms/SiteFooter'
-import MatrixRain from '@/molecules/MatrixRain'
 import Platform from '@/platform'
 
 export default {
@@ -38,8 +35,7 @@ export default {
     CanvasMatrixCode,
     ScreenOverlay,
     SiteHeader,
-    SiteFooter,
-    MatrixRain
+    SiteFooter
   },
 
   data () {

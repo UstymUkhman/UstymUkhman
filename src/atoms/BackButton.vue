@@ -1,7 +1,7 @@
 <template>
   <div class="back-button">
     <transition appear name="fade-out">
-      <div v-if="!fadeOut" @touchend="onTouchend" class="back-button-container">
+      <div @touchend="onTouchend" class="back-button-container">
         <div class="button-border">
           <div class="button-box" :class="{'active': isActive, 'selected': backToMenu}">
 
@@ -13,21 +13,21 @@
       </div>
     </transition>
 
-    <MatrixCode :run="backToMenu" />
+    <!-- <MatrixCode :run="backToMenu" /> -->
   </div>
 </template>
 
 <script>
-import MatrixCode from '@/molecules/MatrixCode'
+// import MatrixCode from '@/molecules/MatrixCode'
 import Lettering from '@/utils/Lettering'
 import Loading from '@/utils/Loading'
 
 export default {
   name: 'BackButton',
 
-  components: {
-    MatrixCode
-  },
+  // components: {
+  //   MatrixCode
+  // },
 
   props: {
     active: {
@@ -45,8 +45,7 @@ export default {
 
   data () {
     return {
-      isActive: this.active,
-      fadeOut: false
+      isActive: this.active
     }
   },
 
@@ -58,13 +57,9 @@ export default {
     backToMenu (back) {
       if (back) {
         setTimeout(() => {
-          this.fadeOut = true
-        }, 3500)
-
-        setTimeout(() => {
           Loading.checkActiveItem()
-          this.$router.push({name: 'Console'})
-        }, 8000)
+          this.$router.push({name: 'SiteMenu'})
+        }, 2500)
       }
     }
   },

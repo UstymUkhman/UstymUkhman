@@ -14,11 +14,7 @@
     </transition>
 
     <transition appear name="fade-out">
-      <!-- <div v-if="visible && showRain" class="matrix-rain">
-        <MatrixRain />
-      </div> -->
-
-      <CanvasMatrixCode v-if="visible && showRain" :ratio="2" class="matrix-rain" />
+      <CanvasMatrixCode v-if="visible && showRain" :ratio="2" />
     </transition>
 
     <div class="matrix-code">
@@ -47,12 +43,6 @@ export default {
   },
 
   props: {
-    wait: {
-      type: Number,
-      default: 500,
-      required: false
-    },
-
     activeItem: {
       default: null,
       required: false
@@ -152,7 +142,7 @@ export default {
     setTimeout(() => {
       this.items = this.$refs.items
       this.showMenuItems()
-    }, this.wait)
+    }, 500)
   }
 }
 </script>
@@ -171,14 +161,6 @@ export default {
   right: 0;
   left: 0;
   top: 0;
-
-  // @include breakpoint($sm-down) {
-  //   .menu-area {
-  //     position: absolute;
-  //     z-index: $pills;
-  //     width: 100%;
-  //   }
-  // }
 
   &-background {
     background-color: $black;
@@ -231,32 +213,6 @@ export default {
       }
     }
   }
-
-  .matrix-rain {
-    left: auto;
-    right: 0;
-  }
-
-  // .matrix-rain {
-  //   pointer-events: none;
-  //   position: absolute;
-  //   right: auto;
-  //   left: 50%;
-
-  //   height: 100%;
-  //   width: 50%;
-
-  //   bottom: 0;
-  //   top: 0;
-
-  //   @include breakpoint($sm-down) {
-  //     overflow: hidden;
-  //     width: 100%;
-
-  //     right: 0;
-  //     left: 0;
-  //   }
-  // }
 
   .matrix-code {
     pointer-events: none;

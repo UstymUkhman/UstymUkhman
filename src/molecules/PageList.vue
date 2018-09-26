@@ -62,7 +62,8 @@ export default {
       listStep: null,
 
       pageIndex: -1,
-      pagesList: []
+      pagesList: [],
+      words: []
     }
   },
 
@@ -115,9 +116,11 @@ export default {
             this.listOffset = `${nextIndex * -this.listStep}px`
           }
 
-          this.lettering.animate(
-            this.pages[nextIndex].children[1],
-            50, this.preparePages.bind(this), 0
+          this.words.push(
+            this.lettering.animate(
+              this.pages[nextIndex].children[1],
+              50, this.preparePages.bind(this), 0
+            )
           )
 
           if (this.skipLettering) {
@@ -154,6 +157,7 @@ export default {
       if (!this.checkValidCode(code)) {
         return
       } else if (this.activeBack && code === 13) {
+        this.lettering.disposeAll(this.words)
         this.removePagesList()
         return
       } else if (this.activeBack) {

@@ -15,9 +15,7 @@
     </transition>
 
     <transition appear name="fade-out">
-      <div v-if="visibleAreas && showRain" class="matrix-rain">
-        <MatrixRain />
-      </div>
+      <CanvasMatrixCode v-if="visibleAreas && showRain" :ratio="rainRatio" />
     </transition>
 
     <BackButton v-if="showBack" :active="activeBack" :backToMenu.sync="goToMenu" />
@@ -80,25 +78,6 @@ export default {
 
     @include breakpoint($xs) {
       margin-left: 25px;
-    }
-  }
-
-  .matrix-rain {
-    pointer-events: none;
-    position: absolute;
-
-    height: 100%;
-    width: 50%;
-
-    right: auto;
-    bottom: 0;
-    left: 50%;
-    top: 0;
-
-    @include breakpoint($sm-down) {
-      position: fixed;
-      width: 100%;
-      left: 0;
     }
   }
 }

@@ -1,28 +1,22 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="about-me-page">
-    <CanvasMatrixCode />
-
-    <!-- <transition appear name="description">
-      <p v-if="!goToMenu" ref="text" itemprop="text" class="about-description">
-        {{ aboutDescription }}
-      </p>
-    </transition>
+    <p ref="text" itemprop="text" class="about-description">
+      {{ aboutDescription }}
+    </p>
 
     <BackButton
       v-if="showBackButton"
       :active="activeBackButton"
       :backToMenu.sync="goToMenu"
-    /> -->
+    />
   </article>
 </template>
 
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import BackButton from '@/atoms/BackButton'
-// import Lettering from '@/utils/Lettering'
+import Lettering from '@/utils/Lettering'
 import Platform from '@/platform'
-
-import CanvasMatrixCode from '@/molecules/CanvasMatrixCode'
 
 export default {
   name: 'About',
@@ -30,7 +24,6 @@ export default {
   mixins: [FirePrerenderEvent],
 
   components: {
-    CanvasMatrixCode,
     BackButton
   },
 
@@ -48,9 +41,10 @@ export default {
         %- Learning and using innovative web technologies#
         %- JavaScript in (almost) all its forms#
         %- CSS3 (and SCSS preprocessor)#
-        %- Music, Films & Coffee##
+        %- Cat Videos, Music, Films & Coffee##
 
         Things I hate:#
+        %- Internet Explorer#
         %- Social Networks#
         %- Dirty code#
         %- Mondays#
@@ -78,6 +72,7 @@ export default {
 
     onKeyDown (event) {
       if (this.activeBackButton && event.keyCode === 13) {
+        this.lettering.dispose()
         this.removeAboutMeSection()
       } else if (!this.showBackButton) {
         this.lettering.skipLettering()
@@ -95,15 +90,15 @@ export default {
   },
 
   mounted () {
-    // this._onKeyDown = this.onKeyDown.bind(this)
-    // document.addEventListener('keydown', this._onKeyDown, false)
+    this._onKeyDown = this.onKeyDown.bind(this)
+    document.addEventListener('keydown', this._onKeyDown, false)
 
-    // if (Platform.mobile) {
-    //   document.addEventListener('touchend', this._onKeyDown)
-    // }
+    if (Platform.mobile) {
+      document.addEventListener('touchend', this._onKeyDown)
+    }
 
-    // this.lettering = new Lettering()
-    // this.showMessage()
+    this.lettering = new Lettering()
+    this.showMessage()
   },
 
   beforeDestroy () {

@@ -137,27 +137,30 @@ html {
   margin: 0;
 }
 
-.app-container {
-  height: 100%;
-
-  .background-video {
-    position: fixed;
-
-    @include breakpoint($sm-down) {
-      display: none;
-    }
-  }
-}
-
-.page {
-  box-sizing: border-box;
+canvas {
   position: absolute;
-
-  height: 100%;
-  width: 100%;
+  z-index: $pills;
 
   left: 0;
   top: 0;
+
+  .sound-particles-page & {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    padding: 0;
+    margin: 0;
+
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+  }
+
+  .color-grading-page & {
+    position: relative;
+  }
 }
 
 h1 {
@@ -197,40 +200,45 @@ p {
   margin: 0px;
 }
 
+span.lettering {
+  transition: opacity 0.5s $ease-in-out-cubic;
+
+  &.dissolve {
+    opacity: 0;
+  }
+}
+
 a {
   text-decoration: none;
   cursor: pointer;
 }
 
-canvas {
-  position: absolute;
-  z-index: $pills;
-
-  left: 0;
-  top: 0;
-
-  .sound-particles-page & {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-
-    padding: 0;
-    margin: 0;
-
-    bottom: 0;
-    right: 0;
-    left: 0;
-    top: 0;
-  }
-
-  .color-grading-page & {
-    position: relative;
-  }
-}
-
 br::selection {
   background-color: $silver;
   color: $black;
+}
+
+.app-container {
+  height: 100%;
+
+  .background-video {
+    position: fixed;
+
+    @include breakpoint($sm-down) {
+      display: none;
+    }
+  }
+}
+
+.page {
+  box-sizing: border-box;
+  position: absolute;
+
+  height: 100%;
+  width: 100%;
+
+  left: 0;
+  top: 0;
 }
 
 article.image-drawer-js-page .code-container .code-preview {

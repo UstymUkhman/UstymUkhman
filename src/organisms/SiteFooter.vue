@@ -58,7 +58,7 @@ export default {
   methods: {
     onWebsiteClick () {
       Loading.checkActiveItem()
-      this.$router.push({name: 'Console'})
+      this.$router.push({name: 'SiteMenu'})
     },
 
     facebookShare () {

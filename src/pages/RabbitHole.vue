@@ -519,6 +519,7 @@ export default {
 
           sideFrame.position.set(framePositionX, -10.5, positionZ)
           sideDoor.position.set(0, 0, rotation)
+          // sideDoor.scale.set(0.8, 1.0, 1.0)
 
           sideFrame.rotation.y = rotationY
           sideDoor.rotation.y = rotationY
@@ -716,7 +717,7 @@ export default {
         this.$router.push({ name: experiment })
       } else {
         Loading.checkActiveItem(true)
-        this.$router.push({ name: 'Console' })
+        this.$router.push({ name: 'SiteMenu' })
       }
     },
 

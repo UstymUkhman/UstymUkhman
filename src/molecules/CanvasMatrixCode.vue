@@ -1,5 +1,5 @@
 <template>
-  <canvas ref="code" :style="{'width': `${100 / ratio}%`}"></canvas>
+  <canvas ref="code" :class="{'right': ratio > 1}" :style="{'width': `${100 / ratio}%`}"></canvas>
 </template>
 
 <script>
@@ -200,13 +200,12 @@ export default {
 
 <style scoped lang="scss">
 canvas {
-  background-color: transparent;
   position: absolute;
-
   height: 100%;
-  width: 100%;
 
-  padding: 0;
-  margin: 0;
+  &.right {
+    left: auto;
+    right: 0;
+  }
 }
 </style>

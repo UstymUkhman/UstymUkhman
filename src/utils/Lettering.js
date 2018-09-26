@@ -26,6 +26,8 @@ export default class Lettering {
 
     this.lastLetter = this.letters[this.letters.length - 1]
     this.letteringID = requestAnimationFrame(this._lettersAnimation.bind(this))
+
+    return this.letters
   }
 
   skipLettering () {
@@ -44,6 +46,24 @@ export default class Lettering {
 
   getAnimationFrameID () {
     return this.letteringID
+  }
+
+  dispose () {
+    for (const l in this.letters) {
+      this.letters[l].classList.add('dissolve')
+    }
+  }
+
+  disposeAll (words) {
+    for (const w in words) {
+      for (const l in words[w]) {
+        words[w][l].classList.add('dissolve')
+      }
+    }
+  }
+
+  _getAnimationDelay () {
+    return Math.floor(Math.random() * 2001)
   }
 
   _getLetters () {
@@ -88,7 +108,11 @@ export default class Lettering {
   }
 
   _showLetter (letter) {
+    const delay = `${this._getAnimationDelay()}ms`
+
+    letter.style.transitionDelay = delay
     letter.style.visibility = 'visible'
+    letter.classList.add('lettering')
     this.message.appendChild(letter)
     this.last = letter
   }

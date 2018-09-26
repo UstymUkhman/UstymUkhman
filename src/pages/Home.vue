@@ -1,12 +1,11 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="home-page">
-    <ScreenAnimation v-if="visibleAnimation && !platform.prerenderer" @complete:animation="showConsoleMenu" />
+    <ScreenAnimation v-if="visibleAnimation && !platform.prerenderer" @complete:animation="showMenu" />
 
     <transition appear>
       <router-view
-        v-show="!visibleAnimation"
+        v-show="!visibleAnimation" class="page"
         @hide:overlay="visibleOverlay = false"
-        :skip="skipIntro" class="page"
       />
     </transition>
 
@@ -36,8 +35,7 @@ export default {
     return {
       visibleAnimation: false,
       visibleOverlay: true,
-      platform: Platform,
-      skipIntro: false
+      platform: Platform
     }
   },
 
@@ -46,12 +44,11 @@ export default {
       const restart = last.name === 'RabbitHole'
       this.visibleAnimation = restart
       this.visibleOverlay = !restart
-      this.skipIntro = restart
     }
   },
 
   methods: {
-    showConsoleMenu () {
+    showMenu () {
       this.visibleAnimation = false
       this.visibleOverlay = true
     }

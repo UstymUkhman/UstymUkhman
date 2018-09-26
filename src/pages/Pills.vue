@@ -1,8 +1,10 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="pill-choice-page">
-    <transition appear name="fade-out">
+    <!-- <transition appear name="fade-out">
       <MatrixRain v-if="raining" />
-    </transition>
+    </transition> -->
+
+    <CanvasMatrixCode v-if="raining" />
 
     <MatrixCode :run="runMatrixCode" />
 
@@ -29,7 +31,7 @@ import { SmoothShading } from '@three/constants.js'
 import PILL from '@/3D/assets/models/pill.json'
 
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
-import MatrixRain from '@/molecules/MatrixRain'
+import CanvasMatrixCode from '@/molecules/CanvasMatrixCode'
 import MatrixCode from '@/molecules/MatrixCode'
 
 import load from '@/3D/utils/assetsLoader'
@@ -46,7 +48,7 @@ export default {
   mixins: [Viewport, FirePrerenderEvent],
 
   components: {
-    MatrixRain,
+    CanvasMatrixCode,
     MatrixCode
   },
 
@@ -140,7 +142,7 @@ export default {
             delay: 1000 + wait,
             easing: 'linear',
             duration: 1000,
-            opacity: 0.8
+            opacity: 1.0
           })
         } else {
           pill.rotation.set(-0.05, 1.3, 0.4)
@@ -154,13 +156,13 @@ export default {
             delay: 7500 + wait,
             easing: 'linear',
             duration: 1000,
-            opacity: 0.8
+            opacity: 1.0
           })
 
           setTimeout(this.createChoice.bind(this), 16000 + wait)
         }
 
-        pill.scale.set(0.2, 0.2, 0.2)
+        pill.scale.set(0.25, 0.25, 0.25)
         this.scene.add(pill)
       }
 
@@ -186,11 +188,11 @@ export default {
     },
 
     setChosenPill () {
-      const opacityBlue = this.choice ? 0.9 : 0.7
-      const opacityRed = this.choice ? 0.7 : 0.9
+      const scaleBlue = this.choice ? 0.35 : 0.15
+      const scaleRed = this.choice ? 0.15 : 0.35
 
-      const scaleBlue = this.choice ? 0.3 : 0.1
-      const scaleRed = this.choice ? 0.1 : 0.3
+      const opacityBlue = 1.0
+      const opacityRed = 1.0
 
       this.choice = !this.choice
 
@@ -289,7 +291,7 @@ export default {
 
       setTimeout(() => {
         Loading.checkActiveItem()
-        this.$router.push({ name: this.choice ? 'RabbitHole' : 'Console' })
+        this.$router.push({ name: this.choice ? 'RabbitHole' : 'SiteMenu' })
       }, 8500)
     },
 

@@ -1,6 +1,5 @@
 @import 'animations';
 @import 'functions';
-// @import 'variables';
 
 @mixin horizontal-gradient($color1, $color2) {
   background: linear-gradient(to right, $color1 0%, $color2 100%);
@@ -26,20 +25,20 @@
   }
 }
 
-@mixin white-rabbit {
-  font-family: 'White Rabbit';
-  font-size: 18px;
-  color: $green;
-}
-
 @mixin martix-code-nfi {
   font-family: 'Martix Code NFI';
   font-size: 30px;
   color: $green;
 }
 
+@mixin white-rabbit {
+  font-family: 'White Rabbit';
+  font-size: 18px;
+  color: $green;
+}
+
 @mixin dissolve-text($letters) {
-  transition: opacity 0.5s cubic-bezier(0.645, 0.045, 0.355, 1.0);
+  transition: opacity 0.5s $ease-in-out-cubic;
 
   @for $i from 1 through $letters {
     &:nth-child(#{$i}) {
