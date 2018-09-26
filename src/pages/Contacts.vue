@@ -1,7 +1,7 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="contact-me-page">
     <transition appear name="fade-out">
-      <PageList v-if="visibleAreas"
+      <PageList
         cursor=">"
         :emailIndex="3"
         :urls="contacts"
@@ -12,10 +12,6 @@
         @remove:pages="goToMenu = true"
         class="contacts-list"
       />
-    </transition>
-
-    <transition appear name="fade-out">
-      <CanvasMatrixCode v-if="visibleAreas && showRain" :ratio="rainRatio" />
     </transition>
 
     <BackButton v-if="showBack" :active="activeBack" :backToMenu.sync="goToMenu" />

@@ -1,18 +1,11 @@
-import CanvasMatrixCode from '@/molecules/CanvasMatrixCode'
 import BackButton from '@/atoms/BackButton'
 import PageList from '@/molecules/PageList'
 
 import Projects from '@/assets/data/projects'
 import Contacts from '@/assets/data/contacts'
 
-import { mobile } from '@/_variables.scss'
-import Viewport from '@/mixins/Viewport'
-
 export default {
-  mixins: [Viewport],
-
   components: {
-    CanvasMatrixCode,
     BackButton,
     PageList
   },
@@ -22,12 +15,9 @@ export default {
       projects: Projects,
       contacts: Contacts,
 
-      visibleAreas: true,
       activeBack: false,
-
       showBack: false,
-      goToMenu: false,
-      showRain: false
+      goToMenu: false
     }
   },
 
@@ -38,12 +28,6 @@ export default {
           this.visibleAreas = false
         }, 3500)
       }
-    }
-  },
-
-  computed: {
-    rainRatio () {
-      return this.viewPort.width < mobile ? 1 : 2.25
     }
   },
 

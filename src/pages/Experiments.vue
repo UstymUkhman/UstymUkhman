@@ -1,18 +1,10 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="experiments-page">
-    <CanvasMatrixCode />
-    <!-- <CanvasMatrixCode v-if="rain" /> -->
-    <ScreenOverlay v-if="!platform.prerenderer" :class="{'obscured': obscured}" />
-    <SiteHeader v-if="currentPage" :page="currentPage" :scroll="scrollable" :experiment="currentExperiment" />
+    <MatrixRain v-if="rain" />
 
-    <!-- <transition appear>
-      <router-view
-        @set:experiment="currentExperiment = $event"
-        @obscure:background="obscured = $event"
-        @update:title="currentPage = $event"
-        class="page experiment-page"
-      />
-    </transition> -->
+    <ScreenOverlay v-if="!platform.prerenderer" :class="{'obscured': obscured}" />
+
+    <SiteHeader v-if="currentPage" :page="currentPage" :scroll="scrollable" :experiment="currentExperiment" />
 
     <SiteFooter v-if="currentPage" :scroll="scrollable" />
   </article>
@@ -20,8 +12,8 @@
 
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
-import CanvasMatrixCode from '@/molecules/CanvasMatrixCode'
 import ScreenOverlay from '@/atoms/ScreenOverlay'
+import MatrixRain from '@/molecules/MatrixRain'
 import SiteHeader from '@/organisms/SiteHeader'
 import SiteFooter from '@/organisms/SiteFooter'
 import Platform from '@/platform'
@@ -32,8 +24,8 @@ export default {
   mixins: [FirePrerenderEvent],
 
   components: {
-    CanvasMatrixCode,
     ScreenOverlay,
+    MatrixRain,
     SiteHeader,
     SiteFooter
   },

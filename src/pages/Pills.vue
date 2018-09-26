@@ -1,10 +1,6 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="pill-choice-page">
-    <!-- <transition appear name="fade-out">
-      <MatrixRain v-if="raining" />
-    </transition> -->
-
-    <CanvasMatrixCode v-if="raining" />
+    <MatrixRain v-if="raining" />
 
     <MatrixCode :run="runMatrixCode" />
 
@@ -31,7 +27,7 @@ import { SmoothShading } from '@three/constants.js'
 import PILL from '@/3D/assets/models/pill.json'
 
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
-import CanvasMatrixCode from '@/molecules/CanvasMatrixCode'
+import MatrixRain from '@/molecules/MatrixRain'
 import MatrixCode from '@/molecules/MatrixCode'
 
 import load from '@/3D/utils/assetsLoader'
@@ -48,7 +44,7 @@ export default {
   mixins: [Viewport, FirePrerenderEvent],
 
   components: {
-    CanvasMatrixCode,
+    MatrixRain,
     MatrixCode
   },
 

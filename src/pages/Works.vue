@@ -8,7 +8,6 @@
 
     <transition appear name="fade-out">
       <PageList
-        v-if="visibleAreas"
         cursor="//"
         :urls="projects"
         :activeBack.sync="activeBack"
@@ -18,12 +17,6 @@
         @remove:pages="goToMenu = true"
         class="projects-list"
       />
-    </transition>
-
-    <transition appear name="fade-out">
-      <div v-if="visibleAreas && showRain" class="matrix-rain">
-        <MatrixRain />
-      </div>
     </transition>
 
     <BackButton v-if="showBack" :active="activeBack" :backToMenu.sync="goToMenu" />
@@ -48,7 +41,7 @@ export default {
 
   computed: {
     visibleCounter () {
-      return !Platform.mobile && this.showRain && !this.activeBack && this.projects.length > 5
+      return !Platform.mobile && !this.activeBack && this.projects.length > 5
     }
   },
 

@@ -1,5 +1,5 @@
 <template>
-  <section class="menu-section" :class="{'menu-section-background': activeItem !== false}">
+  <section class="menu-section">
     <transition appear name="fade-out">
       <div v-if="visible" class="menu-items" :class="{'hidden': hiddenItems}">
         <div v-for="(page, p) in pages" :key="p" class="button-border">
@@ -13,10 +13,6 @@
       </div>
     </transition>
 
-    <transition appear name="fade-out">
-      <CanvasMatrixCode v-if="visible && showRain" :ratio="2" />
-    </transition>
-
     <div class="matrix-code">
       <MatrixCode :run="settedSection !== null" />
     </div>
@@ -24,11 +20,7 @@
 </template>
 
 <script>
-import CanvasMatrixCode from '@/molecules/CanvasMatrixCode'
-
-import MatrixRain from '@/molecules/MatrixRain'
 import MatrixCode from '@/molecules/MatrixCode'
-
 import Lettering from '@/utils/Lettering'
 import Loading from '@/utils/Loading'
 import Platform from '@/platform'
@@ -37,8 +29,6 @@ export default {
   name: 'SiteMenu',
 
   components: {
-    CanvasMatrixCode,
-    MatrixRain,
     MatrixCode
   },
 
@@ -161,10 +151,6 @@ export default {
   right: 0;
   left: 0;
   top: 0;
-
-  &-background {
-    background-color: $black;
-  }
 
   .menu-items {
     @include console-button(5px);
