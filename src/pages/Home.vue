@@ -57,6 +57,7 @@ export default {
   computed: {
     matrixRain () {
       return this.visibleRain &&
+             this.$route.name !== 'About' &&
              this.$route.name !== 'Pills' &&
              this.$route.name !== 'RabbitHole'
     }

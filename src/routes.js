@@ -87,11 +87,11 @@ const routes = [
         name: 'ColorGrading',
         component: () => import(/* webpackChunkName: "color-grading" */ './pages/experiments/ColorGrading')
       },
-      {
-        path: 'VideoTransition',
-        name: 'VideoTransition',
-        component: () => import(/* webpackChunkName: "video-transition" */ './pages/experiments/VideoTransition')
-      },
+      // {
+      //   path: 'VideoTransition',
+      //   name: 'VideoTransition',
+      //   component: () => import(/* webpackChunkName: "video-transition" */ './pages/experiments/VideoTransition')
+      // },
       {
         path: 'FaceTracking',
         name: 'FaceTracking',

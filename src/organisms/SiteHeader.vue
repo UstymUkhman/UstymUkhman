@@ -23,7 +23,7 @@ import HeaderButtons from '@/molecules/HeaderButtons'
 import PageTitle from '@/atoms/PageTitle'
 
 import Platform from '@/platform'
-import find from 'lodash.find'
+// import find from 'lodash.find'
 
 export default {
   name: 'SiteHeader',
@@ -74,8 +74,8 @@ export default {
   },
 
   mounted () {
-    this.currentExperiment = find(this.experiments, { name: this.page })
-    setTimeout(() => { this.visible = !this.visible }, 2500)
+    // this.currentExperiment = find(this.experiments, { name: this.page })
+    // setTimeout(() => { this.visible = !this.visible }, 2500)
   }
 }
 </script>

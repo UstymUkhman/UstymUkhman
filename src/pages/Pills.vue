@@ -1,8 +1,8 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="pill-choice-page">
-    <MatrixRain v-if="raining" />
-
-    <MatrixCode :run="runMatrixCode" />
+    <transition appear>
+      <MatrixRain v-if="raining" />
+    </transition>
 
     <transition appear name="fade-out">
       <div v-if="!fadeOut" ref="pills"></div>
@@ -28,7 +28,6 @@ import PILL from '@/3D/assets/models/pill.json'
 
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import MatrixRain from '@/molecules/MatrixRain'
-import MatrixCode from '@/molecules/MatrixCode'
 
 import load from '@/3D/utils/assetsLoader'
 import Viewport from '@/mixins/Viewport'
@@ -44,8 +43,7 @@ export default {
   mixins: [Viewport, FirePrerenderEvent],
 
   components: {
-    MatrixRain,
-    MatrixCode
+    MatrixRain
   },
 
   data () {
@@ -61,7 +59,6 @@ export default {
       choice: true,
       fadeOut: false,
       raining: false,
-      runMatrixCode: false,
 
       width: window.innerWidth,
       height: window.innerHeight
@@ -278,17 +275,15 @@ export default {
     },
 
     faceChosenPill () {
-      this.runMatrixCode = true
-
       setTimeout(() => {
         this.raining = false
         this.fadeOut = true
-      }, 3500)
+      }, 2500)
 
       setTimeout(() => {
         Loading.checkActiveItem()
         this.$router.push({ name: this.choice ? 'RabbitHole' : 'SiteMenu' })
-      }, 8500)
+      }, 3000)
     },
 
     render () {

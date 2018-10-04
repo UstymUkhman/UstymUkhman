@@ -12,22 +12,15 @@
         </div>
       </div>
     </transition>
-
-    <!-- <MatrixCode :run="backToMenu" /> -->
   </div>
 </template>
 
 <script>
-// import MatrixCode from '@/molecules/MatrixCode'
 import Lettering from '@/utils/Lettering'
 import Loading from '@/utils/Loading'
 
 export default {
   name: 'BackButton',
-
-  // components: {
-  //   MatrixCode
-  // },
 
   props: {
     active: {

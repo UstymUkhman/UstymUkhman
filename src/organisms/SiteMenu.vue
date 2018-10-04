@@ -1,10 +1,10 @@
 <template>
   <section class="menu-section">
     <transition appear name="fade-out">
-      <div v-if="visible" class="menu-items" :class="{'hidden': hiddenItems}">
+      <div class="menu-items" :class="{'hidden': hiddenItems}">
         <div v-for="(page, p) in pages" :key="p" class="button-border">
 
-          <div ref="items" class="button-box" :class="{'active': p === currentItem && !hiddenItems, 'selected': p === settedSection}">
+          <div ref="items" class="button-box" :class="{'active': activePage(p), 'selected': p === settedSection}">
             <div class="button-background"></div>
             <p class="button">{{ page }}</p>
           </div>
@@ -12,15 +12,10 @@
         </div>
       </div>
     </transition>
-
-    <div class="matrix-code">
-      <MatrixCode :run="settedSection !== null" />
-    </div>
   </section>
 </template>
 
 <script>
-import MatrixCode from '@/molecules/MatrixCode'
 import Lettering from '@/utils/Lettering'
 import Loading from '@/utils/Loading'
 import Platform from '@/platform'
@@ -28,27 +23,18 @@ import Platform from '@/platform'
 export default {
   name: 'SiteMenu',
 
-  components: {
-    MatrixCode
-  },
-
-  props: {
-    activeItem: {
-      default: null,
-      required: false
-    }
-  },
-
   data () {
     return {
-      currentItem: this.activeItem,
+      currentItem: Loading.getActiveItem(),
       settedSection: null,
+      lettering: null,
+      nextPage: false,
       itemIndex: -1,
+      words: [],
 
       stopRaining: false,
       hiddenItems: true,
       showRain: false,
-      visible: true,
 
       pages: [
         'Ab0uT_m3',
@@ -59,16 +45,24 @@ export default {
   },
 
   methods: {
+    activePage (page) {
+      return page === this.currentItem && !this.hiddenItems && !this.nextPage
+    },
+
     showMenuItems () {
       if (++this.itemIndex < this.pages.length) {
-        /* eslint-disable no-new */
-        new Lettering().animate(this.items[this.itemIndex].children[1], 50, this.showMenuItems.bind(this), 500)
-        /* eslint-enable no-new */
+        this.lettering = new Lettering()
+
+        this.words.push(
+          this.lettering.animate(
+            this.items[this.itemIndex].children[1],
+            50, this.showMenuItems.bind(this), 500
+          )
+        )
       } else {
         this.hiddenItems = false
-
         this._onKeyDown = this.onKeyDown.bind(this)
-        this.currentItem = Platform.mobile ? null : this.activeItem || 0
+        this.currentItem = Platform.mobile ? null : Loading.getActiveItem() || 0
 
         setTimeout(() => {
           this.showRain = true
@@ -82,28 +76,6 @@ export default {
           }
         }
       }
-    },
-
-    setMenuSection () {
-      this.settedSection = this.currentItem
-      document.removeEventListener('keydown', this._onKeyDown, false)
-
-      if (Platform.mobile) {
-        for (let i = 0; i < this.items.length; i++) {
-          this.items[i].removeEventListener('touchend', this.onClick.bind(this, i))
-        }
-      }
-
-      setTimeout(() => {
-        this.visible = false
-      }, 3500)
-
-      setTimeout(() => {
-        this.stopRaining = true
-        this.$router.push({
-          name: Loading.getPageName(this.settedSection)
-        })
-      }, 8500)
     },
 
     onKeyDown (event) {
@@ -122,6 +94,27 @@ export default {
     onClick (index) {
       this.currentItem = index
       this.onKeyDown({ keyCode: 13 })
+    },
+
+    setMenuSection () {
+      this.nextPage = true
+      this.settedSection = this.currentItem
+      this.lettering.disposeAll(this.words)
+
+      document.removeEventListener('keydown', this._onKeyDown, false)
+
+      if (Platform.mobile) {
+        for (let i = 0; i < this.items.length; i++) {
+          this.items[i].removeEventListener('touchend', this.onClick.bind(this, i))
+        }
+      }
+
+      setTimeout(() => {
+        this.stopRaining = true
+        this.$router.push({
+          name: Loading.getPageName(this.settedSection)
+        })
+      }, 3000)
     }
   },
 
@@ -197,21 +190,6 @@ export default {
         font-size: 25px;
         height: 60px;
       }
-    }
-  }
-
-  .matrix-code {
-    pointer-events: none;
-    position: absolute;
-    margin: auto;
-
-    bottom: 0;
-    right: 0;
-    left: 0;
-    top: 0;
-
-    &.hidden {
-      display: none;
     }
   }
 }

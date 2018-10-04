@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import VideoTransition from '@/3D/experiments/VideoTransition'
+// import VideoTransition from '@/3D/experiments/VideoTransition'
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import Viewport from '@/mixins/Viewport'
 
@@ -23,18 +23,18 @@ export default {
 
   watch: {
     videoViewPort () {
-      this.transition.onResize(this.videoViewPort.width, this.videoViewPort.height)
+      // this.transition.onResize(this.videoViewPort.width, this.videoViewPort.height)
     }
   },
 
   mounted () {
-    this.transition = new VideoTransition(this.$refs.plane)
-    this.$emit('update:title', 'VideoTransition')
-    this.$emit('obscure:background', true)
+    // this.transition = new VideoTransition(this.$refs.plane)
+    // this.$emit('update:title', 'VideoTransition')
+    // this.$emit('obscure:background', true)
   },
 
   beforeDestroy () {
-    this.transition.destroy()
+    // this.transition.destroy()
   },
 
   metaInfo: {
