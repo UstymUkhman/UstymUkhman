@@ -1,4 +1,7 @@
+//
 // breakpoints
+//
+
 @import 'breakpoint-sass';
 @include breakpoint-set('transform resolutions', false);
 
@@ -15,7 +18,9 @@ $sm-down   : 0 $sm-screen - 1px;
 $md        : $sm-screen + 0px $md-screen - 1px;
 $md-down   : 0 $md-screen - 1px;
 
+//
 // colors
+//
 
 $white-code       : '255, 255, 255';
 $light-green-code : '187, 255, 187';
@@ -52,7 +57,9 @@ $dark-green       : rgb(0, 102, 0);
 $green-background : rgba(0, 68, 0, 0.5);
 $green-overlay    : rgba(0, 34, 0, 0.25);
 
+//
 // easings
+//
 
 $ease-in-quad      : cubic-bezier(0.550,  0.085, 0.680, 0.530);
 $ease-in-cubic     : cubic-bezier(0.550,  0.055, 0.675, 0.190);
@@ -81,7 +88,9 @@ $ease-in-out-expo  : cubic-bezier(1.000,  0.000, 0.000, 1.000);
 $ease-in-out-circ  : cubic-bezier(0.785,  0.135, 0.150, 0.860);
 $ease-in-out-back  : cubic-bezier(0.680, -0.550, 0.265, 1.550);
 
+//
 // z-indexes:
+//
 
 $max    : 2147483647;
 $top    : 100;

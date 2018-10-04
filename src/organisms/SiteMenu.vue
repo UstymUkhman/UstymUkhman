@@ -26,15 +26,16 @@ export default {
   data () {
     return {
       currentItem: Loading.getActiveItem(),
+      skipLettering: false,
       settedSection: null,
-      lettering: null,
-      nextPage: false,
-      itemIndex: -1,
-      words: [],
-
       stopRaining: false,
       hiddenItems: true,
-      showRain: false,
+      nextPage: false,
+
+      typingTimeout: 500,
+      lettering: null,
+      itemIndex: -1,
+      words: [],
 
       pages: [
         'Ab0uT_m3',
@@ -49,6 +50,11 @@ export default {
       return page === this.currentItem && !this.hiddenItems && !this.nextPage
     },
 
+    skipMenuLettering () {
+      this.skipLettering = true
+      this.typingTimeout = 0
+    },
+
     showMenuItems () {
       if (++this.itemIndex < this.pages.length) {
         this.lettering = new Lettering()
@@ -56,19 +62,23 @@ export default {
         this.words.push(
           this.lettering.animate(
             this.items[this.itemIndex].children[1],
-            50, this.showMenuItems.bind(this), 500
+            50, this.showMenuItems.bind(this), this.typingTimeout
           )
         )
+
+        if (this.skipLettering) {
+          this.lettering.skipLettering()
+        }
       } else {
         this.hiddenItems = false
         this._onKeyDown = this.onKeyDown.bind(this)
         this.currentItem = Platform.mobile ? null : Loading.getActiveItem() || 0
 
-        setTimeout(() => {
-          this.showRain = true
-        }, 1500)
-
         document.addEventListener('keydown', this._onKeyDown, false)
+
+        setTimeout(() => {
+          this.$emit('start:raining')
+        }, 1500)
 
         if (Platform.mobile) {
           for (let i = 0; i < this.items.length; i++) {
@@ -122,10 +132,25 @@ export default {
     const experiments = Platform.ie11 || Platform.mobile
     this.pages.push(experiments ? '3xp3r!m3nT5' : 'M0r3')
 
+    this._skipMenuLettering = this.skipMenuLettering.bind(this)
+    document.addEventListener('keydown', this._skipMenuLettering, false)
+
+    if (Platform.mobile) {
+      document.addEventListener('touchend', this._skipMenuLettering)
+    }
+
     setTimeout(() => {
       this.items = this.$refs.items
       this.showMenuItems()
     }, 500)
+  },
+
+  beforeDestroy () {
+    document.removeEventListener('keydown', this._skipMenuLettering, false)
+
+    if (Platform.mobile) {
+      document.removeEventListener('touchend', this._skipMenuLettering)
+    }
   }
 }
 </script>

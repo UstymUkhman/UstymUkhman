@@ -10,6 +10,7 @@
       <router-view
         v-show="!visibleAnimation" class="page"
         @hide:overlay="visibleOverlay = false"
+        @start:raining="visibleRain = true"
       />
     </transition>
 
