@@ -7,7 +7,7 @@
     <BackButton
       v-if="showBackButton"
       :active="activeBackButton"
-      :backToMenu.sync="goToMenu"
+      :selected="selectedBackButton"
     />
   </article>
 </template>
@@ -29,9 +29,9 @@ export default {
 
   data () {
     return {
+      selectedBackButton: false,
       activeBackButton: false,
       showBackButton: false,
-      goToMenu: false,
 
       aboutDescription: `
         Hi, my name is Ustym and I'm a front-end web developer at MONOGRID.#
@@ -72,29 +72,30 @@ export default {
 
     onKeyDown (event) {
       if (this.activeBackButton && event.keyCode === 13) {
-        this.lettering.dispose()
-        this.removeAboutMeSection()
+        this.selectedBackButton = true
       } else if (!this.showBackButton) {
         this.lettering.skipLettering()
       }
     },
 
-    removeAboutMeSection () {
-      document.removeEventListener('keydown', this._onKeyDown, false)
-      this.goToMenu = true
-
-      if (Platform.mobile) {
-        document.removeEventListener('touchend', this._onKeyDown)
+    onKeyUp (event) {
+      if (this.activeBackButton && event.keyCode === 13) {
+        this.selectedBackButton = false
+        this.lettering.dispose()
       }
     }
   },
 
   mounted () {
+    this._onKeyUp = this.onKeyUp.bind(this)
     this._onKeyDown = this.onKeyDown.bind(this)
+
+    document.addEventListener('keyup', this._onKeyUp, false)
     document.addEventListener('keydown', this._onKeyDown, false)
 
     if (Platform.mobile) {
-      document.addEventListener('touchend', this._onKeyDown)
+      document.addEventListener('touchend', this._onKeyUp)
+      document.addEventListener('touchstart', this._onKeyDown)
     }
 
     this.lettering = new Lettering()
@@ -102,10 +103,12 @@ export default {
   },
 
   beforeDestroy () {
+    document.removeEventListener('keyup', this._onKeyUp, false)
     document.removeEventListener('keydown', this._onKeyDown, false)
 
     if (Platform.mobile) {
-      document.removeEventListener('touchend', this._onKeyDown)
+      document.removeEventListener('touchend', this._onKeyUp)
+      document.removeEventListener('touchstart', this._onKeyDown)
     }
   },
 

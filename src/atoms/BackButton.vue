@@ -3,7 +3,7 @@
     <transition appear name="fade-out">
       <div @touchend="onTouchend" class="back-button-container">
         <div class="button-border">
-          <div class="button-box" :class="{'active': isActive, 'selected': backToMenu}">
+          <div class="button-box" :class="{'active': isActive, 'pressed': pressed, 'selected': selected}">
 
             <div class="button-background"></div>
             <p ref="back" class="button back" :class="{'active': isActive}">&lt; b@cK</p>
@@ -29,7 +29,7 @@ export default {
       required: false
     },
 
-    backToMenu: {
+    selected: {
       type: Boolean,
       default: false,
       required: false
@@ -38,6 +38,7 @@ export default {
 
   data () {
     return {
+      pressed: this.selected,
       isActive: this.active
     }
   },
@@ -47,8 +48,14 @@ export default {
       this.isActive = now
     },
 
-    backToMenu (back) {
-      if (back) {
+    selected (now, before) {
+      this.pressed = true
+
+      if (before && !now) {
+        setTimeout(() => {
+          this.pressed = false
+        }, 500)
+
         setTimeout(() => {
           Loading.checkActiveItem()
           this.$router.push({name: 'SiteMenu'})
@@ -59,7 +66,7 @@ export default {
 
   methods: {
     onTouchend () {
-      let delay = null
+      let delay = 0
 
       if (!this.active) {
         this.isActive = true
@@ -67,8 +74,9 @@ export default {
       }
 
       setTimeout(() => {
-        this.$emit('update:backToMenu', true)
-      }, delay)
+        Loading.checkActiveItem()
+        this.$router.push({name: 'SiteMenu'})
+      }, delay + 2500)
     }
   },
 

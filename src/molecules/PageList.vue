@@ -43,6 +43,12 @@ export default {
       required: false
     },
 
+    selectedBack: {
+      type: Boolean,
+      default: false,
+      required: false
+    },
+
     emailIndex: {
       type: Number,
       default: null,
@@ -150,6 +156,16 @@ export default {
         return
       }
 
+      if (this.activeBack && $event.keyCode === 13) {
+        this.$emit('update:selectedBack', true)
+      }
+    },
+
+    onKeyUp ($event) {
+      if (!this.enableNavigation) {
+        return
+      }
+
       let active = false
       const code = $event.keyCode
       const page = this.currentPage
@@ -157,8 +173,8 @@ export default {
       if (!this.checkValidCode(code)) {
         return
       } else if (this.activeBack && code === 13) {
+        this.$emit('update:selectedBack', false)
         this.lettering.disposeAll(this.words)
-        this.removePagesList()
         return
       } else if (this.activeBack) {
         this.currentPage = (code === 38) ? 0 : this.lastUrl
@@ -197,23 +213,20 @@ export default {
       return (code === 13 || code === 38 || code === 40)
     },
 
-    removePagesList () {
-      document.removeEventListener('keydown', this._onKeyDown, false)
-      this.$emit('remove:pages')
-    },
-
     openPageUrl (page) {
       window.open(this.pagesList[page].url, '_blank')
     },
 
     onTouchStart ($event) {
+      this.onKeyDown($event)
+
       if (this.urls.length > 5) {
         this.touchStart = $event.changedTouches[0].clientY
       }
     },
 
     onTouchEnd ($event) {
-      this.onKeyDown($event)
+      this.onKeyUp($event)
 
       if (this.urls.length > 5) {
         const distance = this.touchStart - $event.changedTouches[0].clientY
@@ -238,7 +251,10 @@ export default {
   },
 
   mounted () {
+    this._onKeyUp = this.onKeyUp.bind(this)
     this._onKeyDown = this.onKeyDown.bind(this)
+
+    document.addEventListener('keyup', this._onKeyUp, false)
     document.addEventListener('keydown', this._onKeyDown, false)
 
     this.lettering = new Lettering()
@@ -247,6 +263,7 @@ export default {
 
   beforeDestroy () {
     document.removeEventListener('keydown', this._onKeyDown, false)
+    document.removeEventListener('keyup', this._onKeyUp, false)
   }
 }
 </script>
@@ -298,7 +315,7 @@ export default {
 .page-container {
   visibility: hidden;
   display: block;
-  margin: 14vh 0;
+  margin: 18vh 0;
 
   @media only screen and (max-height: 550px) {
     margin: 12vh 0;

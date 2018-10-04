@@ -10,20 +10,6 @@
   }
 }
 
-@keyframes flash {
-  0% {
-    background-color: $green-background;
-  }
-
-  50% {
-    background-color: $energy-green;
-  }
-
-  100% {
-    background-color: $green-background;
-  }
-}
-
 @keyframes hvr-back-pulse {
   50% {
     background-color: $green;

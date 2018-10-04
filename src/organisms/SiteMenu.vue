@@ -1,10 +1,10 @@
 <template>
   <section class="menu-section">
     <transition appear name="fade-out">
-      <div class="menu-items" :class="{'hidden': hiddenItems}">
+      <div class="menu-items">
         <div v-for="(page, p) in pages" :key="p" class="button-border">
 
-          <div ref="items" class="button-box" :class="{'active': activePage(p), 'selected': p === settedSection}">
+          <div ref="items" class="button-box" :class="{'active': activePage(p), 'pressed': pressed, 'selected': p === settedSection}">
             <div class="button-background"></div>
             <p class="button">{{ page }}</p>
           </div>
@@ -25,15 +25,13 @@ export default {
 
   data () {
     return {
-      currentItem: Loading.getActiveItem(),
       skipLettering: false,
       settedSection: null,
-      stopRaining: false,
-      hiddenItems: true,
+      currentItem: null,
       nextPage: false,
+      pressed: false,
 
       typingTimeout: 500,
-      lettering: null,
       itemIndex: -1,
       words: [],
 
@@ -47,7 +45,7 @@ export default {
 
   methods: {
     activePage (page) {
-      return page === this.currentItem && !this.hiddenItems && !this.nextPage
+      return page === this.currentItem && !this.nextPage
     },
 
     skipMenuLettering () {
@@ -70,11 +68,12 @@ export default {
           this.lettering.skipLettering()
         }
       } else {
-        this.hiddenItems = false
+        this._onKeyUp = this.onKeyUp.bind(this)
         this._onKeyDown = this.onKeyDown.bind(this)
         this.currentItem = Platform.mobile ? null : Loading.getActiveItem() || 0
 
         document.addEventListener('keydown', this._onKeyDown, false)
+        document.addEventListener('keyup', this._onKeyUp, false)
 
         setTimeout(() => {
           this.$emit('start:raining')
@@ -88,11 +87,18 @@ export default {
       }
     },
 
-    onKeyDown (event) {
-      const item = this.currentItem
-      const code = event.keyCode
+    onKeyDown ($event) {
+      if ($event.keyCode === 13) {
+        this.settedSection = this.currentItem
+        this.pressed = true
+      }
+    },
 
-      if (code === 13) {
+    onKeyUp ($event) {
+      const code = $event.keyCode
+      const item = this.currentItem
+
+      if ($event.keyCode === 13) {
         this.setMenuSection()
       } else if (code === 38) {
         this.currentItem = (!item) ? 3 : item - 1
@@ -107,11 +113,16 @@ export default {
     },
 
     setMenuSection () {
+      const nextSection = this.settedSection
+
+      this.pressed = false
       this.nextPage = true
-      this.settedSection = this.currentItem
+
+      this.settedSection = null
       this.lettering.disposeAll(this.words)
 
       document.removeEventListener('keydown', this._onKeyDown, false)
+      document.removeEventListener('keyup', this._onKeyUp, false)
 
       if (Platform.mobile) {
         for (let i = 0; i < this.items.length; i++) {
@@ -120,7 +131,8 @@ export default {
       }
 
       setTimeout(() => {
-        this.stopRaining = true
+        this.settedSection = nextSection
+
         this.$router.push({
           name: Loading.getPageName(this.settedSection)
         })

@@ -15,19 +15,9 @@ export default {
       projects: Projects,
       contacts: Contacts,
 
+      selectedBack: false,
       activeBack: false,
-      showBack: false,
-      goToMenu: false
-    }
-  },
-
-  watch: {
-    goToMenu (now) {
-      if (now) {
-        setTimeout(() => {
-          this.visibleAreas = false
-        }, 3500)
-      }
+      showBack: false
     }
   },
 

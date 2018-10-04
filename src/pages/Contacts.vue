@@ -6,15 +6,15 @@
         :emailIndex="3"
         :urls="contacts"
         :activeBack.sync="activeBack"
+        :selectedBack.sync="selectedBack"
 
         @update:index="activePage = $event + 1"
         @show:components="showComponents"
-        @remove:pages="goToMenu = true"
         class="contacts-list"
       />
     </transition>
 
-    <BackButton v-if="showBack" :active="activeBack" :backToMenu.sync="goToMenu" />
+    <BackButton v-if="showBack" :active="activeBack" :selected="selectedBack" />
   </article>
 </template>
 

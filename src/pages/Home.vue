@@ -72,7 +72,7 @@ export default {
   },
 
   mounted () {
-    setTimeout(() => { this.visibleRain = true }, 5000)
+    setTimeout(() => { this.visibleRain = true }, 4000)
   },
 
   metaInfo: {
