@@ -7,7 +7,7 @@ import { white, green, lightGreen } from '@/_variables.scss'
 import Viewport from '@/mixins/Viewport'
 
 const MATRIX_FONT = 'normal 24px Martix Code NFI'
-const LINE_HEIGHT = 26
+const LINE_HEIGHT = 27
 const OFFSET = 18
 
 export default {

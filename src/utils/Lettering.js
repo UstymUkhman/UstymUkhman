@@ -40,7 +40,7 @@ export default class Lettering {
     }
 
     if (this.hasCallback) {
-      setTimeout(this.callback, this.timeout)
+      setTimeout(this.callback)
     }
   }
 

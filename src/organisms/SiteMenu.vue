@@ -4,7 +4,7 @@
       <div class="menu-items">
         <div v-for="(page, p) in pages" :key="p" class="button-border">
 
-          <div ref="items" class="button-box" :class="{'active': activePage(p), 'pressed': pressed, 'selected': p === settedSection}">
+          <div ref="items" class="button-box" :class="{'active': p === currentItem && !nextPage, 'pressed': pressed, 'selected': p === settedSection && !nextPage}">
             <div class="button-background"></div>
             <p class="button">{{ page }}</p>
           </div>
@@ -44,13 +44,12 @@ export default {
   },
 
   methods: {
-    activePage (page) {
-      return page === this.currentItem && !this.nextPage
-    },
-
     skipMenuLettering () {
-      this.skipLettering = true
-      this.typingTimeout = 0
+      if (this.lettering) {
+        this.lettering.skipLettering()
+        this.skipLettering = true
+        this.typingTimeout = 0
+      }
     },
 
     showMenuItems () {
@@ -67,23 +66,13 @@ export default {
         if (this.skipLettering) {
           this.lettering.skipLettering()
         }
-      } else {
-        this._onKeyUp = this.onKeyUp.bind(this)
-        this._onKeyDown = this.onKeyDown.bind(this)
+      } else if (this.currentItem === null) {
         this.currentItem = Platform.mobile ? null : Loading.getActiveItem() || 0
-
-        document.addEventListener('keydown', this._onKeyDown, false)
-        document.addEventListener('keyup', this._onKeyUp, false)
+        this.toggleKeyListeners()
 
         setTimeout(() => {
           this.$emit('start:raining')
         }, 1500)
-
-        if (Platform.mobile) {
-          for (let i = 0; i < this.items.length; i++) {
-            this.items[i].addEventListener('touchend', this.onClick.bind(this, i))
-          }
-        }
       }
     },
 
@@ -117,18 +106,10 @@ export default {
 
       this.pressed = false
       this.nextPage = true
-
       this.settedSection = null
+
+      this.removeKeyListeners()
       this.lettering.disposeAll(this.words)
-
-      document.removeEventListener('keydown', this._onKeyDown, false)
-      document.removeEventListener('keyup', this._onKeyUp, false)
-
-      if (Platform.mobile) {
-        for (let i = 0; i < this.items.length; i++) {
-          this.items[i].removeEventListener('touchend', this.onClick.bind(this, i))
-        }
-      }
 
       setTimeout(() => {
         this.settedSection = nextSection
@@ -137,6 +118,40 @@ export default {
           name: Loading.getPageName(this.settedSection)
         })
       }, 3000)
+    },
+
+    toggleKeyListeners () {
+      document.removeEventListener('keydown', this._skipMenuLettering, false)
+      document.removeEventListener('touchend', this._skipMenuLettering, false)
+
+      setTimeout(() => {
+        if (Platform.mobile) {
+          // for (let i = 0; i < this.items.length; i++) {
+          //   this.items[i].addEventListener('touchend', this.onClick.bind(this, i))
+          // }
+
+          for (let i in this.items) {
+            this.items[i].addEventListener('touchend', this.onClick.bind(this, i))
+          }
+        } else {
+          this._onKeyUp = this.onKeyUp.bind(this)
+          this._onKeyDown = this.onKeyDown.bind(this)
+
+          document.addEventListener('keyup', this._onKeyUp, false)
+          document.addEventListener('keydown', this._onKeyDown, false)
+        }
+      }, 100)
+    },
+
+    removeKeyListeners () {
+      document.removeEventListener('keyup', this._onKeyUp, false)
+      document.removeEventListener('keydown', this._onKeyDown, false)
+
+      if (Platform.mobile) {
+        for (let i = 0; i < this.items.length; i++) {
+          this.items[i].removeEventListener('touchend', this.onClick.bind(this, i))
+        }
+      }
     }
   },
 
@@ -155,14 +170,6 @@ export default {
       this.items = this.$refs.items
       this.showMenuItems()
     }, 500)
-  },
-
-  beforeDestroy () {
-    document.removeEventListener('keydown', this._skipMenuLettering, false)
-
-    if (Platform.mobile) {
-      document.removeEventListener('touchend', this._skipMenuLettering)
-    }
   }
 }
 </script>

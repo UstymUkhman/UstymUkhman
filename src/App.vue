@@ -1,9 +1,9 @@
 <template>
   <div id="app" v-show="!platform.prerenderer" :version="version" :commit-hash="commitHash" :deploy-flag="deployFlag" :target-domain="targetDomain">
 
-    <transition appear>
-      <router-view itemprop="mainEntity" class="page" />
-    </transition>
+    <!-- <transition appear> -->
+    <router-view itemprop="mainEntity" class="page" />
+    <!-- </transition> -->
 
     <VersionInfo :version="version" v-if="!deployFlag" :commit-hash="commitHash" />
   </div>

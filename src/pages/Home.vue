@@ -6,13 +6,13 @@
       <MatrixRain v-if="matrixRain" :ratio="2.25" />
     </transition>
 
-    <transition appear>
-      <router-view
-        v-show="!visibleAnimation" class="page"
-        @hide:overlay="visibleOverlay = false"
-        @start:raining="visibleRain = true"
-      />
-    </transition>
+    <!-- <transition appear> -->
+    <router-view
+      v-show="!visibleAnimation" class="page"
+      @hide:overlay="visibleOverlay = false"
+      @start:raining="visibleRain = true"
+    />
+    <!-- </transition> -->
 
     <transition appear name="overlay">
       <ScreenOverlay v-if="visibleOverlay && !platform.prerenderer" />

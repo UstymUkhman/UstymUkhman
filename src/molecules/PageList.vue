@@ -146,22 +146,18 @@ export default {
     },
 
     onKeyDown ($event) {
-      if (!this.skipLettering) {
-        this.lettering.skipLettering()
-        this.skipLettering = true
-        return
-      }
-
-      if (!this.enableNavigation) {
-        return
-      }
-
       if (this.activeBack && $event.keyCode === 13) {
         this.$emit('update:selectedBack', true)
       }
     },
 
     onKeyUp ($event) {
+      if (!this.skipLettering) {
+        this.lettering.skipLettering()
+        this.skipLettering = true
+        return
+      }
+
       if (!this.enableNavigation) {
         return
       }

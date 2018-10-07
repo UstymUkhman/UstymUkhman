@@ -39,7 +39,8 @@ export default {
   data () {
     return {
       pressed: this.selected,
-      isActive: this.active
+      isActive: this.active,
+      lettering: null
     }
   },
 
@@ -53,7 +54,8 @@ export default {
 
       if (before && !now) {
         setTimeout(() => {
-          this.pressed = false
+          this.lettering.dispose()
+          this.isActive = false
         }, 500)
 
         setTimeout(() => {
@@ -73,6 +75,8 @@ export default {
         delay = 800
       }
 
+      this.lettering.dispose()
+
       setTimeout(() => {
         Loading.checkActiveItem()
         this.$router.push({name: 'SiteMenu'})
@@ -81,7 +85,8 @@ export default {
   },
 
   mounted () {
-    new Lettering().animate(this.$refs.back, 100)
+    this.lettering = new Lettering()
+    this.lettering.animate(this.$refs.back, 100)
   }
 }
 </script>
