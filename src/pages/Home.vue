@@ -3,16 +3,13 @@
     <ScreenAnimation v-if="visibleAnimation && !platform.prerenderer" @complete:animation="showMenu" />
 
     <transition appear>
-      <MatrixRain v-if="matrixRain" :ratio="2.25" />
+      <MatrixRain v-if="matrixRain" :ratio="platform.mobile ? 1 : 2.25" :mobile="platform.mobile" />
     </transition>
 
-    <!-- <transition appear> -->
     <router-view
       v-show="!visibleAnimation" class="page"
       @hide:overlay="visibleOverlay = false"
-      @start:raining="visibleRain = true"
     />
-    <!-- </transition> -->
 
     <transition appear name="overlay">
       <ScreenOverlay v-if="visibleOverlay && !platform.prerenderer" />
@@ -57,10 +54,12 @@ export default {
 
   computed: {
     matrixRain () {
-      return this.visibleRain &&
-             this.$route.name !== 'About' &&
-             this.$route.name !== 'Pills' &&
-             this.$route.name !== 'RabbitHole'
+      return Platform.mobile || (
+        this.visibleRain &&
+        this.$route.name !== 'About' &&
+        this.$route.name !== 'Pills' &&
+        this.$route.name !== 'RabbitHole'
+      )
     }
   },
 
@@ -72,7 +71,7 @@ export default {
   },
 
   mounted () {
-    setTimeout(() => { this.visibleRain = true }, 4000)
+    setTimeout(() => { this.visibleRain = true }, 500)
   },
 
   metaInfo: {

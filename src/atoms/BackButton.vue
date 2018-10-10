@@ -1,23 +1,22 @@
 <template>
   <div class="back-button">
-    <transition appear name="fade-out">
-      <div @touchend="onTouchend" class="back-button-container">
-        <div class="button-border">
-          <div class="button-box" :class="{'active': isActive, 'pressed': pressed, 'selected': selected}">
+    <div @touchstart="pressed = true; touching = true" @touchend="onTouchEnd" class="back-button-container">
+      <div class="button-border">
+        <div class="button-box" :class="{'active': isActive, 'pressed': pressed, 'selected': selected || touching}">
 
-            <div class="button-background"></div>
-            <p ref="back" class="button back" :class="{'active': isActive}">&lt; b@cK</p>
+          <div class="button-background"></div>
+          <p ref="back" class="button back" :class="{'active': isActive}">&lt; b@cK</p>
 
-          </div>
         </div>
       </div>
-    </transition>
+    </div>
   </div>
 </template>
 
 <script>
 import Lettering from '@/utils/Lettering'
 import Loading from '@/utils/Loading'
+import Platform from '@/platform'
 
 export default {
   name: 'BackButton',
@@ -40,6 +39,7 @@ export default {
     return {
       pressed: this.selected,
       isActive: this.active,
+      touching: false,
       lettering: null
     }
   },
@@ -67,15 +67,19 @@ export default {
   },
 
   methods: {
-    onTouchend () {
+    onTouchEnd () {
+      this.touching = false
+      this.pressed = false
+
       let delay = 0
 
       if (!this.active) {
-        this.isActive = true
+        this.isActive = !Platform.mobile
         delay = 800
       }
 
       this.lettering.dispose()
+      this.$emit('close:page')
 
       setTimeout(() => {
         Loading.checkActiveItem()
@@ -86,7 +90,9 @@ export default {
 
   mounted () {
     this.lettering = new Lettering()
-    this.lettering.animate(this.$refs.back, 100)
+    this.lettering.animate(this.$refs.back, 100, () => {
+      this.isActive = this.isActive || Platform.mobile
+    })
   }
 }
 </script>

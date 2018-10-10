@@ -1,13 +1,13 @@
 <template>
   <div @touchstart="onTouchStart" @touchend="onTouchEnd" class="list-area">
-    <div class="list-container" :style="{'-webkit-transform': 'translateY(' + listOffset + ')', 'transform': 'translateY(' + listOffset + ')'}">
+    <div class="list-container" :class="{'contacts': contacts}" :style="{'-webkit-transform': 'translateY(' + listOffset + ')', 'transform': 'translateY(' + listOffset + ')'}">
 
       <div v-for="(page, p) in pagesList" :key="page.name" ref="urls" @click="onPageClick(p)"
            class="page-container" :class="{'active': enableNavigation && (currentPage === p)}">
 
-        <span class="selected-page">{{cursor}}</span>
+        <span class="selected-page" :class="{'dissolve': dispose}">{{ contacts ? '>' : '//' }}</span>
         <p class="page-name">{{page.name}}</p>
-        <span v-if="p === emailIndex" class="e-mail"> - ustym.ukhman@gmail.com</span>
+        <span v-if="contacts && p === 3" class="e-mail"> - ustym.ukhman@gmail.com</span>
 
       </div>
     </div>
@@ -32,11 +32,6 @@ export default {
       required: true
     },
 
-    cursor: {
-      type: String,
-      required: true
-    },
-
     activeBack: {
       type: Boolean,
       default: false,
@@ -49,9 +44,21 @@ export default {
       required: false
     },
 
-    emailIndex: {
-      type: Number,
-      default: null,
+    skipLettering: {
+      type: Boolean,
+      default: false,
+      required: false
+    },
+
+    dispose: {
+      type: Boolean,
+      default: false,
+      required: false
+    },
+
+    contacts: {
+      type: Boolean,
+      default: false,
       required: false
     }
   },
@@ -60,7 +67,6 @@ export default {
     return {
       currentPage: Platform.mobile ? null : 0,
       enableNavigation: false,
-      skipLettering: false,
       touchStart: null,
 
       scrollOffset: null,
@@ -77,6 +83,14 @@ export default {
     viewPort () {
       this.listStep = this.viewPort.height * 0.14 + (this.viewPort.width < phone ? 18 : 21)
       this.scrollOffset = (this.urls.length - 5) * -this.listStep
+    },
+
+    dispose () {
+      this.lettering.disposeAll(this.words)
+    },
+
+    skipLettering () {
+      this.lettering.skipLettering()
     }
   },
 
@@ -135,13 +149,10 @@ export default {
           }
         }, delay)
       } else {
-        this.skipLettering = true
-
-        setTimeout(() => {
-          this.enableNavigation = true
-          this.$emit('show:components')
-          this.listOffset = this.urls.length < 6 ? '-50%' : '0px'
-        })
+        this.enableNavigation = true
+        this.$emit('show:components')
+        this.$emit('update:skipLettering', true)
+        this.listOffset = this.urls.length < 6 ? '-50%' : '0px'
       }
     },
 
@@ -152,12 +163,6 @@ export default {
     },
 
     onKeyUp ($event) {
-      if (!this.skipLettering) {
-        this.lettering.skipLettering()
-        this.skipLettering = true
-        return
-      }
-
       if (!this.enableNavigation) {
         return
       }
@@ -214,16 +219,12 @@ export default {
     },
 
     onTouchStart ($event) {
-      this.onKeyDown($event)
-
       if (this.urls.length > 5) {
         this.touchStart = $event.changedTouches[0].clientY
       }
     },
 
     onTouchEnd ($event) {
-      this.onKeyUp($event)
-
       if (this.urls.length > 5) {
         const distance = this.touchStart - $event.changedTouches[0].clientY
         let scroll = +this.listOffset.slice(0, -2)
@@ -292,10 +293,13 @@ export default {
   .list-container {
     transition: transform 0.5s $ease-out-sine;
     backface-visibility: hidden;
-    position: absolute;
 
-    bottom: 0;
+    position: absolute;
     top: 0;
+
+    &.contacts {
+      top: 50%;
+    }
 
     @include breakpoint($sm-down) {
       padding-left: 50px;
@@ -311,7 +315,7 @@ export default {
 .page-container {
   visibility: hidden;
   display: block;
-  margin: 18vh 0;
+  margin: 14vh 0;
 
   @media only screen and (max-height: 550px) {
     margin: 12vh 0;
@@ -320,10 +324,18 @@ export default {
   &.active {
     .selected-page {
       visibility: visible;
+      opacity: 1;
+
+      &.dissolve {
+        transition-duration: 0.5s;
+        transition-delay: 0.5s;
+        opacity: 0;
+      }
     }
 
     .e-mail {
       transform: translateX(25px);
+      transition-delay: 0.1s;
       opacity: 1;
 
       @include breakpoint($xs) {
@@ -350,7 +362,6 @@ export default {
   .selected-page {
     @include white-rabbit;
 
-    transition: transform 0.3s ease-out;
     display: inline-block;
     font-size: 25px;
 
@@ -360,6 +371,7 @@ export default {
   }
 
   .page-name {
+    transition: transform 0.4s $ease-out-quart;
     line-height: 20px;
 
     @include breakpoint($xs) {
@@ -368,13 +380,15 @@ export default {
   }
 
   .selected-page {
+    transition: opacity 0.2s $ease-in-out-cubic;
     visibility: hidden;
+    opacity: 0;
   }
 
   .e-mail {
     @include white-rabbit;
 
-    transition: transform 0.3s ease-out, opacity 0.3s;
+    transition: transform 0.4s $ease-out-quart, opacity 0.3s;
     white-space: nowrap;
     visibility: visible;
     position: absolute;

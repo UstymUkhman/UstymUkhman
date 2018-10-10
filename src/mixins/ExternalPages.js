@@ -1,9 +1,6 @@
 import BackButton from '@/atoms/BackButton'
 import PageList from '@/molecules/PageList'
 
-import Projects from '@/assets/data/projects'
-import Contacts from '@/assets/data/contacts'
-
 export default {
   components: {
     BackButton,
@@ -12,19 +9,33 @@ export default {
 
   data () {
     return {
-      projects: Projects,
-      contacts: Contacts,
-
+      skipLettering: false,
       selectedBack: false,
       activeBack: false,
+      closePage: false,
       showBack: false
     }
   },
 
   methods: {
     showComponents () {
-      this.showRain = true
-      this.showBack = true
+      setTimeout(() => {
+        this.showBack = true
+      }, 500)
+    },
+
+    onSkipLettering () {
+      if (!this.skipLettering) {
+        document.removeEventListener('touchstart', this._onSkipLettering, false)
+        document.removeEventListener('keydown', this._onSkipLettering, false)
+        this.skipLettering = true
+      }
     }
+  },
+
+  mounted () {
+    this._onSkipLettering = this.onSkipLettering.bind(this)
+    document.addEventListener('keydown', this._onSkipLettering, false)
+    document.addEventListener('touchstart', this._onSkipLettering, false)
   }
 }

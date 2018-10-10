@@ -1,13 +1,16 @@
 <template>
-  <canvas ref="code" :class="{'right': ratio > 1}" :style="{'width': `${100 / ratio}%`}"></canvas>
+  <div class="rain-container" :class="{'right': ratio > 1}" :style="{'width': `${100 / ratio}%`}">
+    <canvas ref="code"></canvas>
+    <div v-if="mobile" class="mobile-overlay"></div>
+  </div>
 </template>
 
 <script>
 import { white, green, lightGreen } from '@/_variables.scss'
 import Viewport from '@/mixins/Viewport'
 
+const LINE_HEIGHT = 27 // window.innerWidth < mobile ? 25 : 27
 const MATRIX_FONT = 'normal 24px Martix Code NFI'
-const LINE_HEIGHT = 27
 const OFFSET = 18
 
 export default {
@@ -20,13 +23,19 @@ export default {
       default: 1,
       type: Number,
       required: false
+    },
+
+    mobile: {
+      type: Boolean,
+      default: false,
+      required: false
     }
   },
 
   data () {
     return {
-      height: window.innerHeight,
-      width: window.innerWidth,
+      height: window.innerHeight + 16,
+      width: window.innerWidth + 16,
       lastUpdate: Date.now(),
 
       columns: null,
@@ -199,13 +208,30 @@ export default {
 </script>
 
 <style scoped lang="scss">
-canvas {
+@import 'variables';
+
+.rain-container {
   position: absolute;
   height: 100%;
 
   &.right {
     left: auto;
     right: 0;
+  }
+
+  canvas {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+  }
+
+  .mobile-overlay {
+    background-color: rgba($black, 0.8);
+    position: absolute;
+
+    height: 100%;
+    width: 100%;
   }
 }
 </style>

@@ -8,24 +8,31 @@
 
     <transition appear name="fade-out">
       <PageList
-        cursor="//"
         :urls="projects"
+        :dispose="closePage"
         :activeBack.sync="activeBack"
         :selectedBack.sync="selectedBack"
-
+        :skipLettering.sync="skipLettering"
         @update:index="activePage = $event + 1"
         @show:components="showComponents"
         class="projects-list"
       />
     </transition>
 
-    <BackButton v-if="showBack" :active="activeBack" :selected="selectedBack" />
+    <BackButton
+      v-if="showBack"
+      :active="activeBack"
+      :selected="selectedBack"
+      @close:page="closePage = true"
+    />
   </article>
 </template>
 
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import ExternalPages from '@/mixins/ExternalPages'
+
+import Projects from '@/assets/data/projects'
 import Platform from '@/platform'
 
 export default {
@@ -35,6 +42,7 @@ export default {
 
   data () {
     return {
+      projects: Projects,
       activePage: 1
     }
   },
@@ -55,7 +63,6 @@ export default {
 @import 'mixins';
 
 .my-works-page {
-  background-color: $black;
   position: absolute;
   overflow: hidden;
   z-index: 2;

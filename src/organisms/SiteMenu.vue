@@ -1,17 +1,18 @@
 <template>
   <section class="menu-section">
-    <transition appear name="fade-out">
-      <div class="menu-items">
-        <div v-for="(page, p) in pages" :key="p" class="button-border">
+    <div class="menu-items">
+      <div v-for="(page, p) in pages" :key="p" class="button-border">
 
-          <div ref="items" class="button-box" :class="{'active': p === currentItem && !nextPage, 'pressed': pressed, 'selected': p === settedSection && !nextPage}">
-            <div class="button-background"></div>
-            <p class="button">{{ page }}</p>
-          </div>
+        <div ref="items" class="button-box"
+             @touchstart="onTouchStart(p)" @touchend="onTouchEnd(p)"
+             :class="{'active': (p === currentItem && !nextPage) || visibleButtons.includes(p), 'pressed': pressed, 'selected': p === settedSection && !nextPage}">
 
+          <div class="button-background"></div>
+          <p class="button">{{ page }}</p>
         </div>
+
       </div>
-    </transition>
+    </div>
   </section>
 </template>
 
@@ -31,6 +32,7 @@ export default {
       nextPage: false,
       pressed: false,
 
+      visibleButtons: [],
       typingTimeout: 500,
       itemIndex: -1,
       words: [],
@@ -49,6 +51,10 @@ export default {
         this.lettering.skipLettering()
         this.skipLettering = true
         this.typingTimeout = 0
+
+        if (Platform.mobile) {
+          this.visibleButtons = [0, 1, 2, 3]
+        }
       }
     },
 
@@ -65,14 +71,14 @@ export default {
 
         if (this.skipLettering) {
           this.lettering.skipLettering()
+        } else if (Platform.mobile) {
+          setTimeout(() => {
+            this.visibleButtons.push(this.itemIndex)
+          }, this.typingTimeout)
         }
       } else if (this.currentItem === null) {
         this.currentItem = Platform.mobile ? null : Loading.getActiveItem() || 0
         this.toggleKeyListeners()
-
-        setTimeout(() => {
-          this.$emit('start:raining')
-        }, 1500)
       }
     },
 
@@ -96,9 +102,22 @@ export default {
       }
     },
 
-    onClick (index) {
+    onTouchStart (index) {
+      if (this.visibleButtons.length < 4) {
+        return
+      }
+
       this.currentItem = index
       this.onKeyDown({ keyCode: 13 })
+    },
+
+    onTouchEnd (index) {
+      if (this.visibleButtons.length < 4) {
+        return
+      }
+
+      this.onKeyUp({ keyCode: 13 })
+      this.visibleButtons = []
     },
 
     setMenuSection () {
@@ -125,33 +144,17 @@ export default {
       document.removeEventListener('touchend', this._skipMenuLettering, false)
 
       setTimeout(() => {
-        if (Platform.mobile) {
-          // for (let i = 0; i < this.items.length; i++) {
-          //   this.items[i].addEventListener('touchend', this.onClick.bind(this, i))
-          // }
+        this._onKeyUp = this.onKeyUp.bind(this)
+        this._onKeyDown = this.onKeyDown.bind(this)
 
-          for (let i in this.items) {
-            this.items[i].addEventListener('touchend', this.onClick.bind(this, i))
-          }
-        } else {
-          this._onKeyUp = this.onKeyUp.bind(this)
-          this._onKeyDown = this.onKeyDown.bind(this)
-
-          document.addEventListener('keyup', this._onKeyUp, false)
-          document.addEventListener('keydown', this._onKeyDown, false)
-        }
+        document.addEventListener('keyup', this._onKeyUp, false)
+        document.addEventListener('keydown', this._onKeyDown, false)
       }, 100)
     },
 
     removeKeyListeners () {
       document.removeEventListener('keyup', this._onKeyUp, false)
       document.removeEventListener('keydown', this._onKeyDown, false)
-
-      if (Platform.mobile) {
-        for (let i = 0; i < this.items.length; i++) {
-          this.items[i].removeEventListener('touchend', this.onClick.bind(this, i))
-        }
-      }
     }
   },
 
@@ -200,15 +203,17 @@ export default {
 
     @include breakpoint($sm-down) {
       transform: translateY(-50%);
+
       position: absolute;
       overflow: hidden;
       z-index: $pills;
 
-      margin-left: 0;
+      margin: 0 auto;
       height: auto;
 
-      width: 100%;
       top: 50%;
+      right: 0;
+      left: 0;
     }
 
     @include breakpoint($xs) {

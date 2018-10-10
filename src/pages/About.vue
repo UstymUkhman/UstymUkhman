@@ -35,7 +35,7 @@ export default {
 
       aboutDescription: `
         Hi, my name is Ustym and I'm a front-end web developer at MONOGRID.#
-        I was born and raised in Zbarazh (Ucraine), however I live in Florence (Italy) for ${this.getYears()} years so far.##
+        I was born and raised in Zbarazh (Ucraine), however I live in Florence (Italy) for ${this.years} years so far.##
 
         Things I love:#
         %- Learning and using innovative web technologies#
@@ -52,14 +52,16 @@ export default {
     }
   },
 
-  methods: {
-    getYears () {
+  computed: {
+    years () {
       const today = new Date()
       const arrive = today.getMonth() > 7 ? 2005 : 2006
 
       return today.getFullYear() - arrive
-    },
+    }
+  },
 
+  methods: {
     showMessage () {
       this.lettering.animate(this.$refs.text, 50, () => {
         this.showBackButton = true
@@ -71,7 +73,9 @@ export default {
     },
 
     onKeyDown (event) {
-      if (this.activeBackButton && event.keyCode === 13) {
+      const enterKey = Platform.mobile || event.keyCode === 13
+
+      if (this.activeBackButton && enterKey) {
         this.selectedBackButton = true
       } else if (!this.showBackButton) {
         this.lettering.skipLettering()
@@ -79,7 +83,9 @@ export default {
     },
 
     onKeyUp (event) {
-      if (this.activeBackButton && event.keyCode === 13) {
+      const enterKey = Platform.mobile || event.keyCode === 13
+
+      if (this.activeBackButton && enterKey) {
         this.selectedBackButton = false
         this.lettering.dispose()
       }
@@ -122,7 +128,6 @@ export default {
 @import 'mixins';
 
 .about-me-page {
-  background-color: $black;
   position: absolute;
   overflow: hidden;
 
@@ -173,7 +178,7 @@ export default {
     }
 
     @include breakpoint($xs) {
-      margin-top: 15vh;
+      margin-top: 20vh;
       width: 95vw;
     }
 

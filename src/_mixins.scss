@@ -2,13 +2,13 @@
 @import 'functions';
 
 @mixin horizontal-gradient($color1, $color2) {
-  background: linear-gradient(to right, $color1 0%, $color2 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2', GradientType=1);
+  background: linear-gradient(to right, $color1 0%, $color2 100%);
 }
 
 @mixin vertical-gradient($color1, $color2) {
-  background: linear-gradient(to bottom, $color1 0%, $color2 100%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2', GradientType=0);
+  background: linear-gradient(to bottom, $color1 0%, $color2 100%);
 }
 
 @mixin desktop-hover {
@@ -48,19 +48,19 @@
   }
 }
 
-@mixin console-message {
-  &.message-text {
-    span {
-      @include dissolve-text(25);
-    }
+// @mixin console-message {
+//   &.message-text {
+//     span {
+//       @include dissolve-text(25);
+//     }
 
-    &.dissolve {
-      span {
-        opacity: 0;
-      }
-    }
-  }
-}
+//     &.dissolve {
+//       span {
+//         opacity: 0;
+//       }
+//     }
+//   }
+// }
 
 @mixin console-button($border-size: 3px) {
   $animaiton-delay: 0.15s;
@@ -219,236 +219,236 @@
   }
 }
 
-@mixin rain-column($columns: 9) {
-  &.rain-column {
-    position: absolute;
-    height: auto;
-    width: 40px;
+// @mixin rain-column($columns: 9) {
+//   &.rain-column {
+//     position: absolute;
+//     height: auto;
+//     width: 40px;
 
-    text-align: center;
-    line-height: 25px;
+//     text-align: center;
+//     line-height: 25px;
 
-    $code-sizes: (12, 25, 60);
+//     $code-sizes: (12, 25, 60);
 
-    @if $columns > 24 {
-      $code-sizes: (8, 20, 40);
-    }
+//     @if $columns > 24 {
+//       $code-sizes: (8, 20, 40);
+//     }
 
-    @for $i from 1 through 3 {
-      $current-size: #{nth($code-sizes, $i)};
-      $animation: deep-drop;
-      $margin: -0.5%;
-      $index: 1;
+//     @for $i from 1 through 3 {
+//       $current-size: #{nth($code-sizes, $i)};
+//       $animation: deep-drop;
+//       $margin: -0.5%;
+//       $index: 1;
 
-      @if $i == 2 {
-        $animation: drop;
-        $margin: 0%;
-        $index: 2;
-      } @else if $i == 3 {
-        $animation: drop;
-        $margin: -0.75%;
-        $index: 3;
-      }
+//       @if $i == 2 {
+//         $animation: drop;
+//         $margin: 0%;
+//         $index: 2;
+//       } @else if $i == 3 {
+//         $animation: drop;
+//         $margin: -0.75%;
+//         $index: 3;
+//       }
 
-      &.column-size-#{$current-size} {
-        animation-name: $animation;
-        margin-left: $margin;
-        z-index: $index;
-      }
-    }
+//       &.column-size-#{$current-size} {
+//         animation-name: $animation;
+//         margin-left: $margin;
+//         z-index: $index;
+//       }
+//     }
 
-    span {
-      text-shadow: 0 -12px 10px $green;
-      display: block;
-      width: auto;
+//     span {
+//       text-shadow: 0 -12px 10px $green;
+//       display: block;
+//       width: auto;
 
-      &:nth-child(-n+5) {
-        opacity: 0.3;
-      }
+//       &:nth-child(-n+5) {
+//         opacity: 0.3;
+//       }
 
-      &:nth-child(n+6):nth-child(-n+10) {
-        opacity: 0.42;
-      }
+//       &:nth-child(n+6):nth-child(-n+10) {
+//         opacity: 0.42;
+//       }
 
-      &:nth-child(n+11):nth-child(-n+15) {
-        opacity: 0.54;
-      }
+//       &:nth-child(n+11):nth-child(-n+15) {
+//         opacity: 0.54;
+//       }
 
-      &:nth-child(n+16):nth-child(-n+25) {
-        opacity: 0.66;
-      }
+//       &:nth-child(n+16):nth-child(-n+25) {
+//         opacity: 0.66;
+//       }
 
-      &:nth-child(n+26):nth-child(-n+35) {
-        opacity: 0.78;
-      }
+//       &:nth-child(n+26):nth-child(-n+35) {
+//         opacity: 0.78;
+//       }
 
-      &:nth-child(n+36):nth-child(-n+40) {
-        opacity: 0.9;
-      }
+//       &:nth-child(n+36):nth-child(-n+40) {
+//         opacity: 0.9;
+//       }
 
-      &:nth-child(n+41) {
-        opacity: 1;
-      }
+//       &:nth-child(n+41) {
+//         opacity: 1;
+//       }
 
-      &:nth-last-child(3) {
-        color: $fade-green;
-      }
+//       &:nth-last-child(3) {
+//         color: $fade-green;
+//       }
 
-      &:nth-last-child(2) {
-        color: $light-green;
-      }
+//       &:nth-last-child(2) {
+//         color: $light-green;
+//       }
 
-      &:nth-last-child(1) {
-        color: $energy-green;
-      }
+//       &:nth-last-child(1) {
+//         color: $energy-green;
+//       }
 
-      @for $i from 1 through 3 {
-        $current-size: #{nth($code-sizes, $i)};
+//       @for $i from 1 through 3 {
+//         $current-size: #{nth($code-sizes, $i)};
 
-        &.code-size-#{$current-size} {
-          $size: #{$current-size}px;
+//         &.code-size-#{$current-size} {
+//           $size: #{$current-size}px;
 
-          font-size: $size;
-          height: $size;
-        }
-      }
-    }
-  }
+//           font-size: $size;
+//           height: $size;
+//         }
+//       }
+//     }
+//   }
 
-  $step: 100 / ($columns + 1);
+//   $step: 100 / ($columns + 1);
 
-  @for $i from 0 through $columns {
-    &.rain-column.code-#{$i} {
-      $duration: get-random(1000ms, 15000ms);
-      $delay: get-random(0ms, 1000ms);
+//   @for $i from 0 through $columns {
+//     &.rain-column.code-#{$i} {
+//       $duration: get-random(1000ms, 15000ms);
+//       $delay: get-random(0ms, 1000ms);
 
-      left: unquote('#{$i * $step}%');
-      transform: translateY(-110%);
-      position: absolute;
+//       left: unquote('#{$i * $step}%');
+//       transform: translateY(-110%);
+//       position: absolute;
 
-      animation-delay: $delay;
-      animation-duration: $duration;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
+//       animation-delay: $delay;
+//       animation-duration: $duration;
+//       animation-timing-function: linear;
+//       animation-iteration-count: infinite;
 
-      @include breakpoint($xs) {
-        left: unquote('#{$i * $step * 2}%');
-      }
-    }
-  }
-}
+//       @include breakpoint($xs) {
+//         left: unquote('#{$i * $step * 2}%');
+//       }
+//     }
+//   }
+// }
 
-@mixin code-column {
-  &.code-column {
-    $code-sizes: (12, 25, 60);
+// @mixin code-column {
+//   &.code-column {
+//     $code-sizes: (12, 25, 60);
 
-    text-align: center;
-    position: absolute;
+//     text-align: center;
+//     position: absolute;
 
-    line-height: 25px;
-    height: auto;
-    width: 40px;
+//     line-height: 25px;
+//     height: auto;
+//     width: 40px;
 
-    span {
-      text-shadow: 0 -12px 10px $green;
+//     span {
+//       text-shadow: 0 -12px 10px $green;
 
-      display: block;
-      width: auto;
+//       display: block;
+//       width: auto;
 
-      padding: 0;
-      margin: 0;
+//       padding: 0;
+//       margin: 0;
 
-      &:nth-child(-n+5) {
-        opacity: 0.3;
-      }
+//       &:nth-child(-n+5) {
+//         opacity: 0.3;
+//       }
 
-      &:nth-child(n+6):nth-child(-n+10) {
-        opacity: 0.42;
-      }
+//       &:nth-child(n+6):nth-child(-n+10) {
+//         opacity: 0.42;
+//       }
 
-      &:nth-child(n+11):nth-child(-n+15) {
-        opacity: 0.54;
-      }
+//       &:nth-child(n+11):nth-child(-n+15) {
+//         opacity: 0.54;
+//       }
 
-      &:nth-child(n+16):nth-child(-n+25) {
-        opacity: 0.66;
-      }
+//       &:nth-child(n+16):nth-child(-n+25) {
+//         opacity: 0.66;
+//       }
 
-      &:nth-child(n+26):nth-child(-n+35) {
-        opacity: 0.78;
-      }
+//       &:nth-child(n+26):nth-child(-n+35) {
+//         opacity: 0.78;
+//       }
 
-      &:nth-child(n+36):nth-child(-n+40) {
-        opacity: 0.9;
-      }
+//       &:nth-child(n+36):nth-child(-n+40) {
+//         opacity: 0.9;
+//       }
 
-      &:nth-child(n+41) {
-        opacity: 1;
-      }
+//       &:nth-child(n+41) {
+//         opacity: 1;
+//       }
 
-      &:nth-last-child(3) {
-        color: $fade-green;
-      }
+//       &:nth-last-child(3) {
+//         color: $fade-green;
+//       }
 
-      &:nth-last-child(2) {
-        color: $light-green;
-      }
+//       &:nth-last-child(2) {
+//         color: $light-green;
+//       }
 
-      &:nth-last-child(1) {
-        color: $energy-green;
-      }
+//       &:nth-last-child(1) {
+//         color: $energy-green;
+//       }
 
-      @for $i from 1 through 3 {
-        $current-size: #{nth($code-sizes, $i)};
+//       @for $i from 1 through 3 {
+//         $current-size: #{nth($code-sizes, $i)};
 
-        &.code-size-#{$current-size} {
-          font-size: #{$current-size}px;
-          height: #{$current-size}px;
-        }
-      }
-    }
+//         &.code-size-#{$current-size} {
+//           font-size: #{$current-size}px;
+//           height: #{$current-size}px;
+//         }
+//       }
+//     }
 
-    @for $i from 1 through 3 {
-      $current-size: #{nth($code-sizes, $i)};
-      $marginLeft: -0.5%;
-      $marginTop: 0%;
-      $index: 1;
+//     @for $i from 1 through 3 {
+//       $current-size: #{nth($code-sizes, $i)};
+//       $marginLeft: -0.5%;
+//       $marginTop: 0%;
+//       $index: 1;
 
-      @if $i == 2 {
-        $marginLeft: 0%;
-        $index: 2;
-      } @else if $i == 3 {
-        $marginLeft: -0.75%;
-        $marginTop: -40%;
-        $index: 3;
-      }
+//       @if $i == 2 {
+//         $marginLeft: 0%;
+//         $index: 2;
+//       } @else if $i == 3 {
+//         $marginLeft: -0.75%;
+//         $marginTop: -40%;
+//         $index: 3;
+//       }
 
-      &.column-size-#{$current-size} {
-        margin-left: $marginLeft;
-        margin-top: $marginTop;
-        z-index: $index;
-      }
-    }
-  }
+//       &.column-size-#{$current-size} {
+//         margin-left: $marginLeft;
+//         margin-top: $marginTop;
+//         z-index: $index;
+//       }
+//     }
+//   }
 
-  @for $i from 0 through 99 {
-    &.code-column.code-#{$i} {
-      $top: get-random(1, 50);
+//   @for $i from 0 through 99 {
+//     &.code-column.code-#{$i} {
+//       $top: get-random(1, 50);
 
-      top: unquote('#{-$top}%');
-      left: unquote('#{$i}%');
-      position: absolute;
+//       top: unquote('#{-$top}%');
+//       left: unquote('#{$i}%');
+//       position: absolute;
 
-      @include breakpoint($sm-down) {
-        left: unquote('#{$i * 3}%');
-      }
+//       @include breakpoint($sm-down) {
+//         left: unquote('#{$i * 3}%');
+//       }
 
-      @include breakpoint($xs) {
-        left: unquote('#{$i * 5}%');
-      }
-    }
-  }
-}
+//       @include breakpoint($xs) {
+//         left: unquote('#{$i * 5}%');
+//       }
+//     }
+//   }
+// }
 
 @mixin code-editor {
   span.number {

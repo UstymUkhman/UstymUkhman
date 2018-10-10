@@ -2,30 +2,41 @@
   <article itemscope itemtype="http://schema.org/WebPageElement" class="contact-me-page">
     <transition appear name="fade-out">
       <PageList
-        cursor=">"
-        :emailIndex="3"
+        contacts
         :urls="contacts"
+        :dispose="closePage"
         :activeBack.sync="activeBack"
         :selectedBack.sync="selectedBack"
-
-        @update:index="activePage = $event + 1"
+        :skipLettering.sync="skipLettering"
         @show:components="showComponents"
         class="contacts-list"
       />
     </transition>
 
-    <BackButton v-if="showBack" :active="activeBack" :selected="selectedBack" />
+    <BackButton
+      v-if="showBack"
+      :active="activeBack"
+      :selected="selectedBack"
+      @close:page="closePage = true"
+    />
   </article>
 </template>
 
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import ExternalPages from '@/mixins/ExternalPages'
+import Contacts from '@/assets/data/contacts'
 
 export default {
   name: 'Contacts',
 
   mixins: [ExternalPages, FirePrerenderEvent],
+
+  data () {
+    return {
+      contacts: Contacts
+    }
+  },
 
   metaInfo: {
     title: 'Contacts |'
@@ -37,9 +48,7 @@ export default {
 @import 'variables';
 
 .contact-me-page {
-  background-color: $black;
   padding-left: 100px;
-
   position: absolute;
   overflow: hidden;
   z-index: 2;
@@ -63,13 +72,16 @@ export default {
   .contacts-list {
     position: absolute;
     margin: auto;
-
     bottom: auto;
-    top: 50%;
+
+    .list-container {
+      top: 50%;
+    }
 
     @include breakpoint($sm-down) {
-      margin: 5vh 0 0 50px;
+      margin: 0;
       height: 100%;
+      margin-left: 50px;
     }
 
     @include breakpoint($xs) {
