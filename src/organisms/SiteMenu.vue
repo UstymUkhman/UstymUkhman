@@ -3,9 +3,13 @@
     <div class="menu-items">
       <div v-for="(page, p) in pages" :key="p" class="button-border">
 
-        <div ref="items" class="button-box"
-             @touchstart="onTouchStart(p)" @touchend="onTouchEnd(p)"
-             :class="{'active': (p === currentItem && !nextPage) || visibleButtons.includes(p), 'pressed': pressed, 'selected': p === settedSection && !nextPage}">
+        <div @touchstart="onTouchStart(p)" @touchend="onTouchEnd(p)"
+             ref="items" class="button-box"
+             :class="{
+               'active': (p === currentItem && !nextPage) || visibleButtons.includes(p),
+               'selected': p === settedSection && !nextPage,
+               'pressed': pressed
+             }">
 
           <div class="button-background"></div>
           <p class="button">{{ page }}</p>
@@ -129,6 +133,7 @@ export default {
 
       this.removeKeyListeners()
       this.lettering.disposeAll(this.words)
+      this.$emit('toggle:rain', nextSection !== 3)
 
       setTimeout(() => {
         this.settedSection = nextSection
@@ -136,7 +141,7 @@ export default {
         this.$router.push({
           name: Loading.getPageName(this.settedSection)
         })
-      }, 3000)
+      }, 2500)
     },
 
     toggleKeyListeners () {
@@ -170,6 +175,7 @@ export default {
     }
 
     setTimeout(() => {
+      this.$emit('toggle:rain', true)
       this.items = this.$refs.items
       this.showMenuItems()
     }, 500)

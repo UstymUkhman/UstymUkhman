@@ -1,17 +1,15 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="contact-me-page">
-    <transition appear name="fade-out">
-      <PageList
-        contacts
-        :urls="contacts"
-        :dispose="closePage"
-        :activeBack.sync="activeBack"
-        :selectedBack.sync="selectedBack"
-        :skipLettering.sync="skipLettering"
-        @show:components="showComponents"
-        class="contacts-list"
-      />
-    </transition>
+    <PageList
+      contacts
+      :urls="contacts"
+      :dispose="closePage"
+      :activeBack.sync="activeBack"
+      :selectedBack.sync="selectedBack"
+      :skipLettering.sync="skipLettering"
+      @show:components="showComponents"
+      class="contacts-list"
+    />
 
     <BackButton
       v-if="showBack"

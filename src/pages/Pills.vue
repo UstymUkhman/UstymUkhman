@@ -1,12 +1,6 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="pill-choice-page">
-    <transition appear>
-      <MatrixRain v-if="raining" />
-    </transition>
-
-    <transition appear name="fade-out">
-      <div v-if="!fadeOut" ref="pills"></div>
-    </transition>
+    <div ref="pills"></div>
   </article>
 </template>
 
@@ -27,12 +21,11 @@ import { SmoothShading } from '@three/constants.js'
 import PILL from '@/3D/assets/models/pill.json'
 
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
-import MatrixRain from '@/molecules/MatrixRain'
-
 import load from '@/3D/utils/assetsLoader'
 import Viewport from '@/mixins/Viewport'
 import Loading from '@/utils/Loading'
 
+import Sounds from '@/utils/Sounds'
 import Platform from '@/platform'
 import to from 'await-to-js'
 import anime from 'animejs'
@@ -42,10 +35,6 @@ export default {
 
   mixins: [Viewport, FirePrerenderEvent],
 
-  components: {
-    MatrixRain
-  },
-
   data () {
     return {
       light: null,
@@ -53,12 +42,10 @@ export default {
       camera: null,
       renderer: null,
 
+      choice: true,
       redPill: null,
       bluePill: null,
-
-      choice: true,
-      fadeOut: false,
-      raining: false,
+      interactable: false,
 
       width: window.innerWidth,
       height: window.innerHeight
@@ -130,9 +117,9 @@ export default {
           pill.position.set(2.5, 0, 2)
           this.bluePill = pill
 
-          anime({
+          this.blueFade = anime({
             targets: this.bluePill.material,
-            delay: 1000 + wait,
+            delay: 500 + wait,
             easing: 'linear',
             duration: 1000,
             opacity: 1.0
@@ -144,7 +131,7 @@ export default {
           this.redPill = pill
           this.render()
 
-          anime({
+          this.redFade = anime({
             targets: this.redPill.material,
             delay: 7500 + wait,
             easing: 'linear',
@@ -152,7 +139,7 @@ export default {
             opacity: 1.0
           })
 
-          setTimeout(this.createChoice.bind(this), 16000 + wait)
+          this.choiceTimeout = setTimeout(this.createChoice.bind(this), 16000 + wait)
         }
 
         pill.scale.set(0.25, 0.25, 0.25)
@@ -164,28 +151,36 @@ export default {
 
     createChoice () {
       this.setChosenPill()
-      setTimeout(() => { this.raining = true }, 1500)
-
-      this._onKeyDown = this.onKeyDown.bind(this)
-      document.addEventListener('keydown', this._onKeyDown, false)
+      this.interactable = true
+      setTimeout(() => { this.$emit('toggle:rain', true) }, 1000)
     },
 
     onKeyDown (event) {
-      const code = event.keyCode
+      if (this.interactable) {
+        const code = event.keyCode
 
-      if (code === 37 || code === 39) {
-        this.setChosenPill()
-      } else if (code === 13) {
-        this.animateChosenPill()
+        if (code === 37 || code === 39) {
+          this.setChosenPill()
+        } else if (code === 13) {
+          this.animateChosenPill()
+        }
+      } else {
+        Sounds.endSpeach()
+
+        this.blueFade.pause()
+        this.bluePill.material.opacity = 1
+
+        this.redFade.pause()
+        this.redPill.material.opacity = 1
+
+        clearTimeout(this.choiceTimeout)
+        this.createChoice()
       }
     },
 
     setChosenPill () {
       const scaleBlue = this.choice ? 0.35 : 0.15
       const scaleRed = this.choice ? 0.15 : 0.35
-
-      const opacityBlue = 1.0
-      const opacityRed = 1.0
 
       this.choice = !this.choice
 
@@ -200,9 +195,9 @@ export default {
 
       anime({
         targets: this.redPill.material,
-        opacity: opacityRed,
         easing: 'linear',
-        duration: 500
+        duration: 500,
+        opacity: 1.0
       })
 
       anime({
@@ -216,13 +211,15 @@ export default {
 
       anime({
         targets: this.bluePill.material,
-        opacity: opacityBlue,
         easing: 'linear',
-        duration: 500
+        duration: 500,
+        opacity: 1.0
       })
     },
 
     animateChosenPill () {
+      document.removeEventListener('keydown', this._onKeyDown, false)
+
       if (this.choice) {
         anime({
           complete: this.faceChosenPill.bind(this),
@@ -239,6 +236,14 @@ export default {
           duration: 800,
           y: 0.7875,
           z: 1.525
+        })
+
+        anime({
+          targets: this.redPill.material,
+          easing: 'linear',
+          duration: 2000,
+          delay: 1000,
+          opacity: 0
         })
 
         anime({
@@ -266,6 +271,14 @@ export default {
         })
 
         anime({
+          targets: this.bluePill.material,
+          easing: 'linear',
+          duration: 2000,
+          delay: 1000,
+          opacity: 0
+        })
+
+        anime({
           targets: this.redPill.material,
           easing: 'linear',
           duration: 500,
@@ -275,10 +288,7 @@ export default {
     },
 
     faceChosenPill () {
-      setTimeout(() => {
-        this.raining = false
-        this.fadeOut = true
-      }, 2500)
+      this.$emit('toggle:rain', false)
 
       setTimeout(() => {
         Loading.checkActiveItem()
@@ -301,12 +311,14 @@ export default {
 
       this.createPill(0x003FFF)
       this.createPill(0xB40000)
+
+      this._onKeyDown = this.onKeyDown.bind(this)
+      document.addEventListener('keydown', this._onKeyDown, false)
     }
   },
 
   beforeDestroy () {
     cancelAnimationFrame(this.raf)
-    document.removeEventListener('keydown', this._onKeyDown, false)
   },
 
   metaInfo: {

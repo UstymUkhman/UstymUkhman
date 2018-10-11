@@ -6,18 +6,16 @@
       </div>
     </transition>
 
-    <transition appear name="fade-out">
-      <PageList
-        :urls="projects"
-        :dispose="closePage"
-        :activeBack.sync="activeBack"
-        :selectedBack.sync="selectedBack"
-        :skipLettering.sync="skipLettering"
-        @update:index="activePage = $event + 1"
-        @show:components="showComponents"
-        class="projects-list"
-      />
-    </transition>
+    <PageList
+      :urls="projects"
+      :dispose="closePage"
+      :activeBack.sync="activeBack"
+      :selectedBack.sync="selectedBack"
+      :skipLettering.sync="skipLettering"
+      @update:index="activePage = $event + 1"
+      @show:components="showComponents"
+      class="projects-list"
+    />
 
     <BackButton
       v-if="showBack"

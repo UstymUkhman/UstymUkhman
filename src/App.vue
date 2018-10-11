@@ -262,13 +262,13 @@ article.rabbit-hole-page {
   }
 }
 
-.fade-out-leave-active {
-  transition: opacity 1s !important;
-}
+// .fade-out-leave-active {
+//   transition: opacity 1s !important;
+// }
 
-.fade-out-leave-to {
-  opacity: 0;
-}
+// .fade-out-leave-to {
+//   opacity: 0;
+// }
 
 .v-enter-active,
 .v-leave-active {

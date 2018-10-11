@@ -1,18 +1,19 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="home-page">
-    <ScreenAnimation v-if="visibleAnimation && !platform.prerenderer" @complete:animation="showMenu" />
+    <ScreenAnimation v-if="visibleAnimation && !isPrerenderer" @complete:animation="showMenu" />
 
-    <transition appear>
-      <MatrixRain v-if="matrixRain" :ratio="platform.mobile ? 1 : 2.25" :mobile="platform.mobile" />
+    <transition appear name="matrix-rain">
+      <MatrixRain v-if="matrixRain" :ratio="rainRatio" :mobile="isMobile" />
     </transition>
 
     <router-view
       v-show="!visibleAnimation" class="page"
       @hide:overlay="visibleOverlay = false"
+      @toggle:rain="visibleRain = $event"
     />
 
     <transition appear name="overlay">
-      <ScreenOverlay v-if="visibleOverlay && !platform.prerenderer" />
+      <ScreenOverlay v-if="visibleOverlay && !isPrerenderer" />
     </transition>
   </article>
 </template>
@@ -37,10 +38,11 @@ export default {
 
   data () {
     return {
+      isPrerenderer: Platform.prerenderer,
+      isMobile: Platform.mobile,
       visibleAnimation: false,
       visibleOverlay: true,
-      visibleRain: false,
-      platform: Platform
+      visibleRain: false
     }
   },
 
@@ -55,11 +57,14 @@ export default {
   computed: {
     matrixRain () {
       return Platform.mobile || (
-        this.visibleRain &&
+        this.$route.name !== 'RabbitHole' &&
         this.$route.name !== 'About' &&
-        this.$route.name !== 'Pills' &&
-        this.$route.name !== 'RabbitHole'
+        this.visibleRain
       )
+    },
+
+    rainRatio () {
+      return Platform.mobile || this.$route.name === 'Pills' ? 1 : 2.25
     }
   },
 
@@ -71,7 +76,9 @@ export default {
   },
 
   mounted () {
-    setTimeout(() => { this.visibleRain = true }, 500)
+    if (this.$route.name !== 'Pills') {
+      setTimeout(() => { this.visibleRain = true }, 500)
+    }
   },
 
   metaInfo: {
@@ -81,6 +88,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.matrix-rain-leave-active {
+  transition: opacity 3.5s;
+}
+
+.matrix-rain-leave-to {
+  opacity: 0;
+}
+
 .overlay-enter-active {
   transition: opacity 0.1s 0.4s;
 }
