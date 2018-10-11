@@ -1,8 +1,8 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="rabbit-hole-page">
-    <canvas v-show="messageEnded" ref="hole" class="renderer"></canvas>
+  <article ref="hole" itemscope itemtype="http://schema.org/WebPageElement" class="rabbit-hole-page">
+    <canvas v-show="messageEnded" class="renderer"></canvas>
 
-    <transition appear name="overlay">
+    <!-- <transition appear name="overlay">
       <div v-if="showFilter" class="filter-overlay" :class="{'fade-out': fadeOut}">
 
         <transition appear>
@@ -11,12 +11,10 @@
           </div>
         </transition>
       </div>
-    </transition>
+    </transition> -->
 
-    <div v-if="!introPlayed" class="guidelines-container" :class="{'on-top': introStarted}">
-      <p ref="message" class="guidelines-text info-text" :class="{'dissolve': showFilter}">
-        {{ guidelines }}
-      </p>
+    <div class="guidelines-container">
+      <p ref="message" class="guidelines-text">{{ guidelines }}</p>
 
       <transition appear>
         <p v-if="showResizeMessage" class="guidelines-text warning-text">
@@ -24,9 +22,15 @@
           Please, be sure to maximize it in order to fully enjoy this experience.
         </p>
       </transition>
+
+      <transition appear>
+        <div v-show="showSuggestion" class="suggestions">
+          <span>{{ suggestion }}</span>
+        </div>
+      </transition>
     </div>
 
-    <ScreenOverlay v-if="showOverlay" class="screen-overlay" :class="{'on-top': introStarted}" />
+    <ScreenOverlay v-if="visibleOverlay" />
   </article>
 </template>
 
@@ -106,9 +110,9 @@ export default {
       forceSuggestion: false,
       messageEnded: false,
 
+      visibleOverlay: true,
       introPlayed: false,
-      showOverlay: true,
-      showFilter: false,
+      // showFilter: false,
       isFullsize: false,
 
       introStarted: false,
@@ -153,7 +157,7 @@ export default {
 
   computed: {
     showSuggestion () {
-      return !this.exit && (this.canOpen || this.forceSuggestion)
+      return !this.exit && !this.visibleOverlay && (this.canOpen || this.forceSuggestion)
     },
 
     suggestion () {
@@ -583,7 +587,7 @@ export default {
     },
 
     createRenderer () {
-      this.renderer = new WebGLRenderer({ canvas: this.$refs.hole, antialias: true })
+      this.renderer = new WebGLRenderer({ canvas: this.$refs.hole.firstChild, antialias: true })
       this.renderer.setSize(this.viewPort.width, this.viewPort.height)
       this.renderer.setPixelRatio(window.devicePixelRatio || 1)
       this.renderer.setClearColor(0x000000, 0)
@@ -591,7 +595,7 @@ export default {
     },
 
     createControls () {
-      this.error = this.controls.init(this.renderer.domElement, this.scene, this.camera)
+      this.error = this.controls.init(this.$refs.hole, this.scene, this.camera)
 
       if (this.error) {
         this.showResizeMessage = false
@@ -745,35 +749,39 @@ export default {
 
       if (this.introStarted) return
 
-      if (ready && !inFullscreen) {
-        this.controls.setFullscreenMode(true)
-        this.enterFullscreenMode()
-      }
-
-      if (ready && inFullscreen) {
-        this.controls.setFullscreenMode(false)
-        this.exitFullscreenMode()
-      }
-
-      if (this.isFullsize && !this.introPlayed && !this.messageEnded) {
+      if (!this.introPlayed && !this.messageEnded) {
         this.lettering.skipLettering()
+        this.messageEnded = true
+        return
       }
 
       if (ready && !this.introPlayed) {
-        const delay = this.messageEnded ? 0 : 2500
-
         this.controls.setFullscreenMode(true)
         this.controls.enable(false)
         this.introStarted = true
 
         setTimeout(() => {
-          this.showFilter = true
-        }, delay)
+          this.createCinematicIntro()
+          this.lettering.dispose()
+        }, 500)
+
+        // setTimeout(() => {
+        //   this.createCinematicIntro()
+        // }, 1500)
 
         setTimeout(() => {
-          this.showOverlay = false
-          this.createCinematicIntro()
-        }, delay + 2500)
+          this.visibleOverlay = false
+        }, 3000)
+      }
+
+      if (ready) {
+        if (inFullscreen) {
+          this.controls.setFullscreenMode(false)
+          this.exitFullscreenMode()
+        } else {
+          this.controls.setFullscreenMode(true)
+          this.enterFullscreenMode()
+        }
       }
     },
 
@@ -883,12 +891,14 @@ export default {
 
 <style scoped lang="scss">
 @import 'variables';
+@import 'mixins';
 
 .rabbit-hole-page {
   background-color: $black;
   position: absolute;
   overflow: hidden;
   cursor: default;
+  // cursor: none;
 
   height: 100%;
   width: 100%;
@@ -909,47 +919,52 @@ export default {
     top: 0;
   }
 
-  .filter-overlay {
-    transition: background-color 1s linear;
-    background-color: $green-overlay;
+  // .filter-overlay {
+  //   transition: background-color 1s linear;
+  //   background-color: $green-overlay;
 
+  //   position: absolute;
+  //   // z-index: $max;
+
+  //   height: 100%;
+  //   width: 100%;
+
+  //   bottom: 0;
+  //   right: 0;
+  //   left: 0;
+  //   top: 0;
+
+  //   &.fade-out {
+  //     background-color: $white;
+  //   }
+
+  //   .suggestions {
+  //     @include white-rabbit;
+
+  //     transform: translateX(-50%);
+  //     text-transform: uppercase;
+  //     background-color: $black;
+  //     position: absolute;
+
+  //     border-radius: 5px;
+  //     padding: 10px;
+  //     bottom: 20px;
+  //     left: 50%;
+  //   }
+  // }
+
+  .suggestions {
+    @include white-rabbit;
+
+    transform: translateX(-50%);
+    text-transform: uppercase;
+    background-color: $black;
     position: absolute;
-    z-index: $max;
 
-    height: 100%;
-    width: 100%;
-
-    bottom: 0;
-    right: 0;
-    left: 0;
-    top: 0;
-
-    &.fade-out {
-      background-color: $white;
-    }
-
-    .suggestions {
-      transform: translateX(-50%);
-
-      text-transform: uppercase;
-      background-color: $black;
-      position: absolute;
-
-      border-radius: 5px;
-      padding: 10px;
-      bottom: 20px;
-      left: 50%;
-    }
-  }
-
-  .overlay-enter-active,
-  .overlay-leave-active {
-    transition: opacity 2s linear 2.5s;
-  }
-
-  .overlay-enter,
-  .overlay-leave-to {
-    opacity: 0;
+    border-radius: 5px;
+    padding: 10px;
+    bottom: 20px;
+    left: 50%;
   }
 
   .guidelines-container {
@@ -964,28 +979,22 @@ export default {
   }
 
   .guidelines-text {
+    @include white-rabbit;
+
+    visibility: hidden;
     position: relative;
+
     margin-left: 50px;
+    margin-top: 75px;
 
     height: 70px;
     width: 920px;
 
-    &.info-text {
-      margin-top: 75px;
-    }
-
     &.warning-text {
+      visibility: visible;
       line-height: 28px;
-      margin-top: 150px;
+      margin-top: 200px;
     }
-  }
-
-  .screen-overlay {
-    cursor: none;
-  }
-
-  .on-top {
-    z-index: $max;
   }
 }
 </style>

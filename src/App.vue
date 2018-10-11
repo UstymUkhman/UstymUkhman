@@ -242,25 +242,25 @@ article.image-drawer-js-page .code-container .code-preview {
   @include code-editor;
 }
 
-article.rabbit-hole-page {
-  .filter-overlay .suggestions {
-    @include white-rabbit;
-  }
+// article.rabbit-hole-page {
+//   .filter-overlay .suggestions {
+//     @include white-rabbit;
+//   }
 
-  .guidelines-text {
-    @include white-rabbit;
+//   .guidelines-text {
+//     @include white-rabbit;
 
-    span {
-      @include dissolve-text(400);
-    }
+//     // span {
+//     //   @include dissolve-text(400);
+//     // }
 
-    &.dissolve {
-      span {
-        opacity: 0;
-      }
-    }
-  }
-}
+//     // &.dissolve {
+//     //   span {
+//     //     opacity: 0;
+//     //   }
+//     // }
+//   }
+// }
 
 // .fade-out-leave-active {
 //   transition: opacity 1s !important;

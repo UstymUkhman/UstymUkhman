@@ -265,7 +265,7 @@ export default class Controls {
     this.inFullscreen = fullscreen
 
     if (fullscreen) {
-      this.enable(true)
+      this.enable(fullscreen)
       this.room.requestPointerLock()
       if (!this.lockOnly) this.room.requestFullscreen()
     } else {
