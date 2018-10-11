@@ -48,8 +48,8 @@ import WarmContrast from '@/3D/assets/lut-tables/WarmContrast.png'
 import DesaturatedFog from '@/3D/assets/lut-tables/DesaturatedFog.png'
 import SelectiveColor from '@/3D/assets/lut-tables/SelectiveColor.png'
 
+import fragGrading from '@/3D/glsl/ColorGrading/videoGrading.frag'
 import vertGrading from '@/3D/glsl/ColorGrading/grading.vert'
-import fragGrading from '@/3D/glsl/ColorGrading/grading.frag'
 
 import load from '@/3D/utils/assetsLoader'
 import * as dat from 'dat.gui'

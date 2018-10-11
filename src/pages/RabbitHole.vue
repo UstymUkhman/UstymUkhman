@@ -2,17 +2,6 @@
   <article ref="hole" itemscope itemtype="http://schema.org/WebPageElement" class="rabbit-hole-page">
     <canvas v-show="messageEnded" class="renderer"></canvas>
 
-    <!-- <transition appear name="overlay">
-      <div v-if="showFilter" class="filter-overlay" :class="{'fade-out': fadeOut}">
-
-        <transition appear>
-          <div v-if="showSuggestion" class="suggestions">
-            <span>{{ suggestion }}</span>
-          </div>
-        </transition>
-      </div>
-    </transition> -->
-
     <div class="guidelines-container">
       <p ref="message" class="guidelines-text">{{ guidelines }}</p>
 
@@ -37,13 +26,15 @@
 <script>
 import { MeshStandardMaterial } from '@three/materials/MeshStandardMaterial'
 import { MeshBasicMaterial } from '@three/materials/MeshBasicMaterial'
+import { ShaderMaterial } from '@three/materials/ShaderMaterial'
+
+import { EffectComposer } from '@three/postprocessing/EffectComposer'
+import { RenderPass } from '@three/postprocessing/RenderPass'
+import { ShaderPass } from '@three/postprocessing/ShaderPass'
 
 import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
-import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
-
 import { PlaneGeometry } from '@three/geometries/PlaneGeometry'
-import { Scene } from '@three/scenes/Scene'
-import { Mesh } from '@three/objects/Mesh'
+import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
 
 import { TextureLoader } from '@three/loaders/TextureLoader'
 import { JSONLoader } from '@three/loaders/JSONLoader'
@@ -56,6 +47,9 @@ import { Object3D } from '@three/core/Object3D'
 
 import { Vector2 } from '@three/math/Vector2'
 import { Color } from '@three/math/Color'
+
+import { Scene } from '@three/scenes/Scene'
+import { Mesh } from '@three/objects/Mesh'
 
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import Experiments from '@/assets/data/experiments.json'
@@ -72,6 +66,10 @@ import Platform from '@/platform'
 import to from 'await-to-js'
 import anime from 'animejs'
 
+import fragGrading from '@/3D/glsl/ColorGrading/sceneGrading.frag'
+import MATRIX_GREEN from '@/3D/assets/lut-tables/MatrixGreen.png'
+import vertGrading from '@/3D/glsl/ColorGrading/grading.vert'
+
 import FRONT_CEILING from '@/3D/assets/textures/front_ceiling.jpg'
 import SIDE_CEILING from '@/3D/assets/textures/side_ceiling.jpg'
 import DOOR_WALL from '@/3D/assets/textures/door_wall.png'
@@ -86,13 +84,14 @@ import DOOR from '@/3D/assets/models/door.json'
 import CASE from '@/3D/assets/models/case.json'
 
 import {
+  LinearFilter,
   SmoothShading,
   MirroredRepeatWrapping
 } from '@three/constants.js'
 
 const PI_2 = Math.PI / 2
 
-const GREEN = 0x496F61
+const GREEN = 0x7CA294 // 0x496F61
 const WHITE = 0xFFFFFF
 
 export default {
@@ -112,7 +111,6 @@ export default {
 
       visibleOverlay: true,
       introPlayed: false,
-      // showFilter: false,
       isFullsize: false,
 
       introStarted: false,
@@ -205,7 +203,7 @@ export default {
 
     createLight () {
       const ambientLight = new AmbientLight(WHITE, 0.25)
-      const firstLight = new SpotLight(WHITE)
+      const firstLight = new SpotLight(WHITE, 0.8)
 
       firstLight.target.position.set(0, 0, this.center)
       firstLight.target.updateMatrixWorld()
@@ -523,7 +521,6 @@ export default {
 
           sideFrame.position.set(framePositionX, -10.5, positionZ)
           sideDoor.position.set(0, 0, rotation)
-          // sideDoor.scale.set(0.8, 1.0, 1.0)
 
           sideFrame.rotation.y = rotationY
           sideDoor.rotation.y = rotationY
@@ -576,11 +573,11 @@ export default {
         },
 
         complete: () => {
+          this.controls.activated = true
           this.introStarted = false
           this.introPlayed = true
 
           if (this.controls.isFullscreen()) {
-            this.controls.activated = true
             this.controls.enable(true)
           }
         }
@@ -593,6 +590,33 @@ export default {
       this.renderer.setPixelRatio(window.devicePixelRatio || 1)
       this.renderer.setClearColor(0x000000, 0)
       this.renderer.domElement.focus()
+    },
+
+    async createComposer () {
+      this.composer = new EffectComposer(this.renderer)
+      this.composer.addPass(new RenderPass(this.scene, this.camera))
+      this.composer.setSize(this.viewPort.width, this.viewPort.height)
+
+      const setComposer = (lut) => {
+        lut.minFilter = lut.magFilter = LinearFilter
+
+        const pass = new ShaderPass(
+          new ShaderMaterial({
+            fragmentShader: fragGrading,
+            vertexShader: vertGrading,
+
+            uniforms: {
+              tDiffuse: { type: 't', value: null },
+              grading: { type: 't', value: lut }
+            }
+          })
+        )
+
+        this.composer.addPass(pass)
+        pass.renderToScreen = true
+      }
+
+      await to(load(this.textureLoader, MATRIX_GREEN, setComposer, true))
     },
 
     createControls () {
@@ -627,7 +651,7 @@ export default {
         this.lightFadeIn()
       }
 
-      this.renderer.render(this.scene, this.camera)
+      this.composer.render()
       this.frame = requestAnimationFrame(this.animate.bind(this))
     },
 
@@ -787,6 +811,7 @@ export default {
 
     onResize () {
       this.renderer.setSize(this.viewPort.width, this.viewPort.height)
+      this.composer.setSize(this.viewPort.width, this.viewPort.height)
       this.isFullsize = window.outerWidth >= (screen.width - 20)
 
       this.camera.aspect = this.viewPort.width / this.viewPort.height
@@ -859,6 +884,7 @@ export default {
       this.createComputer()
 
       this.createRenderer()
+      this.createComposer()
       this.createControls()
 
       if (!this.error) {
@@ -918,40 +944,6 @@ export default {
     left: 0;
     top: 0;
   }
-
-  // .filter-overlay {
-  //   transition: background-color 1s linear;
-  //   background-color: $green-overlay;
-
-  //   position: absolute;
-  //   // z-index: $max;
-
-  //   height: 100%;
-  //   width: 100%;
-
-  //   bottom: 0;
-  //   right: 0;
-  //   left: 0;
-  //   top: 0;
-
-  //   &.fade-out {
-  //     background-color: $white;
-  //   }
-
-  //   .suggestions {
-  //     @include white-rabbit;
-
-  //     transform: translateX(-50%);
-  //     text-transform: uppercase;
-  //     background-color: $black;
-  //     position: absolute;
-
-  //     border-radius: 5px;
-  //     padding: 10px;
-  //     bottom: 20px;
-  //     left: 50%;
-  //   }
-  // }
 
   .suggestions {
     @include white-rabbit;
