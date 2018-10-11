@@ -35,7 +35,7 @@
     "normalize-scss": "^7.0.1",
     "pixi.js-legacy": "^5.0.0-alpha.3",
     "stats.js": "^0.17.0",
-    "three-full": "^6.0.0",
+    "three-full": "11.3.2",
     "vue": "^2.5.16",
     "vue-analytics": "^5.12.2",
     "vue-axios": "^2.0.2",

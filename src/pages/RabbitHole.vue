@@ -13,7 +13,7 @@
       </transition>
 
       <transition appear>
-        <div v-show="showSuggestion" class="suggestions">
+        <div v-if="showSuggestion" class="suggestions">
           <span>{{ suggestion }}</span>
         </div>
       </transition>
@@ -195,9 +195,9 @@ export default {
     },
 
     createCamera () {
-      this.camera = new PerspectiveCamera(7, this.viewPort.width / this.viewPort.height, 1, 1000)
-      this.camera.rotation.x = -Math.PI / 4.465
-      this.camera.position.z = -5
+      this.camera = new PerspectiveCamera(5, this.viewPort.width / this.viewPort.height, 1, 1000)
+      this.camera.rotation.x = -Math.PI / 4.075
+      this.camera.position.z = -0.25
       this.scene.add(this.camera)
     },
 

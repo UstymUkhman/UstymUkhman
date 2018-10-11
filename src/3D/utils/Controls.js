@@ -33,7 +33,7 @@ export default class Controls {
     this.camera = camera
     this.enabled = true
 
-    this.controls = new PointerControls(this.camera)
+    this.controls = new PointerControls(this.camera, 16)
     this.scene.add(this.controls.getObject())
     this.setExperimentalAPIs()
 
