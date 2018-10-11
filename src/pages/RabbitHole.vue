@@ -580,6 +580,7 @@ export default {
           this.introPlayed = true
 
           if (this.controls.isFullscreen()) {
+            this.controls.activated = true
             this.controls.enable(true)
           }
         }
@@ -761,13 +762,12 @@ export default {
         this.introStarted = true
 
         setTimeout(() => {
-          this.createCinematicIntro()
           this.lettering.dispose()
         }, 500)
 
-        // setTimeout(() => {
-        //   this.createCinematicIntro()
-        // }, 1500)
+        setTimeout(() => {
+          this.createCinematicIntro()
+        }, 1500)
 
         setTimeout(() => {
           this.visibleOverlay = false

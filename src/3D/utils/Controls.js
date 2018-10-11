@@ -12,6 +12,7 @@ export default class Controls {
     this.velocity = new Vector3()
 
     this.inFullscreen = false
+    this.activated = false
     this.controls = null
     this.enabled = false
     this.camera = null
@@ -80,10 +81,7 @@ export default class Controls {
   }
 
   update () {
-    if (!this.controls.enabled) {
-      this.prevTime = performance.now()
-      return
-    }
+    if (!this.controls.enabled) return
 
     const time = performance.now()
     const delta = (time - this.prevTime) / 1000
@@ -92,7 +90,7 @@ export default class Controls {
     this.velocity.z -= this.velocity.z * 10 * delta
 
     if (this.move.forward) {
-      this.velocity.z -= 600 * delta
+      this.velocity.z -= 750 * delta
     }
 
     if (this.move.backward) {
@@ -105,10 +103,6 @@ export default class Controls {
 
     if (this.move.right) {
       this.velocity.x += 500 * delta
-    }
-
-    if (!this.checkMovement()) {
-      return (this.prevTime = time)
     }
 
     const position = this.controls.getObject()
@@ -126,10 +120,6 @@ export default class Controls {
     }
 
     this.prevTime = time
-  }
-
-  checkMovement () {
-    return this.move.forward || this.move.backward || this.move.left || this.move.right
   }
 
   checkCollision (current) {
@@ -252,8 +242,12 @@ export default class Controls {
   }
 
   enable (enable) {
-    this.controls.enabled = enable
-    this.enabled = enable
+    this.controls.enabled = enable && this.activated
+    this.enabled = enable && this.activated
+
+    if (this.enabled) {
+      this.prevTime = performance.now()
+    }
   }
 
   getCameraDirection () {
@@ -265,7 +259,7 @@ export default class Controls {
     this.inFullscreen = fullscreen
 
     if (fullscreen) {
-      this.enable(fullscreen)
+      this.enable(true)
       this.room.requestPointerLock()
       if (!this.lockOnly) this.room.requestFullscreen()
     } else {

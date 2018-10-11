@@ -183,15 +183,7 @@ h2 {
 }
 
 p {
-  // @include console-message;
   @include back-button;
-
-  // @include rain-column;
-  // @include code-column;
-
-  // &.dense {
-  //   @include rain-column(49);
-  // }
 
   cursor: default;
   margin: 0px;
@@ -241,34 +233,6 @@ a {
 article.image-drawer-js-page .code-container .code-preview {
   @include code-editor;
 }
-
-// article.rabbit-hole-page {
-//   .filter-overlay .suggestions {
-//     @include white-rabbit;
-//   }
-
-//   .guidelines-text {
-//     @include white-rabbit;
-
-//     // span {
-//     //   @include dissolve-text(400);
-//     // }
-
-//     // &.dissolve {
-//     //   span {
-//     //     opacity: 0;
-//     //   }
-//     // }
-//   }
-// }
-
-// .fade-out-leave-active {
-//   transition: opacity 1s !important;
-// }
-
-// .fade-out-leave-to {
-//   opacity: 0;
-// }
 
 .v-enter-active,
 .v-leave-active {
