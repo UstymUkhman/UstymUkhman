@@ -178,7 +178,7 @@ export default {
     }
 
     @include breakpoint($xs) {
-      margin-top: 20vh;
+      margin-top: 15vh;
       width: 95vw;
     }
 

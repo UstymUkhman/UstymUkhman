@@ -1,5 +1,5 @@
 <template>
-  <div id="app" v-show="!platform.prerenderer" :version="version" :commit-hash="commitHash" :deploy-flag="deployFlag" :target-domain="targetDomain">
+  <div id="app" v-show="!prerenderer" :version="version" :commit-hash="commitHash" :deploy-flag="deployFlag" :target-domain="targetDomain">
     <router-view itemprop="mainEntity" class="page" />
 
     <VersionInfo :version="version" v-if="!deployFlag" :commit-hash="commitHash" />
@@ -41,7 +41,7 @@ export default {
 
   data () {
     return {
-      platform: Platform
+      prerenderer: Platform.prerenderer
     }
   },
 
@@ -201,11 +201,6 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
-
-// br::selection {
-//   background-color: $silver;
-//   color: $black;
-// }
 
 .app-container {
   height: 100%;

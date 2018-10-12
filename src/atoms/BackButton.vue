@@ -1,8 +1,8 @@
 <template>
   <div class="back-button">
-    <div @touchstart="pressed = true; touching = true" @touchend="onTouchEnd" class="back-button-container">
+    <div @touchstart="onTouchStart" @touchend="onTouchEnd" class="back-button-container">
       <div class="button-border">
-        <div class="button-box" :class="{'active': isActive, 'pressed': pressed, 'selected': selected || touching}">
+        <div class="button-box" :class="{'active': isActive, 'pressed': pressed, 'selected': selected || (isActive && touching)}">
 
           <div class="button-background"></div>
           <p ref="back" class="button back" :class="{'active': isActive}">&lt; b@cK</p>
@@ -37,10 +37,11 @@ export default {
 
   data () {
     return {
+      isMobile: Platform.mobile,
       pressed: this.selected,
       isActive: this.active,
       touching: false,
-      lettering: null
+      back: false
     }
   },
 
@@ -67,6 +68,12 @@ export default {
   },
 
   methods: {
+    onTouchStart () {
+      this.touching = true
+      this.pressed = true
+      this.back = true
+    },
+
     onTouchEnd () {
       this.touching = false
       this.pressed = false
@@ -74,7 +81,7 @@ export default {
       let delay = 0
 
       if (!this.active) {
-        this.isActive = !Platform.mobile
+        this.isActive = !this.back && !this.isMobile
         delay = 800
       }
 
@@ -91,7 +98,7 @@ export default {
   mounted () {
     this.lettering = new Lettering()
     this.lettering.animate(this.$refs.back, 100, () => {
-      this.isActive = this.isActive || Platform.mobile
+      this.isActive = !this.back && (this.isActive || this.isMobile)
     })
   }
 }

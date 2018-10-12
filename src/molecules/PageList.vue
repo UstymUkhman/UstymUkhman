@@ -1,12 +1,10 @@
 <template>
   <div @touchstart="onTouchStart" @touchend="onTouchEnd" class="list-area">
     <div class="list-container" :class="{'contacts': contacts}" :style="{'-webkit-transform': 'translateY(' + listOffset + ')', 'transform': 'translateY(' + listOffset + ')'}">
-
-      <div v-for="(page, p) in pagesList" :key="page.name" ref="urls" @click="onPageClick(p)"
-           class="page-container" :class="{'active': enableNavigation && (currentPage === p)}">
+      <div v-for="(page, p) in pagesList" :key="page.name" ref="urls" @click="onPageClick(p)" class="page-container" :class="{'active': enableNavigation && (currentPage === p)}">
 
         <span class="selected-page" :class="{'dissolve': dispose}">{{ contacts ? '>' : '//' }}</span>
-        <p class="page-name">{{page.name}}</p>
+        <p class="page-name">{{ page.name }}</p>
         <span v-if="contacts && p === 3" class="e-mail"> - ustym.ukhman@gmail.com</span>
 
       </div>

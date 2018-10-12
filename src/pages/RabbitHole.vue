@@ -17,6 +17,8 @@
           <span>{{ suggestion }}</span>
         </div>
       </transition>
+
+      <div class="light-overlay" :class="{'fade': fadeOut}"></div>
     </div>
 
     <ScreenOverlay v-if="visibleOverlay" />
@@ -107,23 +109,23 @@ export default {
     return {
       showResizeMessage: false,
       forceSuggestion: false,
+      visibleOverlay: true,
       messageEnded: false,
 
-      visibleOverlay: true,
+      introStarted: false,
       introPlayed: false,
       isFullsize: false,
 
-      introStarted: false,
+      selectedDoor: null,
       experiment: false,
       rightDoor: false,
+      fadeOut: false,
+      canOpen: false,
       pressed: false,
-      exit: false,
       ready: false,
       error: false,
-      canOpen: false,
-      fadeOut: false,
+      exit: false,
 
-      selectedDoor: null,
       rightLight: null,
       leftLight: null,
       backLight: null,
@@ -565,8 +567,12 @@ export default {
         easing: 'easeInOutQuad',
         targets: this.camera,
         duration: 5000,
-        delay: 1000,
+        delay: 3000,
         fov: 50,
+
+        begin: () => {
+          this.visibleOverlay = false
+        },
 
         update: () => {
           this.camera.updateProjectionMatrix()
@@ -643,7 +649,7 @@ export default {
 
       if (this.exit) {
         if (this.fadeOut) {
-          setTimeout(this.gotoNextPage.bind(this), 1500)
+          setTimeout(this.gotoNextPage.bind(this), 2000)
           cancelAnimationFrame(this.frame)
           return
         }
@@ -739,9 +745,6 @@ export default {
         const index = this.selectedDoor.door.index
         const experiment = Experiments[index].route
 
-        this.fadeOut = false
-        this.exit = false
-
         this.selectedDoor.pivot.rotation.y = 0
         this.$router.push({ name: experiment })
       } else {
@@ -783,19 +786,13 @@ export default {
       if (ready && !this.introPlayed) {
         this.controls.setFullscreenMode(true)
         this.controls.enable(false)
+
+        this.createCinematicIntro()
         this.introStarted = true
 
         setTimeout(() => {
           this.lettering.dispose()
         }, 500)
-
-        setTimeout(() => {
-          this.createCinematicIntro()
-        }, 1500)
-
-        setTimeout(() => {
-          this.visibleOverlay = false
-        }, 3000)
       }
 
       if (ready) {
@@ -923,8 +920,6 @@ export default {
   background-color: $black;
   position: absolute;
   overflow: hidden;
-  cursor: default;
-  // cursor: none;
 
   height: 100%;
   width: 100%;
@@ -945,20 +940,6 @@ export default {
     top: 0;
   }
 
-  .suggestions {
-    @include white-rabbit;
-
-    transform: translateX(-50%);
-    text-transform: uppercase;
-    background-color: $black;
-    position: absolute;
-
-    border-radius: 5px;
-    padding: 10px;
-    bottom: 20px;
-    left: 50%;
-  }
-
   .guidelines-container {
     position: absolute;
     z-index: $screen;
@@ -968,24 +949,58 @@ export default {
     right: 0;
     left: 0;
     top: 0;
+
+    .guidelines-text {
+      @include white-rabbit;
+
+      visibility: hidden;
+      position: relative;
+
+      margin-left: 50px;
+      margin-top: 75px;
+
+      height: 70px;
+      width: 920px;
+
+      &.warning-text {
+        visibility: visible;
+        line-height: 28px;
+        margin-top: 200px;
+      }
+    }
+
+    .suggestions {
+      @include white-rabbit;
+
+      transform: translateX(-50%);
+      text-transform: uppercase;
+      background-color: $black;
+      position: absolute;
+
+      border-radius: 5px;
+      padding: 10px;
+      bottom: 20px;
+      left: 50%;
+    }
   }
 
-  .guidelines-text {
-    @include white-rabbit;
+  .light-overlay {
+    transition: background-color 1s linear;
+    background-color: transparent;
 
-    visibility: hidden;
-    position: relative;
+    pointer-events: none;
+    position: absolute;
 
-    margin-left: 50px;
-    margin-top: 75px;
+    height: 100%;
+    width: 100%;
 
-    height: 70px;
-    width: 920px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
 
-    &.warning-text {
-      visibility: visible;
-      line-height: 28px;
-      margin-top: 200px;
+    &.fade {
+      background-color: $white;
     }
   }
 }
