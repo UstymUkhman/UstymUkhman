@@ -33,12 +33,12 @@ export default {
   }
 
   .page-title {
-    font-family: 'Kaushan Script';
+    font-family: 'White Rabbit';
     color: $dark-green;
-    font-size: 35px;
+    font-size: 30px;
 
     @include breakpoint($xs) {
-      font-size: 25px;
+      font-size: 20px;
     }
   }
 }

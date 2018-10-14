@@ -19,14 +19,14 @@ export default {
 @import 'variables';
 
 h2 {
-  font-family: 'Raleway', Verdana, sans-serif;
-  font-weight: 200;
-  font-size: 40px;
-
   border-bottom: solid 1px $dark-green;
   padding-bottom: 10px;
   margin: 0 auto 50px;
   display: table;
+
+  font-family: 'White Rabbit';
+  font-weight: 200;
+  font-size: 40px;
 
   text-decoration: none;
   letter-spacing: 3px;

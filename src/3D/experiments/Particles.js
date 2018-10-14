@@ -177,7 +177,7 @@ export default class Particles {
 
       const spriteMaterial = new SpriteMaterial({
         blending: AdditiveBlending,
-        transparent: false,
+        transparent: true,
         color: 0xFFFFFF,
         opacity: 0.0,
         map: glow
@@ -387,6 +387,14 @@ export default class Particles {
     }
 
     this.animate(true)
+  }
+
+  activate () {
+    this.renderer.domElement.style.zIndex = 9
+  }
+
+  deactivate () {
+    this.renderer.domElement.style.zIndex = 8
   }
 
   onResize () {

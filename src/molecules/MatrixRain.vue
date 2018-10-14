@@ -9,8 +9,8 @@
 import { white, green, lightGreen } from '@/_variables.scss'
 import Viewport from '@/mixins/Viewport'
 
-const LINE_HEIGHT = 27 // window.innerWidth < mobile ? 25 : 27
 const MATRIX_FONT = 'normal 24px Martix Code NFI'
+const LINE_HEIGHT = 27
 const OFFSET = 18
 
 export default {
@@ -152,10 +152,18 @@ export default {
           continue
         }
 
-        for (let j = 0, h = this.chars[i].length - 6; j < this.chars[i].length; j++) {
-          const color = j <= (this.index[i] - 5) ? green : j <= (this.index[i] - 3) ? lightGreen : white
+        for (let j = 0, i5 = this.index[i] - 5, i3 = this.index[i] - 3; j < this.chars[i].length; j++) {
           let alpha = this.getCharAlpha(this.index[i], this.duration[i])
-          const update = j > h ? 0.25 : 0.02
+          let color = green
+          let update = 0.1
+
+          if (j > i5 && j <= i3) {
+            color = lightGreen
+            update = 0.25
+          } else if (j > i3) {
+            color = white
+            update = 0.25
+          }
 
           if (alpha === 0) {
             this.duration[i] = this.getRandomInt(this.rows, 100)

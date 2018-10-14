@@ -1,10 +1,16 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="experiments-page">
-    <MatrixRain v-if="rain" />
-
-    <ScreenOverlay v-if="!platform.prerenderer" :class="{'obscured': obscured}" />
+    <ScreenOverlay v-if="!platform.prerenderer" />
 
     <SiteHeader v-if="currentPage" :page="currentPage" :scroll="scrollable" :experiment="currentExperiment" />
+
+    <transition appear>
+      <router-view
+        @set:experiment="currentExperiment = $event"
+        @update:title="currentPage = $event"
+        class="page experiment-page"
+      />
+    </transition>
 
     <SiteFooter v-if="currentPage" :scroll="scrollable" />
   </article>
@@ -13,7 +19,6 @@
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import ScreenOverlay from '@/atoms/ScreenOverlay'
-import MatrixRain from '@/molecules/MatrixRain'
 import SiteHeader from '@/organisms/SiteHeader'
 import SiteFooter from '@/organisms/SiteFooter'
 import Platform from '@/platform'
@@ -25,7 +30,6 @@ export default {
 
   components: {
     ScreenOverlay,
-    MatrixRain,
     SiteHeader,
     SiteFooter
   },
@@ -35,9 +39,7 @@ export default {
       scrollable: this.$route.name === 'DynamicCss',
       currentExperiment: null,
       platform: Platform,
-
       currentPage: null,
-      obscured: false,
       rain: false
     }
   },
@@ -53,7 +55,7 @@ export default {
   },
 
   mounted () {
-    setTimeout(() => { this.rain = true }, 2000)
+    this.$emit('hide:overlay')
   },
 
   metaInfo: {
@@ -70,12 +72,7 @@ export default {
   cursor: auto;
 
   .screen-overlay {
-    background-color: rgba($black, 0.5);
-    transition: background-color 0.5s;
-
-    &.obscured {
-      background-color: rgba($black, 0.8);
-    }
+    background-color: rgba($black, 0.75);
   }
 
   .experiment-page {

@@ -46,8 +46,6 @@ export default {
 
   methods: {
     onMouseOver () {
-      this.$emit('mouse:over', true)
-
       setTimeout(() => {
         if (this.$refs.video && !this.cancel) {
           this.$refs.video.play()
@@ -59,8 +57,6 @@ export default {
     },
 
     onMouseOut () {
-      this.$emit('mouse:over', false)
-
       if (this.$refs.video) {
         this.$refs.video.currentTime = 0.0
         this.$refs.video.pause()
@@ -171,8 +167,8 @@ export default {
     width: 100%;
 
     .title {
-      transition: opacity 0.3s linear 0.3s;
-      font-family: 'Kaushan Script';
+      transition: opacity 0.5s linear 0.25s;
+      font-family: 'White Rabbit';
       font-size: 50px;
 
       pointer-events: none;
@@ -181,23 +177,23 @@ export default {
       display: block;
 
       margin-top: 25.5%;
-      color: $silver;
+      color: $green;
       width: 100%;
 
       @include breakpoint($xs) {
-        font-size: 25px;
         margin-top: 23%;
+        font-size: 25px;
       }
     }
   }
 
   .cover-overlay {
-    transition: opacity 0.3s linear 0.2s;
+    transition: opacity 0.5s linear 0.25s;
     background-color: $black;
 
     pointer-events: none;
     position: absolute;
-    opacity: 0.4;
+    opacity: 0.6;
 
     height: 100%;
     width: 100%;
@@ -216,7 +212,7 @@ export default {
   width: 100%;
 
   &.zoom {
-    transition: transform 0.5s $ease-in-quart, opacity 0.3s linear 0.3s;
+    transition: transform 0.75s $ease-in-quart, opacity 0.5s linear 0.25s;
     transform-origin: 50% 50%;
     transform: scale(1);
 

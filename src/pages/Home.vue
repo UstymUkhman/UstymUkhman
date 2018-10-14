@@ -50,7 +50,7 @@ export default {
     $route (current, last) {
       const restart = last.name === 'RabbitHole'
       this.visibleAnimation = restart
-      this.visibleOverlay = !restart
+      this.visibleOverlay = !current.path.includes('experiments') && !restart
     }
   },
 
@@ -64,7 +64,8 @@ export default {
     },
 
     rainRatio () {
-      return Platform.mobile || this.$route.name === 'Pills' ? 1 : 2.25
+      const specialPages = this.$route.name === 'Pills' || this.$route.path.includes('experiments')
+      return Platform.mobile || specialPages ? 1 : 2.25
     }
   },
 

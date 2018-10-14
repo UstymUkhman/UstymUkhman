@@ -21,10 +21,8 @@ export default {
   },
 
   mounted () {
-    this.$emit('update:title', 'ColorGrading')
-    this.$emit('obscure:background', true)
-
     this.grading = new ColorGrading()
+    this.$emit('update:title', 'ColorGrading')
     this.grading.startExperiment(this.$refs.container, 'lake')
 
     setTimeout(() => {

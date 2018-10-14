@@ -310,7 +310,6 @@ export default {
 
   mounted () {
     this.$emit('update:title', 'ImageDrawer.js')
-    this.$emit('obscure:background', true)
     this.reader.onload = this.onImageLoad
 
     this.pluginJs = document.createElement('script')

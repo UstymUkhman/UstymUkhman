@@ -105,7 +105,7 @@ export default class AudioreactiveParticles {
     )
 
     this.scene.add(this.fbo.particles)
-    this.audio.play(this.update.bind(this))
+    this.audio.load()
   }
 
   getDataImage () {
@@ -146,21 +146,36 @@ export default class AudioreactiveParticles {
     return canvas.getContext('2d')
   }
 
+  playAudio () {
+    this.audio.play(this.update.bind(this))
+  }
+
   update () {
-    const angle = Math.PI / 180
-    const audioValue = this.audio.getAverageValue()
+    if (this.audio) {
+      const angle = Math.PI / 180
+      const audioValue = this.audio.getAverageValue()
 
-    this.renderShader.uniforms.frequency.value = audioValue
-    this.simulationShader.uniforms.time.value = audioValue
+      this.renderShader.uniforms.frequency.value = audioValue
+      this.simulationShader.uniforms.time.value = audioValue
 
-    this.fbo.particles.rotation.y -= angle * 0.1
-    this.fbo.update()
+      this.fbo.particles.rotation.y -= angle * 0.1
+      this.fbo.update()
 
-    this.fbo.particles.position.y = -128
-    this.camera.lookAt(this.fbo.particles.position)
+      this.fbo.particles.position.y = -128
+      this.camera.lookAt(this.fbo.particles.position)
 
-    this.renderer.render(this.scene, this.camera)
-    this.frame = requestAnimationFrame(this.update.bind(this))
+      this.renderer.render(this.scene, this.camera)
+      this.frame = requestAnimationFrame(this.update.bind(this))
+    }
+  }
+
+  activate () {
+    this.renderer.domElement.style.zIndex = 9
+  }
+
+  deactivate () {
+    this.renderer.domElement.style.zIndex = 8
+    this.audio._soundSource.pause()
   }
 
   onResize () {

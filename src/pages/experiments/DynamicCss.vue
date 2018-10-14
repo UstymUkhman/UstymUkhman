@@ -65,9 +65,7 @@ export default {
   },
 
   mounted () {
-    this.$emit('obscure:background', true)
     this.$emit('update:title', 'Dynamic.css')
-
     setTimeout(() => { this.scrollable = true }, 500)
 
     this._onAnimationEnd = this.onAnimationEnd.bind(this)

@@ -30,7 +30,7 @@ export default {
   padding: 5px 16px;
   border-radius: 0;
 
-  font-family: 'Roboto';
+  font-family: monospace;
   font-weight: 300;
   font-size: 16px;
 
