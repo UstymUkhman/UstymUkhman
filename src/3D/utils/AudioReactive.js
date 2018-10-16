@@ -28,13 +28,13 @@ export default class AudioReactive {
     this.fftSize = fftSize
   }
 
-  _loadAudioTrack (study = false) {
+  _loadAudioTrack (onPlay, study = false) {
     let onAudioEnded = study ? this._setAudioValues.bind(this) : this._onAudioTrackEnded.bind(this)
 
     this._multipleSources = typeof this._audioSrc === 'object'
 
     if (this._multipleSources) {
-      return this._loadAudioTracks()
+      return this._loadAudioTracks(onPlay)
     }
 
     if (this._soundSource === null) {
@@ -51,10 +51,11 @@ export default class AudioReactive {
       this._audioDuration = this._soundSource.duration
       this._soundSource.loaded = true
       this._soundSource.volume = 1.0
+      this._soundSource.muted = true
       this.isReady = true
 
       if (!study) {
-        this._playAudioTrack()
+        this._playAudioTrack(onPlay)
       } else {
         this._soundSource.analyser = analyser(this._soundSource)
         this._soundSource.play()
@@ -64,7 +65,7 @@ export default class AudioReactive {
     })
   }
 
-  _loadAudioTracks () {
+  _loadAudioTracks (onPlay) {
     const tracks = Object.keys(this._audioSrc).length
     let audioDuration = 0
     let sourceIndex = 0
@@ -77,6 +78,7 @@ export default class AudioReactive {
       this._soundSources[source].addEventListener('canplay', () => {
         this._soundSources[source].loaded = true
         this._soundSources[source].volume = 1.0
+        this._soundSources[source].muted = true
         sourceIndex++
 
         if (this._soundSources[source].duration > audioDuration) {
@@ -88,19 +90,27 @@ export default class AudioReactive {
           this._soundSources[this._longestSource].addEventListener('ended', this._onAudioTrackEnded.bind(this))
 
           this._audioDuration = audioDuration
-          this._playAudioTracks()
+          this._playAudioTracks(onPlay)
           this.isReady = true
         }
       })
     }
   }
 
-  _playAudioTrack () {
+  _playAudioTrack (onPlay) {
+    this._startTime = Date.now()
     this._soundSource.analyser = analyser(this._soundSource)
+
     this._soundSource.analyser.analyser.fftSize = this.fftSize || 2048
     this._frequencyRange = this._soundSource.analyser.analyser.frequencyBinCount
 
     this._getAverageAudioPower()
+    this._soundSource.play()
+    this._isPlaying = true
+
+    if (typeof onPlay === 'function') {
+      onPlay()
+    }
   }
 
   _getAverageAudioPower () {
@@ -115,9 +125,17 @@ export default class AudioReactive {
     this._setFrequenciesRange()
   }
 
-  _playAudioTracks () {
+  _playAudioTracks (onPlay) {
     for (let source in this._soundSources) {
       this._soundSources[source].analyser = analyser(this._soundSources[source])
+      this._soundSources[source].play()
+    }
+
+    this._startTime = Date.now()
+    this._isPlaying = true
+
+    if (typeof onPlay === 'function') {
+      onPlay()
     }
   }
 
@@ -188,29 +206,11 @@ export default class AudioReactive {
     this.SONG_MAX_POWER = max
   }
 
-  load () {
+  play (onReady) {
     if (this._multipleSources) {
-      this._loadAudioTracks()
+      this._loadAudioTracks(onReady)
     } else {
-      this._loadAudioTrack()
-    }
-  }
-
-  play (onPlay) {
-    if (this._multipleSources) {
-      for (let source in this._soundSources) {
-        this._soundSources[source].play()
-      }
-    } else {
-      // this._soundSource.analyser.ctx.resume()
-      this._soundSource.play()
-    }
-
-    this._startTime = Date.now()
-    this._isPlaying = true
-
-    if (typeof onPlay === 'function') {
-      onPlay()
+      this._loadAudioTrack(onReady)
     }
   }
 
@@ -221,7 +221,7 @@ export default class AudioReactive {
 
     this._maxFrequency = 0
     this._minFrequency = Infinity
-    this._loadAudioTrack(true)
+    this._loadAudioTrack(null, true)
   }
 
   getAverageValue (source = null) {

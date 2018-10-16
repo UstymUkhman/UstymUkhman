@@ -1,7 +1,7 @@
 <template>
-  <header @mouseover="visible = true" class="header" :class="{'scrollable': scroll}">
+  <header @mouseover="visible = true" @mouseout="visible = false" class="header" :class="{'scrollable': scroll}">
     <transition appear name="header">
-      <div v-show="visible" @mouseout="onMouseOut" class="header-container">
+      <div v-show="visible" class="header-container">
         <PageTitle :title="page" />
 
         <HeaderButtons
@@ -13,7 +13,7 @@
       </div>
     </transition>
 
-    <div class="header-trigger" @mouseout="onMouseOut" :class="{'hidden': visible}"></div>
+    <div class="header-trigger"></div>
   </header>
 </template>
 
@@ -70,10 +70,6 @@ export default {
   methods: {
     downloadExperiment () {
       window.open(this.currentExperiment.code, '_blank')
-    },
-
-    onMouseOut () {
-      setTimeout(() => { this.visible = false }, 500)
     }
   },
 
@@ -114,10 +110,6 @@ export default {
 
     height: 100%;
     width: 100%;
-
-    &.hidden {
-      pointer-events: none;
-    }
 
     @include breakpoint($sm-down) {
       display: none;

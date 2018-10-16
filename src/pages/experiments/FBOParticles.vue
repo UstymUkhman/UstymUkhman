@@ -44,35 +44,29 @@ export default {
 
   methods: {
     setParticlesExperiment () {
-      this.experiment.deactivate()
       this.audioreactive = false
 
-      this.experiment = this.particles
-      this.experiment.activate()
+      this.experiment.destroy()
+      this.experiment = new Particles(this.$refs.container, this.$refs.overlay)
     },
 
     setAudioreactiveExperiment () {
-      this.experiment.deactivate()
       this.audioreactive = true
 
-      this.experiment = this.audioreactiveParticles
-      this.experiment.playAudio()
-      this.experiment.activate()
+      this.experiment.destroy()
+      this.experiment = new AudioreactiveParticles(this.$refs.container, this.track)
     }
   },
 
   mounted () {
-    this.audioreactiveParticles = new AudioreactiveParticles(this.$refs.container, this.track)
-    this.particles = new Particles(this.$refs.container, this.$refs.overlay)
-
+    this.experiment = new Particles(this.$refs.container, this.$refs.overlay)
     this.$emit('update:title', 'FBOParticles')
-    this.experiment = this.particles
-    this.experiment.activate()
   },
 
   beforeDestroy () {
-    this.audioreactiveParticles.destroy()
-    this.particles.destroy()
+    if (this.experiment) {
+      this.experiment.destroy()
+    }
   },
 
   metaInfo: {
@@ -117,7 +111,7 @@ export default {
     margin: 100px auto 0;
     position: fixed;
     cursor: pointer;
-    z-index: 10;
+    z-index: $code;
 
     height: 25px;
     width: 400px;

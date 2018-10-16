@@ -389,14 +389,6 @@ export default class Particles {
     this.animate(true)
   }
 
-  activate () {
-    this.renderer.domElement.style.zIndex = 9
-  }
-
-  deactivate () {
-    this.renderer.domElement.style.zIndex = 8
-  }
-
   onResize () {
     this.size = {
       width: window.innerWidth,
