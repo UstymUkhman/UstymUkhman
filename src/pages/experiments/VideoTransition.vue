@@ -71,8 +71,8 @@ export default {
     transform: translate(-50%, -50%);
     position: absolute;
 
-    cursor: none;
     margin: auto;
+    cursor: grab;
 
     height: 100%;
     width: 100%;

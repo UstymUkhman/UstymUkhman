@@ -6,7 +6,6 @@ import OrbitalCameraControl from '@/3D/utils/OrbitalCameraControl'
 import AudioReactive from '@/3D/utils/AudioReactive'
 import { Detector } from '@three/helpers/Detector'
 
-import vertLowParticles from '@/3D/glsl/SoundParticles/particles-low.vert'
 import vertParticles from '@/3D/glsl/SoundParticles/particles.vert'
 import fragParticles from '@/3D/glsl/SoundParticles/particles.frag'
 
@@ -16,22 +15,18 @@ import fragBackground from '@/3D/glsl/SoundParticles/background.frag'
 const RAD = Math.PI / 180
 
 export default class SoundParticles {
-  constructor (container, track, lowPerformance = false) {
-    const fftSize = lowPerformance ? 256 : null
-
+  constructor (container, track) {
     this._container = container
-    this._audio = new AudioReactive(track, fftSize)
+    this._audio = new AudioReactive(track)
     this._audio.setSongFrequencies({ min: 510.5, max: 621.5 })
 
     this._height = window.innerHeight
     this._width = window.innerWidth
 
-    this.PARTICLES = lowPerformance ? 128 : 1024
     this._ratio = this._width / this._height
-    this._low = lowPerformance
-
     this._destroyed = false
     this._startTime = null
+    this.PARTICLES = 1024
 
     return !!Detector.webgl
   }
@@ -78,7 +73,7 @@ export default class SoundParticles {
     let particlesOffset = 2.0 / this.PARTICLES
 
     let step = Math.PI * (5.0 - Math.sqrt(5))
-    const distance = this._low ? 3.0 : 1.5
+    const distance = 1.5
 
     let minFrequencies = []
     let maxFrequencies = []
@@ -127,7 +122,7 @@ export default class SoundParticles {
       .addAttribute('index', indices)
       .addIndex(indices)
 
-    const shaderRender = Shader.from(this._low ? vertLowParticles : vertParticles, fragParticles, this._particleUniforms)
+    const shaderRender = Shader.from(vertParticles, fragParticles, this._particleUniforms)
     const particles = new Mesh(particlesGeometry, shaderRender, null, DRAW_MODES.POINTS)
 
     particles.state.depthTest = true

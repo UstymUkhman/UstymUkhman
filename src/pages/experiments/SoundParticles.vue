@@ -1,13 +1,6 @@
 <template>
   <article ref="container" itemscope itemtype="http://schema.org/WebPageElement" class="sound-particles-page">
     <TrackLabel author="John Newman" track="Love Me Again" />
-
-    <transition appear name="warning">
-      <div v-show="warning" class="warning-label-container">
-        <span>Please, be aware than this experiment is running in low performance mode (128 particles)<br>
-        'cause it seem that your GPU cannot handle its normal version (1024 particles).</span>
-      </div>
-    </transition>
   </article>
 </template>
 
@@ -29,8 +22,7 @@ export default {
   data () {
     return {
       track: '/static/audio/love_me_again.mp3',
-      experiment: null,
-      warning: false
+      experiment: null
     }
   },
 
@@ -41,33 +33,18 @@ export default {
   },
 
   methods: {
-    createExperiment (weak) {
-      this.experiment = new SoundParticles(this.$refs.container, this.track, weak)
+    createExperiment () {
+      this.experiment = new SoundParticles(this.$refs.container, this.track)
       this.experiment.startExperiment()
-    },
-
-    onError () {
-      setTimeout(() => { this.warning = true }, 2000)
-
-      if (this.experiment) {
-        this.experiment.destroy()
-      }
-
-      this.createExperiment(true)
     }
   },
 
   mounted () {
-    this._onError = this.onError.bind(this)
-    window.addEventListener('error', this._onError)
-
     this.$emit('update:title', 'SoundParticles')
     this.createExperiment()
   },
 
   beforeDestroy () {
-    window.removeEventListener('error', this._onError)
-
     if (this.experiment) {
       this.experiment.destroy()
     }
@@ -111,36 +88,5 @@ export default {
   right: 0;
   left: 0;
   top: 0;
-
-  .warning-label-container {
-    background-color: rgba($black, 0.3);
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-
-    letter-spacing: 0.5px;
-    text-align: center;
-    line-height: 18px;
-    font-weight: 300;
-    font-size: 13px;
-    color: $silver;
-
-    position: absolute;
-    padding: 15px 10px;
-    z-index: $code;
-    margin: 0 auto;
-    width: 600px;
-
-    bottom: 0;
-    right: 0;
-    left: 0;
-  }
-}
-
-.warning-enter-active {
-  transition: transform 0.5s $ease-out-quad;
-}
-
-.warning-enter {
-  transform: translateY(100%);
 }
 </style>

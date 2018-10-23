@@ -56,7 +56,12 @@ export default {
   },
 
   mounted () {
-    setTimeout(() => { this.$refs.experimentView.$el.onScroll() }, 1000)
+    if (this.$route.name === 'Experiments') {
+      setTimeout(() => {
+        this.$refs.experimentView.$el.onScroll()
+      }, 1000)
+    }
+
     this.$emit('hide:overlay')
   },
 

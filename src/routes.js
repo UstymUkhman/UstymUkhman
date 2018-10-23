@@ -1,7 +1,10 @@
 import Platform from '@/platform'
 
 const checkWebGLCompatibility = (to, from, next) => {
-  if (Platform.isIE || Platform.mobile) {
+  const notSupportedAutoplay = !from.name && to.name === 'Pills'
+  const notSupportedWebGL = Platform.isIE || Platform.mobile
+
+  if (notSupportedWebGL || notSupportedAutoplay) {
     next({name: 'SiteMenu'})
     return
   }
