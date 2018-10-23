@@ -1,7 +1,7 @@
 import Platform from '@/platform'
 
 const checkWebGLCompatibility = (to, from, next) => {
-  if (Platform.ie11 || Platform.mobile) {
+  if (Platform.isIE || Platform.mobile) {
     next({name: 'SiteMenu'})
     return
   }

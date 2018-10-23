@@ -1,28 +1,35 @@
-.not-supported-msg {
-  background-color: #000000;
-  text-align: center;
-  cursor: default;
-
-  overflow: hidden;
-  display: none;
-
-  height: 100%;
-  width: 100%;
-}
-
+.no-js .not-supported-msg,
 .no-es5object .not-supported-msg,
-.no-js .not-supported-msg {
+.no-csstransforms3d .not-supported-msg {
   display: block !important;
 }
 
-.no-js #app
-.no-es5object #app {
+.no-js #app,
+.no-es5object #app,
+.no-csstransforms3d #app {
   display: none !important;
 }
 
 .no-js body,
-.no-es5object body {
+.no-es5object body,
+.no-csstransforms3d body {
+  overflow: hidden;
   height: 100%;
+
+  padding: 0;
+  margin: 0;
+}
+
+.not-supported-msg {
+  background-color: #000000;
+  position: absolute;
+  cursor: default;
+
+  text-align: center;
+  display: none;
+
+  height: 100%;
+  width: 100%;
 }
 
 .not-supported-msg .not-supported-msg-copy {

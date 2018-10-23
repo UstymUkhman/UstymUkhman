@@ -173,7 +173,7 @@ export default {
       document.addEventListener('touchend', this._skipMenuLettering)
     }
 
-    if (!Platform.ie11 && !Platform.mobile) {
+    if (!Platform.isIE && !Platform.mobile) {
       this.pages.push('M0r3')
     }
 
@@ -206,7 +206,7 @@ export default {
     margin-left: 100px;
     height: 100%;
 
-    .ie11 & {
+    .isie & {
       transform: translateY(-50%);
       position: absolute;
       height: auto;

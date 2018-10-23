@@ -4,7 +4,7 @@ import Platform from '@/platform'
 export default class Loading {
   static getPageName (item) {
     const routes = ['About', 'Works', 'Contacts']
-    const experiments = Platform.ie11 || Platform.mobile
+    const experiments = Platform.isIE || Platform.mobile
 
     routes.push(experiments ? 'Experiments' : 'Pills')
     this.activeItem = item

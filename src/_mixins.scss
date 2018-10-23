@@ -185,7 +185,7 @@
         transform: translateX(-15px);
       }
 
-      .ie11 & {
+      .isie & {
         transform: translateX(-10px);
       }
     }
@@ -198,7 +198,7 @@
           transform: translateX(-25px);
         }
 
-        .ie11 & {
+        .isie & {
           transform: translateX(-20px);
         }
       }

@@ -17,8 +17,8 @@ const Platform = {
 
   firefox: md.version('Gecko') > 1,
   edge: !!/Edge\/\d+/i.test(window.navigator.userAgent),
-  ie11: !!/Trident.*rv:11\./i.test(window.navigator.userAgent),
   safari: /Safari/.test(window.navigator.userAgent) && /Apple Computer/.test(window.navigator.vendor),
+  isIE: navigator.userAgent.match(/MSIE 10/i) || !!/Trident.*rv:11\./i.test(window.navigator.userAgent),
 
   prerenderer: window['__PRERENDER_INJECTED'] !== undefined,
   volume: volumeTest.volume === 0.5
