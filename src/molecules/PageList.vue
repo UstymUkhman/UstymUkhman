@@ -1,13 +1,16 @@
 <template>
   <div @touchstart="onTouchStart" @touchend="onTouchEnd" class="list-area">
     <div class="list-container" :class="{'contacts': contacts}" :style="{'-webkit-transform': 'translateY(' + listOffset + ')', 'transform': 'translateY(' + listOffset + ')'}">
-      <div v-for="(page, p) in pagesList" :key="page.name" ref="urls" @click="onPageClick(p)" class="page-container" :class="{'active': enableNavigation && (currentPage === p)}">
+
+      <div :class="{'active': enableNavigation && (currentPage === p), 'visible': skipLettering}"
+           v-for="(page, p) in pagesList" :key="page.name" @click="onPageClick(p)"
+           class="page-container" ref="urls">
 
         <span class="selected-page" :class="{'dissolve': dispose}">{{ contacts ? '>' : '//' }}</span>
         <p class="page-name">{{ page.name }}</p>
         <span v-if="contacts && p === 3" class="e-mail"> - ustym.ukhman@gmail.com</span>
-
       </div>
+
     </div>
   </div>
 </template>
@@ -315,8 +318,8 @@ export default {
   display: block;
   margin: 14vh 0;
 
-  @media only screen and (max-height: 550px) {
-    margin: 12vh 0;
+  &.visible {
+    visibility: visible;
   }
 
   &.active {
@@ -354,6 +357,10 @@ export default {
         transform: translateX(15px);
       }
     }
+  }
+
+  @media only screen and (max-height: 550px) {
+    margin: 12vh 0;
   }
 
   .page-name,

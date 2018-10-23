@@ -12,9 +12,7 @@
       @toggle:rain="visibleRain = $event"
     />
 
-    <transition appear name="overlay">
-      <ScreenOverlay v-if="visibleOverlay && !isPrerenderer" />
-    </transition>
+    <ScreenOverlay v-if="visibleOverlay && !isPrerenderer" />
   </article>
 </template>
 
@@ -48,9 +46,9 @@ export default {
 
   watch: {
     $route (current, last) {
-      const restart = last.name === 'RabbitHole'
-      this.visibleAnimation = restart
+      const restart = last.name === 'RabbitHole' && current.name === 'Home'
       this.visibleOverlay = !current.path.includes('experiments') && !restart
+      this.visibleAnimation = restart
     }
   },
 
@@ -94,19 +92,6 @@ export default {
 }
 
 .matrix-rain-leave-to {
-  opacity: 0;
-}
-
-.overlay-enter-active {
-  transition: opacity 0.1s 0.4s;
-}
-
-.overlay-leave-active {
-  transition: opacity 0.1s;
-}
-
-.overlay-enter,
-.overlay-leave-to {
   opacity: 0;
 }
 </style>

@@ -26,8 +26,8 @@ export default {
 
     onSkipLettering () {
       if (!this.skipLettering) {
-        document.removeEventListener('touchstart', this._onSkipLettering, false)
-        document.removeEventListener('keydown', this._onSkipLettering, false)
+        document.removeEventListener('touchend', this._onSkipLettering, false)
+        document.removeEventListener('keyup', this._onSkipLettering, false)
         this.skipLettering = true
       }
     }
@@ -35,7 +35,7 @@ export default {
 
   mounted () {
     this._onSkipLettering = this.onSkipLettering.bind(this)
-    document.addEventListener('keydown', this._onSkipLettering, false)
-    document.addEventListener('touchstart', this._onSkipLettering, false)
+    document.addEventListener('keyup', this._onSkipLettering, false)
+    document.addEventListener('touchend', this._onSkipLettering, false)
   }
 }

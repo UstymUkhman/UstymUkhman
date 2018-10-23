@@ -689,10 +689,7 @@ export default {
       }
 
       if (this.pressed && door.pivot.rotation.y < 1.56) {
-        if (!door.pivot.rotation.y && this.playDoorSound(door.door.index)) {
-          return
-        }
-
+        if (!door.pivot.rotation.y && this.playDoorSound(door.door.index)) return
         door.pivot.rotation.y += 0.01
       } else if (!this.pressed && door.pivot.rotation.y > 1) {
         door.pivot.rotation.y += 0.01
@@ -726,13 +723,8 @@ export default {
 
     playDoorSound (door) {
       const closed = door >= Experiments.length
-
-      if (closed) {
-        Sounds.closedDoor()
-      } else {
-        Sounds.openedDoor()
-      }
-
+      if (closed) Sounds.closedDoor()
+      else Sounds.openedDoor()
       return closed
     },
 
@@ -749,7 +741,7 @@ export default {
         this.$router.push({ name: experiment })
       } else {
         Loading.checkActiveItem(true)
-        this.$router.push({ name: 'SiteMenu' })
+        this.$router.push({ name: 'Home' })
       }
     },
 

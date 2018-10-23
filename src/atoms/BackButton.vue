@@ -135,10 +135,6 @@ export default {
     right: 0;
     left: 0;
 
-    @media only screen and (max-height: 550px) {
-      margin-bottom: 10px;
-    }
-
     @include breakpoint($sm-down) {
       pointer-events: all;
       position: fixed;
@@ -150,6 +146,10 @@ export default {
 
     @include breakpoint($xs) {
       @include console-button(2px);
+    }
+
+    @media only screen and (max-height: 550px) {
+      margin-bottom: 10px;
     }
 
     .button-box {

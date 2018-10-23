@@ -8,6 +8,7 @@
              :class="{
                'active': (p === currentItem && !nextPage) || visibleButtons.includes(p),
                'selected': p === settedSection && !nextPage,
+               'visible': skipLettering,
                'pressed': pressed
              }">
 
@@ -100,9 +101,9 @@ export default {
       if ($event.keyCode === 13) {
         this.setMenuSection()
       } else if (code === 38) {
-        this.currentItem = (!item) ? 3 : item - 1
+        this.currentItem = !item ? this.visibleItems : item - 1
       } else if (code === 40) {
-        this.currentItem = (item === 3) ? 0 : item + 1
+        this.currentItem = (item === this.visibleItems) ? 0 : item + 1
       }
     },
 
@@ -145,12 +146,13 @@ export default {
     },
 
     toggleKeyListeners () {
-      document.removeEventListener('keydown', this._skipMenuLettering, false)
+      document.removeEventListener('keyup', this._skipMenuLettering, false)
       document.removeEventListener('touchend', this._skipMenuLettering, false)
 
       setTimeout(() => {
         this._onKeyUp = this.onKeyUp.bind(this)
         this._onKeyDown = this.onKeyDown.bind(this)
+        this.visibleItems = this.items.length - 1
 
         document.addEventListener('keyup', this._onKeyUp, false)
         document.addEventListener('keydown', this._onKeyDown, false)
@@ -164,14 +166,15 @@ export default {
   },
 
   mounted () {
-    const experiments = Platform.ie11 || Platform.mobile
-    this.pages.push(experiments ? '3xp3r!m3nT5' : 'M0r3')
-
     this._skipMenuLettering = this.skipMenuLettering.bind(this)
-    document.addEventListener('keydown', this._skipMenuLettering, false)
+    document.addEventListener('keyup', this._skipMenuLettering, false)
 
     if (Platform.mobile) {
       document.addEventListener('touchend', this._skipMenuLettering)
+    }
+
+    if (!Platform.ie11 && !Platform.mobile) {
+      this.pages.push('M0r3')
     }
 
     setTimeout(() => {
@@ -202,6 +205,13 @@ export default {
     @include console-button(5px);
     margin-left: 100px;
     height: 100%;
+
+    .ie11 & {
+      transform: translateY(-50%);
+      position: absolute;
+      height: auto;
+      top: 50%;
+    }
 
     @include breakpoint($md-down) {
       margin-left: 0;
@@ -265,6 +275,10 @@ export default {
 
     height: 130px;
     width: 500px;
+
+    &.visible {
+      visibility: visible;
+    }
 
     @include breakpoint($sm-down) {
       margin: 0 auto;
