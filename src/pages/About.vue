@@ -128,6 +128,8 @@ export default {
 @import 'mixins';
 
 .about-me-page {
+  background-color: rgba($black, 0.8);
+
   position: absolute;
   overflow: hidden;
 
@@ -141,6 +143,10 @@ export default {
   right: 0;
   left: 0;
   top: 0;
+
+  @include breakpoint($md-down) {
+    background-color: initial;
+  }
 
   .about-description {
     @include white-rabbit;

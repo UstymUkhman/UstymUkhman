@@ -2,7 +2,7 @@ import Platform from '@/platform'
 
 const checkWebGLCompatibility = (to, from, next) => {
   if (Platform.ie11 || Platform.mobile) {
-    next({name: 'Experiments'})
+    next({name: 'SiteMenu'})
     return
   }
 
@@ -48,6 +48,7 @@ const routes = [
       },
       {
         path: '/experiments',
+        beforeEnter: checkWebGLCompatibility,
         component: () => import(/* webpackChunkName: "experiments-page" */ './pages/Experiments'),
         children: [
           {

@@ -9,6 +9,7 @@
         @set:experiment="currentExperiment = $event"
         @update:title="currentPage = $event"
         class="page experiment-page"
+        ref="experimentView"
       />
     </transition>
 
@@ -55,6 +56,7 @@ export default {
   },
 
   mounted () {
+    setTimeout(() => { this.$refs.experimentView.$el.onScroll() }, 1000)
     this.$emit('hide:overlay')
   },
 

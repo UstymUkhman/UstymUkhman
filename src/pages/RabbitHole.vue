@@ -92,8 +92,7 @@ import {
 } from '@three/constants.js'
 
 const PI_2 = Math.PI / 2
-
-const GREEN = 0x7CA294 // 0x496F61
+const GREEN = 0x7CA294
 const WHITE = 0xFFFFFF
 
 export default {
@@ -111,11 +110,11 @@ export default {
       forceSuggestion: false,
       visibleOverlay: true,
       messageEnded: false,
-
       introStarted: false,
       introPlayed: false,
       isFullsize: false,
 
+      doorSuggestion: null,
       selectedDoor: null,
       experiment: false,
       rightDoor: false,
@@ -157,11 +156,12 @@ export default {
 
   computed: {
     showSuggestion () {
-      return !this.exit && !this.visibleOverlay && (this.canOpen || this.forceSuggestion)
+      const canOpen = this.forceSuggestion || (this.canOpen && this.doorSuggestion)
+      return !this.exit && !this.visibleOverlay && canOpen
     },
 
     suggestion () {
-      return this.ready ? 'Hold left mouse button to open the door' : 'Press enter to interact'
+      return this.ready ? `Hold left mouse button to open ${this.doorSuggestion}` : 'Press ENTER to interact'
     },
 
     guidelines () {
@@ -676,20 +676,28 @@ export default {
           return mesh.door.id === intersects[0].object.id
         })
 
+        const index = door[0].door.index
+        const experiments = index === undefined
+        const experiment = !experiments && index < Experiments.length
+
+        this.doorSuggestion = experiment ? Experiments[index].name : null
+        this.doorSuggestion = experiments ? 'experiments' : this.doorSuggestion
+
+        this.selectedDoor = door[0]
         this.canOpen = true
-        this.openTheDoor(door[0])
-      } else if (this.selectedDoor) {
+      }
+
+      if (this.selectedDoor) {
         this.openTheDoor()
       }
     },
 
     openTheDoor (door = this.selectedDoor) {
-      if (!this.selectedDoor) {
-        this.selectedDoor = door
-      }
-
       if (this.pressed && door.pivot.rotation.y < 1.56) {
-        if (!door.pivot.rotation.y && this.playDoorSound(door.door.index)) return
+        if (!door.pivot.rotation.y && this.playDoorSound(door.door.index)) {
+          return
+        }
+
         door.pivot.rotation.y += 0.01
       } else if (!this.pressed && door.pivot.rotation.y > 1) {
         door.pivot.rotation.y += 0.01
@@ -723,8 +731,13 @@ export default {
 
     playDoorSound (door) {
       const closed = door >= Experiments.length
-      if (closed) Sounds.closedDoor()
-      else Sounds.openedDoor()
+
+      if (closed) {
+        Sounds.closedDoor()
+      } else {
+        Sounds.openedDoor()
+      }
+
       return closed
     },
 
@@ -741,7 +754,7 @@ export default {
         this.$router.push({ name: experiment })
       } else {
         Loading.checkActiveItem(true)
-        this.$router.push({ name: 'Home' })
+        this.$router.push({ name: 'Experiments' })
       }
     },
 
@@ -965,7 +978,6 @@ export default {
       @include white-rabbit;
 
       transform: translateX(-50%);
-      text-transform: uppercase;
       background-color: $black;
       position: absolute;
 

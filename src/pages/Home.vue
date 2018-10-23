@@ -1,6 +1,6 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="home-page">
-    <ScreenAnimation v-if="visibleAnimation && !isPrerenderer" @complete:animation="showMenu" />
+    <ScreenAnimation v-if="visibleAnimation && !isPrerenderer" />
 
     <transition appear name="matrix-rain">
       <MatrixRain v-if="matrixRain" :ratio="rainRatio" :mobile="isMobile" />
@@ -46,31 +46,30 @@ export default {
 
   watch: {
     $route (current, last) {
-      const restart = last.name === 'RabbitHole' && current.name === 'Home'
-      this.visibleOverlay = !current.path.includes('experiments') && !restart
-      this.visibleAnimation = restart
+      const experiments = last.name === 'RabbitHole' && current.name === 'Experiments'
+      this.visibleOverlay = !current.path.includes('experiments')
+      this.visibleAnimation = experiments
+
+      if (experiments) {
+        this.visibleRain = false
+
+        setTimeout(() => {
+          this.visibleAnimation = false
+          this.visibleRain = true
+        }, 1000)
+      }
     }
   },
 
   computed: {
     matrixRain () {
-      return Platform.mobile || (
-        this.$route.name !== 'RabbitHole' &&
-        this.$route.name !== 'About' &&
-        this.visibleRain
-      )
+      return Platform.mobile || (this.$route.name !== 'RabbitHole' && this.visibleRain)
     },
 
     rainRatio () {
-      const specialPages = this.$route.name === 'Pills' || this.$route.path.includes('experiments')
+      const fullPage = this.$route.name === 'About' || this.$route.name === 'Pills'
+      const specialPages = fullPage || this.$route.path.includes('experiments')
       return Platform.mobile || specialPages ? 1 : 2.25
-    }
-  },
-
-  methods: {
-    showMenu () {
-      this.visibleAnimation = false
-      this.visibleOverlay = true
     }
   },
 

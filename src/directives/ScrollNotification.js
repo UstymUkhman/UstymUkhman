@@ -7,11 +7,7 @@ const scrollContainer = Vue.directive('scroll-container', {
     const container = element
     const key = binding.arg || 'global'
 
-    if (registry[key]) {
-      if (!registry[key].$data.destroyed) {
-        return
-      }
-    }
+    if (registry[key] && !registry[key].$data.destroyed) return
 
     const visibleElement = (element) => {
       if (!element) return true
