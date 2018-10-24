@@ -20,13 +20,14 @@ import fragRenderer from '@/3D/glsl/FBO/image/render.frag'
 import HEIGHT_MAP from '@/3D/assets/textures/FBO/height.jpg'
 
 export default class AudioreactiveParticles {
-  constructor (container, track) {
+  constructor (container, track, onLoad) {
     this.container = container
     this.audio = new AudioReactive(track)
     this.audio.setSongFrequencies(510.5, 633.55)
 
     this.simulationShader = null
     this.renderShader = null
+    this.isReady = false
 
     this.distance = 50.0
     this.pressed = null
@@ -43,6 +44,7 @@ export default class AudioreactiveParticles {
     this.createOrbitControls()
 
     this.image = new Image()
+    this.onImageLoad = onLoad
     this.image.src = HEIGHT_MAP
     this.image.onload = this.createImage.bind(this)
   }
@@ -104,7 +106,12 @@ export default class AudioreactiveParticles {
       this.renderer, this.simulationShader, this.renderShader
     )
 
+    this.audio.load()
+    this.onImageLoad()
     this.scene.add(this.fbo.particles)
+  }
+
+  startExperiment () {
     this.audio.play(this.update.bind(this))
   }
 

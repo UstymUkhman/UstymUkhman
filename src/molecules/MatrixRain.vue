@@ -98,8 +98,8 @@ export default {
       this.columns = Math.ceil(this.width / OFFSET)
       this.context.font = MATRIX_FONT
 
-      const rows = this.rows - _rows
-      const columns = this.columns - _columns
+      const rows = Math.max(this.rows - _rows, 0)
+      const columns = Math.max(this.columns - _columns, 0)
 
       if (rows > 0 || columns > 0) {
         const _duration = Array.from(new Array(columns), d => this.getRandomInt(this.rows, 100))

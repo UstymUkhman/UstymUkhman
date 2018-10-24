@@ -119,7 +119,7 @@ html {
 
   user-select: none;
   overflow: hidden;
-  // cursor: none;
+  cursor: none;
 
   max-height: 100%;
   min-height: 100%;

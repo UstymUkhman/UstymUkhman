@@ -5,10 +5,12 @@
       <div @click="setAudioreactiveExperiment" class="button" :class="{'active': audioreactive}">Audioreactive Particles</div>
     </div>
 
-    <div ref="container" class="experiment-container"></div>
+    <transition appear>
+      <div ref="container" class="experiment-container"></div>
+    </transition>
 
     <transition appear>
-      <TrackLabel v-show="audioreactive" author="Linkin Park" track="Faint" />
+      <TrackLabel v-show="audioreactive && isReady" author="Linkin Park" track="Faint" />
     </transition>
   </article>
 </template>
@@ -32,7 +34,8 @@ export default {
   data () {
     return {
       track: '/static/audio/faint.mp3',
-      audioreactive: false
+      audioreactive: false,
+      isReady: false
     }
   },
 
@@ -45,16 +48,19 @@ export default {
   methods: {
     setParticlesExperiment () {
       this.audioreactive = false
-
       this.experiment.destroy()
+
       this.experiment = new Particles(this.$refs.container, this.$refs.overlay)
     },
 
     setAudioreactiveExperiment () {
       this.audioreactive = true
-
       this.experiment.destroy()
-      this.experiment = new AudioreactiveParticles(this.$refs.container, this.track)
+
+      this.experiment = new AudioreactiveParticles(this.$refs.container, this.track, () => {
+        this.experiment.startExperiment()
+        this.isReady = true
+      })
     }
   },
 

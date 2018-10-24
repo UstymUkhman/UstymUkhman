@@ -15,8 +15,8 @@ import fragBackground from '@/3D/glsl/SoundParticles/background.frag'
 const RAD = Math.PI / 180
 
 export default class SoundParticles {
-  constructor (container, track) {
-    this._container = container
+  constructor (canvas, track) {
+    this._canvas = canvas
     this._audio = new AudioReactive(track)
     this._audio.setSongFrequencies({ min: 510.5, max: 621.5 })
 
@@ -166,16 +166,13 @@ export default class SoundParticles {
     this._stage = new Container()
     this._renderer = autoDetectRenderer(
       this._width, this._height, {
+        view: this._canvas,
         transparent: true,
         antialias: true
       }
     )
 
     this._camera = new OrbitalCameraControl(this._view, 5)
-
-    if (this._container) {
-      this._container.appendChild(this._renderer.view)
-    }
 
     this._createBackground()
     this._createParticles()

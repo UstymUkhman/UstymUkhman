@@ -1,14 +1,21 @@
 <template>
-  <article ref="container" itemscope itemtype="http://schema.org/WebPageElement" class="sound-particles-page">
-    <TrackLabel author="John Newman" track="Love Me Again" />
+  <article itemscope itemtype="http://schema.org/WebPageElement" class="sound-particles-page">
+    <transition appear>
+      <canvas v-show="started" ref="canvas" />
+    </transition>
 
-    <button class="start-button" @click="startExperiment">startExperiment</button>
+    <transition appear>
+      <TrackLabel v-if="started" author="John Newman" track="Love Me Again" />
+    </transition>
+
+    <StartButton v-if="!started" @click:start="startExperiment" />
   </article>
 </template>
 
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import SoundParticles from '@/3D/experiments/SoundParticles'
+import StartButton from '@/atoms/StartButton'
 import TrackLabel from '@/atoms/TrackLabel'
 import Viewport from '@/mixins/Viewport'
 
@@ -18,13 +25,15 @@ export default {
   mixins: [Viewport, FirePrerenderEvent],
 
   components: {
+    StartButton,
     TrackLabel
   },
 
   data () {
     return {
       track: '/static/audio/love_me_again.mp3',
-      experiment: null
+      experiment: null,
+      started: false
     }
   },
 
@@ -36,12 +45,13 @@ export default {
 
   methods: {
     createExperiment () {
-      this.experiment = new SoundParticles(this.$refs.container, this.track)
+      this.experiment = new SoundParticles(this.$refs.canvas, this.track)
       this.experiment.initExperiment()
     },
 
     startExperiment () {
       this.experiment.startExperiment()
+      this.started = true
     }
   },
 
@@ -94,16 +104,5 @@ export default {
   right: 0;
   left: 0;
   top: 0;
-
-  .start-button {
-    transform: translate(-50%, -50%);
-
-    position: absolute;
-    margin: auto;
-    z-index: 9;
-
-    left: 50%;
-    top: 50%;
-  }
 }
 </style>
