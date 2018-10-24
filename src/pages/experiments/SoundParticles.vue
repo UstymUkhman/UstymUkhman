@@ -1,6 +1,8 @@
 <template>
   <article ref="container" itemscope itemtype="http://schema.org/WebPageElement" class="sound-particles-page">
     <TrackLabel author="John Newman" track="Love Me Again" />
+
+    <button class="start-button" @click="startExperiment">startExperiment</button>
   </article>
 </template>
 
@@ -35,6 +37,10 @@ export default {
   methods: {
     createExperiment () {
       this.experiment = new SoundParticles(this.$refs.container, this.track)
+      this.experiment.initExperiment()
+    },
+
+    startExperiment () {
       this.experiment.startExperiment()
     }
   },
@@ -88,5 +94,16 @@ export default {
   right: 0;
   left: 0;
   top: 0;
+
+  .start-button {
+    transform: translate(-50%, -50%);
+
+    position: absolute;
+    margin: auto;
+    z-index: 9;
+
+    left: 50%;
+    top: 50%;
+  }
 }
 </style>

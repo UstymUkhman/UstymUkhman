@@ -243,8 +243,10 @@ export default {
     },
 
     onPageClick (page) {
-      this.currentPage = page
-      setTimeout(() => { this.openPageUrl(page) }, 400)
+      if (this.enableNavigation) {
+        this.currentPage = page
+        setTimeout(() => { this.openPageUrl(page) }, 400)
+      }
     }
   },
 

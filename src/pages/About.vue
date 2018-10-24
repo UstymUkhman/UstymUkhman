@@ -189,7 +189,7 @@ export default {
     }
 
     @media only screen and (max-height: 550px) {
-      margin-top: 5vh;
+      margin-top: 0;
     }
   }
 }

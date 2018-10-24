@@ -157,7 +157,7 @@ export default class SoundParticles {
     this._frame = requestAnimationFrame(this._render.bind(this))
   }
 
-  startExperiment () {
+  initExperiment () {
     this._view = mat4.create()
     this._proj = mat4.create()
 
@@ -180,8 +180,12 @@ export default class SoundParticles {
     this._createBackground()
     this._createParticles()
 
-    this._runEasing = false
     this._startTime = Date.now()
+    this._runEasing = false
+    this._audio.load()
+  }
+
+  startExperiment () {
     this._audio.play(this._render.bind(this))
   }
 

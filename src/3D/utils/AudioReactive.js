@@ -28,13 +28,13 @@ export default class AudioReactive {
     this.fftSize = fftSize
   }
 
-  _loadAudioTrack (onPlay, study = false) {
+  _loadAudioTrack (study = false) {
     let onAudioEnded = study ? this._setAudioValues.bind(this) : this._onAudioTrackEnded.bind(this)
 
     this._multipleSources = typeof this._audioSrc === 'object'
 
     if (this._multipleSources) {
-      return this._loadAudioTracks(onPlay)
+      return this._loadAudioTracks()
     }
 
     if (this._soundSource === null) {
@@ -50,13 +50,11 @@ export default class AudioReactive {
 
       this._audioDuration = this._soundSource.duration
       this._soundSource.loaded = true
+      this._soundSource.muted = false
       this._soundSource.volume = 1.0
-      this._soundSource.muted = true
       this.isReady = true
 
-      if (!study) {
-        this._playAudioTrack(onPlay)
-      } else {
+      if (study) {
         this._soundSource.analyser = analyser(this._soundSource)
         this._soundSource.play()
 
@@ -65,7 +63,7 @@ export default class AudioReactive {
     })
   }
 
-  _loadAudioTracks (onPlay) {
+  _loadAudioTracks () {
     const tracks = Object.keys(this._audioSrc).length
     let audioDuration = 0
     let sourceIndex = 0
@@ -77,8 +75,8 @@ export default class AudioReactive {
 
       this._soundSources[source].addEventListener('canplay', () => {
         this._soundSources[source].loaded = true
+        this._soundSources[source].muted = false
         this._soundSources[source].volume = 1.0
-        this._soundSources[source].muted = true
         sourceIndex++
 
         if (this._soundSources[source].duration > audioDuration) {
@@ -90,7 +88,7 @@ export default class AudioReactive {
           this._soundSources[this._longestSource].addEventListener('ended', this._onAudioTrackEnded.bind(this))
 
           this._audioDuration = audioDuration
-          this._playAudioTracks(onPlay)
+          this._playAudioTracks()
           this.isReady = true
         }
       })
@@ -206,11 +204,19 @@ export default class AudioReactive {
     this.SONG_MAX_POWER = max
   }
 
-  play (onReady) {
+  load () {
     if (this._multipleSources) {
-      this._loadAudioTracks(onReady)
+      this._loadAudioTracks()
     } else {
-      this._loadAudioTrack(onReady)
+      this._loadAudioTrack()
+    }
+  }
+
+  play (onPlay) {
+    if (this._multipleSources) {
+      this._playAudioTracks(onPlay)
+    } else {
+      this._playAudioTrack(onPlay)
     }
   }
 

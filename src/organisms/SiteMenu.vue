@@ -3,7 +3,7 @@
     <div class="menu-items">
       <div v-for="(page, p) in pages" :key="p" class="button-border">
 
-        <div @touchstart="onTouchStart(p)" @touchend="onTouchEnd(p)"
+        <div @touchstart="onTouchStart(p)" @touchend="onTouchEnd"
              ref="items" class="button-box"
              :class="{
                'active': (p === currentItem && !nextPage) || visibleButtons.includes(p),
@@ -58,7 +58,7 @@ export default {
         this.typingTimeout = 0
 
         if (Platform.mobile) {
-          this.visibleButtons = [0, 1, 2, 3]
+          this.visibleButtons = [0, 1, 2]
         }
       }
     },
@@ -108,7 +108,7 @@ export default {
     },
 
     onTouchStart (index) {
-      if (this.visibleButtons.length < 4) {
+      if (this.visibleButtons.length < 3) {
         return
       }
 
@@ -116,8 +116,8 @@ export default {
       this.onKeyDown({ keyCode: 13 })
     },
 
-    onTouchEnd (index) {
-      if (this.visibleButtons.length < 4) {
+    onTouchEnd () {
+      if (this.visibleButtons.length < 3) {
         return
       }
 
@@ -149,14 +149,16 @@ export default {
       document.removeEventListener('keyup', this._skipMenuLettering, false)
       document.removeEventListener('touchend', this._skipMenuLettering, false)
 
-      setTimeout(() => {
-        this._onKeyUp = this.onKeyUp.bind(this)
-        this._onKeyDown = this.onKeyDown.bind(this)
-        this.visibleItems = this.items.length - 1
+      if (!Platform.mobile) {
+        setTimeout(() => {
+          this._onKeyUp = this.onKeyUp.bind(this)
+          this._onKeyDown = this.onKeyDown.bind(this)
+          this.visibleItems = this.items.length - 1
 
-        document.addEventListener('keyup', this._onKeyUp, false)
-        document.addEventListener('keydown', this._onKeyDown, false)
-      }, 100)
+          document.addEventListener('keyup', this._onKeyUp, false)
+          document.addEventListener('keydown', this._onKeyDown, false)
+        }, 100)
+      }
     },
 
     removeKeyListeners () {
