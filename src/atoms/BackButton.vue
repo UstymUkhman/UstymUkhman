@@ -62,7 +62,7 @@ export default {
         setTimeout(() => {
           Loading.checkActiveItem()
           this.$router.push({name: 'SiteMenu'})
-        }, 2500)
+        }, 3000)
       }
     }
   },

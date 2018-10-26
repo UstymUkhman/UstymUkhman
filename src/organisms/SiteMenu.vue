@@ -3,7 +3,7 @@
     <div class="menu-items">
       <div v-for="(page, p) in pages" :key="p" class="button-border">
 
-        <div @touchstart="onTouchStart(p)" @touchend="onTouchEnd"
+        <div @touchstart.once="onTouchStart(p)" @touchend.once="onTouchEnd"
              ref="items" class="button-box"
              :class="{
                'active': (p === currentItem && !nextPage) || visibleButtons.includes(p),
@@ -88,7 +88,7 @@ export default {
     },
 
     onKeyDown ($event) {
-      if ($event.keyCode === 13) {
+      if ($event.keyCode === 13 && !this.pressed) {
         this.settedSection = this.currentItem
         this.pressed = true
       }
@@ -127,6 +127,7 @@ export default {
 
     setMenuSection () {
       const nextSection = this.settedSection
+      const visibleRain = nextSection > 0 && nextSection < 3
 
       this.pressed = false
       this.nextPage = true
@@ -134,7 +135,7 @@ export default {
 
       this.removeKeyListeners()
       this.lettering.disposeAll(this.words)
-      this.$emit('toggle:rain', nextSection !== 3)
+      this.$emit('toggle:rain', visibleRain)
 
       setTimeout(() => {
         this.settedSection = nextSection

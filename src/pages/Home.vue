@@ -50,7 +50,7 @@ export default {
       this.visibleOverlay = !current.path.includes('experiments')
       this.visibleAnimation = experiments
 
-      if (experiments) {
+      if (last.name === 'About' || experiments) {
         this.visibleRain = false
 
         setTimeout(() => {
@@ -74,7 +74,7 @@ export default {
   },
 
   mounted () {
-    if (this.$route.name !== 'Pills') {
+    if (this.$route.name !== 'About' && this.$route.name !== 'Pills') {
       setTimeout(() => { this.visibleRain = true }, 500)
     }
   },

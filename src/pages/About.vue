@@ -15,7 +15,9 @@
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
 import BackButton from '@/atoms/BackButton'
+
 import Lettering from '@/utils/Lettering'
+import Loading from '@/utils/Loading'
 import Platform from '@/platform'
 
 export default {
@@ -64,6 +66,7 @@ export default {
   methods: {
     showMessage () {
       this.lettering.animate(this.$refs.text, 50, () => {
+        this.$emit('toggle:rain', true)
         this.showBackButton = true
 
         setTimeout(() => {
@@ -78,6 +81,7 @@ export default {
       if (this.activeBackButton && enterKey) {
         this.selectedBackButton = true
       } else if (!this.showBackButton) {
+        this.$emit('toggle:rain', true)
         this.lettering.skipLettering()
       }
     },
@@ -86,6 +90,7 @@ export default {
       const enterKey = Platform.mobile || event.keyCode === 13
 
       if (this.activeBackButton && enterKey) {
+        this.$emit('toggle:rain', false)
         this.selectedBackButton = false
         this.lettering.dispose()
       }
@@ -105,6 +110,7 @@ export default {
     }
 
     this.lettering = new Lettering()
+    Loading.setActiveItem(0)
     this.showMessage()
   },
 

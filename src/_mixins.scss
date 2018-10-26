@@ -63,6 +63,8 @@
         transform: scale3d(1, 0, 1);
         width: $border-size;
         height: 100%;
+
+        z-index: 1;
         top: 0;
       }
 
@@ -79,10 +81,12 @@
       }
 
       .button-background {
-        transition: background-color 1.5s ease;
+        transition: background-color 0.5s;
         background-color: transparent;
         position: absolute;
-        z-index: -1;
+
+        height: 100%;
+        width: 100%;
 
         bottom: 0;
         right: 0;
@@ -91,9 +95,12 @@
       }
 
       .button {
-        transition: color 0.5s ease 0.5s;
+        transition: color 0.5s;
         visibility: hidden;
+        position: relative;
         color: $green;
+
+        z-index: 1;
         margin: 0;
 
         &::after,
@@ -101,6 +108,8 @@
           transform: scale3d(0, 1, 1);
           height: $border-size;
           width: 100%;
+
+          z-index: 1;
           left: 0;
         }
 
@@ -135,6 +144,7 @@
         }
 
         .button {
+          transition-delay: 0.5s;
           visibility: visible;
           color: $fade-green;
         }
@@ -162,12 +172,12 @@
     }
 
     .button-box.selected {
-      .button {
-        color: rgb(221, 255, 221);
-      }
-
       .button-background {
         background-color: $dark-green;
+      }
+
+      .button {
+        color: rgb(221, 255, 221);
       }
     }
   }

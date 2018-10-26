@@ -18,6 +18,7 @@
 <script>
 import Lettering from '@/utils/Lettering'
 import Viewport from '@/mixins/Viewport'
+import Loading from '@/utils/Loading'
 
 import { phone } from '@/_variables.scss'
 import Platform from '@/platform'
@@ -257,6 +258,7 @@ export default {
     document.addEventListener('keyup', this._onKeyUp, false)
     document.addEventListener('keydown', this._onKeyDown, false)
 
+    Loading.setActiveItem(this.contacts ? 2 : 1)
     this.lettering = new Lettering()
     this.showPages()
   },

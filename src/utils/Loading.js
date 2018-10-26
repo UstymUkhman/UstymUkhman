@@ -21,6 +21,10 @@ export default class Loading {
     if (reset) this.activeItem = null
   }
 
+  static setActiveItem (item) {
+    this.activeItem = item
+  }
+
   static getActiveItem () {
     return (this.activeItem === undefined || this.activeItem === null) ? false : this.activeItem
   }
