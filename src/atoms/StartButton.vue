@@ -91,6 +91,7 @@ export default {
 @import 'mixins';
 
 .start-button {
+  pointer-events: none;
   position: absolute;
   overflow: hidden;
 
@@ -104,10 +105,6 @@ export default {
   right: 0;
   left: 0;
   top: 0;
-
-  .button-overlay {
-    pointer-events: none;
-  }
 
   .start-button-container {
     @include console-button;
@@ -136,6 +133,9 @@ export default {
       line-height: 50px;
       font-size: 25px;
       color: $green;
+
+      pointer-events: all;
+      cursor: pointer;
     }
   }
 }

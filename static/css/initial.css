@@ -62,6 +62,11 @@
 }
 
 body .dg.ac {
+  display: none;
+}
+
+body .dg.ac.v {
+  display: block;
   z-index: 100;
 }
 

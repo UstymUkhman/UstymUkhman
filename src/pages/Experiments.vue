@@ -1,6 +1,6 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="experiments-page">
-    <ScreenOverlay v-if="!platform.prerenderer" />
+    <ScreenOverlay v-if="!prerenderer" />
 
     <SiteHeader v-if="currentPage" :page="currentPage" :scroll="scrollable" :experiment="currentExperiment" />
 
@@ -38,8 +38,8 @@ export default {
   data () {
     return {
       scrollable: this.$route.name === 'DynamicCss',
+      prerenderer: Platform.prerenderer,
       currentExperiment: null,
-      platform: Platform,
       currentPage: null,
       rain: false
     }

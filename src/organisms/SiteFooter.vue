@@ -4,7 +4,9 @@
     <transition appear name="footer">
       <div v-show="visible" class="footer-container">
         <div class="page-links buttons">
-          <WebsitePage @click.native="onWebsiteClick" class="website" />
+          <router-link title="Home" :to="{name: 'SiteMenu'}">
+            <HomeButton class="home" />
+          </router-link>
 
           <router-link title="Experiments" :to="{name: 'Experiments'}">
             <ExperimentsPage class="experiments" />
@@ -26,16 +28,13 @@
 import ExperimentsPage from '@/assets/svg/experiments.svg'
 import FacebookShare from '@/assets/svg/facebook.svg'
 import TwitterShare from '@/assets/svg/twitter.svg'
-import WebsitePage from '@/assets/svg/website.svg'
-
-import Loading from '@/utils/Loading'
-import Platform from '@/platform'
+import HomeButton from '@/atoms/HomeButton'
 
 export default {
   name: 'SiteFooter',
 
   components: {
-    WebsitePage,
+    HomeButton,
     ExperimentsPage,
     FacebookShare,
     TwitterShare
@@ -51,16 +50,11 @@ export default {
 
   data () {
     return {
-      visible: !Platform.mobile
+      visible: true
     }
   },
 
   methods: {
-    onWebsiteClick () {
-      Loading.checkActiveItem()
-      this.$router.push({name: 'SiteMenu'})
-    },
-
     facebookShare () {
       const url = `https://facebook.com/sharer.php?u=${encodeURIComponent(window.location)}`
       window.open(url, '_blank', 'width=640,height=400,status=no,toolbar=no,titlebar=no')
@@ -131,6 +125,14 @@ export default {
       text-align: right;
       right: 0;
     }
+
+    .home {
+      height: 12px;
+      width: 18px;
+
+      left: 25px;
+      top: 7px;
+    }
   }
 }
 
@@ -138,14 +140,6 @@ svg {
   position: absolute;
   cursor: pointer;
   width: 18px;
-
-  &.website {
-    height: 22px;
-    width: 21px;
-
-    left: 25px;
-    top: 2px;
-  }
 
   &.experiments {
     width: 20px;
@@ -165,7 +159,6 @@ svg {
     top: 3px;
   }
 
-  &.website,
   &.experiments {
     transition: fill 0.5s;
     fill: $dark-green;
@@ -180,7 +173,6 @@ svg {
   }
 
   &:hover {
-    &.website,
     &.experiments {
       fill: $green;
     }

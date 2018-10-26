@@ -328,6 +328,7 @@ export default {
       this.gui = new dat.GUI()
       this.setOptions()
 
+      this.gui.domElement.parentElement.classList.add('v')
       this.toggleCallback(this.drawSettings.callbackFn)
       this.togglePencil(this.drawSettings.pencil)
     }
@@ -415,7 +416,7 @@ export default {
   z-index: 1;
 
   height: 120px;
-  width: 265px;
+  width: 330px;
 
   bottom: 0;
   right: 0;
@@ -427,7 +428,7 @@ export default {
   }
 
   &.object {
-    height: 240px;
+    height: 200px;
   }
 
   &.callback {
@@ -496,13 +497,14 @@ export default {
 
   span,
   code {
-    position: relative;
-    cursor: default;
-
+    font-family: monospace;
     font-style: italic;
     line-height: 20px;
     font-weight: 300;
     font-size: 16px;
+
+    position: relative;
+    cursor: default;
 
     &.code-preview {
       margin-bottom: 25px;
@@ -521,7 +523,7 @@ export default {
 
   .coma {
     display: inline-block;
-    margin-left: -2px;
+    margin-left: -10px;
   }
 
   .code-enter-active,
