@@ -2,11 +2,10 @@
   <article itemscope itemtype="http://schema.org/WebPageElement" class="experiments-page">
     <ScreenOverlay v-if="!prerenderer" />
 
-    <SiteHeader v-if="currentPage" :page="currentPage" :scroll="scrollable" :experiment="currentExperiment" />
+    <SiteHeader v-if="currentPage" :page="currentPage" :scroll="scrollable" />
 
     <transition appear>
       <router-view
-        @set:experiment="currentExperiment = $event"
         @update:title="currentPage = $event"
         class="page experiment-page"
         ref="experimentView"
@@ -39,7 +38,6 @@ export default {
     return {
       scrollable: this.$route.name === 'DynamicCss',
       prerenderer: Platform.prerenderer,
-      currentExperiment: null,
       currentPage: null,
       rain: false
     }

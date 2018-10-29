@@ -94,11 +94,11 @@ const routes = [
             name: 'VideoTransition',
             component: () => import(/* webpackChunkName: "video-transition" */ './pages/experiments/VideoTransition')
           },
-          {
-            path: 'FaceTracking',
-            name: 'FaceTracking',
-            component: () => import(/* webpackChunkName: "face-tracking" */ './pages/experiments/FaceTracking')
-          },
+          // {
+          //   path: 'FaceTracking',
+          //   name: 'FaceTracking',
+          //   component: () => import(/* webpackChunkName: "face-tracking" */ './pages/experiments/FaceTracking')
+          // },
           {
             path: '*',
             redirect: to => { return '/experiments' }

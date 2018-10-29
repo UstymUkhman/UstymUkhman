@@ -5,10 +5,10 @@
         <PageTitle :title="page" />
 
         <HeaderButtons
-          :showDownload="'code' in currentExperiment"
-          :repo="currentExperiment.github"
+          :showDownload="'code' in experiment"
           @download="downloadExperiment"
-          v-if="currentExperiment"
+          :repo="experiment.github"
+          v-if="experiment"
         />
       </div>
     </transition>
@@ -42,12 +42,6 @@ export default {
       type: Boolean,
       default: false,
       required: false
-    },
-
-    experiment: {
-      type: Object,
-      default: null,
-      required: false
     }
   },
 
@@ -56,16 +50,13 @@ export default {
       visible: true,
       isHovered: false,
       activeTrigger: false,
+
       experiments: Experiments,
-      currentExperiment: this.experiment
+      experiment: null
     }
   },
 
   watch: {
-    experiment () {
-      this.currentExperiment = this.experiment
-    },
-
     visible (now) {
       if (now) {
         this.activeTrigger = false
@@ -77,12 +68,12 @@ export default {
 
   methods: {
     downloadExperiment () {
-      window.open(this.currentExperiment.code, '_blank')
+      window.open(this.experiment.code, '_blank')
     }
   },
 
   mounted () {
-    this.currentExperiment = find(this.experiments, { name: this.page })
+    this.experiment = find(this.experiments, { name: this.page })
     setTimeout(() => { this.visible = this.isHovered }, 2500)
   }
 }

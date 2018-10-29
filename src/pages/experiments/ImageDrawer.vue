@@ -324,14 +324,11 @@ export default {
     document.body.appendChild(this.pluginJs)
     window.jQuery = jquery
 
-    if (!this.gui) {
-      this.gui = new dat.GUI()
-      this.setOptions()
+    this.gui = new dat.GUI()
+    this.setOptions()
 
-      this.gui.domElement.parentElement.classList.add('v')
-      this.toggleCallback(this.drawSettings.callbackFn)
-      this.togglePencil(this.drawSettings.pencil)
-    }
+    this.toggleCallback(this.drawSettings.callbackFn)
+    this.togglePencil(this.drawSettings.pencil)
   },
 
   beforeDestroy () {
@@ -340,7 +337,7 @@ export default {
     this.pluginJs.remove()
 
     delete window.jQuery
-    delete window.$
+    delete this.gui
   },
 
   metaInfo: {

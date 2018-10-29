@@ -24,14 +24,6 @@ export default {
     this.grading = new ColorGrading()
     this.$emit('update:title', 'ColorGrading')
     this.grading.startExperiment(this.$refs.container, 'lake')
-
-    setTimeout(() => {
-      this.$emit('set:experiment', {
-        github: 'https://github.com/UstymUkhman/color-grading',
-        route: 'ColorGrading',
-        name: 'ColorGrading'
-      })
-    })
   },
 
   beforeDestroy () {
