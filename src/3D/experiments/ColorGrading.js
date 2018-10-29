@@ -205,7 +205,9 @@ export default class ColorGrading {
     }
 
     const lutArray = Object.keys(lutTables)
+
     this.gui = new dat.GUI()
+    this.gui.domElement.parentElement.classList.add('v')
 
     this.gui.add({ LUT: 'Standard' }, 'LUT', lutArray).onChange((table) => {
       const lookup = lutArray.indexOf(table) > lutArray.length - 3

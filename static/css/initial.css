@@ -62,7 +62,6 @@
 }
 
 body .dg.ac {
-  display: block;
   z-index: 100;
 }
 
@@ -80,7 +79,7 @@ body .dg.a .close-button {
 
 @media (max-width: 991px) {
   .not-supported-msg .not-supported-msg-copy {
-    height: 95px;
+    height: 120px;
     width: 90%;
   }
 
@@ -102,13 +101,5 @@ body .dg.a .close-button {
   .not-supported-msg .not-supported-msg-copy p {
     line-height: 18px;
     font-size: 14px;
-  }
-
-  body .stats {
-    top: 50px !important;
-  }
-
-  body .dg.a {
-    top: 50px;
   }
 }

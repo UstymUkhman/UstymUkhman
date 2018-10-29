@@ -5,6 +5,11 @@
     "name": "VideoTransition"
   },
   {
+    "github": "https://github.com/UstymUkhman/color-grading",
+    "route": "ColorGrading",
+    "name": "ColorGrading"
+  },
+  {
     "github": "https://github.com/UstymUkhman/fbo-particles",
     "route": "FBOParticles",
     "name": "FBOParticles"

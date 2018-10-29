@@ -41,6 +41,8 @@
 
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
+import { removeDatGui } from '@/utils/utilities'
+
 import * as dat from 'dat.gui'
 import jquery from 'jquery'
 
@@ -329,6 +331,7 @@ export default {
 
     this.toggleCallback(this.drawSettings.callbackFn)
     this.togglePencil(this.drawSettings.pencil)
+    setTimeout(removeDatGui, 500)
   },
 
   beforeDestroy () {

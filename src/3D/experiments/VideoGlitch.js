@@ -15,11 +15,12 @@ import { PlaneGeometry } from '@three/geometries/PlaneGeometry'
 import { Detector } from '@three/helpers/Detector'
 import { Texture } from '@three/textures/Texture'
 
+import { LinearFilter } from '@three/constants.js'
 import { Scene } from '@three/scenes/Scene'
 import { Mesh } from '@three/objects/Mesh'
 import { Color } from '@three/math/Color'
 
-import { LinearFilter } from '@three/constants.js'
+import { removeDatGui } from '@/utils/utilities'
 import * as dat from 'dat.gui'
 
 import vertGlitch from '@/3D/glsl/VideoGlitch/glitch.vert'
@@ -303,6 +304,7 @@ export default class VideoGlitch {
 
     this.renderer.domElement.style.opacity = 1
     this.opacity = 1
+    removeDatGui()
   }
 
   render () {
