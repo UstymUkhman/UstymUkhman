@@ -1,5 +1,11 @@
 [
   {
+    "github": "https://github.com/UstymUkhman/webDOOM",
+    "code": "/static/downloads/webDOOM.zip",
+    "route": "webDOOM",
+    "name": "webDOOM"
+  },
+  {
     "github": "https://github.com/UstymUkhman/video-transition",
     "route": "VideoTransition",
     "name": "VideoTransition"

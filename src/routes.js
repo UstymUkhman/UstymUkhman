@@ -94,6 +94,11 @@ const routes = [
             name: 'VideoTransition',
             component: () => import(/* webpackChunkName: "video-transition" */ './pages/experiments/VideoTransition')
           },
+          {
+            path: 'webDOOM',
+            name: 'webDOOM',
+            component: () => import(/* webpackChunkName: "web-doom" */ './pages/experiments/webDOOM')
+          },
           // {
           //   path: 'FaceTracking',
           //   name: 'FaceTracking',
