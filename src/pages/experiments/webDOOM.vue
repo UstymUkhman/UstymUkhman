@@ -1,6 +1,24 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="web-doom-page">
-    <!-- <div ref="container" class="container"></div> -->
+    <iframe src="/static/doom/web-doom.html"></iframe>
+    <!-- <div ref="container" class="container"> -->
+    <!-- <div class="spinner" id="spinner"></div>
+    <div class="emscripten" id="status">Downloading...</div>
+
+    <span id="controls">
+      <span><input type="checkbox" id="resize">Resize canvas</span>
+      <span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer &nbsp;&nbsp;&nbsp;</span>
+      <span><input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)"></span>
+    </span>
+
+    <div class="emscripten">
+      <progress value="0" max="100" id="progress" hidden=1></progress>
+    </div>
+
+    <div class="emscripten_border">
+      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    </div> -->
+    <!-- </div> -->
   </article>
 </template>
 
@@ -24,8 +42,9 @@ export default {
     this.$emit('update:title', 'webDOOM')
   },
 
-  // beforeDestroy () {
-  // },
+  beforeDestroy () {
+    this.jsCode.remove()
+  },
 
   metaInfo: {
     title: 'webDOOM |',

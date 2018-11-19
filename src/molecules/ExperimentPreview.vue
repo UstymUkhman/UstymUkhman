@@ -102,8 +102,8 @@ export default {
 
 .experiment-preview {
   transform: translateX(20%) scale(0.8) rotate3d(0, 1, 0, 30deg);
-  transition: transform 0.5s $ease-in-quart;
-  backface-visibility: hidden;
+  // transition: transform 0.5s $ease-in-quart;
+  // backface-visibility: hidden;
   transform-origin: 0 50%;
 
   position: absolute;
@@ -114,7 +114,7 @@ export default {
   width: 100%;
 
   &:hover {
-    transform: translateX(10%) scale(0.75) rotate3d(0, 1, 0, 0deg);
+    // transform: translateX(10%) scale(0.75) rotate3d(0, 1, 0, 30deg);
 
     .title,
     .cover-overlay {
@@ -136,7 +136,7 @@ export default {
     }
 
     &:hover {
-      transform: translateX(-10%) scale(0.75) rotate3d(0, 1, 0, 0deg);
+      // transform: translateX(-10%) scale(0.75) rotate3d(0, 1, 0, -30deg);
 
       @include breakpoint($sm-down) {
         transform: none;
