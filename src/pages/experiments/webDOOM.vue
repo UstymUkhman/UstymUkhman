@@ -1,49 +1,55 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="web-doom-page">
-    <iframe src="/static/doom/web-doom.html"></iframe>
-    <!-- <div ref="container" class="container"> -->
-    <!-- <div class="spinner" id="spinner"></div>
-    <div class="emscripten" id="status">Downloading...</div>
+    <iframe ref="game" src="/static/doom/web-doom.html" :class="{'loaded': progress === 100}"></iframe>
 
-    <span id="controls">
-      <span><input type="checkbox" id="resize">Resize canvas</span>
-      <span><input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer &nbsp;&nbsp;&nbsp;</span>
-      <span><input type="button" value="Fullscreen" onclick="Module.requestFullscreen(document.getElementById('pointerLock').checked, document.getElementById('resize').checked)"></span>
-    </span>
-
-    <div class="emscripten">
-      <progress value="0" max="100" id="progress" hidden=1></progress>
-    </div>
-
-    <div class="emscripten_border">
-      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-    </div> -->
-    <!-- </div> -->
+    <transition appear>
+      <div v-if="progress < 100" class="loading-container">
+        <span class="loading-text">Loading...</span>
+        <span class="progress">{{ progress }}%</span>
+      </div>
+    </transition>
   </article>
 </template>
 
 <script>
 import FirePrerenderEvent from '@/mixins/FirePrerenderEvent'
-// import Viewport from '@/mixins/Viewport'
 
 export default {
   name: 'webDOOM',
 
   mixins: [FirePrerenderEvent],
-  // mixins: [Viewport, FirePrerenderEvent],
 
-  // watch: {
-  //   viewPort () {
-  //     this.grading.onResize()
-  //   }
-  // },
+  data () {
+    return {
+      loading: null,
+      progress: 0
+    }
+  },
+
+  methods: {
+    completeLoading () {
+      window.doomLoadingProgress = undefined
+      delete window.doomLoadingProgress
+      // To use when clicking on start
+      // button to lock the pointer:
+      this.$refs.game.focus()
+      this.progress = 100
+    }
+  },
 
   mounted () {
     this.$emit('update:title', 'webDOOM')
-  },
 
-  beforeDestroy () {
-    this.jsCode.remove()
+    this.loading = setInterval(() => {
+      const progress = window.doomLoadingProgress || this.progress
+
+      if (progress === 100) {
+        setTimeout(this.completeLoading.bind(this), 2500)
+        clearInterval(this.loading)
+      } else {
+        this.progress = progress
+      }
+    }, 100)
   },
 
   metaInfo: {
@@ -65,7 +71,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-// @import 'variables';
+@import 'variables';
 
 .web-doom-page {
   position: absolute;
@@ -78,5 +84,43 @@ export default {
   margin: 0;
   left: 0;
   top: 0;
+
+  iframe {
+    transition: opacity 1s 0.5s;
+    position: absolute;
+    overflow: hidden;
+
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+
+    &.loaded {
+      opacity: 1;
+    }
+  }
+}
+
+.loading-container {
+  position: absolute;
+  line-height: 50px;
+  text-align: left;
+  margin: auto;
+
+  height: 50px;
+  width: 425px;
+
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+
+  span {
+    display: inline-block;
+    font-size: 50px;
+
+    &.progress {
+      float: right;
+    }
+  }
 }
 </style>
