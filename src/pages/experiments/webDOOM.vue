@@ -1,9 +1,9 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="web-doom-page">
-    <iframe ref="game" src="/static/doom/web-doom.html" :class="{'loaded': progress === 100}"></iframe>
+    <iframe ref="game" src="/static/doom/web-doom.html" :class="{'loaded': !isLoading}" allowfullscreen></iframe>
 
     <transition appear>
-      <div v-if="progress < 100" class="loading-container">
+      <div v-if="isLoading" class="loading-container">
         <span class="loading-text">Loading...</span>
         <span class="progress">{{ progress }}%</span>
       </div>
@@ -21,19 +21,24 @@ export default {
 
   data () {
     return {
+      isLoading: true,
       loading: null,
       progress: 0
     }
   },
 
-  methods: {
-    completeLoading () {
-      window.doomLoadingProgress = undefined
-      delete window.doomLoadingProgress
-      // To use when clicking on start
-      // button to lock the pointer:
-      this.$refs.game.focus()
-      this.progress = 100
+  watch: {
+    progress (value) {
+      if (value === 100) {
+        clearInterval(this.loading)
+        delete window.doomLoadingProgress
+        window.doomLoadingProgress = undefined
+
+        setTimeout(() => {
+          this.$refs.game.focus()
+          this.isLoading = false
+        }, 500)
+      }
     }
   },
 
@@ -41,14 +46,7 @@ export default {
     this.$emit('update:title', 'webDOOM')
 
     this.loading = setInterval(() => {
-      const progress = window.doomLoadingProgress || this.progress
-
-      if (progress === 100) {
-        setTimeout(this.completeLoading.bind(this), 2500)
-        clearInterval(this.loading)
-      } else {
-        this.progress = progress
-      }
+      this.progress = window.doomLoadingProgress || this.progress
     }, 100)
   },
 
