@@ -29,7 +29,6 @@ export default {
 
   mounted () {
     this.transition = new VideoTransition(this.$refs.plane)
-    this.$emit('update:title', 'VideoTransition')
   },
 
   beforeDestroy () {

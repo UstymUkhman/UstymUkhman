@@ -66,7 +66,6 @@ export default {
 
   mounted () {
     this.experiment = new Particles(this.$refs.container, this.$refs.overlay)
-    this.$emit('update:title', 'FBOParticles')
   },
 
   beforeDestroy () {

@@ -41,6 +41,7 @@ export default {
       columns: null,
       context: null,
       canvas: null,
+      frame: null,
       rows: null,
 
       duration: [],
@@ -136,7 +137,7 @@ export default {
     },
 
     animate () {
-      requestAnimationFrame(this.animate.bind(this))
+      this.frame = requestAnimationFrame(this.animate.bind(this))
       const now = Date.now()
 
       if (now - this.lastUpdate < 50) {
@@ -210,7 +211,13 @@ export default {
       this.chars.push(column)
     }
 
-    requestAnimationFrame(this.animate.bind(this))
+    this.animate()
+  },
+
+  beforeDestroy () {
+    setTimeout(() => {
+      cancelAnimationFrame(this.frame)
+    }, 3500)
   }
 }
 </script>

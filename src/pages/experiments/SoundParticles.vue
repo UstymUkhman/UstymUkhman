@@ -56,7 +56,6 @@ export default {
   },
 
   mounted () {
-    this.$emit('update:title', 'SoundParticles')
     this.createExperiment()
   },
 

@@ -22,7 +22,6 @@ export default {
 
   mounted () {
     this.glitch = new VideoGlitch()
-    this.$emit('update:title', 'VideoGlitch')
     this.glitch.startExperiment(this.$refs.container, 'lake')
   },
 

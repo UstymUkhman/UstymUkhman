@@ -43,8 +43,6 @@ export default {
   },
 
   mounted () {
-    this.$emit('update:title', 'webDOOM')
-
     this.loading = setInterval(() => {
       this.progress = window.doomLoadingProgress || this.progress
     }, 100)

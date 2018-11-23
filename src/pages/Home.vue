@@ -46,16 +46,12 @@ export default {
 
   watch: {
     $route (current, last) {
-      const experiments = last.name === 'RabbitHole' && current.name === 'Experiments'
-      this.visibleOverlay = !current.path.includes('experiments')
-      this.visibleAnimation = experiments
+      this.visibleAnimation = last.name === 'RabbitHole'
+      this.visibleRain = !this.visibleAnimation
 
-      if (last.name === 'About' || experiments) {
-        this.visibleRain = false
-
+      if (last.name === 'About' || this.visibleAnimation) {
         setTimeout(() => {
           this.visibleAnimation = false
-          this.visibleRain = true
         }, 1000)
       }
     }

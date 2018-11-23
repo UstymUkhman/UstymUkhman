@@ -55,9 +55,9 @@ export default {
   mounted () {
     this.radius = this.width > this.height ? this.halfWidth * 1.2 : this.halfHeight * 1.2
     this.context = this.$refs.preloader.getContext('2d')
-    this.drawingTime = Date.now()
 
-    this.raf = requestAnimationFrame(this.animate.bind(this))
+    this.drawingTime = Date.now()
+    this.animate()
   },
 
   beforeDestroy () {

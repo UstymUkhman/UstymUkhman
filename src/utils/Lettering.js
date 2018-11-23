@@ -25,8 +25,7 @@ export default class Lettering {
     }
 
     this.lastLetter = this.letters[this.letters.length - 1]
-    this.letteringID = requestAnimationFrame(this._lettersAnimation.bind(this))
-
+    this._lettersAnimation()
     return this.letters
   }
 

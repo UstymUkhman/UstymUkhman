@@ -2,7 +2,7 @@
   <header @mouseover="isHovered = visible = true" @mouseout="isHovered = visible = false" class="header" :class="{'scrollable': scroll}">
     <transition appear name="header">
       <div v-show="visible" class="header-container">
-        <PageTitle :title="page" />
+        <PageTitle :title="experiment.name" />
 
         <HeaderButtons
           :showDownload="'code' in experiment"
@@ -18,10 +18,8 @@
 </template>
 
 <script>
-import Experiments from '../assets/data/experiments.json'
 import HeaderButtons from '@/molecules/HeaderButtons'
 import PageTitle from '@/atoms/PageTitle'
-import find from 'lodash.find'
 
 export default {
   name: 'SiteHeader',
@@ -32,8 +30,8 @@ export default {
   },
 
   props: {
-    page: {
-      type: String,
+    experiment: {
+      type: Object,
       default: null,
       required: false
     },
@@ -49,10 +47,7 @@ export default {
     return {
       visible: true,
       isHovered: false,
-      activeTrigger: false,
-
-      experiments: Experiments,
-      experiment: null
+      activeTrigger: false
     }
   },
 
@@ -73,7 +68,6 @@ export default {
   },
 
   mounted () {
-    this.experiment = find(this.experiments, { name: this.page })
     setTimeout(() => { this.visible = this.isHovered }, 2500)
   }
 }

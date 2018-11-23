@@ -65,9 +65,7 @@ export default {
   },
 
   mounted () {
-    this.$emit('update:title', 'Dynamic.css')
     setTimeout(() => { this.scrollable = true }, 500)
-
     this._onAnimationEnd = this.onAnimationEnd.bind(this)
     this.$refs.element.$el.addEventListener('animationend', this._onAnimationEnd)
   },

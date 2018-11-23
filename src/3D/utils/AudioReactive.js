@@ -57,8 +57,7 @@ export default class AudioReactive {
       if (study) {
         this._soundSource.analyser = analyser(this._soundSource)
         this._soundSource.play()
-
-        requestAnimationFrame(this._studyAudio.bind(this))
+        this._studyAudio()
       }
     })
   }
@@ -152,7 +151,7 @@ export default class AudioReactive {
       this._minFrequency = frequency
     }
 
-    requestAnimationFrame(this._studyAudio.bind(this))
+    this.frame = requestAnimationFrame(this._studyAudio.bind(this))
   }
 
   _getAverageFrequency (source = null) {
@@ -186,6 +185,8 @@ export default class AudioReactive {
   _setAudioValues () {
     this._frequencyRange = this._soundSource.analyser.analyser.frequencyBinCount
     this.setSongFrequencies(this._minFrequency, this._maxFrequency)
+
+    cancelAnimationFrame(this.frame)
     this._getAverageAudioPower()
 
     console.info(`Song min frequency   = ${this._minFrequency}`)
@@ -227,7 +228,7 @@ export default class AudioReactive {
 
     this._maxFrequency = 0
     this._minFrequency = Infinity
-    this._loadAudioTrack(null, true)
+    this._loadAudioTrack(true)
   }
 
   getAverageValue (source = null) {

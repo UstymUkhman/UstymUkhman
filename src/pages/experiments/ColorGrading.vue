@@ -22,7 +22,6 @@ export default {
 
   mounted () {
     this.grading = new ColorGrading()
-    this.$emit('update:title', 'ColorGrading')
     this.grading.startExperiment(this.$refs.container, 'lake')
   },
 

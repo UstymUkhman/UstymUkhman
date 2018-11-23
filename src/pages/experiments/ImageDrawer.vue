@@ -311,7 +311,6 @@ export default {
   },
 
   mounted () {
-    this.$emit('update:title', 'ImageDrawer.js')
     this.reader.onload = this.onImageLoad
 
     this.pluginJs = document.createElement('script')
