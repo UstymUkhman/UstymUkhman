@@ -1,13 +1,6 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="web-doom-page">
-    <iframe ref="game" src="/static/doom/web-doom.html" :class="{'loaded': !isLoading}" allowfullscreen></iframe>
-
-    <transition appear>
-      <div v-if="isLoading" class="loading-container">
-        <span class="loading-text">Loading...</span>
-        <span class="progress">{{ progress }}%</span>
-      </div>
-    </transition>
+    <iframe ref="game" src="/static/doom/web-doom.html" allowfullscreen></iframe>
   </article>
 </template>
 
@@ -19,32 +12,12 @@ export default {
 
   mixins: [FirePrerenderEvent],
 
-  data () {
-    return {
-      isLoading: true,
-      loading: null,
-      progress: 0
-    }
-  },
-
-  watch: {
-    progress (value) {
-      if (value === 100) {
-        clearInterval(this.loading)
-        delete window.doomLoadingProgress
-        window.doomLoadingProgress = undefined
-
-        setTimeout(() => {
-          this.$refs.game.focus()
-          this.isLoading = false
-        }, 500)
-      }
-    }
-  },
-
   mounted () {
     this.loading = setInterval(() => {
-      this.progress = window.doomLoadingProgress || this.progress
+      if (window.doomReady) {
+        clearInterval(this.loading)
+        this.$refs.game.focus()
+      }
     }, 100)
   },
 
@@ -82,41 +55,11 @@ export default {
   top: 0;
 
   iframe {
-    transition: opacity 1s 0.5s;
     position: absolute;
     overflow: hidden;
 
     height: 100%;
     width: 100%;
-    opacity: 0;
-
-    &.loaded {
-      opacity: 1;
-    }
-  }
-}
-
-.loading-container {
-  position: absolute;
-  line-height: 50px;
-  text-align: left;
-  margin: auto;
-
-  height: 50px;
-  width: 425px;
-
-  bottom: 0;
-  right: 0;
-  left: 0;
-  top: 0;
-
-  span {
-    display: inline-block;
-    font-size: 50px;
-
-    &.progress {
-      float: right;
-    }
   }
 }
 </style>

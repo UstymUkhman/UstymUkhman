@@ -99,14 +99,13 @@ export default {
 @import 'fonts';
 
 html {
-  font-family: 'White Rabbit', sans-serif;
+  -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  -webkit-tap-highlight-color: transparent;
   -webkit-overflow-scrolling: touch;
   -webkit-touch-callout: none;
 
+  font-family: 'White Rabbit', monospace;
   text-rendering: optimizeLegibility;
   font-variant-ligatures: none;
   text-size-adjust: none;
