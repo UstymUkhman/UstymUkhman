@@ -150,6 +150,16 @@
         background-color: #00CC00;
         color: #000000;
       }
+
+      @media only screen and (max-width: 1200px) {
+        button#fullscreen {
+          line-height: unset;
+          font-size: 20px;
+
+          height: 35px;
+          width: 150px;
+        }
+      }
     </style>
   </head>
 
@@ -226,6 +236,10 @@
                 doomCanvas.classList.add('ready');
                 window.parent.doomReady = true;
               }, 1000);
+
+              setTimeout(function () {
+                Module.canvas.dispatchEvent(new Event('mousedown'));
+              }, 3000);
             }
           }
         }
