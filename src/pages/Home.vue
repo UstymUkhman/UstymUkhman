@@ -7,9 +7,10 @@
     </transition>
 
     <router-view
-      v-show="!visibleAnimation" class="page"
-      @hide:overlay="visibleOverlay = false"
+      @toggle:overlay="visibleOverlay = $event"
       @toggle:rain="visibleRain = $event"
+      v-show="!visibleAnimation"
+      class="page"
     />
 
     <ScreenOverlay v-if="visibleOverlay && !isPrerenderer" />

@@ -66,7 +66,11 @@ export default {
     }
 
     setTimeout(this.toggleRain.bind(this), 1000)
-    this.$emit('hide:overlay')
+    this.$emit('toggle:overlay', false)
+  },
+
+  destroyed () {
+    this.$emit('toggle:overlay', true)
   },
 
   metaInfo: {

@@ -852,7 +852,7 @@ export default {
   },
 
   beforeCreate () {
-    this.$emit('hide:overlay')
+    this.$emit('toggle:overlay', false)
   },
 
   mounted () {
