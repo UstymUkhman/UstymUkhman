@@ -44,11 +44,6 @@ export default {
   },
 
   methods: {
-    createExperiment () {
-      this.experiment = new SoundParticles(this.$refs.canvas, this.track)
-      this.experiment.initExperiment()
-    },
-
     startExperiment () {
       this.experiment.startExperiment()
       this.started = true
@@ -56,7 +51,8 @@ export default {
   },
 
   mounted () {
-    this.createExperiment()
+    this.experiment = new SoundParticles(this.$refs.canvas, this.track)
+    this.experiment.initExperiment()
   },
 
   beforeDestroy () {

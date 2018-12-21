@@ -97,12 +97,12 @@ export default {
       width: 50%;
 
       &.first {
-        background-image: url('/static/img/experiments/DOOM.jpg');
+        background-image: url('/static/img/experiments/webDOOM.jpg');
         left: 0;
       }
 
       &.second {
-        background-image: url('/static/img/experiments/DOOM_II.jpg');
+        background-image: url('/static/img/experiments/webDOOM2.jpg');
         right: 0;
       }
     }

@@ -177,12 +177,12 @@ export default class SoundParticles {
     this._createBackground()
     this._createParticles()
 
-    this._startTime = Date.now()
     this._runEasing = false
     this._audio.load()
   }
 
   startExperiment () {
+    this._startTime = Date.now() + 50
     this._audio.play(this._render.bind(this))
   }
 
