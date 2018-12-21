@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>webDOOM</title>
+
+    <meta charset="utf-8">
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <style type="text/css">
+      @font-face {
+        src: url('./White-Rabbit.ttf') format('truetype');
+        font-family: 'White Rabbit';
+        font-style: normal;
+        font-weight: 400;
+      }
+
+      html {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        -webkit-overflow-scrolling: touch;
+        -webkit-touch-callout: none;
+
+        font-family: 'White Rabbit', monospace;
+        text-rendering: optimizeLegibility;
+        font-variant-ligatures: none;
+        text-size-adjust: none;
+        font-weight: 400;
+
+        backface-visibility: hidden;
+        background-color: #000000;
+        appearance: none;
+        color: #00CC00;
+
+        pointer-events: none;
+        user-select: none;
+        overflow: hidden;
+
+        max-height: 100%;
+        min-height: 100%;
+
+        max-width: 100%;
+        min-width: 100%;
+
+        height: 100%;
+        width: 100%;
+
+        padding: 0;
+        margin: 0;
+      }
+
+      canvas {
+        transition: opacity 1s 0.5s;
+        pointer-events: all;
+        position: absolute;
+        margin: auto;
+        z-index: 1;
+
+        width: 133.33vh;
+        height: 100vh;
+        opacity: 0;
+
+        right: auto;
+        bottom: 0;
+        left: 5%;
+        top: 0;
+      }
+
+      canvas.centered {
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+      }
+
+      canvas.ready {
+        opacity: 1;
+      }
+
+      div#loader {
+        transition: opacity 0.5s;
+        position: absolute;
+        line-height: 25px;
+        text-align: left;
+
+        height: 25px;
+        width: 250px;
+
+        margin: auto;
+        opacity: 1;
+
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+      }
+
+      div#loader.completed {
+        pointer-events: none;
+        opacity: 0;
+      }
+
+      div#loader span {
+        display: inline-block;
+        font-size: 25px;
+      }
+
+      div#loader span#progress {
+        float: right;
+      }
+
+      button#fullscreen {
+        transition: background-color 0.5s, opacity 1s 0.5s, color 0.5s;
+        font-family: 'White Rabbit', monospace;
+        background-color: transparent;
+        border: 1px solid #00CC00;
+
+        pointer-events: all;
+        text-align: center;
+        position: absolute;
+        cursor: pointer;
+
+        line-height: 25px;
+        font-weight: 400;
+        font-size: 25px;
+        color: #00CC00;
+
+        width: 200px;
+        height: 40px;
+
+        margin: auto;
+        padding: 0;
+        outline: 0;
+        opacity: 0;
+
+        left: auto;
+        bottom: 0;
+        right: 5%;
+        top: 0;
+      }
+
+      button#fullscreen.visible {
+        opacity: 1;
+      }
+
+      button#fullscreen:hover {
+        background-color: #00CC00;
+        color: #000000;
+      }
+
+      @media only screen and (max-width: 1200px) {
+        button#fullscreen {
+          line-height: unset;
+          font-size: 20px;
+
+          height: 35px;
+          width: 150px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="doom"></canvas>
+
+    <div id="loader">
+      <span>Loading...</span>
+      <span id="progress">0.0%</span>
+    </div>
+
+    <button id="fullscreen">Fullscreen</button>
+
+    <script type="text/javascript">
+      document.exitPointerLock = document.exitPointerLock || document.mozExitPointerLock || document.webkitExitPointerLock
+      document.exitFullscreen = document.exitFullscreen || document.mozCancelFullScreen || document.webkitCancelFullScreen
+
+      var onPointerLockChange = function () {
+        Module.inFullscreen = !Module.inFullscreen;
+
+        if (!Module.inFullscreen) {
+          doomCanvas.classList.remove('centered');
+        } else {
+          doomCanvas.classList.add('centered');
+        }
+      };
+
+      document.addEventListener('mozpointerlockchange', onPointerLockChange, false)
+      document.addEventListener('pointerlockchange', onPointerLockChange, false)
+
+      var fullscreenButton = document.getElementById('fullscreen');
+      var doomCanvas = document.getElementById('doom');
+
+      var Module = {
+        dependencies: 0,
+        inFullscreen: false,
+
+        loader: document.getElementById('loader'),
+        progress: document.getElementById('progress'),
+
+        canvas: (function () {
+          doomCanvas.addEventListener('webglcontextlost', function (event) {
+            alert('WebGL context lost. You need to reload the page.');
+            event.preventDefault();
+          }, false);
+
+          doomCanvas.addEventListener('contextmenu', function (event) {
+            event.preventDefault();
+          });
+
+          fullscreenButton.addEventListener('click', function (event) {
+            Module.requestFullscreen(true, false);
+          });
+
+          return doomCanvas;
+        })(),
+
+        monitorRunDependencies: function (toLoad) {
+          this.dependencies = Math.max(this.dependencies, toLoad);
+        },
+
+        setStatus: function (status) {
+          var loading = status.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+
+          if (loading) {
+            var progress = loading[2] / loading[4] * 100;
+            Module.progress.innerHTML = progress.toFixed(1) + '%';
+
+            if (progress === 100) {
+              setTimeout(function () {
+                Module.loader.classList.add('completed');
+                fullscreenButton.classList.add('visible');
+
+                doomCanvas.classList.add('ready');
+                window.parent.doomReady = true;
+              }, 1000);
+
+              setTimeout(function () {
+                Module.canvas.dispatchEvent(new Event('mousedown'));
+              }, 3000);
+            }
+          }
+        }
+      };
+    </script>
+
+    <script async type="text/javascript" src="doom2.js"></script>
+  </body>
+</html>

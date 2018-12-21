@@ -1,6 +1,14 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="web-doom-page">
-    <iframe ref="game" src="/static/doom/web-doom.html" allowfullscreen></iframe>
+    <iframe v-if="doom1" ref="doom1" src="/static/doom1/doom1.html" allowfullscreen></iframe>
+    <iframe v-if="doom2" ref="doom2" src="/static/doom2/doom2.html" allowfullscreen></iframe>
+
+    <transition appear>
+      <div v-show="!doom1 && !doom2" class="preview-container">
+        <div @click="doom1 = true" class="doom first"></div>
+        <div @click="doom2 = true" class="doom second"></div>
+      </div>
+    </transition>
   </article>
 </template>
 
@@ -12,11 +20,19 @@ export default {
 
   mixins: [FirePrerenderEvent],
 
+  data () {
+    return {
+      doom1: false,
+      doom2: false
+    }
+  },
+
   mounted () {
     this.loading = setInterval(() => {
       if (window.doomReady) {
+        if (this.doom1) this.$refs.doom1.focus()
+        else this.$refs.doom2.focus()
         clearInterval(this.loading)
-        this.$refs.game.focus()
       }
     }, 100)
   },
@@ -32,8 +48,8 @@ export default {
       { vmid: 'ogdescription', property: 'og:description', content: 'Classic DOOM recompiled with WebAssembly.' },
       { vmid: 'twitterdescription', name: 'twitter:description', content: 'Classic DOOM recompiled with WebAssembly.' },
 
-      { vmid: 'ogimage', property: 'og:image', content: `${window.location.origin}/static/img/experiments/webDOOM.jpg` },
-      { vmid: 'twitterimage', name: 'twitter:image', content: `${window.location.origin}/static/img/experiments/webDOOM.jpg` }
+      { vmid: 'ogimage', property: 'og:image', content: `${window.location.origin}/static/img/experiments/DOOM.jpg` },
+      { vmid: 'twitterimage', name: 'twitter:image', content: `${window.location.origin}/static/img/experiments/DOOM.jpg` }
     ]
   }
 }
@@ -60,6 +76,36 @@ export default {
 
     height: 100%;
     width: 100%;
+  }
+
+  .preview-container {
+    position: absolute;
+    overflow: hidden;
+
+    height: 100%;
+    width: 100%;
+
+    .doom {
+      background-size: 1920px 1080px;
+      background-position: 50% 50%;
+
+      position: absolute;
+      overflow: hidden;
+      cursor: pointer;
+
+      height: 100%;
+      width: 50%;
+
+      &.first {
+        background-image: url('/static/img/experiments/DOOM.jpg');
+        left: 0;
+      }
+
+      &.second {
+        background-image: url('/static/img/experiments/DOOM_II.jpg');
+        right: 0;
+      }
+    }
   }
 }
 </style>
