@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { MeshStandardMaterial } from '@three/materials/MeshStandardMaterial'
+import { MeshPhongMaterial } from '@three/materials/MeshPhongMaterial'
 import { MeshBasicMaterial } from '@three/materials/MeshBasicMaterial'
 import { ShaderMaterial } from '@three/materials/ShaderMaterial'
 
@@ -197,7 +197,7 @@ export default {
     },
 
     createCamera () {
-      this.camera = new PerspectiveCamera(5, this.viewPort.width / this.viewPort.height, 1, 1000)
+      this.camera = new PerspectiveCamera(4, this.viewPort.width / this.viewPort.height, 1, 1000)
       this.camera.rotation.x = -Math.PI / 4.075
       this.camera.position.z = -0.25
       this.scene.add(this.camera)
@@ -225,15 +225,12 @@ export default {
         texture.wrapS = texture.wrapT = MirroredRepeatWrapping
         texture.needsUpdate = true
 
-        const floorMaterial = new MeshStandardMaterial({
+        const floorMaterial = new MeshPhongMaterial({
           flatShading: SmoothShading,
           premultipliedAlpha: true,
           transparent: true,
           color: 0x406550,
-
           map: texture,
-          roughness: 1,
-          metalness: 0,
           opacity: 1
         })
 
@@ -391,12 +388,10 @@ export default {
 
     async createTable () {
       const setTable = (model) => {
-        const table = new Mesh(model.geometry, new MeshStandardMaterial({
+        const table = new Mesh(model.geometry, new MeshPhongMaterial({
           flatShading: SmoothShading,
           transparent: false,
           color: 0xBDBDBD,
-          metalness: 0.1,
-          roughness: 1,
           opacity: 1
         }))
 

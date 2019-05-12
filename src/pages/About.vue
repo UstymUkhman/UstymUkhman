@@ -1,8 +1,6 @@
 <template>
   <article itemscope itemtype="http://schema.org/WebPageElement" class="about-me-page">
-    <p ref="text" itemprop="text" class="about-description">
-      {{ aboutDescription }}
-    </p>
+    <p ref="text" itemprop="text" class="about-description">{{ description }}</p>
 
     <BackButton
       v-if="showBackButton"
@@ -33,9 +31,13 @@ export default {
     return {
       selectedBackButton: false,
       activeBackButton: false,
-      showBackButton: false,
+      showBackButton: false
+    }
+  },
 
-      aboutDescription: `
+  computed: {
+    description () {
+      return `
         Hi, my name is Ustym and I'm a front-end web developer at MONOGRID.#
         I was born and raised in Zbarazh (Ucraine), however I live in Florence (Italy) for ${this.years} years so far.##
 
@@ -51,10 +53,8 @@ export default {
         %- Dirty code#
         %- Mondays#
       `
-    }
-  },
+    },
 
-  computed: {
     years () {
       const today = new Date()
       const arrive = today.getMonth() > 7 ? 2005 : 2006
