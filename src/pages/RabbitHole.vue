@@ -26,13 +26,14 @@
 </template>
 
 <script>
-import { MeshPhongMaterial } from '@three/materials/MeshPhongMaterial'
 import { MeshBasicMaterial } from '@three/materials/MeshBasicMaterial'
+import { MeshPhongMaterial } from '@three/materials/MeshPhongMaterial'
 import { ShaderMaterial } from '@three/materials/ShaderMaterial'
 
 import { EffectComposer } from '@three/postprocessing/EffectComposer'
 import { RenderPass } from '@three/postprocessing/RenderPass'
 import { ShaderPass } from '@three/postprocessing/ShaderPass'
+import { FXAAShader } from '@three/shaders/FXAAShader'
 
 import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
 import { PlaneGeometry } from '@three/geometries/PlaneGeometry'
@@ -586,7 +587,7 @@ export default {
     },
 
     createRenderer () {
-      this.renderer = new WebGLRenderer({ canvas: this.$refs.hole.firstChild, antialias: true })
+      this.renderer = new WebGLRenderer({ canvas: this.$refs.hole.firstChild })
       this.renderer.setSize(this.viewPort.width, this.viewPort.height)
       this.renderer.setPixelRatio(window.devicePixelRatio || 1)
       this.renderer.setClearColor(0x000000, 0)
@@ -594,9 +595,15 @@ export default {
     },
 
     async createComposer () {
+      const pixelRatio = this.renderer.getPixelRatio()
+
+      this.fxaa = new ShaderPass(FXAAShader)
       this.composer = new EffectComposer(this.renderer)
       this.composer.addPass(new RenderPass(this.scene, this.camera))
       this.composer.setSize(this.viewPort.width, this.viewPort.height)
+
+      this.fxaa.material.uniforms.resolution.value.x = 1.0 / (this.viewPort.width * pixelRatio)
+      this.fxaa.material.uniforms.resolution.value.y = 1.0 / (this.viewPort.height * pixelRatio)
 
       const setComposer = (lut) => {
         lut.minFilter = lut.magFilter = LinearFilter
@@ -614,7 +621,10 @@ export default {
         )
 
         this.composer.addPass(pass)
-        pass.renderToScreen = true
+        this.composer.addPass(this.fxaa)
+
+        this.fxaa.renderToScreen = true
+        pass.renderToScreen = false
       }
 
       await to(load(this.textureLoader, MATRIX_GREEN, setComposer, true))
@@ -807,12 +817,20 @@ export default {
     },
 
     onResize () {
-      this.renderer.setSize(this.viewPort.width, this.viewPort.height)
-      this.composer.setSize(this.viewPort.width, this.viewPort.height)
       this.isFullsize = window.outerWidth >= (screen.width - 20)
+      const pixelRatio = this.renderer.getPixelRatio()
 
-      this.camera.aspect = this.viewPort.width / this.viewPort.height
+      const height = this.viewPort.height
+      const width = this.viewPort.width
+
+      this.renderer.setSize(width, height)
+      this.composer.setSize(width, height)
+
+      this.camera.aspect = width / height
       this.camera.updateProjectionMatrix()
+
+      this.fxaa.material.uniforms.resolution.value.x = 1.0 / (width * pixelRatio)
+      this.fxaa.material.uniforms.resolution.value.y = 1.0 / (height * pixelRatio)
     },
 
     onBlur () {

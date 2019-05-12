@@ -263,7 +263,12 @@ export default class Controls {
       this.room.requestPointerLock()
       if (!this.lockOnly) this.room.requestFullscreen()
     } else {
-      if (!this.lockOnly) document.exitFullscreen()
+      if (!this.lockOnly) {
+        setTimeout(() => {
+          if (!document.hidden) document.exitFullscreen()
+        }, 1)
+      }
+
       document.exitPointerLock()
       this.enable(false)
     }
