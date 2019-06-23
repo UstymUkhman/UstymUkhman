@@ -1,21 +1,14 @@
 <template>
   <div id="app" v-show="!prerenderer" :version="version" :commit-hash="commitHash" :deploy-flag="deployFlag" :target-domain="targetDomain">
     <router-view itemprop="mainEntity" class="page" />
-
-    <VersionInfo :version="version" v-if="!deployFlag" :commit-hash="commitHash" />
   </div>
 </template>
 
 <script>
-import VersionInfo from '@/atoms/VersionInfo'
 import Platform from '@/platform'
 
 export default {
   name: 'App',
-
-  components: {
-    VersionInfo
-  },
 
   props: {
     version: {
