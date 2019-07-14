@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="my-works-page" :class="{'small-list': projects.length < 6}">
+  <article itemtype="http://schema.org/CollectionPage" itemscope class="my-works-page" :class="{'small-list': projects.length < 6}">
     <transition appear>
       <div v-if="visibleCounter" class="works-counter">
         <span>{{ activePage }} / {{ projects.length }}</span>

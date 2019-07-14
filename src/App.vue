@@ -1,6 +1,6 @@
 <template>
   <div id="app" v-show="!prerenderer" :version="version" :commit-hash="commitHash" :deploy-flag="deployFlag" :target-domain="targetDomain">
-    <router-view itemprop="mainEntity" class="page" />
+    <router-view itemtype="https://schema.org/mainEntity" itemprop="mainEntity" class="page" />
   </div>
 </template>
 
@@ -60,22 +60,19 @@ export default {
         { name: 'msapplication-TileColor', content: '#000000' },
         { name: 'msapplication-TileImage', content: '/ms-icon-144x144.png' },
 
-        { name: 'twitter:site', content: '@ustymukhman' },
-        { name: 'twitter:creator', content: '@ustymukhman' },
+        { vmid: 'ogtype', property: 'og:type', content: 'website' },
+        { vmid: 'twittercard', name: 'twitter:card', content: 'summary_large_image' },
 
         { vmid: 'twittertitle', name: 'twitter:title', content: 'Ustym Ukhman' },
         { vmid: 'ogtitle', property: 'og:title', itemprop: 'name', content: 'Ustym Ukhman' },
 
-        { vmid: 'description', name: 'description', content: '' },
-        { vmid: 'ogdescription', property: 'og:description', content: '' },
-        { vmid: 'twitterdescription', name: 'twitter:description', content: '' },
-
-        { vmid: 'ogtype', property: 'og:type', content: 'website' },
-        { vmid: 'twittercard', name: 'twitter:card', content: 'summary_large_image' },
-
         { vmid: 'ogurl', property: 'og:url', content: `${window.location.origin}${this.$route.fullPath}` },
-        { vmid: 'ogimage', property: 'og:image', content: `${window.location.origin}/static/img/subject.jpg` },
-        { vmid: 'twitterimage', name: 'twitter:image', content: `${window.location.origin}/static/img/subject.jpg` }
+        { vmid: 'ogimage', property: 'og:image', content: `${window.location.origin}/static/img/share.jpg` },
+        { vmid: 'twitterimage', name: 'twitter:image', content: `${window.location.origin}/static/img/share.jpg` },
+
+        { vmid: 'description', name: 'description', content: 'Hi, I\'m a front-end web developer and this is my personal website.' },
+        { vmid: 'ogdescription', property: 'og:description', content: 'Hi, I\'m a front-end web developer and this is my personal website.' },
+        { vmid: 'twitterdescription', name: 'twitter:description', content: 'Hi, I\'m a front-end web developer and this is my personal website.' }
       ],
 
       htmlAttrs: {

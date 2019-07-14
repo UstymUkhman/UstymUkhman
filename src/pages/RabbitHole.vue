@@ -1,5 +1,5 @@
 <template>
-  <article ref="hole" itemscope itemtype="http://schema.org/WebPageElement" class="rabbit-hole-page">
+  <article ref="hole" itemtype="http://schema.org/WebPage" itemscope class="rabbit-hole-page">
     <canvas v-show="messageEnded" class="renderer"></canvas>
 
     <div class="guidelines-container">

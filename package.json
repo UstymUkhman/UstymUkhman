@@ -1,8 +1,8 @@
 {
+  "version": "1.5.0",
   "name": "personal-website",
-  "version": "1.0.1",
   "author": "Ustym Ukhman <ustym.ukhman@gmail.com>",
-  "description": "My personal website: http://52.59.223.146/",
+  "description": "My personal website: http://54.93.165.244/",
   "private": true,
   "scripts": {
     "build": "node build/build.js",

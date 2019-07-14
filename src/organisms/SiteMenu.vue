@@ -1,10 +1,10 @@
 <template>
-  <section class="menu-section">
+  <section itemtype="http://schema.org/Menu" itemscope class="menu-section">
     <div class="menu-items">
       <div v-for="(page, p) in pages" :key="p" class="button-border">
 
-        <div @touchstart.once="onTouchStart(p)" @touchend.once="onTouchEnd"
-             ref="items" class="button-box"
+        <div ref="items" class="button-box" itemtype="https://schema.org/MenuItem"
+             @touchstart.once="onTouchStart(p)" @touchend.once="onTouchEnd"
              :class="{
                'active': (p === currentItem && !nextPage) || visibleButtons.includes(p),
                'selected': p === settedSection && !nextPage,
@@ -13,7 +13,7 @@
              }">
 
           <div class="button-background"></div>
-          <p class="button">{{ page }}</p>
+          <p itemprop="name" class="button">{{ page }}</p>
         </div>
 
       </div>

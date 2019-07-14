@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="pill-choice-page">
+  <article itemtype="http://schema.org/WebPage" itemscope class="pill-choice-page">
     <div ref="pills"></div>
   </article>
 </template>

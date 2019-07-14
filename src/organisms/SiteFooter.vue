@@ -1,5 +1,7 @@
 <template>
-  <footer @mouseover="visible = true" @mouseout="visible = false" class="footer" :class="{'scrollable': scroll}">
+  <footer @mouseover="visible = true" @mouseout="visible = false"
+          itemtype="https://schema.org/WPFooter" itemscope
+          class="footer" :class="{'scrollable': scroll}">
 
     <transition appear name="footer">
       <div v-show="visible" class="footer-container">

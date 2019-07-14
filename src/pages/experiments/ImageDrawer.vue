@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="image-drawer-js-page">
+  <article itemtype="http://schema.org/WebPageElement" itemscope class="image-drawer-js-page">
     <input ref="image" type="file" accept="image/*" @change="onChange" />
 
     <div ref="container" class="image-container">
@@ -56,7 +56,7 @@ export default {
       imageDrawerCss: '/static/css/imagedrawer.min.css',
       imageDrawerJs: '/static/js/imagedrawer.min.js',
       imagePencil: '/static/img/pencil.png',
-      imageSrc: '/static/img/subject.jpg',
+      imageSrc: '/static/img/share.jpg',
 
       reader: new FileReader(),
       callbackAnimation: '',
@@ -369,25 +369,29 @@ export default {
   height: 100%;
 
   .image-container {
-    transform: translateX(-50%);
-    margin-top: 100px;
+    transform: translate(-50%, -50%);
 
     text-align: center;
     position: absolute;
 
-    max-width: 80%;
-    width: 100%;
+    max-height: 630px;
+    max-width: 1200px;
+
+    width: 75%;
     left: 50%;
+    top: 50%;
 
     @include breakpoint($sm-down) {
-      transform: translate(-50%, -50%);
-      margin: auto;
-
+      transform: translateY(-50%);
       max-width: 100%;
-      top: 50%;
+
+      margin: auto 0;
+      width: 100%;
+      left: 0;
     }
 
     img {
+      display: block;
       height: auto;
       width: 100%;
     }

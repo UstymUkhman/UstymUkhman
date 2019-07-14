@@ -1,5 +1,5 @@
 <template>
-  <article ref="container" itemscope itemtype="http://schema.org/WebPageElement" class="fbo-particles-page">
+  <article ref="container" itemtype="http://schema.org/WebPageElement" itemscope class="fbo-particles-page">
     <div class="switch-container">
       <div @click="setParticlesExperiment" class="button" :class="{'active': !audioreactive}">Noise Particles</div>
       <div @click="setAudioreactiveExperiment" class="button" :class="{'active': audioreactive}">Audioreactive Particles</div>

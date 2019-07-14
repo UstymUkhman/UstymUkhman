@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="color-grading-page">
+  <article itemtype="http://schema.org/WebPageElement" itemscope class="color-grading-page">
     <div ref="container" class="container"></div>
   </article>
 </template>

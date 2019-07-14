@@ -1,5 +1,5 @@
 <template>
-  <div class="experiments" v-scroll-container:experiments>
+  <div itemtype="http://schema.org/WebPageElement" itemscope class="experiments" v-scroll-container:experiments>
     <div v-for="(experiment, e) in experiments" :key="experiment.name"
          class="experiment" :class="{'right': !!(e % 2)}"
          :style="{'height': previewHeight + 'px'}"
@@ -9,6 +9,7 @@
         :route="experiment.route"
         :name="experiment.name"
         :right="!!(e % 2)"
+        itemprop="xpath"
         :key="e"
       />
 

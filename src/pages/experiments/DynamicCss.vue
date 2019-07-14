@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="dynamic-css-page" :class="{'scroll': scrollable}">
+  <article itemtype="http://schema.org/WebPageElement" itemscope class="dynamic-css-page" :class="{'scroll': scrollable}">
     <div class="element-container">
       <AnimatedElement ref="element" class="element dynamic" :class="currentAnimation" />
     </div>

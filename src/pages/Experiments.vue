@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="experiments-page">
+  <article itemtype="http://schema.org/CollectionPage" itemscope class="experiments-page">
     <ScreenOverlay v-if="!prerenderer" />
 
     <SiteHeader v-if="experiment" :experiment="experiment" :scroll="scrollable" />

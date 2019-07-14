@@ -1,5 +1,8 @@
 <template>
-  <header @mouseover="isHovered = visible = true" @mouseout="isHovered = visible = false" class="header" :class="{'scrollable': scroll}">
+  <header @mouseover="isHovered = visible = true" @mouseout="isHovered = visible = false"
+          itemtype="https://schema.org/WPHeader" itemscope
+          class="header" :class="{'scrollable': scroll}">
+
     <transition appear name="header">
       <div v-show="visible" class="header-container">
         <PageTitle :title="experiment.name" />

@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="video-transition-page">
+  <article itemtype="http://schema.org/WebPageElement" itemscope class="video-transition-page">
     <div id="canvas" class="webgl-canvas"></div>
 
     <div ref="plane" class="canvas-plane">

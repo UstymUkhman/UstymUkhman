@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="sound-particles-page">
+  <article itemtype="http://schema.org/WebPageElement" itemscope class="sound-particles-page">
     <transition appear>
       <canvas v-show="started" ref="canvas" />
     </transition>

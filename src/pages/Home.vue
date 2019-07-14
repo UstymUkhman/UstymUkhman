@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="home-page">
+  <article itemtype="http://schema.org/WebPage" itemscope class="home-page">
     <ScreenAnimation v-if="visibleAnimation && !isPrerenderer" />
 
     <transition appear name="matrix-rain">

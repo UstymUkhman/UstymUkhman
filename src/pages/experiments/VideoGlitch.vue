@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="video-glitch-page">
+  <article itemtype="http://schema.org/WebPageElement" itemscope class="video-glitch-page">
     <div ref="container" class="container"></div>
   </article>
 </template>

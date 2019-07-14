@@ -12,7 +12,7 @@ const checkWebGLCompatibility = (to, from, next) => {
   next()
 }
 
-const routes = [
+export default [
   {
     path: '/',
     component: () => import(/* webpackChunkName: "home-page" */ './pages/Home'),
@@ -99,11 +99,6 @@ const routes = [
             name: 'webDOOM',
             component: () => import(/* webpackChunkName: "web-doom" */ './pages/experiments/webDOOM')
           },
-          // {
-          //   path: 'FaceTracking',
-          //   name: 'FaceTracking',
-          //   component: () => import(/* webpackChunkName: "face-tracking" */ './pages/experiments/FaceTracking')
-          // },
           {
             path: '*',
             redirect: to => { return '/experiments' }
@@ -113,13 +108,7 @@ const routes = [
     ]
   },
   {
-    path: '/*',
-    redirect: to => { return '/' }
-  },
-  {
     path: '*',
-    redirect: to => { return `/${to.path}` }
+    redirect: to => { return '/' }
   }
 ]
-
-export default routes

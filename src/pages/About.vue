@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="about-me-page">
+  <article itemtype="http://schema.org/AboutPage" itemscope class="about-me-page">
     <p ref="text" itemprop="text" class="about-description">{{ description }}</p>
 
     <BackButton

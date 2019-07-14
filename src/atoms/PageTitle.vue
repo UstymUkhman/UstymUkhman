@@ -1,5 +1,5 @@
 <template>
-  <div class="title-container">
+  <div itemtype="https://schema.org/title" itemprop="title" class="title-container">
     <h1 itemprop="headline" class="page-title">{{ title }}</h1>
   </div>
 </template>

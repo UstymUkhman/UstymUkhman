@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="web-doom-page">
+  <article itemtype="http://schema.org/WebPageElement" itemscope class="web-doom-page">
     <iframe v-if="doom1" ref="doom1" src="/static/doom1/doom1.html" allowfullscreen></iframe>
     <iframe v-if="doom2" ref="doom2" src="/static/doom2/doom2.html" allowfullscreen></iframe>
 

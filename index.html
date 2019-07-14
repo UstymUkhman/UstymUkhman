@@ -2,6 +2,14 @@
 <html class="no-js" id="html-element">
   <head>
     <meta charset="utf-8">
+    <meta name="theme-color" content="#000000">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="keywords" content="Ustym,Ukhman,front-end,web,developer">
+    <meta name="msapplication-TileImage" content="/static/favicon/ms-icon-144x144.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" href="/static/css/initial.min.css">
+    <link rel="manifest" href="/manifest.json">
 
     <!-- Favicon: -->
     <link rel="apple-touch-icon" sizes="57x57" href="/static/favicon/apple-icon-57x57.png">
@@ -15,32 +23,26 @@
     <link rel="apple-touch-icon" sizes="152x152" href="/static/favicon/apple-icon-152x152.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-icon-180x180.png">
 
-    <link rel="icon" type="image/png" sizes="192x192"  href="/static/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/static/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon/favicon-16x16.png">
-
-    <link rel="manifest" href="/static/favicon/manifest.json">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="msapplication-TileImage" content="/static/favicon/ms-icon-144x144.png">
-    <meta name="msapplication-TileColor" content="#000000">
-    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/png" sizes="192x192" href="/static/favicon/android-icon-192x192.png">
 
     <!-- Initial Setup: -->
     <script type="text/javascript" src="<%= htmlWebpackPlugin.files.chunks['modernizr.'].entry %>"></script>
     <script type="text/javascript" src="/static/js/initial.js"></script>
-    <link href="/static/css/initial.css" rel="stylesheet">
   </head>
 
   <body>
     <div id="app" version=<%= htmlWebpackPlugin.options.gitRevision.version %> commit-hash=<%= htmlWebpackPlugin.options.gitRevision.commitHash %> deploy-flag=<%= htmlWebpackPlugin.options.gitRevision.deployFlag %> target-domain=<%= htmlWebpackPlugin.options.gitRevision.targetDomain %>></div>
 
-    <div class="not-supported-msg">
-      <div class="not-supported-msg-copy">
-        <h1>Sorry This Browser is not Supported.</h1>
-        <p>Please make sure you enabled JavaScript and use an updated browser to visit this website.</p>
+    <noscript>
+      <div class="not-supported-msg">
+        <div class="not-supported-msg-copy">
+          <strong>Sorry This Browser is not Supported.</strong>
+          <span>Please make sure you enabled JavaScript and use an updated browser to visit this website.</span>
+        </div>
       </div>
-    </div>
+    </noscript>
   </body>
 </html>

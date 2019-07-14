@@ -1,5 +1,5 @@
 <template>
-  <article itemscope itemtype="http://schema.org/WebPageElement" class="contact-me-page">
+  <article itemtype="http://schema.org/ContactPage" itemscope class="contact-me-page">
     <PageList
       contacts
       :urls="contacts"
