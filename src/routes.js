@@ -101,7 +101,7 @@ export default [
           },
           {
             path: '*',
-            redirect: to => { return '/experiments' }
+            redirect: '/experiments'
           }
         ]
       }
@@ -109,6 +109,10 @@ export default [
   },
   {
     path: '*',
-    redirect: to => { return '/' }
+    redirect: '/'
+  },
+  {
+    path: '/*',
+    redirect: '/'
   }
 ]

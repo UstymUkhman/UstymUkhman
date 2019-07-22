@@ -1,7 +1,11 @@
 .DS_Store
 node_modules/
+
 dist/
+!dist/404.html
+
 npm-debug.log
 yarn-error.log
+
 static/video/*.mp4
 *.sublime-workspace

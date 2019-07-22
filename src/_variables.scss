@@ -1,7 +1,3 @@
-//
-// breakpoints
-//
-
 @import 'breakpoint-sass';
 @include breakpoint-set('transform resolutions', false);
 
@@ -17,49 +13,6 @@ $sm-down   : 0 $sm-screen - 1px;
 
 $md        : $sm-screen + 0px $md-screen - 1px;
 $md-down   : 0 $md-screen - 1px;
-
-//
-// colors
-//
-
-$white-code       : '255, 255, 255';
-$light-green-code : '187, 255, 187';
-$green-code       : '0, 204, 0';
-
-$white            : unquote('rgb(#{$white-code})');
-$silver           : rgb(221, 221, 221);
-$gray             : rgb(170, 170, 170);
-$dark-gray        : rgb(31, 31, 31);
-$black            : rgb(0, 0, 0);
-
-$aqua             : rgb(127, 219, 255);
-$blue             : rgb(0, 116, 217);
-$navy             : rgb(0, 31, 63);
-
-$teal             : rgb(57, 204, 204);
-$olive            : rgb(61, 153, 112);
-$lime             : rgb(1, 255, 112);
-
-$yellow           : rgb(255, 220, 0);
-$orange           : rgb(255, 133, 27);
-$red              : rgb(255, 65, 54);
-
-$fuchsia          : rgb(240, 18, 190);
-$purple           : rgb(177, 13, 201);
-$maroon           : rgb(133, 20, 75);
-
-$light-green      : unquote('rgb(#{$light-green-code})');
-$green            : unquote('rgb(#{$green-code})');
-$energy-green     : rgb(221, 255, 221);
-$fade-green       : rgb(136, 255, 136);
-$dark-green       : rgb(0, 102, 0);
-
-$green-background : rgba(0, 68, 0, 0.5);
-$green-overlay    : rgba(0, 34, 0, 0.25);
-
-//
-// easings
-//
 
 $ease-in-quad      : cubic-bezier(0.550,  0.085, 0.680, 0.530);
 $ease-in-cubic     : cubic-bezier(0.550,  0.055, 0.675, 0.190);
@@ -88,11 +41,25 @@ $ease-in-out-expo  : cubic-bezier(1.000,  0.000, 0.000, 1.000);
 $ease-in-out-circ  : cubic-bezier(0.785,  0.135, 0.150, 0.860);
 $ease-in-out-back  : cubic-bezier(0.680, -0.550, 0.265, 1.550);
 
-//
-// z-indexes:
-//
+$white-code       : '255, 255, 255';
+$light-green-code : '187, 255, 187';
+$green-code       : '0, 204, 0';
 
-// $max    : 2147483647;
+$light-green      : unquote('rgb(#{$light-green-code})');
+$green            : unquote('rgb(#{$green-code})');
+$white            : unquote('rgb(#{$white-code})');
+
+$green-overlay    : rgba(0, 34, 0, 0.25);
+$green-background : rgba(0, 68, 0, 0.5);
+
+$energy-green     : rgb(221, 255, 221);
+$fade-green       : rgb(136, 255, 136);
+$dark-green       : rgb(0, 102, 0);
+
+$silver           : rgb(221, 221, 221);
+$gray             : rgb(31, 31, 31);
+$black            : rgb(0, 0, 0);
+
 $top    : 100;
 $screen : 25;
 $menu   : 12;

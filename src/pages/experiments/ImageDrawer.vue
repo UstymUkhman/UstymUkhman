@@ -408,7 +408,7 @@ export default {
 
 .code-container {
   transition: height 0.5s $ease-in-quint, opacity 0.5s;
-  background-color: rgba($dark-gray, 0.9);
+  background-color: rgba($gray, 0.9);
 
   pointer-events: all;
   user-select: auto;

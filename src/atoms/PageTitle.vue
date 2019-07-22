@@ -23,7 +23,6 @@ export default {
 .title-container {
   padding-left: 25px;
   position: absolute;
-  color: $silver;
 
   height: 100%;
   left: 0;
