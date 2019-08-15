@@ -13,8 +13,6 @@ import vertGlitch from '@/3D/glsl/VideoGlitch/glitch.vert'
 import fragGlitch from '@/3D/glsl/VideoGlitch/glitch.frag'
 
 import { LinearFilter } from '@three/constants.js'
-import { removeDatGui } from '@/utils/utilities'
-
 import { Texture } from '@three/textures/Texture'
 import { Scene } from '@three/scenes/Scene'
 import { Mesh } from '@three/objects/Mesh'
@@ -231,7 +229,9 @@ export default class VideoGlitch {
     })
 
     this.fullscreen = this.gui.add(this, 'toggleFullscreen').name('Enter Fullscreen')
-    removeDatGui()
+
+    const guis = document.querySelectorAll('.dg.ac')
+    for (let g = 1; g < guis.length; g++) guis[g].remove()
   }
 
   render (delta) {

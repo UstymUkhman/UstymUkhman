@@ -1,13 +1,14 @@
 <template>
   <div @touchstart="onTouchStart" @touchend="onTouchEnd" class="list-area">
-    <div class="list-container" :class="{'contacts': contacts}" :style="{'-webkit-transform': 'translateY(' + listOffset + ')', 'transform': 'translateY(' + listOffset + ')'}">
+    <div :style="{'-webkit-transform': 'translateY(' + listOffset + ')', 'transform': 'translateY(' + listOffset + ')'}"
+          class="list-container" :class="{'contacts': contacts}" itemtype="http://schema.org/ItemList" itemscope>
 
       <div :class="{'active': enableNavigation && (currentPage === p), 'visible': skipLettering}"
            v-for="(page, p) in pagesList" :key="page.name" @click="onPageClick(p)"
-           class="page-container" ref="urls">
+           class="page-container" ref="urls" itemprop="item">
 
         <span class="selected-page" :class="{'dissolve': dispose}">{{ contacts ? '>' : '//' }}</span>
-        <p class="page-name">{{ page.name }}</p>
+        <p itemprop="name" class="page-name">{{ page.name }}</p>
         <span v-if="contacts && p === 3" class="e-mail"> - ustym.ukhman@gmail.com</span>
       </div>
 

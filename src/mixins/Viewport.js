@@ -43,13 +43,13 @@ export default {
       }
 
       this.viewPort = {
-        width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
+        width: window.innerWidth
       }
 
       this.videoViewPort = {
-        width: width,
-        height: height
+        height: height,
+        width: width
       }
     }
   }

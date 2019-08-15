@@ -5,7 +5,7 @@ const checkWebGLCompatibility = (to, from, next) => {
   const notSupportedWebGL = Platform.isIE || Platform.mobile
 
   if (notSupportedWebGL || notSupportedAutoplay) {
-    next({name: 'SiteMenu'})
+    next({ name: 'SiteMenu' })
     return
   }
 
@@ -109,10 +109,6 @@ export default [
   },
   {
     path: '*',
-    redirect: '/'
-  },
-  {
-    path: '/*',
     redirect: '/'
   }
 ]
