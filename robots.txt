@@ -1,4 +1,3 @@
 User-agent: *
 Disallow: /static/
-
 Sitemap: http://54.93.165.244/sitemap.xml

@@ -1,10 +1,12 @@
 module.exports = {
   'minify': true,
   'filename': 'static/js/modernizr.[chunkhash].js',
+
   'options': [
     'addTest',
     'setClasses'
   ],
+
   'feature-detects': [
     // 'a/download',
     // 'ambientlight',

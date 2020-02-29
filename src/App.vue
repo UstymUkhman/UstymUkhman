@@ -52,12 +52,12 @@ export default {
         { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
         { name: 'fragment', content: '!' },
 
-        { name: 'theme-color', content: '#000000' },
+        { name: 'theme-color', content: '#00CC00' },
         { name: 'mobile-web-app-capable', content: 'yes' },
         { name: 'apple-mobile-web-app-capable', content: 'yes' },
 
         { name: 'msapplication-tap-highlight', content: 'no' },
-        { name: 'msapplication-TileColor', content: '#000000' },
+        { name: 'msapplication-TileColor', content: '#00CC00' },
         { name: 'msapplication-TileImage', content: '/ms-icon-144x144.png' },
 
         { vmid: 'ogtype', property: 'og:type', content: 'website' },

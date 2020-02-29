@@ -1,4 +1,6 @@
-let routes = [
+const experiments = require('../src/assets/data/experiments.json')
+
+const routes = [
   '/',
   '/about',
   '/works',
@@ -7,8 +9,6 @@ let routes = [
   '/hole',
   '/experiments'
 ]
-
-const experiments = require('../src/assets/data/experiments.json')
 
 for (let i = 0; i < experiments.length; i++) {
   routes.push(`/experiments/${experiments[i].route}`)

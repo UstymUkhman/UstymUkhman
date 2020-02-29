@@ -12,10 +12,11 @@ function resolve (dir) {
 }
 
 const createLintingRule = () => ({
+  enforce: 'pre',
   test: /\.(js|vue)$/,
   loader: 'eslint-loader',
-  enforce: 'pre',
   include: [resolve('src')],
+
   options: {
     formatter: require('eslint-friendly-formatter'),
     emitWarning: !config.dev.showEslintErrorsInOverlay
@@ -55,13 +56,11 @@ module.exports = {
   module: {
     rules: [
       ...(config.dev.useEslint ? [createLintingRule()] : []),
-
       {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: vueLoaderConfig
       },
-
       {
         test: /\.js$/,
         loader: 'babel-loader',
@@ -75,7 +74,6 @@ module.exports = {
           resolve('node_modules/three-full/sources')
         ]
       },
-
       {
         test: /\.(png|jpe?g|gif)(\?.*)?$/,
         exclude: /3d(\\|\/)assets/,
@@ -85,7 +83,6 @@ module.exports = {
           name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
-
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
         loader: 'url-loader',
@@ -94,7 +91,6 @@ module.exports = {
           name: utils.assetsPath('media/[name].[hash:7].[ext]')
         }
       },
-
       {
         test: /\.svg$/,
         loader: 'vue-svg-loader',
@@ -106,7 +102,6 @@ module.exports = {
           }
         }
       },
-
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader',
@@ -115,17 +110,14 @@ module.exports = {
           name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
         }
       },
-
       {
         test: /\.(glsl|vert|frag)$/,
         loader: 'threejs-glsl-loader'
       },
-
       {
         test: /\.(gltf)$/,
         loader: 'gltf-loader-2'
       },
-
       {
         test: /3d(\\|\/)assets.*\.(bin|png|jpe?g|gif|glb|json)$/,
         use: [

@@ -1,7 +1,9 @@
+.vscode
 .DS_Store
 node_modules/
 
 dist/
+bitnami.pem
 !dist/404.html
 
 npm-debug.log
