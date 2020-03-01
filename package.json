@@ -5,13 +5,12 @@
   "description": "My personal website: http://54.93.165.244/",
   "private": true,
   "scripts": {
+    "deploy": "./deploy.sh",
     "build": "node build/build.js",
     "lint:js": "eslint --ext .js,.vue src",
+    "server": "cd public && npx http-server",
     "lint:scss": "stylelint --syntax scss \"src/**/*.scss\" \"src/**/*.vue\"",
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
-    "start": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0",
-    "locale:extract": "node node_modules/vue-webpack-gettext/extract --output locale/template.pot --src src",
-    "locale:compile": "node node_modules/vue-webpack-gettext/compile --output src/assets/data/locale --src locale/translated --multiple"
+    "start": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --host 0.0.0.0"
   },
   "dependencies": {
     "animejs": "^2.2.0",
