@@ -38,8 +38,8 @@ export default {
   computed: {
     description () {
       return `
-        Hi, my name is Ustym and I'm a front-end web developer at MONOGRID.#
-        I was born and raised in Zbarazh (Ucraine), however I live in Florence (Italy) for ${this.years} years so far.##
+        Hi, my name is Ustym and I'm a front-end web developer at Sigma Software.#
+        I studied and lived in Florence (Italy) for 14 years and recently I moved to Kiev (Ukraine).##
 
         Things I love:#
         %- Learning and using innovative web technologies#
@@ -53,13 +53,6 @@ export default {
         %- Dirty code#
         %- Mondays#
       `
-    },
-
-    years () {
-      const today = new Date()
-      const arrive = today.getMonth() > 7 ? 2005 : 2006
-
-      return today.getFullYear() - arrive
     }
   },
 
