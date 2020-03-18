@@ -13,7 +13,7 @@ module.exports = {
     errorOverlay: true,
     cacheBusting: true,
     cssSourceMap: true,
-    notifyOnErrors: false,
+    notifyOnErrors: true,
 
     assetsPublicPath: '/',
     autoOpenBrowser: false,
@@ -33,8 +33,8 @@ module.exports = {
     productionSourceMap: true,
     productionGzipExtensions: ['js', 'css'],
 
+    deployFlag: !!process.env.npm_config_deploy,
     bundleAnalyzerReport: process.env.npm_config_report,
-    deployFlag: process.env.npm_config_deploy ? true : false,
     targetDomain: process.env.npm_config_domain ? process.env.npm_config_domain : 'http://localhost:8080'
   }
 }

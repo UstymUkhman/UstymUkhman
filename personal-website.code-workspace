@@ -1,12 +1,23 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
 	"settings": {
-    "js-import.filesToScan": "**/*.{jsx,js,tsx,ts,vue}",
-    "js-import.plainFileSuffix": "css,less,sass,svg",
-    "js-import.semicolon": false
-	}
+		"js-import.plainFileSuffix": "css,scss,sass,less,svg",
+    "js-import.filesToScan": "**/*.{js,jsx,ts,tsx,vue}",
+    "git.ignoreLimitWarning": true,
+    "js-import.semicolon": false,
+
+    "js-import.alias": {
+      "@postprocessing": "three/examples/jsm/postprocessing",
+      "@controls": "three/examples/jsm/controls",
+      "@shaders": "three/examples/jsm/shaders",
+      "@loaders": "three/examples/jsm/loaders",
+      "@utils": "three/examples/jsm/utils",
+      "@three": "three/src",
+      "@": "/src",
+    }
+  },
+
+  "folders": [{
+    "name": "personal-website",
+    "path": "."
+  }]
 }

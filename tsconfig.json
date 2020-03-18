@@ -1,0 +1,57 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "importHelpers": true,
+    "noImplicitAny": true,
+
+    "sourceMap": true,
+    "jsx": "preserve",
+    "module": "amd",
+    "target": "es5",
+    "allowJs": true,
+    "baseUrl": ".",
+    "strict": true,
+
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+
+    // "types": [
+    //   "webpack-env",
+    //   "vue-meta"
+    // ],
+
+    "paths": {
+      "@postprocessing/*": ["node_modules/three/examples/jsm/postprocessing/*"],
+      "@controls/*": ["node_modules/three/examples/jsm/controls/*"],
+      "@shaders/*": ["node_modules/three/examples/jsm/shaders/*"],
+      "@loaders/*": ["node_modules/three/examples/jsm/loaders/*"],
+      "@utils/*": ["node_modules/three/examples/jsm/utils/*"],
+      "@three/*": ["node_modules/three/src/*"],
+      "@/*": ["src/*"]
+    },
+
+    "lib": [
+      "dom.iterable",
+      "scripthost",
+      "esnext",
+      "dom"
+    ]
+  },
+
+  "include": [
+    "tests/**/*.tsx",
+    "tests/**/*.ts",
+    "src/**/*.vue",
+    "src/**/*.tsx",
+    "src/**/*.ts"
+  ],
+
+  "exclude": [
+    "node_modules",
+    "locale",
+    "dist"
+  ]
+}
