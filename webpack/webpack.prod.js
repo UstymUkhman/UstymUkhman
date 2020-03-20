@@ -2,35 +2,35 @@
 
 const path = require('path')
 const webpack = require('webpack')
-const config = require('../config')
 const merge = require('webpack-merge')
-const utils = require('../config/utils')
 
+const config = require('../config')
+const utils = require('../config/utils')
 const baseConfig = require('./webpack.base.conf')
 const prerenderPaths = require('../config/prerender')
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-
 const PrerenderSpaPlugin = require('prerender-spa-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const GitRevisionPlugin = require('git-revision-webpack-plugin')
-const ModernizrWebpackPlugin = require('modernizr-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
 const Renderer = PrerenderSpaPlugin.PuppeteerRenderer
-const gitRevisionPlugin = new GitRevisionPlugin()
 
 const webpackConfig = merge(baseConfig, {
   mode: 'production',
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
 
   module: {
-    rules: utils.styleLoaders({
+    rules: [...utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
       extract: true,
       usePostCSS: true
-    })
+    }), {
+      use: 'webpack-modernizr-loader',
+      test: /\.modernizrrc.js$/
+    }]
   },
 
   output: {
@@ -60,10 +60,6 @@ const webpackConfig = merge(baseConfig, {
   },
 
   plugins: [
-    gitRevisionPlugin,
-
-    new ModernizrWebpackPlugin(require('../.modernizrrc.js')),
-
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: '"production"' }
     }),
@@ -101,11 +97,10 @@ const webpackConfig = merge(baseConfig, {
         removeAttributeQuotes: true
       },
 
-      gitRevision: {
-        deployFlag: config.build.deployFlag,
-        targetDomain: config.build.targetDomain,
-        version: JSON.stringify(gitRevisionPlugin.version()),
-        commitHash: JSON.stringify(gitRevisionPlugin.commithash())
+      build: {
+        deploy: config.build.deploy,
+        domain: config.build.domain,
+        version: config.build.version
       }
     }),
 
@@ -166,7 +161,7 @@ if (config.build.productionGzip) {
   )
 }
 
-if (config.build.bundleAnalyzerReport) {
+if (config.build.analyzerReport) {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }

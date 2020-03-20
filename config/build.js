@@ -11,8 +11,8 @@ const config = require('./index')
 const webpack = require('webpack')
 
 const _package = require('../package.json')
-const webpackConfig = require('../webpack/prod')
 const spinner = ora('building for production...')
+const webpackConfig = require('../webpack/webpack.prod')
 
 function exec (cmd) {
   return require('child_process').execSync(cmd).toString().trim()

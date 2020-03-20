@@ -1,5 +1,4 @@
 module.exports = {
-  filename: 'static/js/modernizr.[chunkhash].js',
   options: ['addTest', 'setClasses'],
   minify: true,
 
@@ -229,7 +228,7 @@ module.exports = {
     // 'storage/sessionstorage',
     // 'storage/websqldatabase',
     // 'style/scoped',
-    'svg',
+    'svg' // ,
     // 'svg/asimg',
     // 'svg/clippaths',
     // 'svg/filters',
@@ -271,4 +270,4 @@ module.exports = {
     // 'workers/webworkers',
     // 'xdomainrequest'
   ]
-};
+}

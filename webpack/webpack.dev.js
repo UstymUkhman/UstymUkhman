@@ -1,34 +1,35 @@
 'use strict'
 
-const HOST = process.env.HOST
-const PORT = process.env.PORT && Number(process.env.PORT)
-
+require('modernizr')
 const path = require('path')
 const webpack = require('webpack')
-const config = require('../config')
 const merge = require('webpack-merge')
 const portfinder = require('portfinder')
+
+const config = require('../config')
 const utils = require('../config/utils')
-
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const ModernizrWebpackPlugin = require('modernizr-webpack-plugin')
-const GitRevisionPlugin = require('git-revision-webpack-plugin')
-const StylelintPlugin = require('stylelint-webpack-plugin')
 const baseConfig = require('./webpack.base.conf')
-const gitRevisionPlugin = new GitRevisionPlugin()
+
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const StylelintPlugin = require('stylelint-webpack-plugin')
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+
+const PORT = process.env.PORT && Number(process.env.PORT)
+const HOST = process.env.HOST
 
 const devWebpackConfig = merge(baseConfig, {
-  mode: 'development',
   devtool: config.dev.devtool,
+  mode: 'development',
 
   module: {
-    rules: utils.styleLoaders({
+    rules: [...utils.styleLoaders({
       sourceMap: config.dev.cssSourceMap,
       usePostCSS: true
-    })
+    }), {
+      use: 'webpack-modernizr-loader',
+      test: /\.modernizrrc.js$/
+    }]
   },
 
   devServer: {
@@ -61,8 +62,6 @@ const devWebpackConfig = merge(baseConfig, {
   },
 
   plugins: [
-    gitRevisionPlugin,
-
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: '"development"' }
     }),
@@ -72,24 +71,20 @@ const devWebpackConfig = merge(baseConfig, {
     new webpack.NoEmitOnErrorsPlugin(),
 
     new HtmlWebpackPlugin({
-      inject: true,
       filename: 'index.html',
       template: 'index.html',
+      inject: true,
 
-      gitRevision: {
-        deployFlag: config.build.deployFlag,
-        targetDomain: config.build.targetDomain,
-        version: JSON.stringify(gitRevisionPlugin.version()),
-        commitHash: JSON.stringify(gitRevisionPlugin.commithash())
+      build: {
+        deploy: config.build.deploy,
+        domain: config.build.domain,
+        version: config.build.version
       }
     }),
 
     new StylelintPlugin({
-      files: ['**/*.vue', '**/*.scss'],
-      syntax: 'scss'
+      files: ['**/*.vue', '**/*.scss']
     }),
-
-    new ModernizrWebpackPlugin(require('../.modernizrrc.js')),
 
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, '../static'),

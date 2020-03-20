@@ -48,7 +48,7 @@ module.exports = {
       '@utils': utils.resolve('node_modules/three/examples/jsm/utils'),
       '@three': utils.resolve('node_modules/three/src'),
 
-      modernizr$: utils.resolve('.modernizrrc'),
+      modernizr$: utils.resolve('.modernizrrc.js'),
       '@': utils.resolve('src'),
       vue: '@vue/runtime-dom'
     }

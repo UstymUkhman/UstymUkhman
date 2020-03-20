@@ -1,6 +1,7 @@
 'use strict'
 
 const path = require('path')
+const _package = require('../package.json')
 
 module.exports = {
   dev: {
@@ -13,9 +14,9 @@ module.exports = {
     errorOverlay: true,
     cacheBusting: true,
     cssSourceMap: true,
-    notifyOnErrors: true,
 
     assetsPublicPath: '/',
+    notifyOnErrors: false,
     autoOpenBrowser: false,
     assetsSubDirectory: 'static',
     showEslintErrorsInOverlay: true,
@@ -33,8 +34,9 @@ module.exports = {
     productionSourceMap: true,
     productionGzipExtensions: ['js', 'css'],
 
-    deployFlag: !!process.env.npm_config_deploy,
-    bundleAnalyzerReport: process.env.npm_config_report,
-    targetDomain: process.env.npm_config_domain ? process.env.npm_config_domain : 'http://localhost:8080'
+    domain: _package.domain || 'http://localhost:8080',
+    analyzerReport: process.env.npm_config_report,
+    deploy: !!process.env.npm_config_deploy,
+    version: _package.version
   }
 }
