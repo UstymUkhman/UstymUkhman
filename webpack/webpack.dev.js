@@ -56,7 +56,10 @@ const devWebpackConfig = merge(baseConfig, {
     historyApiFallback: {
       rewrites: [{
         from: /.*/,
-        to: path.posix.join(config.dev.assetsPublicPath, 'index.html')
+        to: path.posix.join(
+          config.dev.assetsPublicPath,
+          'static/index.html'
+        )
       }]
     }
   },
@@ -71,14 +74,14 @@ const devWebpackConfig = merge(baseConfig, {
     new webpack.NoEmitOnErrorsPlugin(),
 
     new HtmlWebpackPlugin({
+      template: 'static/index.html',
       filename: 'index.html',
-      template: 'index.html',
       inject: true,
 
       build: {
         version: config.build.version,
-        deploy: config.build.deploy,
-        domain: config.build.domain
+        domain: config.build.domain,
+        deploy: false
       }
     }),
 

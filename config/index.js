@@ -2,6 +2,7 @@
 
 const path = require('path')
 const _package = require('../package.json')
+const { analyze, gzip } = require('minimist')(process.argv.slice(2))
 
 module.exports = {
   dev: {
@@ -28,18 +29,17 @@ module.exports = {
     domain: _package.domain || 'http://localhost:8080',
     assetsRoot: path.resolve(__dirname, '../dist'),
 
-    analyzerReport: process.env.npm_config_report,
-    deploy: !!process.env.npm_config_deploy,
     gzipExtensions: ['js', 'css'],
     assetsSubDirectory: 'static',
     version: _package.version,
-
     devtool: '#source-map',
     assetsPublicPath: '/',
+
     htmlComments: false,
+    analyze: analyze,
     sourceMap: true,
     comments: false,
-    gzip: false,
+    gzip: gzip,
 
     compressOptions: {
       drop_debugger: true,

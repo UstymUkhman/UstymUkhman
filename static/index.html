@@ -33,10 +33,10 @@
   </head>
 
   <body>
-    <div version=<%= htmlWebpackPlugin.options.build.version %>
-         domain=<%= htmlWebpackPlugin.options.build.domain %>
-         deploy=<%= htmlWebpackPlugin.options.build.deploy %>
-         id="app">
+    <div data-domain=<%= htmlWebpackPlugin.options.build.domain %>
+         data-version=<%= htmlWebpackPlugin.options.build.version %>
+         data-deploy=<%= htmlWebpackPlugin.options.build.deploy %>
+         id="root">
     </div>
 
     <noscript>

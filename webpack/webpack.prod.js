@@ -97,9 +97,9 @@ const webpackConfig = merge(baseConfig, {
     }),
 
     new HtmlWebpackPlugin({
+      template: 'static/index.html',
       filename: config.build.index,
       chunksSortMode: 'dependency',
-      template: 'index.html',
       inject: true,
 
       minify: {
@@ -110,8 +110,8 @@ const webpackConfig = merge(baseConfig, {
 
       build: {
         version: config.build.version,
-        deploy: config.build.deploy,
-        domain: config.build.domain
+        domain: config.build.domain,
+        deploy: true
       }
     }),
 
@@ -147,12 +147,17 @@ const webpackConfig = merge(baseConfig, {
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, '../static'),
       to: config.build.assetsSubDirectory,
-      ignore: ['.*']
+      ignore: ['.*', 'index.html']
     }])
   ]
 })
 
-if (config.build.productionGzip) {
+if (config.build.analyze) {
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  webpackConfig.plugins.push(new BundleAnalyzerPlugin())
+}
+
+if (config.build.gzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
   webpackConfig.plugins.push(
@@ -170,11 +175,6 @@ if (config.build.productionGzip) {
       minRatio: 0.8
     })
   )
-}
-
-if (config.build.analyzerReport) {
-  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 
 module.exports = webpackConfig

@@ -12,13 +12,13 @@ export const router = createRouter({
   }, {
     path: '/:catchAll(.*)',
     redirect: '/'
-  }],
+  }] // ,
 
-  scrollBehavior (to: any, from: any, savedPosition: any) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { x: 0, y: 0 }
-    }
-  }
+  // scrollBehavior (to: any, from: any, savedPosition: any) {
+  //   if (savedPosition) {
+  //     return savedPosition
+  //   } else {
+  //     return { x: 0, y: 0 }
+  //   }
+  // }
 })

@@ -8,7 +8,9 @@
   "scripts": {
     "start": "webpack-dev-server --inline --progress --config webpack/webpack.dev.js --host 0.0.0.0",
     "lint:scss": "stylelint \"src/**/*.scss\" \"src/**/*.vue\"",
-    "server": "cd public && npx http-server",
+    "build:analyze": "node config/build.js --analyze",
+    "build:gzip": "node config/build.js --gzip",
+    "server": "cd ./dist && npx http-server",
     "lint:js": "eslint --ext .js,.vue src",
     "build": "node config/build.js",
     "deploy": "./deploy.sh"

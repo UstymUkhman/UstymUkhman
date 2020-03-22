@@ -1,6 +1,5 @@
 <template>
   <div id="app" v-show="!prerender">
-    <!-- :version="version" :domain="domain" :deploy="deploy" -->
     <router-view itemtype="https://schema.org/mainEntity" itemprop="mainEntity" class="page" />
   </div>
 </template>
@@ -13,12 +12,12 @@ export default defineComponent({
   name: 'App',
 
   props: {
-    version: {
+    domain: {
       type: String,
       required: true
     },
 
-    domain: {
+    version: {
       type: String,
       required: true
     },
@@ -31,6 +30,7 @@ export default defineComponent({
 
   setup (props) {
     console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
+    console.table(props)
 
     return {
       prerender: platform.prerender

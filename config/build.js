@@ -61,7 +61,6 @@ if (shell.which('npm')) {
   }
 })()
 
-process.env.NODE_ENV = 'production'
 spinner.start()
 
 rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
