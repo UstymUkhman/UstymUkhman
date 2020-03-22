@@ -9,9 +9,9 @@ const utils = require('../config/utils')
 const baseConfig = require('./webpack.base.conf')
 const prerenderPaths = require('../config/prerender')
 
+const TerserPlugin = require('terser-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const PrerenderSpaPlugin = require('prerender-spa-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
@@ -34,18 +34,40 @@ const webpackConfig = merge(baseConfig, {
   },
 
   output: {
-    path: config.build.assetsRoot,
+    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
+    path: config.build.assetsRoot
   },
 
   optimization: {
-    namedChunks: true,
+    mergeDuplicateChunks: true,
+    flagIncludedChunks: true,
+    removeEmptyChunks: true,
     runtimeChunk: true,
     namedModules: true,
-    removeEmptyChunks: true,
-    flagIncludedChunks: true,
-    mergeDuplicateChunks: true,
+    namedChunks: true,
+    minimize: true,
+
+    minimizer: [
+      new TerserPlugin({
+        sourceMap: config.build.sourceMap,
+        parallel: true,
+
+        terserOptions: {
+          toplevel: true,
+
+          parse: {
+            html5_comments: config.build.htmlComments
+          },
+
+          compress: config.build.compressOptions,
+
+          output: {
+            comments: config.build.comments
+          }
+        }
+      })
+    ],
 
     splitChunks: {
       cacheGroups: {
@@ -62,17 +84,6 @@ const webpackConfig = merge(baseConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: '"production"' }
-    }),
-
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        compress: {
-          warnings: false
-        }
-      },
-
-      sourceMap: config.build.productionSourceMap,
-      parallel: true
     }),
 
     new MiniCssExtractPlugin({
@@ -98,9 +109,9 @@ const webpackConfig = merge(baseConfig, {
       },
 
       build: {
+        version: config.build.version,
         deploy: config.build.deploy,
-        domain: config.build.domain,
-        version: config.build.version
+        domain: config.build.domain
       }
     }),
 
@@ -109,9 +120,9 @@ const webpackConfig = merge(baseConfig, {
     new webpack.optimize.ModuleConcatenationPlugin(),
 
     new PrerenderSpaPlugin({
-      routes: prerenderPaths,
-      indexPath: config.build.index,
       staticDir: config.build.assetsRoot,
+      indexPath: config.build.index,
+      routes: prerenderPaths,
 
       postProcess (renderedRoute) {
         renderedRoute.html = renderedRoute.html.replace(
@@ -151,7 +162,7 @@ if (config.build.productionGzip) {
 
       test: new RegExp(
         '\\.(' +
-        config.build.productionGzipExtensions.join('|') +
+        config.build.gzipExtensions.join('|') +
         ')$'
       ),
 

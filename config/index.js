@@ -25,18 +25,27 @@ module.exports = {
 
   build: {
     index: path.resolve(__dirname, '../dist/index.html'),
-    assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'static',
-    assetsPublicPath: '/',
-
-    productionGzip: false,
-    devtool: '#source-map',
-    productionSourceMap: true,
-    productionGzipExtensions: ['js', 'css'],
-
     domain: _package.domain || 'http://localhost:8080',
+    assetsRoot: path.resolve(__dirname, '../dist'),
+
     analyzerReport: process.env.npm_config_report,
     deploy: !!process.env.npm_config_deploy,
-    version: _package.version
+    gzipExtensions: ['js', 'css'],
+    assetsSubDirectory: 'static',
+    version: _package.version,
+
+    devtool: '#source-map',
+    assetsPublicPath: '/',
+    htmlComments: false,
+    sourceMap: true,
+    comments: false,
+    gzip: false,
+
+    compressOptions: {
+      drop_debugger: true,
+      keep_infinity: true,
+      drop_console: true,
+      warnings: false
+    }
   }
 }

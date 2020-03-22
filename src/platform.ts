@@ -36,4 +36,5 @@ for (const key in platform) {
 }
 
 export const language = mainLanguage || navigator.language || userLanguage
+platform.prerender = (<any>window).__PRERENDER_INJECTED !== undefined
 export default platform

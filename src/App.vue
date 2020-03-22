@@ -1,16 +1,40 @@
 <template>
-  <div id="app">
-    <span>{{ hello }}</span>
+  <div id="app" v-show="!prerender">
+    <!-- :version="version" :domain="domain" :deploy="deploy" -->
+    <router-view itemtype="https://schema.org/mainEntity" itemprop="mainEntity" class="page" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import platform from '@/platform'
 
 export default defineComponent({
-  setup () {
-    const hello = 'Hello from Vue 3 & TypeScript'
-    return { hello }
+  name: 'App',
+
+  props: {
+    version: {
+      type: String,
+      required: true
+    },
+
+    domain: {
+      type: String,
+      required: true
+    },
+
+    deploy: {
+      type: Boolean,
+      required: true
+    }
+  },
+
+  setup (props) {
+    console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
+
+    return {
+      prerender: platform.prerender
+    }
   }
 })
 </script>

@@ -1,10 +1,9 @@
-// import { router } from './router'
-import platform from '@/platform'
+// // https://github.com/ChrisShank/vue-next-webpack-preview
+
+import { router } from './router'
 import { createApp } from 'vue'
 import App from './App.vue'
 
-console.log(platform)
-
 createApp(App)
-  // .use(router)
+  .use(router)
   .mount('#app')

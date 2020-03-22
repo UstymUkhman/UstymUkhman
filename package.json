@@ -4,7 +4,7 @@
   "private": false,
   "description": "My personal website: http://54.93.165.244/",
   "author": "Ustym Ukhman <ustym.ukhman@gmail.com>",
-  "domain": "",
+  "domain": "http://54.93.165.244/",
   "scripts": {
     "start": "webpack-dev-server --inline --progress --config webpack/webpack.dev.js --host 0.0.0.0",
     "lint:scss": "stylelint \"src/**/*.scss\" \"src/**/*.vue\"",
@@ -60,6 +60,7 @@
     "stylelint": "^13.2.1",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-webpack-plugin": "^1.2.3",
+    "terser-webpack-plugin": "^2.3.5",
     "threejs-glsl-loader": "^1.0.4",
     "ts-loader": "^6.2.1",
     "typescript": "^3.8.3",

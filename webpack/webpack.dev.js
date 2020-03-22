@@ -76,9 +76,9 @@ const devWebpackConfig = merge(baseConfig, {
       inject: true,
 
       build: {
+        version: config.build.version,
         deploy: config.build.deploy,
-        domain: config.build.domain,
-        version: config.build.version
+        domain: config.build.domain
       }
     }),
 
