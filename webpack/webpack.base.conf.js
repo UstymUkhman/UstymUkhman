@@ -107,7 +107,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(glsl|vert|frag)$/,
+        test: /\.(vs|fs|vert|frag|glsl)$/,
         loader: 'threejs-glsl-loader'
       },
       {

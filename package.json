@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "mobile-detect": "^1.4.4",
+    "three": "^0.115.0",
     "vue": "next",
     "vue-router": "next"
   },
