@@ -9,11 +9,11 @@
     "start": "webpack-dev-server --inline --progress --config webpack/webpack.dev.js --host 0.0.0.0",
     "lint:scss": "stylelint \"src/**/*.scss\" \"src/**/*.vue\"",
     "build:analyze": "node config/build.js --analyze",
+    "deploy": "./deploy.sh http://54.93.165.244/",
     "build:gzip": "node config/build.js --gzip",
     "server": "cd ./dist && npx http-server",
     "lint:js": "eslint --ext .js,.vue src",
-    "build": "node config/build.js",
-    "deploy": "./deploy.sh"
+    "build": "node config/build.js"
   },
   "dependencies": {
     "mobile-detect": "^1.4.4",
