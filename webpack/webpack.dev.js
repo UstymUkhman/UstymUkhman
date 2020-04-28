@@ -37,6 +37,7 @@ const devWebpackConfig = merge(baseConfig, {
     quiet: true,
     compress: true,
     contentBase: false,
+    historyApiFallback: true,
     clientLogLevel: 'warning',
 
     proxy: config.dev.proxyTable,
@@ -51,17 +52,7 @@ const devWebpackConfig = merge(baseConfig, {
 
     overlay: config.dev.errorOverlay
       ? { warnings: false, errors: true }
-      : false,
-
-    historyApiFallback: {
-      rewrites: [{
-        from: /.*/,
-        to: path.posix.join(
-          config.dev.assetsPublicPath,
-          'static/index.html'
-        )
-      }]
-    }
+      : false
   },
 
   plugins: [

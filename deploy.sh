@@ -12,9 +12,9 @@ EOF
 
 echo "$sitemap" > ./static/sitemap.xml
 
-cp ./static/{browserconfig.xml,sitemap.xml,manifest.json,robots.txt} ./dist/
+cp ./static/{browserconfig.xml,sitemap.xml,manifest.json,robots.txt} ./public/
 sftp -i ./bitnami.pem bitnami@54.93.165.244:htdocs/ << EOF
-put -r dist/*
+put -r public/*
 
 exit
 EOF

@@ -1,9 +1,9 @@
-import { createApp } from 'vue'
-import router from '@/router'
 import App from '@/App.vue'
+import router from '@/router'
+import { createApp } from 'vue'
 
-const root = document.getElementById('root') || document.createElement('div')
-const productionBuild = root.dataset.deploy === 'true'
+const root = document.getElementById('root') ||
+             document.createElement('div')
 
 interface AppInfo {
   readonly version: string | undefined;
@@ -13,9 +13,9 @@ interface AppInfo {
 }
 
 const app: AppInfo = {
+  deploy: root.dataset.deploy === 'true',
   version: root.dataset.version,
   domain: root.dataset.domain,
-  deploy: productionBuild,
   app: root
 }
 

@@ -11,7 +11,7 @@ const config = require('./index')
 const webpack = require('webpack')
 
 const _package = require('../package.json')
-const spinner = ora('building for production...')
+const spinner = ora('Building for production...')
 const webpackConfig = require('../webpack/webpack.prod')
 
 function exec (cmd) {

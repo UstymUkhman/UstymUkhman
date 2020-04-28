@@ -71,6 +71,13 @@ const webpackConfig = merge(baseConfig, {
 
     splitChunks: {
       cacheGroups: {
+        vendor: {
+          test: /node_modules/,
+          name: 'vendors',
+          chunks: 'all',
+          enforce: true
+        },
+
         styles: {
           name: 'styles',
           test: /\.css$/,

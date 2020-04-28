@@ -25,9 +25,9 @@ module.exports = {
   },
 
   build: {
-    index: path.resolve(__dirname, '../dist/index.html'),
+    index: path.resolve(__dirname, '../public/index.html'),
     domain: _package.domain || 'http://localhost:8080',
-    assetsRoot: path.resolve(__dirname, '../dist'),
+    assetsRoot: path.resolve(__dirname, '../public'),
 
     gzipExtensions: ['js', 'css'],
     assetsSubDirectory: 'static',

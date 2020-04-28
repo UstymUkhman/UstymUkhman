@@ -38,7 +38,7 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ['.vue', '.ts', '.tsx', '.js', '.json'],
+    extensions: ['.vue', '.ts', '.tsx', '.js', '.jsx', '.json'],
 
     alias: {
       '@postprocessing': utils.resolve('node_modules/three/examples/jsm/postprocessing'),
