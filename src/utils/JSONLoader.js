@@ -1,3 +1,8 @@
+/**
+ * @author mrdoob / http://mrdoob.com/
+ * @author alteredq / http://alteredqualia.com/
+ */
+
 import { DefaultLoadingManager } from '@three/loaders/LoadingManager'
 import { AnimationClip } from '@three/animation/AnimationClip'
 import { LoaderUtils } from '@three/loaders/LoaderUtils'

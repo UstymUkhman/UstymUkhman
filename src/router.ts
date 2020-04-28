@@ -1,24 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/pages/Home.vue'
 
-export const router = createRouter({
+export default createRouter({
   history: createWebHistory(),
 
   routes: [{
-    // component: () => import(/* webpackChunkName: "home-page" */ './pages/Home.vue'),
-    component: Home,
+    component: () => import(/* webpackChunkName: "home-page" */ './pages/Home.vue'),
     name: 'Home',
     path: '/'
   }, {
-    path: '/:catchAll(.*)',
-    redirect: '/'
-  }] // ,
+    redirect: { name: 'Home' },
+    path: '/:catchAll(.*)'
+  }],
 
-  // scrollBehavior (to: any, from: any, savedPosition: any) {
-  //   if (savedPosition) {
-  //     return savedPosition
-  //   } else {
-  //     return { x: 0, y: 0 }
-  //   }
-  // }
+  scrollBehavior: () => ({
+    x: 0, y: 0
+  })
 })

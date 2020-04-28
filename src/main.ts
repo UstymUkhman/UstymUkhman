@@ -1,5 +1,5 @@
-import { router } from '@/router'
 import { createApp } from 'vue'
+import router from '@/router'
 import App from '@/App.vue'
 
 const root = document.getElementById('root') || document.createElement('div')
