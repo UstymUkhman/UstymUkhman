@@ -51,11 +51,18 @@ exports.cssLoaders = function (options) {
     stylus: generateLoaders('stylus'),
 
     scss: generateLoaders('sass', {
-      sassOptions: { includePaths: [path.resolve(__dirname, '../src')] }
+      prependData: '@import \'variables.scss\';',
+
+      sassOptions: {
+        includePaths: [path.resolve(__dirname, '../src/scss')]
+      }
     }),
 
     sass: generateLoaders('sass', {
-      sassOptions: { indentedSyntax: true, includePaths: [path.resolve(__dirname, '../src')] }
+      sassOptions: {
+        indentedSyntax: true,
+        includePaths: [path.resolve(__dirname, '../src/sass')]
+      }
     })
   }
 }

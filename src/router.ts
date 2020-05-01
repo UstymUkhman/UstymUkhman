@@ -4,7 +4,7 @@ export default createRouter({
   history: createWebHistory(),
 
   routes: [{
-    component: () => import(/* webpackChunkName: "home-page" */ './pages/Home.vue'),
+    component: () => import(/* webpackChunkName: "home-page" */ '@pages/Home.vue'),
     name: 'Home',
     path: '/'
   }, {

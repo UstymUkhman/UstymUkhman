@@ -25,6 +25,10 @@ module.exports = {
 
     'selector-pseudo-element-no-unknown': [true, {
       ignorePseudoElements: ['v-deep'],
+    }],
+
+    'selector-pseudo-class-no-unknown': [true, {
+      ignorePseudoClasses: ['export'],
     }]
   }
 };

@@ -1,0 +1,232 @@
+/* stylelint-disable value-keyword-case */
+
+@mixin horizontal-gradient($color1, $color2) {
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2', GradientType=1);
+  background: linear-gradient(to right, $color1 0%, $color2 100%);
+}
+
+@mixin vertical-gradient($color1, $color2) {
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2', GradientType=0);
+  background: linear-gradient(to bottom, $color1 0%, $color2 100%);
+}
+
+/* stylelint-enable value-keyword-case */
+
+@mixin desktop-hover {
+  html.no-mobile & {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+@mixin ie-specific {
+  html.ie & {
+    @content;
+  }
+}
+
+@mixin martix-code-nfi {
+  font-family: 'Martix Code NFI', monospace;
+  font-size: 30px;
+  color: $green;
+}
+
+@mixin white-rabbit {
+  font-family: 'White Rabbit', monospace;
+  font-size: 18px;
+  color: $green;
+}
+
+@mixin console-button($border-size: 3px) {
+  $animaiton-delay: 0.15s;
+
+  .button-border {
+    visibility: visible;
+
+    .button-box {
+      text-align: center;
+
+      &::after,
+      &::before,
+      .button::before,
+      .button::after {
+        transition: transform 0.15s cubic-bezier(1, 0.75, 0.15, 0.9);
+        background-color: $light-green;
+
+        visibility: visible;
+        position: absolute;
+        content: '';
+      }
+
+      &::after,
+      &::before {
+        transform: scale3d(1, 0, 1);
+        width: $border-size;
+        height: 100%;
+
+        z-index: 1;
+        top: 0;
+      }
+
+      &::before {
+        transform-origin: 50% 100%;
+        transition-delay: 0s;
+        left: 0;
+      }
+
+      &::after {
+        transition-delay: $animaiton-delay * 2;
+        transform-origin: 50% 0%;
+        right: 0;
+      }
+
+      .button-background {
+        transition: background-color 0.5s;
+        background-color: transparent;
+        position: absolute;
+
+        height: 100%;
+        width: 100%;
+
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+      }
+
+      .button {
+        transition: color 0.5s;
+        visibility: hidden;
+        position: relative;
+        color: $green;
+
+        z-index: 1;
+        margin: 0;
+
+        &::after,
+        &::before {
+          transform: scale3d(0, 1, 1);
+          height: $border-size;
+          width: 100%;
+
+          z-index: 1;
+          left: 0;
+        }
+
+        &::before {
+          transition-delay: $animaiton-delay * 3;
+          transform-origin: 0% 50%;
+          top: 0;
+        }
+
+        &::after {
+          transition-delay: $animaiton-delay;
+          transform-origin: 100% 50%;
+          bottom: 0;
+        }
+      }
+
+      &.active {
+        &::before {
+          transition-delay: $animaiton-delay * 3;
+          transform: scale3d(1, 1, 1);
+        }
+
+        &::after {
+          transition-delay: $animaiton-delay;
+          transform: scale3d(1, 1, 1);
+        }
+
+        .button-background {
+          background-color: $green-background;
+          transition-duration: 0.25s;
+          transition-delay: 0.5s;
+        }
+
+        .button {
+          transition-delay: 0.5s;
+          visibility: visible;
+          color: $fade-green;
+        }
+
+        .button::before {
+          transform: scale3d(1, 1, 1);
+          transition-delay: 0s;
+        }
+
+        .button::after {
+          transition-delay: $animaiton-delay * 2;
+          transform: scale3d(1, 1, 1);
+        }
+      }
+
+      &.visible .button {
+        visibility: visible;
+      }
+    }
+
+    .button-box.pressed .button-background,
+    .button-box.pressed .button {
+      transition-duration: 0.1s;
+      transition-delay: 0s;
+    }
+
+    .button-box.selected {
+      .button-background {
+        background-color: $dark-green;
+      }
+
+      .button {
+        color: rgb(221, 255, 221);
+      }
+    }
+  }
+}
+
+@mixin back-button {
+  &.button.back {
+    span:first-child {
+      transition: transform 0.3s ease-out;
+      transition-delay: 0.5s !important;
+      transform: translateX(-25px);
+      position: absolute;
+
+      @include breakpoint($sm-down) {
+        transform: translateX(-15px);
+      }
+
+      .isie & {
+        transform: translateX(-10px);
+      }
+    }
+
+    &.active {
+      :first-child {
+        transform: translateX(-35px);
+
+        @include breakpoint($sm-down) {
+          transform: translateX(-25px);
+        }
+
+        .isie & {
+          transform: translateX(-20px);
+        }
+      }
+    }
+  }
+}
+
+@mixin code-editor {
+  span.number {
+    color: #ae81ff;
+  }
+
+  span.string {
+    color: #e6db74;
+  }
+
+  span.function {
+    color: #66d9ef;
+  }
+}

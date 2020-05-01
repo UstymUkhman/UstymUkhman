@@ -17,6 +17,7 @@
     "build": "node config/build.js"
   },
   "dependencies": {
+    "breakpoint-sass": "^2.7.1",
     "mobile-detect": "^1.4.4",
     "three": "^0.115.0",
     "vue": "next",

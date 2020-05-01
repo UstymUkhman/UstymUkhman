@@ -1,0 +1,36 @@
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-90deg);
+  }
+}
+
+@keyframes hvr-back-pulse {
+  50% {
+    background-color: $green;
+    opacity: 0.5;
+  }
+}
+
+@keyframes drop {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes deep-drop {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(175%);
+  }
+}

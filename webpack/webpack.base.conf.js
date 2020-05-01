@@ -53,7 +53,10 @@ module.exports = {
       '@utils': utils.resolve('node_modules/three/examples/jsm/utils'),
       '@three': utils.resolve('node_modules/three/src'),
 
+      '@components': utils.resolve('src/components'),
       modernizr$: utils.resolve('.modernizrrc.js'),
+      '@pages': utils.resolve('src/pages'),
+      '@scss': utils.resolve('src/scss'),
       '@': utils.resolve('src'),
       vue: '@vue/runtime-dom'
     }
@@ -77,7 +80,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif)(\?.*)?$/,
-        exclude: /3d(\\|\/)assets/,
+        exclude: /assets(\\|\/)3D/,
         loader: 'url-loader',
         options: {
           limit: 10000,
@@ -95,6 +98,7 @@ module.exports = {
       {
         test: /\.svg$/,
         loader: 'vue-svg-loader',
+        exclude: /assets(\\|\/)fonts/,
         options: {
           svgo: {
             plugins: [{
@@ -104,7 +108,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        test: /\.(eot|woff2?|otf|ttf|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
           limit: 10000,

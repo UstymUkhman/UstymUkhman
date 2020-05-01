@@ -40,6 +40,70 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@import 'mixins';
+@import 'fonts';
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;
+  -webkit-touch-callout: none;
+
+  font-family: 'White Rabbit', monospace;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: none;
+  text-size-adjust: none;
+  font-weight: 400;
+
+  backface-visibility: hidden;
+  background-color: $black;
+  appearance: none;
+  color: $green;
+
+  user-select: none;
+  overflow: hidden;
+  // cursor: none;
+
+  max-height: 100%;
+  min-height: 100%;
+
+  max-width: 100%;
+  min-width: 100%;
+
+  height: 100%;
+  width: 100%;
+
+  padding: 0;
+  margin: 0;
+}
+
+canvas {
+  position: absolute;
+  z-index: $pills;
+
+  left: 0;
+  top: 0;
+
+  .sound-particles-page & {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+
+    padding: 0;
+    margin: 0;
+
+    bottom: 0;
+    right: 0;
+    left: 0;
+    top: 0;
+  }
+
+  .color-grading-page & {
+    position: relative;
+  }
+}
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s;

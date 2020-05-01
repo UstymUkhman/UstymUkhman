@@ -11,9 +11,5 @@ declare module '*.json' {
 }
 
 declare module 'vue-router'
-// declare module 'lodash/*'
-// declare module 'vue-cookie'
-// declare module 'markdown-it'
-// declare module 'vue-analytics'
+// declare module 'lodash.find'
 // declare module 'vue-event-handler'
-// declare module 'markdown-it-link-attributes'
