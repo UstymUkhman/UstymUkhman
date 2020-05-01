@@ -29,6 +29,7 @@
     "@vue/compiler-sfc": "^3.0.0-alpha.9",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/eslint-config-typescript": "^5.0.2",
+    "@yushijinhun/three-minifier-webpack": "^0.1.4",
     "autoprefixer": "^9.7.4",
     "babel-eslint": "^10.1.0",
     "chalk": "^3.0.0",

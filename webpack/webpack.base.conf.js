@@ -4,6 +4,9 @@ const path = require('path')
 const config = require('../config')
 const utils = require('../config/utils')
 const { VueLoaderPlugin } = require('vue-loader')
+const ThreeMinifierPlugin = require('@yushijinhun/three-minifier-webpack')
+
+const threeMinifierPlugin = new ThreeMinifierPlugin()
 
 const createLintingRule = () => ({
   enforce: 'pre',
@@ -25,6 +28,7 @@ module.exports = {
   },
 
   plugins: [
+    threeMinifierPlugin,
     new VueLoaderPlugin()
   ],
 
@@ -38,6 +42,7 @@ module.exports = {
   },
 
   resolve: {
+    plugins: [threeMinifierPlugin.resolver],
     extensions: ['.vue', '.ts', '.tsx', '.js', '.jsx', '.json'],
 
     alias: {
