@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import platform from '@/platform'
+import { Platform } from '@/utils'
 
 export default defineComponent({
   name: 'App',
@@ -33,7 +33,7 @@ export default defineComponent({
     console.table(props)
 
     return {
-      prerender: platform.prerender
+      prerender: Platform.prerender
     }
   }
 })
@@ -104,6 +104,75 @@ canvas {
   }
 }
 
+h1 {
+  font-weight: 700;
+  font-size: 48px;
+  cursor: default;
+  margin: 0px;
+
+  @include breakpoint($xs) {
+    font-size: 32px;
+  }
+}
+
+h2 {
+  font-weight: 400;
+  font-size: 32px;
+  cursor: default;
+  margin: 0px;
+
+  @include breakpoint($xs) {
+    font-size: 25px;
+  }
+}
+
+p {
+  @include back-button;
+
+  cursor: default;
+  margin: 0px;
+}
+
+span.lettering {
+  transition: opacity 0.5s $ease-in-out-cubic;
+
+  &.dissolve {
+    opacity: 0;
+  }
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.app-container {
+  height: 100%;
+
+  .background-video {
+    position: fixed;
+
+    @include breakpoint($sm-down) {
+      display: none;
+    }
+  }
+}
+
+.page {
+  box-sizing: border-box;
+  position: absolute;
+
+  height: 100%;
+  width: 100%;
+
+  left: 0;
+  top: 0;
+}
+
+article.image-drawer-js-page .code-container .code-preview {
+  @include code-editor;
+}
+
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s;
@@ -114,18 +183,18 @@ canvas {
   opacity: 0;
 }
 
-::-webkit-scrollbar {
-  // background-color: $black;
+/* ::-webkit-scrollbar {
+  background-color: $black;
   width: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
   transition: background-color 0.5s;
-  // background-color: $dark-green;
+  background-color: $dark-green;
 }
 
-// ::-webkit-scrollbar-thumb:hover,
-// ::-webkit-scrollbar-thumb:active {
-//   background-color: $green;
-// }
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background-color: $green;
+} */
 </style>

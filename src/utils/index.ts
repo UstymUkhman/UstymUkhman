@@ -2,7 +2,7 @@ import modernizr from 'modernizr'
 const MobileDetect = require('mobile-detect')
 const md = new MobileDetect(window.navigator.userAgent)
 
-const platform: any = {
+const Platform: any = {
   mobile: !!md.mobile(),
   tablet: !!md.tablet(),
   phone: !!md.phone(),
@@ -29,12 +29,21 @@ if (navigator && navigator.userLanguage) {
   userLanguage = navigator.userLanguage
 }
 
-for (const key in platform) {
+for (const key in Platform) {
   modernizr.addTest(key, () => {
-    return platform[key]
+    return Platform[key]
   })
 }
 
 export const language = mainLanguage || navigator.language || userLanguage
-platform.prerender = (window as any).__PRERENDER_INJECTED !== undefined
-export default platform
+Platform.prerender = (window as any).__PRERENDER_INJECTED !== undefined
+
+const firePrerenderEvent = () => {
+  if (Platform.prerender) {
+    setTimeout(() => {
+      document.dispatchEvent(new Event('custom-post-render-event'))
+    }, 1000)
+  }
+}
+
+export { Platform, firePrerenderEvent }

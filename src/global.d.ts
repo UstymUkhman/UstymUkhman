@@ -10,6 +10,7 @@ declare module '*.json' {
   export default value
 }
 
+declare module '*.scss'
 declare module 'vue-router'
 // declare module 'lodash.find'
 // declare module 'vue-event-handler'

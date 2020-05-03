@@ -67,9 +67,10 @@ $code   : 9;
 $pills  : 8;
 $rain   : 7;
 
-/* stylelint-disable property-case, property-no-unknown */
+/* stylelint-disable property-no-unknown */
 
 :export {
+  // stylelint-disable-next-line property-case
   lightGreen: unquote($light-green-code);
   green: unquote($green-code);
   white: unquote($white-code);
@@ -78,4 +79,4 @@ $rain   : 7;
   phone: $xs-screen;
 }
 
-/* stylelint-enable property-case, property-no-unknown */
+/* stylelint-enable property-no-unknown */
