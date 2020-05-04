@@ -1,13 +1,13 @@
 import { reactive, toRefs } from 'vue'
 
-interface Size {
+export interface Size {
   height: number
   width: number
 }
 
 export default class Viewport {
   private readonly update: EventListener = this.updateSize.bind(this)
-  private readonly callback: Function | null = null;
+  private readonly callback: Function | null = null
 
   private readonly videoScreen: Size = reactive({
     height: window.innerHeight,

@@ -6,9 +6,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onBeforeUnmount, watchEffect, ref } from 'vue'
+import { defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { white, green, lightGreen } from '@scss/variables.scss'
-import Viewport from '@/utils/Viewport'
+
+// eslint-disable-next-line no-unused-vars
+import Viewport, { Size } from '@/utils/Viewport'
+import { randomInt } from '@/utils/number'
 
 const MATRIX_FONT = 'normal 24px Martix Code NFI'
 const LINE_HEIGHT = 27
@@ -23,27 +26,8 @@ export default defineComponent({
   name: 'MatrixRain',
 
   setup (props: MatrixRainProps) {
-    let context: CanvasRenderingContext2D | null
-    let canvas: HTMLCanvasElement | null
-
-    let height = window.innerHeight + 16
-    let width = window.innerWidth + 16
-
-    const screen = new Viewport()
-    let lastUpdate = Date.now()
-    const code = ref(null)
-
-    let duration: number[] = []
-    let visible: boolean[] = []
-    let chars: string[][] = []
-    let index: number[] = []
-
-    let columns: number = 0
-    let frame: number = 0
-    let rows: number = 0
-
     const getCharCode = (): string => {
-      const code = Math.random() < 0.5 ? getRandomInt(33, 63) : getRandomInt(90, 126)
+      const code = Math.random() < 0.5 ? randomInt(33, 63) : randomInt(90, 126)
       return String.fromCharCode(code)
     }
 
@@ -51,20 +35,19 @@ export default defineComponent({
       return index > end ? 50 - (index - end) : 50
     }
 
-    const getRandomInt = (min: number, max: number): number => {
-      return Math.floor(Math.random() * (max - min + 1)) + min
-    }
-
     const updateVisibleColumns = (): void => {
       if (visible.includes(false)) {
-        const int = getRandomInt(0, columns)
+        const int = randomInt(0, columns)
         visible[int] = Math.random() < 0.5 || visible[int]
       }
     }
 
-    const onResize = (): void => {
+    const onResize = (size: Size): void => {
       let _rows = rows
       let _columns = columns
+
+      height = size.height
+      width = size.width / (props.ratio ?? 1)
 
       canvas!.width = width
       canvas!.height = height
@@ -77,7 +60,7 @@ export default defineComponent({
       _columns = Math.max(columns - _columns, 0)
 
       if (_rows > 0 || _columns > 0) {
-        const _duration = Array.from(new Array(_columns), d => getRandomInt(rows, 100))
+        const _duration = Array.from(new Array(_columns), d => randomInt(rows, 100))
         const _visible = Array.from(new Array(_columns), v => false)
         const _index = Array.from(new Array(_columns), i => 0)
 
@@ -137,7 +120,7 @@ export default defineComponent({
           }
 
           if (alpha === 0) {
-            duration[i] = getRandomInt(rows, 100)
+            duration[i] = randomInt(rows, 100)
             index[i] = 0
           }
 
@@ -156,6 +139,25 @@ export default defineComponent({
       }
     }
 
+    let context: CanvasRenderingContext2D | null
+    let canvas: HTMLCanvasElement | null
+
+    const screen = new Viewport(onResize)
+    let height = window.innerHeight + 16
+    let width = window.innerWidth + 16
+
+    let lastUpdate = Date.now()
+    const code = ref(null)
+
+    let duration: number[] = []
+    let visible: boolean[] = []
+    let chars: string[][] = []
+    let index: number[] = []
+
+    let columns: number = 0
+    let frame: number = 0
+    let rows: number = 0
+
     onMounted(() => {
       canvas = code.value
       canvas!.width = width
@@ -171,7 +173,7 @@ export default defineComponent({
       context!.font = MATRIX_FONT
       context!.shadowBlur = 5
 
-      duration = Array.from(new Array(columns), d => getRandomInt(rows, 100))
+      duration = Array.from(new Array(columns), d => randomInt(rows, 100))
       visible = Array.from(new Array(columns), v => false)
       index = Array.from(new Array(columns), i => 0)
 
@@ -179,12 +181,6 @@ export default defineComponent({
         const column = Array.from(new Array(rows), c => getCharCode())
         chars.push(column)
       }
-
-      watchEffect(() => {
-        width = screen.size.width / (props.ratio ?? 1)
-        height = screen.size.height
-        onResize()
-      })
 
       animate()
     })
