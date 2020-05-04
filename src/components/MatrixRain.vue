@@ -6,9 +6,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+import { defineComponent, onMounted, onBeforeUnmount, watchEffect, ref } from 'vue'
 import { white, green, lightGreen } from '@scss/variables.scss'
-// import { viewPort } from '@/utils/Viewport'
+import Viewport from '@/utils/Viewport'
 
 const MATRIX_FONT = 'normal 24px Martix Code NFI'
 const LINE_HEIGHT = 27
@@ -16,24 +16,26 @@ const OFFSET = 18
 
 interface MatrixRainProps {
   mobile?: boolean,
-  ratio?: number
+  ratio: number
 }
 
 export default defineComponent({
   name: 'MatrixRain',
 
-  setup (props: any) {
+  setup (props: MatrixRainProps) {
     let context: CanvasRenderingContext2D | null
     let canvas: HTMLCanvasElement | null
 
-    const height = window.innerHeight + 16
-    const width = window.innerWidth + 16
+    let height = window.innerHeight + 16
+    let width = window.innerWidth + 16
+
+    const screen = new Viewport()
     let lastUpdate = Date.now()
     const code = ref(null)
 
     let duration: number[] = []
     let visible: boolean[] = []
-    const chars: string[][] = []
+    let chars: string[][] = []
     let index: number[] = []
 
     let columns: number = 0
@@ -60,7 +62,7 @@ export default defineComponent({
       }
     }
 
-    /* const onResize = (): void => {
+    const onResize = (): void => {
       let _rows = rows
       let _columns = columns
 
@@ -106,7 +108,7 @@ export default defineComponent({
         chars = chars.slice(0, columnsLength)
         index = index.slice(0, indexLength)
       }
-    } */
+    }
 
     const animate = (): void => {
       frame = requestAnimationFrame(animate)
@@ -178,18 +180,26 @@ export default defineComponent({
         chars.push(column)
       }
 
+      watchEffect(() => {
+        width = screen.size.width / (props.ratio ?? 1)
+        height = screen.size.height
+        onResize()
+      })
+
       animate()
     })
 
     onBeforeUnmount(() => {
+      screen.dispose()
+
       setTimeout(() => {
         cancelAnimationFrame(frame)
       }, 3500)
     })
 
     return {
-      mobile: props.mobile || false,
-      ratio: props.ratio || 1,
+      mobile: props.mobile ?? false,
+      ratio: props.ratio ?? 1,
       code
     }
   }

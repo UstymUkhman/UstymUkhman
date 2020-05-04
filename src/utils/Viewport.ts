@@ -1,44 +1,70 @@
-// import { onMounted, onActivated, onDeactivated, onBeforeUnmount } from 'vue'
+import { reactive, toRefs } from 'vue'
 
-const videoViewPort = {
-  height: window.innerHeight,
-  width: window.innerWidth
+interface Size {
+  height: number
+  width: number
 }
 
-const viewPort = {
-  height: window.innerHeight,
-  width: window.innerWidth
-}
+export default class Viewport {
+  private readonly update: EventListener = this.updateSize.bind(this)
+  private readonly callback: Function | null = null;
 
-/* const updateViewPort = (): void => {
-  let height = window.innerHeight
-  let width = window.innerWidth
+  private readonly videoScreen: Size = reactive({
+    height: window.innerHeight,
+    width: window.innerWidth
+  })
 
-  if (window.innerWidth > window.innerHeight) {
-    height = window.innerWidth / 16 * 9
-  } else {
-    width = window.innerHeight / 9 * 16
+  private readonly screen: Size = reactive({
+    height: window.innerHeight,
+    width: window.innerWidth
+  })
+
+  constructor (callback?: Function) {
+    window.addEventListener('resize', this.update)
+    this.update(new CustomEvent('resize'))
+    this.callback = callback || null
   }
 
-  viewPort.height = window.innerHeight
-  viewPort.width = window.innerWidth
+  private updateSize (event: Event): void {
+    let height = window.innerHeight
+    let width = window.innerWidth
 
-  videoViewPort.height = height
-  videoViewPort.width = width
+    if (window.innerWidth > window.innerHeight) {
+      height = window.innerWidth / 16 * 9
+    } else {
+      width = window.innerHeight / 9 * 16
+    }
+
+    this.screen.height = window.innerHeight
+    this.screen.width = window.innerWidth
+
+    this.videoScreen.height = height
+    this.videoScreen.width = width
+
+    if (this.callback) {
+      this.callback(this.screen, this.videoScreen)
+    }
+  }
+
+  public dispose (): void {
+    window.removeEventListener('resize', this.update)
+  }
+
+  public get videoSize (): Size {
+    const videoSize = toRefs(this.videoScreen)
+
+    return {
+      height: videoSize.height.value,
+      width: videoSize.width.value
+    }
+  }
+
+  public get size (): Size {
+    const size = toRefs(this.screen)
+
+    return {
+      height: size.height.value,
+      width: size.width.value
+    }
+  }
 }
-
-const remove = (): void => {
-  window.removeEventListener('resize', updateViewPort)
-}
-
-const add = (): void => {
-  window.addEventListener('resize', updateViewPort)
-  updateViewPort()
-}
-
-onMounted(add)
-onActivated(add)
-onDeactivated(remove)
-onBeforeUnmount(remove) */
-
-export { viewPort, videoViewPort }
