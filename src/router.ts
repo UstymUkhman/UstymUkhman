@@ -8,6 +8,10 @@ export default createRouter({
     name: 'Home',
     path: '/'
   }, {
+    component: () => import(/* webpackChunkName: "404-page" */ '@pages/404.vue'),
+    path: '/404',
+    name: '404'
+  }, {
     redirect: { name: 'Home' },
     path: '/:catchAll(.*)'
   }],

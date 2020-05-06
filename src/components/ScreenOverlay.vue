@@ -11,16 +11,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import 'mixins';
+
 .screen-overlay {
   background-image: url('../assets/img/overlay.png');
   background-position: top left;
   background-repeat: repeat;
 
-  position: absolute;
+  @include absolute-size;
   z-index: $screen;
-
-  height: 100%;
-  width: 100%;
 
   bottom: 0;
   right: 0;

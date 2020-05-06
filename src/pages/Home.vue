@@ -1,8 +1,17 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="home-page" itemscope>
+    <!-- <ScreenAnimation v-if="visibleAnimation && !isPrerenderer" /> -->
+
     <!-- <transition appear name="matrix-rain">
       <MatrixRain v-if="matrixRain" :ratio="rainRatio" :mobile="isMobile" />
     </transition> -->
+
+    <!-- <router-view
+      @toggle:overlay="visibleOverlay = $event"
+      @toggle:rain="visibleRain = $event"
+      v-show="!visibleAnimation"
+      class="page"
+    /> -->
 
     <MatrixRain />
 

@@ -5,7 +5,7 @@ export interface Size {
   width: number
 }
 
-export default class Viewport {
+export class Viewport {
   private readonly update: EventListener = this.updateSize.bind(this)
   private readonly callback: Function | null = null
 

@@ -86,9 +86,7 @@ canvas {
   top: 0;
 
   .sound-particles-page & {
-    position: absolute;
-    height: 100%;
-    width: 100%;
+    @include absolute-size;
 
     padding: 0;
     margin: 0;
@@ -159,11 +157,8 @@ a {
 }
 
 .page {
+  @include absolute-size;
   box-sizing: border-box;
-  position: absolute;
-
-  height: 100%;
-  width: 100%;
 
   left: 0;
   top: 0;

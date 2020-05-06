@@ -230,3 +230,9 @@
     color: #66d9ef;
   }
 }
+
+@mixin absolute-size {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}

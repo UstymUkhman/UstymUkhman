@@ -6,26 +6,45 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+/* eslint-disable no-unused-vars */
+import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { white, green, lightGreen } from '@scss/variables.scss'
 
-// eslint-disable-next-line no-unused-vars
-import Viewport, { Size } from '@/utils/Viewport'
+import { Viewport, Size } from '@/utils/Viewport'
 import { randomInt } from '@/utils/number'
+/* eslint-enable no-unused-vars */
 
 const MATRIX_FONT = 'normal 24px Martix Code NFI'
 const LINE_HEIGHT = 27
 const OFFSET = 18
 
-interface MatrixRainProps {
-  mobile?: boolean,
+interface ComponentProps {
+  mobile: boolean,
   ratio: number
+}
+
+interface TemplateValues {
+  mobile: boolean
+  ratio: number
+  code: Ref
 }
 
 export default defineComponent({
   name: 'MatrixRain',
 
-  setup (props: MatrixRainProps) {
+  props: {
+    mobile: {
+      required: false,
+      default: false
+    },
+
+    ratio: {
+      required: false,
+      default: 1
+    }
+  },
+
+  setup (props: ComponentProps, ctx: SetupContext): TemplateValues {
     const getCharCode = (): string => {
       const code = Math.random() < 0.5 ? randomInt(33, 63) : randomInt(90, 126)
       return String.fromCharCode(code)
@@ -47,7 +66,7 @@ export default defineComponent({
       let _columns = columns
 
       height = size.height
-      width = size.width / (props.ratio ?? 1)
+      width = size.width / props.ratio
 
       canvas!.width = width
       canvas!.height = height
@@ -95,8 +114,8 @@ export default defineComponent({
 
     const animate = (): void => {
       frame = requestAnimationFrame(animate)
-      const now = Date.now()
 
+      const now = Date.now()
       if (now - lastUpdate < 50) return
 
       context!.clearRect(0, 0, canvas!.width, canvas!.height)
@@ -143,8 +162,8 @@ export default defineComponent({
     let canvas: HTMLCanvasElement | null
 
     const screen = new Viewport(onResize)
-    let height = window.innerHeight + 16
-    let width = window.innerWidth + 16
+    let height = screen.size.height + 16
+    let width = screen.size.width + 16
 
     let lastUpdate = Date.now()
     const code = ref(null)
@@ -194,8 +213,8 @@ export default defineComponent({
     })
 
     return {
-      mobile: props.mobile ?? false,
-      ratio: props.ratio ?? 1,
+      mobile: props.mobile,
+      ratio: props.ratio,
       code
     }
   }
@@ -203,6 +222,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import 'mixins';
+
 .rain-container {
   position: absolute;
   height: 100%;
@@ -213,18 +234,13 @@ export default defineComponent({
   }
 
   canvas {
-    position: absolute;
-    height: 100%;
-    width: 100%;
+    @include absolute-size;
     z-index: 0;
   }
 
   .mobile-overlay {
     background-color: rgba($black, 0.8);
-    position: absolute;
-
-    height: 100%;
-    width: 100%;
+    @include absolute-size;
   }
 }
 </style>
