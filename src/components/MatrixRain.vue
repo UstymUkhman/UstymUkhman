@@ -8,13 +8,12 @@
 <script lang="ts">
 /* eslint-disable no-unused-vars */
 import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
-import { white, green, lightGreen } from '@scss/variables.scss'
+import { matrixFont, lightGreen, green, white } from '@scss/variables.scss'
 
 import { Viewport, Size } from '@/utils/Viewport'
 import { randomInt } from '@/utils/number'
 /* eslint-enable no-unused-vars */
 
-const MATRIX_FONT = 'normal 24px Martix Code NFI'
 const LINE_HEIGHT = 27
 const OFFSET = 18
 
@@ -73,7 +72,7 @@ export default defineComponent({
 
       rows = Math.ceil(height / LINE_HEIGHT)
       columns = Math.ceil(width / OFFSET)
-      context!.font = MATRIX_FONT
+      context!.font = matrixFont
 
       _rows = Math.max(rows - _rows, 0)
       _columns = Math.max(columns - _columns, 0)
@@ -189,7 +188,7 @@ export default defineComponent({
       context!.fillStyle = `rgba(${green}, 1.0)`
       context!.shadowColor = `rgb(${green})`
       context!.textBaseline = 'middle'
-      context!.font = MATRIX_FONT
+      context!.font = matrixFont
       context!.shadowBlur = 5
 
       duration = Array.from(new Array(columns), d => randomInt(rows, 100))

@@ -1,9 +1,9 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="404-page" itemscope>
     <div class="numbers-container">
-      <transition name="numbers" appear>
-        <canvas ref="numbers"></canvas>
-      </transition>
+      <!-- <transition name="numbers" appear> -->
+      <canvas ref="numbers"></canvas>
+      <!-- </transition> -->
 
       <div v-if="mobile" class="mobile-overlay"></div>
     </div>
@@ -22,14 +22,12 @@
 /* eslint-disable no-unused-vars */
 import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import ScreenOverlay from '@components/ScreenOverlay.vue'
-import { Platform, firePrerenderEvent } from '@/utils'
+import { matrixFont, green } from '@scss/variables.scss'
 
+import { Platform, firePrerenderEvent } from '@/utils'
 import { Viewport, Size } from '@/utils/Viewport'
-import { green } from '@scss/variables.scss'
 import { randomInt } from '@/utils/number'
 /* eslint-enable no-unused-vars */
-
-const MATRIX_FONT = 'normal 24px Martix Code NFI'
 
 const COLUMN_OFFSET = 18
 const COLUMN_HEIGHT = 14
@@ -108,7 +106,7 @@ export default defineComponent({
       context!.shadowColor = `rgb(${green})`
       context!.fillStyle = `rgb(${green})`
       context!.textBaseline = 'middle'
-      context!.font = MATRIX_FONT
+      context!.font = matrixFont
       context!.shadowBlur = 5
     }
 
@@ -220,11 +218,11 @@ export default defineComponent({
   opacity: 0;
 }
 
-.numbers-enter-active {
+/* .numbers-enter-active {
   transition: opacity 50ms 500ms;
 }
 
 .numbers-enter-from {
   opacity: 0;
-}
+} */
 </style>

@@ -4,16 +4,23 @@ read -d '' sitemap << EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>$1</loc>
+    <loc>http://$1/</loc>
     <lastmod>$(date +'%Y-%m-%dT%H:%M:%S+00:00')</lastmod>
   </url>
 </urlset>
 EOF
 
+read -d '' robots << EOF
+User-agent: *
+Disallow: /static/
+Sitemap: http://$1/sitemap.xml
+EOF
+
+echo "$robots" > ./static/robots.txt
 echo "$sitemap" > ./static/sitemap.xml
 
 cp ./static/{browserconfig.xml,sitemap.xml,manifest.json,robots.txt} ./public/
-sftp -i ./bitnami.pem bitnami@54.93.165.244:htdocs/ << EOF
+sftp -i ./bitnami.pem bitnami@$1:htdocs/ << EOF
 put -r public/*
 
 exit

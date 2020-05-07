@@ -70,8 +70,10 @@ $rain   : 7;
 /* stylelint-disable property-no-unknown */
 
 :export {
-  // stylelint-disable-next-line property-case
+  /* stylelint-disable property-case */
+  matrixFont: unquote('normal 24px Martix Code NFI');
   lightGreen: unquote($light-green-code);
+  /* stylelint-enable property-case */
   green: unquote($green-code);
   white: unquote($white-code);
 
