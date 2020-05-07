@@ -1,13 +1,14 @@
 // const experiments = require('../src/assets/data/experiments.json')
 
 const routes = [
-  '/' // ,
+  '/',
   // '/about',
   // '/works',
   // '/contacts',
   // '/more',
   // '/hole',
   // '/experiments'
+  '/404'
 ]
 
 // for (let i = 0; i < experiments.length; i++) {

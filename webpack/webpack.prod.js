@@ -154,7 +154,11 @@ const webpackConfig = merge(baseConfig, {
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, '../static'),
       to: config.build.assetsSubDirectory,
-      ignore: ['.*', 'index.html']
+      ignore: [
+        'browserconfig.xml', 'sitemap.xml',
+        'manifest.json', 'robots.txt',
+        'index.html'
+      ]
     }])
   ]
 })

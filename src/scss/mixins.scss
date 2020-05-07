@@ -248,14 +248,17 @@
 @mixin center-transform {
   transform: translate(-50%, -50%);
   position: absolute;
+
   display: block;
   margin: auto;
+
   left: 50%;
   top: 50%;
 }
 
 @mixin absolute-size {
   position: absolute;
+
   height: 100%;
   width: 100%;
 }

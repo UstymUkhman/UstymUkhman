@@ -1,16 +1,18 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="404-page" itemscope>
     <div class="numbers-container">
-      <!-- <transition name="numbers" appear> -->
       <canvas ref="numbers"></canvas>
-      <!-- </transition> -->
+
+      <transition name="block">
+        <div v-if="block" class="block-overlay"></div>
+      </transition>
 
       <div v-if="mobile" class="mobile-overlay"></div>
     </div>
 
     <transition name="failure">
-      <div v-if="block" class="system-failure-container">
-        <span class="system-failure">System Failure</span>
+      <div v-if="block" class="system-failure">
+        <span>System Failure</span>
       </div>
     </transition>
 
@@ -55,7 +57,7 @@ export default defineComponent({
       updateNumbers()
 
       for (let i = 0, c = 1, length = chars.length; i < length; i++, c++) {
-        if (!(c % 10)) continue
+        if (skipColumns && !(c % 10)) continue
         const columnLength = chars[i].length
 
         for (let j = 0, x = i * LEFT_OFFSET; j < columnLength; j++) {
@@ -134,6 +136,7 @@ export default defineComponent({
     const screen = new Viewport(onResize)
     let { width, height } = screen.size
 
+    let skipColumns: boolean = false
     const numbers: Ref = ref(null)
     const block: Ref = ref(false)
 
@@ -149,7 +152,9 @@ export default defineComponent({
       firePrerenderEvent()
 
       frame = requestAnimationFrame(animate)
-      setTimeout(() => { block.value = true }, 3000)
+      setTimeout(() => { skipColumns = true }, 1500)
+      setTimeout(() => { block.value = true }, 4500)
+      setTimeout(() => { canvas!.style.opacity = '1' })
     })
 
     onBeforeUnmount(() => {
@@ -174,8 +179,17 @@ export default defineComponent({
   @include absolute-size;
 
   canvas {
+    transition: opacity 50ms 450ms;
     @include absolute-size;
+
+    opacity: 0;
     z-index: 0;
+  }
+
+  .block-overlay {
+    background-color: rgba($black, 0.5);
+    @include absolute-size;
+    opacity: 0;
   }
 
   .mobile-overlay {
@@ -184,14 +198,14 @@ export default defineComponent({
   }
 }
 
-.system-failure-container {
+.system-failure {
   border: solid 2px $energy-green;
   @include center-transform;
 
   padding: 5px 10px 3px;
   text-align: center;
 
-  .system-failure {
+  span {
     @include white-rabbit;
     text-shadow: $energy-green 0 0 10px;
 
@@ -211,18 +225,18 @@ export default defineComponent({
 }
 
 .failure-enter-active {
-  transition: opacity 250ms $ease-in-quart 500ms;
+  transition: opacity 100ms $ease-in-quart 750ms;
 }
 
 .failure-enter-from {
   opacity: 0;
 }
 
-/* .numbers-enter-active {
-  transition: opacity 50ms 500ms;
+.block-enter-active {
+  transition: opacity 400ms 300ms;
 }
 
-.numbers-enter-from {
-  opacity: 0;
-} */
+.block-enter-to {
+  opacity: 1 !important;
+}
 </style>

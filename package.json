@@ -11,7 +11,7 @@
     "lint:scss": "stylelint \"src/**/*.scss\" \"src/**/*.vue\"",
     "build:analyze": "node config/build.js --analyze",
     "build:gzip": "node config/build.js --gzip",
-    "server": "cd ./public && npx http-server",
+    "serve": "cd ./public && npx http-server",
     "lint:js": "eslint --ext .js,.vue src",
     "deploy": "./deploy.sh 54.93.165.244",
     "build": "node config/build.js"
