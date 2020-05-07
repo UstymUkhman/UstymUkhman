@@ -1,9 +1,18 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="404-page" itemscope>
     <div class="numbers-container">
-      <canvas ref="numbers"></canvas>
+      <transition name="numbers" appear>
+        <canvas ref="numbers"></canvas>
+      </transition>
+
       <div v-if="mobile" class="mobile-overlay"></div>
     </div>
+
+    <transition name="failure">
+      <div v-if="block" class="system-failure-container">
+        <span class="system-failure">System Failure</span>
+      </div>
+    </transition>
 
     <ScreenOverlay v-if="!prerenderer" />
   </article>
@@ -30,9 +39,9 @@ const LINE_HEIGHT = 25.6
 
 interface TemplateValues {
   prerenderer: boolean
+  block: Ref<boolean>
+  numbers: Ref<null>
   mobile: boolean
-  numbers: Ref
-  block: Ref
 }
 
 export default defineComponent({
@@ -44,9 +53,6 @@ export default defineComponent({
 
   setup (): TemplateValues {
     const animate = (): void => {
-      frame = requestAnimationFrame(animate)
-      if (block.value) return
-
       context!.clearRect(0, 0, width, height)
       updateNumbers()
 
@@ -58,10 +64,12 @@ export default defineComponent({
           context!.fillText(chars[i][j], x, j * LINE_HEIGHT + 12)
         }
       }
+
+      frame = requestAnimationFrame(animate)
     }
 
     const updateNumbers = (): void => {
-      for (let i = 0, length = chars.length; i < length; i++) {
+      for (let i = 0, length = chars.length; !block.value && i < length; i++) {
         const columnLength = chars[i].length
 
         for (let j = 0; j < columnLength; j++) {
@@ -73,8 +81,13 @@ export default defineComponent({
     }
 
     const fillColumns = (): void => {
-      const columns = Math.ceil(width / COLUMN_OFFSET)
-      chars = []
+      let columns = Math.ceil(width / COLUMN_OFFSET)
+
+      if (block.value) {
+        columns = Math.max(columns - chars.length, 0)
+      } else {
+        chars = []
+      }
 
       for (let i = 0; i < columns; i++) {
         const length = Math.round(height / COLUMN_HEIGHT)
@@ -123,8 +136,8 @@ export default defineComponent({
     const screen = new Viewport(onResize)
     let { width, height } = screen.size
 
-    const numbers = ref(null)
-    const block = ref(false)
+    const numbers: Ref = ref(null)
+    const block: Ref = ref(false)
 
     let frame: number = 0
     let chars: string[][]
@@ -136,7 +149,8 @@ export default defineComponent({
       fillColumns()
       setCanvasStyle()
       firePrerenderEvent()
-      requestAnimationFrame(animate)
+
+      frame = requestAnimationFrame(animate)
       setTimeout(() => { block.value = true }, 3000)
     })
 
@@ -158,9 +172,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 @import 'mixins';
 
-// System Failure easing:
-// $ease-in-quart
-
 .numbers-container {
   @include absolute-size;
 
@@ -175,11 +186,45 @@ export default defineComponent({
   }
 }
 
-// .matrix-rain-leave-active {
-//   transition: opacity 3.5s;
-// }
+.system-failure-container {
+  border: solid 2px $energy-green;
+  @include center-transform;
 
-// .matrix-rain-leave-to {
-//   opacity: 0;
-// }
+  padding: 5px 10px 3px;
+  text-align: center;
+
+  .system-failure {
+    @include white-rabbit;
+    text-shadow: $energy-green 0 0 10px;
+
+    text-transform: uppercase;
+    vertical-align: middle;
+    text-align: center;
+    color: $fade-green;
+
+    position: relative;
+    line-height: 26px;
+    font-size: 24px;
+
+    display: table;
+    width: 100%;
+    left: 0;
+  }
+}
+
+.failure-enter-active {
+  transition: opacity 250ms $ease-in-quart 500ms;
+}
+
+.failure-enter-from {
+  opacity: 0;
+}
+
+.numbers-enter-active {
+  transition: opacity 50ms 500ms;
+}
+
+.numbers-enter-from {
+  opacity: 0;
+}
 </style>

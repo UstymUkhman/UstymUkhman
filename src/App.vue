@@ -29,8 +29,8 @@ export default defineComponent({
   },
 
   setup (props) {
-    console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
-    console.table(props)
+    // console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
+    // console.table(props)
 
     return {
       prerender: Platform.prerender
@@ -86,15 +86,10 @@ canvas {
   top: 0;
 
   .sound-particles-page & {
-    @include absolute-size;
+    @include center-size;
 
     padding: 0;
     margin: 0;
-
-    bottom: 0;
-    right: 0;
-    left: 0;
-    top: 0;
   }
 
   .color-grading-page & {
@@ -173,7 +168,7 @@ article.image-drawer-js-page .code-container .code-preview {
   transition: opacity 0.5s;
 }
 
-.v-enter,
+.v-enter-from,
 .v-leave-to {
   opacity: 0;
 }

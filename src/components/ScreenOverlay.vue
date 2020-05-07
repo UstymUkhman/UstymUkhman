@@ -18,13 +18,8 @@ export default defineComponent({
   background-position: top left;
   background-repeat: repeat;
 
-  @include absolute-size;
+  @include center-size;
   z-index: $screen;
-
-  bottom: 0;
-  right: 0;
-  left: 0;
-  top: 0;
 
   @include breakpoint($sm-down) {
     pointer-events: none;

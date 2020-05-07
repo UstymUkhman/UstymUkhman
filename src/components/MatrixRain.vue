@@ -24,9 +24,9 @@ interface ComponentProps {
 }
 
 interface TemplateValues {
+  code: Ref<null>
   mobile: boolean
   ratio: number
-  code: Ref
 }
 
 export default defineComponent({
