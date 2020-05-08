@@ -225,7 +225,7 @@ export default defineComponent({
 }
 
 .failure-enter-active {
-  transition: opacity 100ms $ease-in-quart 750ms;
+  transition: opacity 100ms $ease-in-quart 600ms;
 }
 
 .failure-enter-from {
@@ -233,7 +233,7 @@ export default defineComponent({
 }
 
 .block-enter-active {
-  transition: opacity 400ms 300ms;
+  transition: opacity 300ms 300ms;
 }
 
 .block-enter-to {
