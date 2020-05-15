@@ -1,7 +1,5 @@
-var html = window.document.getElementById('html-element')
+'use strict';
 
-if (/PhantomJS/.test(window.navigator.userAgent)) {
-  html.className = 'no-js'
-} else {
-  html.className = html.className.split('no-js').join('')
+if (!/PhantomJS/.test(window.navigator.userAgent)) {
+  document.children[0].className = '';
 }

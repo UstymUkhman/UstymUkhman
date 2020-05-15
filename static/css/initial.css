@@ -1,0 +1,100 @@
+.not-supported-msg {
+  background-color: #000;
+  text-align: center;
+
+  position: absolute;
+  cursor: default;
+
+  height: 100%;
+  width: 100%;
+}
+
+.not-supported-msg .not-supported-msg-copy {
+  font-family: 'White Rabbit', monospace;
+  position: absolute;
+
+  max-width: 80%;
+  color: #0c0;
+  margin: auto;
+
+  height: 65px;
+  width: 100%;
+
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 0;
+}
+
+.not-supported-msg .not-supported-msg-copy strong {
+  text-transform: uppercase;
+  margin-bottom: 20px;
+
+  letter-spacing: 5px;
+  line-height: 25px;
+
+  font-size: 20px;
+  display: block;
+}
+
+.not-supported-msg .not-supported-msg-copy span {
+  letter-spacing: 3px;
+  line-height: 20px;
+  font-size: 16px;
+}
+
+.no-js .not-supported-msg,
+.no-es5object .not-supported-msg,
+.no-csstransforms3d .not-supported-msg {
+  display: block !important;
+}
+
+.no-js #app,
+.no-es5object #app,
+.no-csstransforms3d #app {
+  display: none !important;
+}
+
+.no-js body,
+.no-es5object body,
+.no-csstransforms3d body {
+  overflow: hidden;
+  height: 100%;
+
+  padding: 0;
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .not-supported-msg .not-supported-msg-copy {
+    height: 120px;
+    width: 90%;
+  }
+
+  .not-supported-msg .not-supported-msg-copy strong {
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 767px) {
+  .not-supported-msg .not-supported-msg-copy {
+    max-width: 95%;
+    height: 130px;
+    width: 95%;
+  }
+
+  .not-supported-msg .not-supported-msg-copy strong {
+    margin: 0 auto 25px;
+    max-width: 285px;
+    font-size: 18px;
+  }
+
+  .not-supported-msg .not-supported-msg-copy span {
+    line-height: 18px;
+    max-width: 330px;
+    font-size: 14px;
+
+    display: block;
+    margin: 0 auto;
+  }
+}
