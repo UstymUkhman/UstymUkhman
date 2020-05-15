@@ -1,25 +1,12 @@
-import modernizr from 'modernizr'
-const MobileDetect = require('mobile-detect')
-const md = new MobileDetect(window.navigator.userAgent)
-
-const Platform: any = {
-  mobile: !!md.mobile(),
-  tablet: !!md.tablet(),
-  phone: !!md.phone(),
-
-  ios: !!md.is('iOS'),
-  ipad: !!md.is('iPad'),
-  iphone: !!md.is('iPhone'),
-  android: !!md.is('AndroidOS'),
-  wphone: !!md.is('WindowsPhoneOS'),
-
-  firefox: md.version('Gecko') > 1,
-  edge: !!/Edge\/\d+/i.test(window.navigator.userAgent),
-  ie11: !!/Trident.*rv:11\./i.test(window.navigator.userAgent),
-  chrome: /Chrome/.test(window.navigator.userAgent) && /Google Inc/.test(window.navigator.vendor),
-  safari: /Safari/.test(window.navigator.userAgent) && /Apple Computer/.test(window.navigator.vendor),
-  isIE: window.navigator.userAgent.match(/MSIE 10/i) || !!/Trident.*rv:11\./i.test(window.navigator.userAgent)
-}
+import Rain from './Rain'
+import wheel from './Wheel'
+import Sounds from './Sounds'
+import Loading from './Loading'
+import Platform from './Platform'
+import * as Number from './Number'
+import * as String from './String'
+import Lettering from './Lettering'
+import { Viewport, Size } from './Viewport'
 
 let userLanguage: string = 'en'
 const navigator: any = window.navigator
@@ -29,14 +16,7 @@ if (navigator && navigator.userLanguage) {
   userLanguage = navigator.userLanguage
 }
 
-for (const key in Platform) {
-  modernizr.addTest(key, () => {
-    return Platform[key]
-  })
-}
-
 export const language = mainLanguage || navigator.language || userLanguage
-Platform.prerender = (window as any).__PRERENDER_INJECTED !== undefined
 
 const firePrerenderEvent = () => {
   if (Platform.prerender) {
@@ -46,4 +26,14 @@ const firePrerenderEvent = () => {
   }
 }
 
-export { Platform, firePrerenderEvent }
+export {
+  firePrerenderEvent,
+  Viewport, Size,
+  Number, String,
+  Lettering,
+  Platform,
+  Loading,
+  Sounds,
+  wheel,
+  Rain
+}

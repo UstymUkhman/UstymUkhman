@@ -1,5 +1,4 @@
-import Sounds from '@/utils/Sounds'
-import { Platform } from '@/utils'
+import { Sounds, Platform } from '@/utils'
 
 export default class Loading {
   private static readonly routes = ['About', 'Works', 'Contacts']

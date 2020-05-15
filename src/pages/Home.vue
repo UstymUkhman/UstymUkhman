@@ -22,10 +22,9 @@
 <script lang="ts">
 // import ScreenAnimation from '@components/ScreenAnimation.vue'
 import ScreenOverlay from '@components/ScreenOverlay.vue'
-import { Platform, firePrerenderEvent } from '@/utils'
+import { firePrerenderEvent, Platform } from '@/utils'
 import MatrixRain from '@components/MatrixRain.vue'
 import { defineComponent, onMounted } from 'vue'
-// import { viewPort } from '@/utils/Viewport'
 
 export default defineComponent({
   name: 'Home',

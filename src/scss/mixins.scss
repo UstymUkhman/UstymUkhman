@@ -217,20 +217,6 @@
   }
 }
 
-@mixin code-editor {
-  span.number {
-    color: #ae81ff;
-  }
-
-  span.string {
-    color: #e6db74;
-  }
-
-  span.function {
-    color: #66d9ef;
-  }
-}
-
 @mixin center-size ($width: 100%, $height: 100%) {
   position: absolute;
   display: block;

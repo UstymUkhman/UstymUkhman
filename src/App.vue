@@ -158,10 +158,6 @@ a {
   top: 0;
 }
 
-article.image-drawer-js-page .code-container .code-preview {
-  @include code-editor;
-}
-
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s;

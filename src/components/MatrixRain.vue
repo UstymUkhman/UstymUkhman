@@ -9,9 +9,7 @@
 /* eslint-disable no-unused-vars */
 import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { matrixFont, lightGreen, green, white } from '@scss/variables.scss'
-
-import { Viewport, Size } from '@/utils/Viewport'
-import { randomInt } from '@/utils/number'
+import { Number, Viewport, Size } from '@/utils'
 /* eslint-enable no-unused-vars */
 
 const LINE_HEIGHT = 27
@@ -45,7 +43,7 @@ export default defineComponent({
 
   setup (props: ComponentProps, ctx: SetupContext): TemplateValues {
     const getCharCode = (): string => {
-      const code = Math.random() < 0.5 ? randomInt(33, 63) : randomInt(90, 126)
+      const code = Math.random() < 0.5 ? Number.randomInt(33, 63) : Number.randomInt(90, 126)
       return String.fromCharCode(code)
     }
 
@@ -55,7 +53,7 @@ export default defineComponent({
 
     const updateVisibleColumns = (): void => {
       if (visible.includes(false)) {
-        const int = randomInt(0, columns)
+        const int = Number.randomInt(0, columns)
         visible[int] = Math.random() < 0.5 || visible[int]
       }
     }
@@ -78,7 +76,7 @@ export default defineComponent({
       _columns = Math.max(columns - _columns, 0)
 
       if (_rows > 0 || _columns > 0) {
-        const _duration = Array.from(new Array(_columns), d => randomInt(rows, 100))
+        const _duration = Array.from(new Array(_columns), d => Number.randomInt(rows, 100))
         const _visible = Array.from(new Array(_columns), v => false)
         const _index = Array.from(new Array(_columns), i => 0)
 
@@ -138,7 +136,7 @@ export default defineComponent({
           }
 
           if (alpha === 0) {
-            duration[i] = randomInt(rows, 100)
+            duration[i] = Number.randomInt(rows, 100)
             index[i] = 0
           }
 
@@ -191,7 +189,7 @@ export default defineComponent({
       context!.font = matrixFont
       context!.shadowBlur = 5
 
-      duration = Array.from(new Array(columns), d => randomInt(rows, 100))
+      duration = Array.from(new Array(columns), d => Number.randomInt(rows, 100))
       visible = Array.from(new Array(columns), v => false)
       index = Array.from(new Array(columns), i => 0)
 
