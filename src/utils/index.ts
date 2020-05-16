@@ -1,6 +1,7 @@
 import Rain from './Rain'
 import wheel from './Wheel'
 import Sounds from './Sounds'
+import { readonly } from 'vue'
 import Loading from './Loading'
 import Platform from './Platform'
 import * as Number from './Number'
@@ -26,6 +27,11 @@ const firePrerenderEvent = () => {
   }
 }
 
+const PI = readonly({
+  m2: Math.PI * 2,
+  d2: Math.PI / 2
+})
+
 export {
   firePrerenderEvent,
   Viewport, Size,
@@ -35,5 +41,6 @@ export {
   Loading,
   Sounds,
   wheel,
-  Rain
+  Rain,
+  PI
 }

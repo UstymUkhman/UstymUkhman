@@ -30,6 +30,7 @@ export default defineComponent({
   name: 'Home',
 
   components: {
+    // ScreenAnimation,
     ScreenOverlay,
     MatrixRain
   },
