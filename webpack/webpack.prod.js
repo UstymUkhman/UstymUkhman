@@ -34,7 +34,7 @@ const webpackConfig = merge(baseConfig, {
   },
 
   output: {
-    chunkFilename: utils.assetsPath('js/[id].[chunkhash].js'),
+    chunkFilename: utils.assetsPath('js/[name].[chunkhash].js'),
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     path: config.build.assetsRoot
   },

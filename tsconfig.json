@@ -7,9 +7,9 @@
     "importHelpers": true,
     "noImplicitAny": true,
 
+    "module": "esnext",
     "sourceMap": true,
     "jsx": "preserve",
-    "module": "amd",
     "target": "es5",
     "allowJs": true,
     "baseUrl": ".",
