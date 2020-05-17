@@ -11,6 +11,3 @@ declare module '*.json' {
 }
 
 declare module '*.scss'
-declare module 'vue-router'
-// declare module 'lodash.find'
-// declare module 'vue-event-handler'
