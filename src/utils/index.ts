@@ -8,7 +8,9 @@ import * as Number from './Number'
 import * as String from './String'
 import Lettering from './Lettering'
 import firePrerender from './Prerender'
+import { JSONLoader } from './JSONLoader'
 import { Viewport, Size } from './Viewport'
+import ScrollObserver from './ScrollObserver'
 
 let userLanguage: string = 'en'
 const navigator: any = window.navigator
@@ -18,7 +20,7 @@ if (navigator && navigator.userLanguage) {
   userLanguage = navigator.userLanguage
 }
 
-export const language = mainLanguage || navigator.language || userLanguage
+const language = mainLanguage || navigator.language || userLanguage
 
 const PI = readonly({
   m2: Math.PI * 2,
@@ -28,9 +30,12 @@ const PI = readonly({
 export {
   Viewport, Size,
   Number, String,
+  ScrollObserver,
   firePrerender,
+  JSONLoader,
   Lettering,
   Platform,
+  language,
   Loading,
   Sounds,
   wheel,

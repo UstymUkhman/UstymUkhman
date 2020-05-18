@@ -4097,6 +4097,11 @@ interpret@1.2.0, interpret@^1.0.0, interpret@^1.2.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
   integrity sha512-mT34yGKMNceBQUoVn7iCDKDntA7SC6gycMAWzGx1z/CMCTV7b2AAtXlo3nRyHZ1FelRkQbQjprHSYGwzLtkVbw==
 
+intersection-observer@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/intersection-observer/-/intersection-observer-0.10.0.tgz#4d11d63c1ff67e21e62987be24d55218da1a1a69"
+  integrity sha512-fn4bQ0Xq8FTej09YC/jqKZwtijpvARlRp6wxL5WTA6yPe2YWSJ5RJh7Nm79rK2qB0wr6iDQzH60XGq5V/7u8YQ==
+
 invert-kv@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
@@ -5494,6 +5499,11 @@ object-copy@^0.1.0:
     define-property "^0.2.5"
     kind-of "^3.0.3"
 
+object-fit-images@^3.2.4:
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/object-fit-images/-/object-fit-images-3.2.4.tgz#6c299d38fdf207746e5d2d46c2877f6f25d15b52"
+  integrity sha512-G+7LzpYfTfqUyrZlfrou/PLLLAPNC52FTy5y1CBywX+1/FkxIloOyQXBmZ3Zxa2AWO+lMF0JTuvqbr7G5e5CWg==
+
 object-hash@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-2.0.3.tgz#d12db044e03cd2ca3d77c0570d87225b02e1e6ea"
@@ -6885,6 +6895,11 @@ regexpu-core@^4.6.0:
     regjsparser "^0.6.4"
     unicode-match-property-ecmascript "^1.0.4"
     unicode-match-property-value-ecmascript "^1.2.0"
+
+register-service-worker@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/register-service-worker/-/register-service-worker-1.7.1.tgz#6308347ac6c0af0f6c0b22ea5d59d25e836bc932"
+  integrity sha512-IdTfUZ4u8iJL8o1w8es8l6UMGPmkwHolUdT+UmM1UypC80IB4KbpuIlvwWVj8UDS7eJwkEYRcKRgfRX+oTmJsw==
 
 regjsgen@^0.5.1:
   version "0.5.1"

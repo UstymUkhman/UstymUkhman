@@ -18,7 +18,10 @@
   },
   "dependencies": {
     "breakpoint-sass": "^2.7.1",
+    "intersection-observer": "^0.10.0",
     "mobile-detect": "^1.4.4",
+    "object-fit-images": "^3.2.4",
+    "register-service-worker": "^1.7.1",
     "three": "^0.116.1",
     "vue": "next",
     "vue-router": "next"

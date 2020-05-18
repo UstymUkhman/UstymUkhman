@@ -1,3 +1,7 @@
+import 'object-fit-images'
+import 'intersection-observer'
+import '@/utils/ServiceWorker'
+
 import App from '@/App.vue'
 import router from '@/router'
 import { createApp } from 'vue'

@@ -112,7 +112,7 @@ module.exports = {
     // 'dom/dataset',
     // 'dom/documentfragment',
     // 'dom/hidden',
-    'dom/intersectionobserver',
+    // 'dom/intersectionobserver',
     // 'dom/microdata',
     // 'dom/mutationObserver',
     // 'dom/passiveeventlisteners',
