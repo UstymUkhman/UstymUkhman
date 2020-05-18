@@ -1,4 +1,4 @@
-// const experiments = require('../src/assets/data/experiments.json')
+const experiments = require('../src/assets/data/experiments.json')
 
 const routes = [
   '/',
@@ -11,8 +11,8 @@ const routes = [
   '/404'
 ]
 
-// for (let i = 0; i < experiments.length; i++) {
-//   routes.push(`/experiments/${experiments[i].route}`)
-// }
+experiments.forEach(experiment => {
+  routes.push(`/experiments/${experiment.route}`)
+})
 
 module.exports = routes

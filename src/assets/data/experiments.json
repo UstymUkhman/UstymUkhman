@@ -1,43 +1,12 @@
 [
   {
-    "github": "https://github.com/UstymUkhman/webDOOM",
-    "route": "webDOOM",
-    "name": "webDOOM"
-  },
-  {
-    "github": "https://github.com/UstymUkhman/video-transition",
-    "route": "VideoTransition",
-    "name": "VideoTransition"
-  },
-  {
-    "github": "https://github.com/UstymUkhman/color-grading",
-    "route": "ColorGrading",
-    "name": "ColorGrading"
-  },
-  {
-    "github": "https://github.com/UstymUkhman/fbo-particles",
-    "route": "FBOParticles",
-    "name": "FBOParticles"
-  },
-  {
-    "github": "https://github.com/UstymUkhman/VideoGlitch",
-    "route": "VideoGlitch",
-    "name": "VideoGlitch"
-  },
-  {
-    "github": "https://github.com/UstymUkhman/SoundParticles",
-    "route": "SoundParticles",
-    "name": "SoundParticles"
-  },
-  {
-    "github": "https://github.com/UstymUkhman/ImageDrawer.js",
-    "code": "/static/downloads/ImageDrawer.zip",
-    "route": "ImageDrawerJs",
-    "name": "ImageDrawer.js"
-  },
-  {
+    "page": "https://ustymukhman.github.io/Dynamic.css/public/",
     "github": "https://github.com/UstymUkhman/Dynamic.css",
-    "code": "/static/downloads/DynamicCSS.zip",
+    "description": "Awesome Library of CSS3 animations.",
+
+    "image": "DynamicCss.jpg",
+    "video": "DynamicCss.mp4",
+
     "route": "DynamicCss",
     "name": "Dynamic.css"
   }
