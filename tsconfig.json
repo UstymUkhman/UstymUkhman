@@ -15,15 +15,6 @@
     "baseUrl": ".",
     "strict": true,
 
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-
-    // "types": [
-    //   "webpack-env",
-    //   "vue-meta"
-    // ],
-
     "paths": {
       "@postprocessing/*": ["node_modules/three/examples/jsm/postprocessing/*"],
       "@controls/*": ["node_modules/three/examples/jsm/controls/*"],
@@ -37,6 +28,10 @@
       "@scss/*": ["src/scss/*"],
       "@/*": ["src/*"]
     },
+
+    "typeRoots": [
+      "node_modules/@types"
+    ],
 
     "lib": [
       "dom.iterable",

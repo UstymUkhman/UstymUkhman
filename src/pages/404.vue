@@ -22,8 +22,8 @@
 
 <script lang="ts">
 /* eslint-disable no-unused-vars */
-import { firePrerenderEvent, Platform, Number, Viewport, Size } from '@/utils'
 import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+import { firePrerender, Platform, Number, Viewport, Size } from '@/utils'
 /* eslint-enable no-unused-vars */
 
 import ScreenOverlay from '@components/ScreenOverlay.vue'
@@ -147,7 +147,11 @@ export default defineComponent({
 
       fillColumns()
       setCanvasStyle()
-      firePrerenderEvent()
+
+      firePrerender({
+        title: 'System Failure',
+        fullTitle: true
+      })
 
       frame = requestAnimationFrame(animate)
       setTimeout(() => { skipColumns = true }, 1500)

@@ -7,6 +7,7 @@ import Platform from './Platform'
 import * as Number from './Number'
 import * as String from './String'
 import Lettering from './Lettering'
+import firePrerender from './Prerender'
 import { Viewport, Size } from './Viewport'
 
 let userLanguage: string = 'en'
@@ -19,23 +20,15 @@ if (navigator && navigator.userLanguage) {
 
 export const language = mainLanguage || navigator.language || userLanguage
 
-const firePrerenderEvent = () => {
-  if (Platform.prerender) {
-    setTimeout(() => {
-      document.dispatchEvent(new Event('custom-post-render-event'))
-    }, 1000)
-  }
-}
-
 const PI = readonly({
   m2: Math.PI * 2,
   d2: Math.PI / 2
 })
 
 export {
-  firePrerenderEvent,
   Viewport, Size,
   Number, String,
+  firePrerender,
   Lettering,
   Platform,
   Loading,

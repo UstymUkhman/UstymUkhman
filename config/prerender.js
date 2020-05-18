@@ -7,7 +7,7 @@ const routes = [
   // '/contacts',
   // '/more',
   // '/hole',
-  // '/experiments'
+  '/experiments',
   '/404'
 ]
 

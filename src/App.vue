@@ -5,8 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent /*, computed */ } from 'vue'
-// import { useRoute } from 'vue-router'
+import { defineComponent } from 'vue'
 import { Platform } from '@/utils'
 
 export default defineComponent({
@@ -30,58 +29,12 @@ export default defineComponent({
   },
 
   setup (props) {
-    // const route = useRoute()
-
     console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
-
-    /* const location = computed(() => {
-      const { matched, ...rest } = route
-      return rest
-    }) */
 
     return {
       prerender: Platform.prerender
     }
   }
-
-  /* metaInfo () {
-    return {
-      title: ' ',
-      base: { href: '/' },
-      titleTemplate: '%s Ustym Ukhman',
-
-      meta: [
-        { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
-        { name: 'fragment', content: '!' },
-
-        { name: 'theme-color', content: '#00CC00' },
-        { name: 'mobile-web-app-capable', content: 'yes' },
-        { name: 'apple-mobile-web-app-capable', content: 'yes' },
-
-        { name: 'msapplication-tap-highlight', content: 'no' },
-        { name: 'msapplication-TileColor', content: '#00CC00' },
-        { name: 'msapplication-TileImage', content: '/ms-icon-144x144.png' },
-
-        { vmid: 'ogtype', property: 'og:type', content: 'website' },
-        { vmid: 'twittercard', name: 'twitter:card', content: 'summary_large_image' },
-
-        { vmid: 'twittertitle', name: 'twitter:title', content: 'Ustym Ukhman' },
-        { vmid: 'ogtitle', property: 'og:title', itemprop: 'name', content: 'Ustym Ukhman' },
-
-        // { vmid: 'ogurl', property: 'og:url', content: `${window.location.origin}${location.fullPath}` },
-        { vmid: 'ogimage', property: 'og:image', content: `${window.location.origin}/static/img/share.jpg` },
-        { vmid: 'twitterimage', name: 'twitter:image', content: `${window.location.origin}/static/img/share.jpg` },
-
-        { vmid: 'description', name: 'description', content: 'Hi, I\'m a front-end web developer and this is my personal website.' },
-        { vmid: 'ogdescription', property: 'og:description', content: 'Hi, I\'m a front-end web developer and this is my personal website.' },
-        { vmid: 'twitterdescription', name: 'twitter:description', content: 'Hi, I\'m a front-end web developer and this is my personal website.' }
-      ],
-
-      htmlAttrs: {
-        lang: 'en-us'
-      }
-    }
-  } */
 })
 </script>
 

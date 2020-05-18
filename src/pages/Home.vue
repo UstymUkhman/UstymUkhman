@@ -22,8 +22,8 @@
 <script lang="ts">
 // import ScreenAnimation from '@components/ScreenAnimation.vue'
 import ScreenOverlay from '@components/ScreenOverlay.vue'
-import { firePrerenderEvent, Platform } from '@/utils'
 import MatrixRain from '@components/MatrixRain.vue'
+import { firePrerender, Platform } from '@/utils'
 import { defineComponent, onMounted } from 'vue'
 
 export default defineComponent({
@@ -57,7 +57,7 @@ export default defineComponent({
       //   setTimeout(() => { this.visibleRain = true }, 500)
       // }
 
-      firePrerenderEvent()
+      firePrerender({})
     })
 
     return {

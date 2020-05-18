@@ -10,7 +10,7 @@
 
 <script lang="ts">
 import ScreenOverlay from '@components/ScreenOverlay.vue'
-import { firePrerenderEvent, Platform } from '@/utils'
+import { firePrerender, Platform } from '@/utils'
 import { defineComponent, onMounted } from 'vue'
 
 export default defineComponent({
@@ -21,8 +21,8 @@ export default defineComponent({
   },
 
   setup () {
+    onMounted(() => { firePrerender({ title: 'Experiments' }) })
     const isPrerenderer = Platform.prerenderer
-    onMounted(firePrerenderEvent)
     return { isPrerenderer }
   }
 })
