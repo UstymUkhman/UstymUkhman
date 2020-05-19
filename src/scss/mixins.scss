@@ -12,30 +12,19 @@
 
 /* stylelint-enable value-keyword-case */
 
-@mixin desktop-hover {
-  html.no-mobile & {
-    &:hover {
-      @content;
-    }
+@mixin object-fit ($fit: fill, $position: null) {
+  -o-object-fit: $fit;
+  object-fit: $fit;
+
+  @if $position {
+    font-family: 'object-fit: #{$fit}; object-position: #{$position}';
+    -o-object-position: $position;
+    object-position: $position;
   }
-}
 
-@mixin ie-specific {
-  html.ie & {
-    @content;
+  @else {
+    font-family: 'object-fit: #{$fit}';
   }
-}
-
-@mixin martix-code-nfi {
-  font-family: 'Martix Code NFI', monospace;
-  font-size: 30px;
-  color: $green;
-}
-
-@mixin white-rabbit {
-  font-family: 'White Rabbit', monospace;
-  font-size: 18px;
-  color: $green;
 }
 
 @mixin console-button ($border-size: 3px) {
@@ -247,4 +236,30 @@
 
   height: 100%;
   width: 100%;
+}
+
+@mixin martix-code-nfi {
+  font-family: 'Martix Code NFI', monospace;
+  font-size: 30px;
+  color: $green;
+}
+
+@mixin white-rabbit {
+  font-family: 'White Rabbit', monospace;
+  font-size: 18px;
+  color: $green;
+}
+
+@mixin desktop-hover {
+  html.no-mobile & {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+@mixin ie-specific {
+  html.ie & {
+    @content;
+  }
 }

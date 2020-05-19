@@ -1,13 +1,41 @@
-[
-  {
-    "page": "https://ustymukhman.github.io/Dynamic.css/public/",
-    "github": "https://github.com/UstymUkhman/Dynamic.css",
-    "description": "Awesome Library of CSS3 animations.",
+[{
+  "description": "Classic DOOM recompiled with WebAssembly.",
+  "page": "https://ustymukhman.github.io/webDOOM/public/",
+  "github": "https://github.com/UstymUkhman/webDOOM",
 
-    "image": "DynamicCss.jpg",
-    "video": "DynamicCss.mp4",
+  "image": "webDOOM.jpg",
+  "video": "webDOOM.mp4",
 
-    "route": "DynamicCss",
-    "name": "Dynamic.css"
-  }
-]
+  "route": "webDOOM",
+  "name": "webDOOM"
+}, {
+  "page": "https://ustymukhman.github.io/Dynamic.css/public/",
+  "github": "https://github.com/UstymUkhman/Dynamic.css",
+  "description": "Awesome Library of CSS3 animations.",
+
+  "image": "DynamicCss.jpg",
+  "video": "DynamicCss.mp4",
+
+  "route": "DynamicCss",
+  "name": "Dynamic.css"
+}, {
+  "page": "https://ustymukhman.github.io/FaceMasking/public/",
+  "github": "https://github.com/UstymUkhman/FaceMasking",
+  "description": "Real-time webcam face masking.",
+
+  "image": "FaceMasking.jpg",
+  "video": "FaceMasking.mp4",
+
+  "route": "FaceMasking",
+  "name": "FaceMasking"
+}, {
+  "page": "https://ustymukhman.github.io/ImageDrawer.js/public/",
+  "description": "A jQuery plugin to animate a drawing image.",
+  "github": "https://github.com/UstymUkhman/ImageDrawer.js",
+
+  "image": "ImageDrawer.jpg",
+  "video": "ImageDrawer.mp4",
+
+  "name": "ImageDrawer.js",
+  "route": "ImageDrawer"
+}]

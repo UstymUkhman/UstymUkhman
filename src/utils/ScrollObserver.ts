@@ -1,20 +1,20 @@
-interface IntersectionObserverOptions extends IntersectionObserverInit {
+interface ScrollObserverOptions extends IntersectionObserverInit {
   visibleClass?: string
 }
 
 export default class {
   private observer: IntersectionObserver
+  private observerOptions: ScrollObserverOptions
   private onIntersect: IntersectionObserverCallback
-  private observerOptions: IntersectionObserverOptions
 
-  private readonly defaultOptions: IntersectionObserverOptions = {
+  private readonly defaultOptions: ScrollObserverOptions = {
     visibleClass: 'visible',
     rootMargin: '0px',
     root: undefined,
     threshold: 0
   }
 
-  constructor (callback?: IntersectionObserverCallback, options?: IntersectionObserverOptions) {
+  constructor (callback?: IntersectionObserverCallback, options?: ScrollObserverOptions) {
     this.onIntersect = typeof callback === 'function' ? callback : this.defaultCallback
     this.observerOptions = { ...this.defaultOptions, ...options }
 

@@ -1,4 +1,3 @@
-import 'object-fit-images'
 import 'intersection-observer'
 import '@/utils/ServiceWorker'
 

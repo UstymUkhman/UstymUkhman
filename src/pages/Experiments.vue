@@ -12,6 +12,7 @@
 import ScreenOverlay from '@components/ScreenOverlay.vue'
 import { firePrerender, Platform } from '@/utils'
 import { defineComponent, onMounted } from 'vue'
+// import objectFitImages from 'object-fit-images'
 
 export default defineComponent({
   name: 'Experiments',
@@ -21,8 +22,13 @@ export default defineComponent({
   },
 
   setup () {
-    onMounted(() => { firePrerender({ title: 'Experiments' }) })
     const isPrerenderer = Platform.prerenderer
+
+    onMounted(() => {
+      // objectFitImages(Array<Ref>)
+      firePrerender({ title: 'Experiments' })
+    })
+
     return { isPrerenderer }
   }
 })
@@ -40,5 +46,20 @@ export default defineComponent({
     overflow: hidden;
     z-index: $screen;
   }
+}
+
+::-webkit-scrollbar {
+  background-color: $black;
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  transition: background-color 0.5s;
+  background-color: $dark-green;
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background-color: $green;
 }
 </style>

@@ -167,19 +167,4 @@ a {
 .v-leave-to {
   opacity: 0;
 }
-
-/* ::-webkit-scrollbar {
-  background-color: $black;
-  width: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-  transition: background-color 0.5s;
-  background-color: $dark-green;
-}
-
-::-webkit-scrollbar-thumb:hover,
-::-webkit-scrollbar-thumb:active {
-  background-color: $green;
-} */
 </style>

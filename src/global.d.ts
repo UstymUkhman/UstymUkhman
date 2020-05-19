@@ -11,3 +11,4 @@ declare module '*.json' {
 }
 
 declare module '*.scss'
+declare module 'object-fit-images'
