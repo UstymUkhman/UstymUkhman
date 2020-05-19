@@ -1,2 +1,2 @@
-public/*.js
-static/js/initial.js
+dist/*.js
+public/js/initial.js

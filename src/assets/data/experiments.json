@@ -1,6 +1,6 @@
 [{
+  "page": "https://ustymukhman.github.io/webDOOM/public/index.html?game=",
   "description": "Classic DOOM recompiled with WebAssembly.",
-  "page": "https://ustymukhman.github.io/webDOOM/public/",
   "github": "https://github.com/UstymUkhman/webDOOM",
 
   "image": "webDOOM.jpg",

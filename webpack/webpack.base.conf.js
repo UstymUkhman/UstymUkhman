@@ -1,12 +1,17 @@
 'use strict'
 
 const path = require('path')
-const config = require('../config')
-const utils = require('../config/utils')
+const utils = require('../build/utils.js')
+const config = require('../build/config')
 const { VueLoaderPlugin } = require('vue-loader')
 const ThreeMinifierPlugin = require('@yushijinhun/three-minifier-webpack')
 
+const isProduction = process.env.NODE_ENV === 'production'
 const threeMinifierPlugin = new ThreeMinifierPlugin()
+
+const sourceMapEnabled = isProduction
+  ? config.build.productionSourceMap
+  : config.dev.cssSourceMap
 
 const createLintingRule = () => ({
   enforce: 'pre',
@@ -68,7 +73,22 @@ module.exports = {
       {
         test: /\.vue$/,
         loader: 'vue-loader',
-        options: utils.vueOptions
+        options: {
+          cacheBusting: config.dev.cacheBusting,
+          cssSourceMap: sourceMapEnabled,
+
+          loaders: utils.cssLoaders({
+            sourceMap: sourceMapEnabled,
+            extract: isProduction
+          }),
+
+          transformToRequire: {
+            video: ['src', 'poster'],
+            image: 'xlink:href',
+            source: 'src',
+            img: 'src'
+          }
+        }
       },
       {
         test: /\.tsx?$/,

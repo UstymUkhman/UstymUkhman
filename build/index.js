@@ -7,10 +7,10 @@ const chalk = require('chalk')
 
 const shell = require('shelljs')
 const semver = require('semver')
-const config = require('./index')
+const config = require('./config')
 const webpack = require('webpack')
 
-const _package = require('../package.json')
+const jsonConfig = require('../package.json')
 const spinner = ora('Building for production...')
 const webpackConfig = require('../webpack/webpack.prod')
 
@@ -19,14 +19,14 @@ function exec (cmd) {
 }
 
 const versionRequirements = [{
-  versionRequirement: _package.engines.node,
+  versionRequirement: jsonConfig.engines.node,
   currentVersion: semver.clean(process.version),
   name: 'node'
 }]
 
 if (shell.which('npm')) {
   versionRequirements.push({
-    versionRequirement: _package.engines.npm,
+    versionRequirement: jsonConfig.engines.npm,
     currentVersion: exec('npm --version'),
     name: 'npm'
   })

@@ -1,9 +1,16 @@
 module.exports = {
   root: true,
+  plugins: ['vue'],
 
   parserOptions: {
     parser: '@typescript-eslint/parser',
     sourceType: 'module'
+  },
+
+  rules: {
+    'generator-star-spacing': 'off',
+    'no-debugger': 'off',
+    'no-console': 'off'
   },
 
   extends: [
@@ -29,16 +36,5 @@ module.exports = {
   env: {
     browser: true,
     node: true
-  },
-
-  plugins: [
-    'vue'
-  ],
-
-  rules: {
-    'generator-star-spacing': 'off',
-    'no-debugger': 'off',
-    'no-console': 'off',
-    'eol-last': 0
   }
-};
+}

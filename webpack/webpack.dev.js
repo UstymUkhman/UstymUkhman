@@ -6,8 +6,9 @@ const webpack = require('webpack')
 const merge = require('webpack-merge')
 const portfinder = require('portfinder')
 
-const config = require('../config')
-const utils = require('../config/utils')
+const utils = require('../build/utils')
+const config = require('../build/config')
+const jsonConfig = require('../package.json')
 const baseConfig = require('./webpack.base.conf')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -65,7 +66,7 @@ const devWebpackConfig = merge(baseConfig, {
     new webpack.NoEmitOnErrorsPlugin(),
 
     new HtmlWebpackPlugin({
-      template: 'static/index.html',
+      template: 'public/index.html',
       filename: 'index.html',
       inject: true,
 
@@ -81,7 +82,7 @@ const devWebpackConfig = merge(baseConfig, {
     }),
 
     new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, '../static'),
+      from: path.resolve(__dirname, '../public'),
       to: config.dev.assetsSubDirectory,
       ignore: ['.*']
     }])
@@ -103,9 +104,23 @@ module.exports = new Promise((resolve, reject) => {
           messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`]
         },
 
-        onErrors: config.dev.notifyOnErrors
-          ? utils.createNotifierCallback()
-          : undefined
+        onErrors: !config.dev.notifyOnErrors ? undefined : (() => {
+          const notifier = require('node-notifier')
+
+          return (severity, errors) => {
+            if (severity !== 'error') return
+
+            const error = errors[0]
+            const filename = error.file && error.file.split('!').pop()
+
+            notifier.notify({
+              icon: path.join(__dirname, 'logo.png'),
+              message: severity + ': ' + error.name,
+              subtitle: filename || '',
+              title: jsonConfig.name
+            })
+          }
+        })()
       }))
 
       resolve(devWebpackConfig)

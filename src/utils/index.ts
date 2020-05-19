@@ -8,7 +8,6 @@ import * as Number from './Number'
 import * as String from './String'
 import Lettering from './Lettering'
 import firePrerender from './Prerender'
-import { JSONLoader } from './JSONLoader'
 import { Viewport, Size } from './Viewport'
 import ScrollObserver from './ScrollObserver'
 
@@ -32,7 +31,6 @@ export {
   Number, String,
   ScrollObserver,
   firePrerender,
-  JSONLoader,
   Lettering,
   Platform,
   language,

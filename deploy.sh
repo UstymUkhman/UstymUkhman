@@ -12,16 +12,16 @@ EOF
 
 read -d '' robots << EOF
 User-agent: *
-Disallow: /static/
+Disallow: /public/
 Sitemap: http://$1/sitemap.xml
 EOF
 
-echo "$robots" > ./static/robots.txt
-echo "$sitemap" > ./static/sitemap.xml
+echo "$robots" > ./public/robots.txt
+echo "$sitemap" > ./public/sitemap.xml
 
-cp ./static/{browserconfig.xml,sitemap.xml,manifest.json,robots.txt} ./public/
+cp ./public/{browserconfig.xml,sitemap.xml,manifest.json,robots.txt} ./dist/
 sftp -i ./bitnami.pem bitnami@$1:htdocs/ << EOF
-put -r public/*
+put -r dist/*
 
 exit
 EOF

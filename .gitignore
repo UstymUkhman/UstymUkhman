@@ -21,9 +21,9 @@ logs
 *.code-workspace
 *.sublime-workspace
 
-public/
+dist/
 coverage/
 tslint.xml
 bitnami.pem
 node_modules/
-static/video/*.mp4
+public/video/*.mp4

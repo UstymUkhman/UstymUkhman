@@ -13,7 +13,7 @@ export default defineComponent({
   name: 'Experiment',
 
   setup () {
-    const experiment = experiments[2]
+    const experiment = experiments[0]
 
     onMounted(() => {
       firePrerender({

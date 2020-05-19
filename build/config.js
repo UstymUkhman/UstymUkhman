@@ -1,7 +1,7 @@
 'use strict'
 
 const path = require('path')
-const _package = require('../package.json')
+const jsonConfig = require('../package.json')
 const { analyze, gzip } = require('minimist')(process.argv.slice(2))
 
 module.exports = {
@@ -19,19 +19,19 @@ module.exports = {
     assetsPublicPath: '/',
     notifyOnErrors: false,
     autoOpenBrowser: false,
-    assetsSubDirectory: 'static',
+    assetsSubDirectory: 'public',
     showEslintErrorsInOverlay: true,
     devtool: 'cheap-module-eval-source-map'
   },
 
   build: {
-    index: path.resolve(__dirname, '../public/index.html'),
-    domain: _package.domain || 'http://localhost:8080',
-    assetsRoot: path.resolve(__dirname, '../public'),
+    index: path.resolve(__dirname, '../dist/index.html'),
+    domain: jsonConfig.domain || 'http://localhost:8080',
+    assetsRoot: path.resolve(__dirname, '../dist'),
 
     gzipExtensions: ['js', 'css'],
-    assetsSubDirectory: 'static',
-    version: _package.version,
+    assetsSubDirectory: 'public',
+    version: jsonConfig.version,
     devtool: '#source-map',
     assetsPublicPath: '/',
 

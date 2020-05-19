@@ -4,10 +4,10 @@ const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 
-const config = require('../config')
-const utils = require('../config/utils')
+const utils = require('../build/utils')
+const config = require('../build/config')
 const baseConfig = require('./webpack.base.conf')
-const prerenderPaths = require('../config/prerender')
+const prerenderPaths = require('../build/prerender')
 
 const TerserPlugin = require('terser-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -25,8 +25,8 @@ const webpackConfig = merge(baseConfig, {
   module: {
     rules: [...utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
-      extract: true,
-      usePostCSS: true
+      usePostCSS: true,
+      extract: true
     }), {
       use: 'webpack-modernizr-loader',
       test: /\.modernizrrc.js$/
@@ -104,7 +104,7 @@ const webpackConfig = merge(baseConfig, {
     }),
 
     new HtmlWebpackPlugin({
-      template: 'static/index.html',
+      template: 'public/index.html',
       filename: config.build.index,
       chunksSortMode: 'dependency',
       inject: true,
@@ -123,7 +123,6 @@ const webpackConfig = merge(baseConfig, {
     }),
 
     new webpack.HashedModuleIdsPlugin(),
-
     new webpack.optimize.ModuleConcatenationPlugin(),
 
     new PrerenderSpaPlugin({
@@ -152,7 +151,7 @@ const webpackConfig = merge(baseConfig, {
     }),
 
     new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, '../static'),
+      from: path.resolve(__dirname, '../public'),
       to: config.build.assetsSubDirectory,
       ignore: [
         'browserconfig.xml', 'sitemap.xml',
