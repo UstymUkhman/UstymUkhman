@@ -1,11 +1,8 @@
 import Rain from './Rain'
 import wheel from './Wheel'
 import Sounds from './Sounds'
-import { readonly } from 'vue'
 import Loading from './Loading'
 import Platform from './Platform'
-import * as Number from './Number'
-import * as String from './String'
 import Lettering from './Lettering'
 import firePrerender from './Prerender'
 import { Viewport, Size } from './Viewport'
@@ -21,14 +18,15 @@ if (navigator && navigator.userLanguage) {
 
 const language = mainLanguage || navigator.language || userLanguage
 
-const PI = readonly({
-  m2: Math.PI * 2,
-  d2: Math.PI / 2
-})
+export interface AppProps {
+  readonly version: string | undefined;
+  readonly deploy: Boolean | undefined;
+  readonly domain: string | undefined;
+  readonly app?: HTMLElement;
+}
 
 export {
   Viewport, Size,
-  Number, String,
   ScrollObserver,
   firePrerender,
   Lettering,
@@ -37,6 +35,5 @@ export {
   Loading,
   Sounds,
   wheel,
-  Rain,
-  PI
+  Rain
 }

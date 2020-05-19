@@ -21,8 +21,17 @@ export default defineComponent({
     ScreenOverlay
   },
 
-  setup () {
+  props: {
+    experiments: {
+      required: true,
+      type: Array
+    }
+  },
+
+  setup ({ experiments }): { isPrerenderer: boolean } {
     const isPrerenderer = Platform.prerenderer
+
+    console.log(experiments)
 
     onMounted(() => {
       // objectFitImages(Array<Ref>)

@@ -23,11 +23,12 @@
 <script lang="ts">
 /* eslint-disable no-unused-vars */
 import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
-import { firePrerender, Platform, Number, Viewport, Size } from '@/utils'
+import { firePrerender, Platform, Viewport, Size } from '@/utils'
 /* eslint-enable no-unused-vars */
 
 import ScreenOverlay from '@components/ScreenOverlay.vue'
 import { matrixFont, green } from '@scss/variables.scss'
+import { randomInt } from '@/utils/Number'
 
 const COLUMN_OFFSET = 18
 const COLUMN_HEIGHT = 14
@@ -111,7 +112,7 @@ export default defineComponent({
     }
 
     const getCharCode = (): string => {
-      const code = Number.randomInt(48, 57)
+      const code = randomInt(48, 57)
 
       return (code === 64)
         ? String.fromCharCode(47)

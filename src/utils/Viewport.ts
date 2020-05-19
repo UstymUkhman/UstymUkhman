@@ -6,6 +6,7 @@ export interface Size {
 }
 
 export class Viewport {
+  private readonly root: CSSStyleDeclaration = document.documentElement.style
   private readonly update: EventListener = this.updateSize.bind(this)
   private readonly callback: Function | null = null
 
@@ -34,6 +35,9 @@ export class Viewport {
     } else {
       width = window.innerHeight / 9 * 16
     }
+
+    this.root.setProperty('--height', `${window.innerHeight}px`)
+    this.root.setProperty('--width', `${window.innerWidth}px`)
 
     this.screen.height = window.innerHeight
     this.screen.width = window.innerWidth

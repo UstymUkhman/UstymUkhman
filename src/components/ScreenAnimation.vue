@@ -4,9 +4,9 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
-/* eslint-disable no-unused-vars */
-import { Viewport, Size, PI } from '@/utils'
-/* eslint-enable no-unused-vars */
+// eslint-disable-next-line no-unused-vars
+import { Viewport, Size } from '@/utils'
+import { PI } from '@/utils/Number'
 
 export default defineComponent({
   name: 'ScreenAnimation',

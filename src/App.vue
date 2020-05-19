@@ -5,30 +5,31 @@
 </template>
 
 <script lang="ts">
+// eslint-disable-next-line no-unused-vars
+import { AppProps, Platform } from '@/utils'
 import { defineComponent } from 'vue'
-import { Platform } from '@/utils'
 
 export default defineComponent({
   name: 'App',
 
   props: {
     domain: {
-      type: String,
-      required: true
+      required: true,
+      type: String
     },
 
     version: {
-      type: String,
-      required: true
+      required: true,
+      type: String
     },
 
     deploy: {
-      type: Boolean,
-      required: true
+      required: true,
+      type: Boolean
     }
   },
 
-  setup (props) {
+  setup (props: AppProps): { prerender: boolean } {
     console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
 
     return {
