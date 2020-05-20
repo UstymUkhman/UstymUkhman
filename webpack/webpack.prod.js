@@ -155,8 +155,7 @@ const webpackConfig = merge(baseConfig, {
       to: config.build.assetsSubDirectory,
       ignore: [
         'browserconfig.xml', 'sitemap.xml',
-        'manifest.json', 'robots.txt',
-        'index.html'
+        'robots.txt', 'index.html'
       ]
     }])
   ]

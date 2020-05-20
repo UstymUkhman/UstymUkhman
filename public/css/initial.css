@@ -10,14 +10,14 @@
 }
 
 .not-supported-msg .not-supported-msg-copy {
-  font-family: 'White Rabbit', monospace;
+  font-family: monospace;
   position: absolute;
+  max-width: 625px;
 
-  max-width: 80%;
   color: #0c0;
   margin: auto;
 
-  height: 65px;
+  height: 95px;
   width: 100%;
 
   bottom: 0;
@@ -28,7 +28,7 @@
 
 .not-supported-msg .not-supported-msg-copy strong {
   text-transform: uppercase;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 
   letter-spacing: 5px;
   line-height: 25px;
@@ -65,21 +65,10 @@
   margin: 0;
 }
 
-@media (max-width: 991px) {
-  .not-supported-msg .not-supported-msg-copy {
-    height: 120px;
-    width: 90%;
-  }
-
-  .not-supported-msg .not-supported-msg-copy strong {
-    margin-bottom: 30px;
-  }
-}
-
 @media (max-width: 767px) {
   .not-supported-msg .not-supported-msg-copy {
     max-width: 95%;
-    height: 130px;
+    height: 150px;
     width: 95%;
   }
 
