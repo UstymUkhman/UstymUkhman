@@ -1,11 +1,10 @@
 export default class Sounds {
-  private static speach: HTMLAudioElement;
-  private static close: HTMLAudioElement;
-  private static open: HTMLAudioElement;
-  private static closePlay: number = 0;
+  private static speach: HTMLAudioElement = new Audio('public/audio/speech.mp3')
+  private static close: HTMLAudioElement = new Audio('public/audio/close.mp3')
+  private static open: HTMLAudioElement = new Audio('public/audio/open.mp3')
+  private static closePlay: number = Date.now();
 
   public static playSpeach (): void {
-    this.speach = new Audio('public/audio/speech.mp3')
     this.speach.onended = this.endSpeach.bind(this)
     this.speach.autoplay = false
     this.speach.loop = false
@@ -22,7 +21,6 @@ export default class Sounds {
   }
 
   public static openedDoor (): void {
-    this.open = new Audio('public/audio/opened.mp3')
     this.open.autoplay = true
     this.open.loop = false
     this.open.volume = 1
@@ -34,7 +32,6 @@ export default class Sounds {
     const now = Date.now()
 
     if (now > playEnd) {
-      this.close = new Audio('public/audio/closed.mp3')
       this.closePlay = Date.now()
       this.close.autoplay = true
       this.close.loop = false
