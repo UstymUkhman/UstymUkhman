@@ -422,7 +422,7 @@ Object.assign(JSONLoader.prototype, {
       if (json.materials === undefined || json.materials.length === 0) {
         return { geometry: geometry }
       } else {
-        const materials = Loader.prototype.initMaterials(json.materials, this.resourcePath || path, this.crossOrigin)
+        const materials = Loader.initMaterials(json.materials, this.resourcePath || path, this.crossOrigin)
         return { geometry: geometry, materials: materials }
       }
     }
