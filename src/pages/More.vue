@@ -16,18 +16,14 @@ export default defineComponent({
   name: 'More',
 
   setup (): void {
-    const loader = new AssetsLoader()
-
-    function createPill (model: JSONModel) {
+    function createPills (model: JSONModel) {
       console.log(model)
+      // BLUE: 0x003FFF
+      // RED:  0xB40000
     }
 
-    function loadPill (color: number) {
-      loader.loadJSON(new JSONLoader(), PILL, createPill)
-    }
-
-    loadPill(0x003FFF)
-    // loadPill(0xB40000)
+    const loader: AssetsLoader = new AssetsLoader()
+    loader.loadJSON(new JSONLoader(), PILL, createPills)
 
     onMounted(() => {
       firePrerender({ title: 'More' })

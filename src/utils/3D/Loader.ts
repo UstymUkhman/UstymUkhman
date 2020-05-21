@@ -20,7 +20,11 @@ import {
   BackSide
 } from '@three/constants'
 
-class LoadersHandler {
+type Blending = {
+  [key: string]: number
+}
+
+/* class LoadersHandler {
   private static loaders: Array<THREELoader | RegExp> = []
 
   public static add (regex: RegExp, loader: THREELoader): void {
@@ -36,7 +40,7 @@ class LoadersHandler {
 
     return null
   }
-}
+} */
 
 export class Loader extends THREELoader {
   private static readonly materialLoader: MaterialLoader = new MaterialLoader()
@@ -50,7 +54,7 @@ export class Loader extends THREELoader {
   private static texturePath: string = ''
   private static crossOrigin: string = ''
 
-  private static readonly BlendingMode: any = {
+  private static readonly BlendingMode: Blending = {
     SubtractiveBlending: SubtractiveBlending,
     MultiplyBlending: MultiplyBlending,
     AdditiveBlending: AdditiveBlending,
@@ -70,42 +74,6 @@ export class Loader extends THREELoader {
     }
 
     return array
-  }
-
-  private static async loadTexture (path: string, repeat: Array<number>, offset: Array<number>, wrap: Array<string>, anisotropy: boolean): Promise<string> {
-    const fullPath = this.texturePath + path
-    const loader = LoadersHandler.get(fullPath)
-
-    const texture = loader ? await loader.loadAsync(fullPath) : (() => {
-      this.textureLoader.setCrossOrigin(this.crossOrigin)
-      return this.textureLoader.load(fullPath)
-    })()
-
-    if (repeat !== undefined) {
-      texture.repeat.fromArray(repeat)
-      if (repeat[0] !== 1) texture.wrapS = RepeatWrapping
-      if (repeat[1] !== 1) texture.wrapT = RepeatWrapping
-    }
-
-    if (offset !== undefined) {
-      texture.offset.fromArray(offset)
-    }
-
-    if (wrap !== undefined) {
-      if (wrap[0] === 'repeat') texture.wrapS = RepeatWrapping
-      if (wrap[0] === 'mirror') texture.wrapS = MirroredRepeatWrapping
-
-      if (wrap[1] === 'repeat') texture.wrapT = RepeatWrapping
-      if (wrap[1] === 'mirror') texture.wrapT = MirroredRepeatWrapping
-    }
-
-    if (anisotropy !== undefined) {
-      texture.anisotropy = anisotropy
-    }
-
-    const uuid = MathUtils.generateUUID()
-    this.textures[uuid] = texture
-    return uuid
   }
 
   private static createMaterial (material: any): Material {
@@ -338,5 +306,41 @@ export class Loader extends THREELoader {
 
     this.materialLoader.setTextures(this.textures)
     return this.materialLoader.parse(json)
+  }
+
+  private static loadTexture (path: string, repeat: Array<number>, offset: Array<number>, wrap: Array<string>, anisotropy: number): string {
+    const fullPath = this.texturePath + path
+    // const loader = LoadersHandler.get(fullPath)
+
+    const texture = /* loader ? await loader.loadAsync(fullPath) : */ (() => {
+      this.textureLoader.setCrossOrigin(this.crossOrigin)
+      return this.textureLoader.load(fullPath)
+    })()
+
+    if (repeat !== undefined) {
+      texture.repeat.fromArray(repeat)
+      if (repeat[0] !== 1) texture.wrapS = RepeatWrapping
+      if (repeat[1] !== 1) texture.wrapT = RepeatWrapping
+    }
+
+    if (offset !== undefined) {
+      texture.offset.fromArray(offset)
+    }
+
+    if (wrap !== undefined) {
+      if (wrap[0] === 'repeat') texture.wrapS = RepeatWrapping
+      if (wrap[0] === 'mirror') texture.wrapS = MirroredRepeatWrapping
+
+      if (wrap[1] === 'repeat') texture.wrapT = RepeatWrapping
+      if (wrap[1] === 'mirror') texture.wrapT = MirroredRepeatWrapping
+    }
+
+    if (anisotropy !== undefined) {
+      texture.anisotropy = anisotropy
+    }
+
+    const uuid = MathUtils.generateUUID()
+    this.textures[uuid] = texture
+    return uuid
   }
 }

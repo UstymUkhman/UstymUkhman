@@ -9,12 +9,12 @@
   "scripts": {
     "start": "webpack-dev-server --inline --progress --config webpack/webpack.dev.js --host 0.0.0.0",
     "lint:scss": "stylelint \"src/**/*.scss\" \"src/**/*.vue\"",
-    "build:analyze": "node build/index.js --analyze",
-    "build:gzip": "node build/index.js --gzip",
+    "build:analyze": "node build/main.js --analyze",
+    "build:gzip": "node build/main.js --gzip",
     "lint:js": "eslint --ext .js,.vue src",
     "deploy": "./deploy.sh 54.93.165.244",
     "serve": "npx http-server ./dist",
-    "build": "node build/index.js"
+    "build": "node build/main.js"
   },
   "dependencies": {
     "@types/object-fit-images": "^3.2.0",

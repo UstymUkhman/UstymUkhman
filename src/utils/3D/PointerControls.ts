@@ -48,11 +48,15 @@ export default class PointerControls {
     this.active = false
   }
 
-  public get object (): Object3D {
-    return this.yawObject
+  public set enabled (active: boolean) {
+    this.active = active
   }
 
   public get enabled (): boolean {
     return this.active
+  }
+
+  public get object (): Object3D {
+    return this.yawObject
   }
 }
