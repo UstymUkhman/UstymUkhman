@@ -19,7 +19,7 @@ EOF
 echo "$robots" > ./public/robots.txt
 echo "$sitemap" > ./public/sitemap.xml
 
-cp ./public/{browserconfig.xml,sitemap.xml,robots.txt} ./dist/
+cp ./public/{browserconfig.xml,sitemap.xml,manifest.json,robots.txt} ./dist/
 sftp -i ./bitnami.pem bitnami@$1:htdocs/ << EOF
 put -r dist/*
 

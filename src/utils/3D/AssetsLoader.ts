@@ -23,10 +23,10 @@ export default class AssetsLoader extends LoadingManager {
 
   public onLoad = (): void => { }
 
-  public async loadJSON (loader: JSONLoader, model: string, callback?: Function): Promise<JSONModel> {
-    const asset: JSONModel =
-      this.IMAGE.test(model) || this.Base64.test(model)
-        ? await this.load(loader, model) : await this.parse(loader, model)
+  public async loadJSON (loader: JSONLoader, model: JSON | string, callback?: Function): Promise<JSONModel> {
+    const asset: JSONModel = this.isJSONType(model)
+      ? await this.parse(loader, model)
+      : await this.load(loader, model)
 
     if (callback) { callback(asset) }
     return asset
@@ -40,14 +40,22 @@ export default class AssetsLoader extends LoadingManager {
     return this.execute.call(null, loader, 'parse', args)
   }
 
-  private execute (loader: any, fn: string, ...args: any[]): Promise<JSONModel> {
+  private execute (loader: any, fn: string, args: any[]): Promise<JSONModel> {
     return new Promise((resolve, reject) => {
       const onError: Function = (error: Error) => { reject(error) }
-      const onComplete: Function = (result: PromiseResult) => { resolve(result) }
-      const onProgress: Function = (progress: number) => { console.log(`Loading... ${progress}%`) }
+      const onLoad: Function = (result: PromiseResult) => { resolve(result) }
+      const onProgress: Function = (progress: number) => { console.log(`Loading... ${progress}%`, progress) }
 
-      const loaderCallbacks = fn === 'load' ? [onComplete, onProgress, onError] : [onComplete, onError]
+      const loaderCallbacks = fn === 'load' ? [onLoad, onProgress, onError] : [onLoad, onError]
       resolve(loader[fn].apply(loader, args.concat(loaderCallbacks)))
     })
+  }
+
+  private isImageType (asset: string): boolean {
+    return this.IMAGE.test(asset) || this.Base64.test(asset)
+  }
+
+  private isJSONType (model: JSON | string): boolean {
+    return model instanceof Object
   }
 }

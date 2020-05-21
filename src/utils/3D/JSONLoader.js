@@ -1,6 +1,7 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author alteredq / http://alteredqualia.com/
+ * @author UstymUkhman / http://54.93.165.244/
  */
 
 import { DefaultLoadingManager } from '@three/loaders/LoadingManager'
@@ -8,7 +9,7 @@ import { AnimationClip } from '@three/animation/AnimationClip'
 import { LoaderUtils } from '@three/loaders/LoaderUtils'
 import { FileLoader } from '@three/loaders/FileLoader'
 import { Geometry } from '@three/core/Geometry'
-import { Loader } from '@three/loaders/Loader'
+import { Loader } from '@/utils/3D/Loader'
 
 import { Vector2 } from '@three/math/Vector2'
 import { Vector3 } from '@three/math/Vector3'
