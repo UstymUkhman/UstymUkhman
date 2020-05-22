@@ -25,7 +25,7 @@ interface PageRoute {
 }
 
 const checkWebGLCompatibility = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: Function): void => {
-  const notSupportedAutoplay = !from.name && to.name === 'Pills'
+  const notSupportedAutoplay = !from.name && to.name === 'More'
   const notSupportedWebGL = Platform.isIE || Platform.mobile
 
   if (notSupportedWebGL || notSupportedAutoplay) {

@@ -41,7 +41,7 @@ export default defineComponent({
     // }
 
     // const rainRatio = () => {
-    //   const fullPage = this.$route.name === 'About' || this.$route.name === 'Pills'
+    //   const fullPage = this.$route.name === 'About' || this.$route.name === 'More'
     //   const specialPages = fullPage || this.$route.path.includes('experiments')
     //   return Platform.mobile || specialPages ? 1 : 2.25
     // }
@@ -53,7 +53,7 @@ export default defineComponent({
     const visibleRain = false
 
     onMounted(() => {
-      // if (this.$route.name !== 'About' && this.$route.name !== 'Pills') {
+      // if (this.$route.name !== 'About' && this.$route.name !== 'More') {
       //   setTimeout(() => { this.visibleRain = true }, 500)
       // }
 

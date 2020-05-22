@@ -37,10 +37,10 @@ const LEFT_OFFSET = 19.2
 const LINE_HEIGHT = 25.6
 
 interface TemplateValues {
-  prerenderer: boolean
-  block: Ref<boolean>
-  numbers: Ref<null>
-  mobile: boolean
+  readonly prerenderer: boolean
+  readonly block: Ref<boolean>
+  readonly numbers: Ref<null>
+  readonly mobile: boolean
 }
 
 export default defineComponent({

@@ -1,5 +1,5 @@
 interface ScrollObserverOptions extends IntersectionObserverInit {
-  visibleClass?: string
+  readonly visibleClass?: string
 }
 
 export default class {

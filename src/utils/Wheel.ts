@@ -104,10 +104,10 @@
  */
 
 interface WheelData {
-  pixelX: number,
-  pixelY: number,
-  spinX: number,
-  spinY: number,
+  readonly pixelX: number,
+  readonly pixelY: number,
+  readonly spinX: number,
+  readonly spinY: number,
 }
 
 const PIXEL_STEP: number = 10

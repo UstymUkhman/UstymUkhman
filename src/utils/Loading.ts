@@ -7,7 +7,7 @@ export default class Loading {
   public static getPageName (item: number): string {
     const experiments = Platform.isIE || Platform.mobile
 
-    this.routes.push(experiments ? 'Experiments' : 'Pills')
+    this.routes.push(experiments ? 'Experiments' : 'More')
     this.activeItem = item
 
     if (item === 3 && !experiments) {

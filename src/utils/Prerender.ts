@@ -1,19 +1,26 @@
+import Platform from '@/utils/Platform'
 import { useRoute } from 'vue-router'
-import Platform from './Platform'
 
 const baseTitle: string = document.getElementsByTagName('title')[0].innerText
 
 interface MetaTags {
-  twitterDescription: HTMLMetaElement | null
-  ogDescription: HTMLMetaElement | null
-  description: HTMLMetaElement | null
+  readonly twitterDescription: HTMLMetaElement | null
+  readonly ogDescription: HTMLMetaElement | null
+  readonly description: HTMLMetaElement | null
 
-  twitterImage: HTMLMetaElement | null
-  ogImage: HTMLMetaElement | null
+  readonly twitterImage: HTMLMetaElement | null
+  readonly ogImage: HTMLMetaElement | null
 
-  twitterTitle: HTMLMetaElement | null
-  ogTitle: HTMLMetaElement | null
-  ogURL: HTMLMetaElement | null
+  readonly twitterTitle: HTMLMetaElement | null
+  readonly ogTitle: HTMLMetaElement | null
+  readonly ogURL: HTMLMetaElement | null
+}
+
+interface MetaData {
+  readonly title?: string
+  readonly image?: string
+  readonly fullTitle?: boolean
+  readonly description?: string
 }
 
 const tags: MetaTags = {
@@ -27,13 +34,6 @@ const tags: MetaTags = {
   twitterTitle: document.querySelector('meta[name="twitter:title"]'),
   ogTitle: document.querySelector('meta[property="og:title"]'),
   ogURL: document.querySelector('meta[property="og:url"]')
-}
-
-interface MetaData {
-  title?: string
-  image?: string
-  fullTitle?: boolean
-  description?: string
 }
 
 export default function (data: MetaData): void {

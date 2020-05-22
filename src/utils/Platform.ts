@@ -1,3 +1,4 @@
+import { readonly } from 'vue'
 import modernizr from 'modernizr'
 const MobileDetect = require('mobile-detect')
 const md = new MobileDetect(window.navigator.userAgent)
@@ -26,4 +27,4 @@ for (const key in Platform) {
   modernizr.addTest(key, () => Platform[key])
 }
 
-export default Platform
+export default readonly(Platform)

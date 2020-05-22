@@ -1,17 +1,17 @@
 export default class Lettering {
+  private readonly letters: HTMLElement[] = []
   private lastLetter: HTMLElement | undefined
   private callback: Function | undefined
-  private letters: HTMLElement[] = []
+
+  private readonly timeout: number = 1000
+  private readonly message: HTMLElement
+  private readonly slowly: number = 0
 
   private last: HTMLElement | null
   private nextTiming: number = 0
-  private timeout: number = 1000
-
-  private message: HTMLElement
   private word: string[] = []
-  private slowly: number = 0
   private index: number = 0
-  private raf: number = 0
+  private frame: number = 0
 
   constructor (message: HTMLElement, slowTyping: number = 0, timeout: number = 1000) {
     this.slowly = slowTyping
@@ -76,7 +76,7 @@ export default class Lettering {
       return
     }
 
-    this.raf = requestAnimationFrame(this.lettersAnimation.bind(this))
+    this.frame = requestAnimationFrame(this.lettersAnimation.bind(this))
   }
 
   private showLetter (letter: HTMLElement): void {
@@ -94,7 +94,7 @@ export default class Lettering {
   }
 
   private stopLettering (): void {
-    cancelAnimationFrame(this.raf)
+    cancelAnimationFrame(this.frame)
   }
 
   public skipLettering (): void {

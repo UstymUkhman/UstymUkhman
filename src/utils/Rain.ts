@@ -1,5 +1,5 @@
 export default class Rain {
-  private characters: number = 50
+  private readonly characters: number = 50
   private columns: number = 100
 
   constructor (columns = 100, characters = 50) {
@@ -53,10 +53,9 @@ export default class Rain {
   private setCharCodes (column: HTMLElement, codes: string[], size: number): void {
     codes.forEach((code, index) => {
       const char = document.createElement('span')
-
       char.className = `char-${index} code-size-${size}`
-      char.textContent = code
 
+      char.textContent = code
       column.appendChild(char)
     })
   }

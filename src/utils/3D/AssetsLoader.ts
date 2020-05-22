@@ -2,7 +2,7 @@
 import { JSONModel, JSONLoader } from '@/utils/3D/JSONLoader'
 import { LoadingManager } from '@three/loaders/LoadingManager'
 
-type PromiseResult = PromiseLike<JSONModel> | undefined
+type JSONPromise = PromiseLike<JSONModel> | undefined
 
 export default class AssetsLoader extends LoadingManager {
   private readonly Base64 = /data:image\/([a-zA-Z]*);base64,([^"]*)/
@@ -43,7 +43,7 @@ export default class AssetsLoader extends LoadingManager {
   private execute (loader: any, fn: string, args: any[]): Promise<JSONModel> {
     return new Promise((resolve, reject) => {
       const onError: Function = (error: Error) => { reject(error) }
-      const onLoad: Function = (result: PromiseResult) => { resolve(result) }
+      const onLoad: Function = (result: JSONPromise) => { resolve(result) }
       const onProgress: Function = (progress: number) => { console.log(`Loading... ${progress}%`, progress) }
 
       const loaderCallbacks = fn === 'load' ? [onLoad, onProgress, onError] : [onLoad, onError]

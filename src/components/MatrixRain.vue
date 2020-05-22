@@ -18,9 +18,9 @@ const LINE_HEIGHT = 27
 const OFFSET = 18
 
 interface TemplateValues {
-  code: Ref<null>
-  mobile: boolean
-  ratio: number
+  readonly code: Ref<null>
+  readonly mobile: boolean
+  readonly ratio: number
 }
 
 export default defineComponent({
