@@ -8,9 +8,8 @@ import { Scene } from '@three/scenes/Scene'
 /* eslint-enable no-unused-vars */
 
 // eslint-disable-next-line no-unused-vars
-const enum Directions { UP, RIGHT, DOWN, LEFT }
-type Direction<Type> = { [direction in Directions]: Type }
-
+const enum Direction { UP, RIGHT, DOWN, LEFT }
+type Directions<Type> = { [way in Direction]: Type }
 const LOCK_ONLY = Platform.safari || Platform.edge || Platform.firefox
 
 export default class FirstPersonControls {
@@ -20,38 +19,35 @@ export default class FirstPersonControls {
   private readonly onKeyDown: KeyboardEventListener = this.onKeyPress.bind(this)
   private readonly onKeyUp: KeyboardEventListener = this.onKeyRelease.bind(this)
 
-  private readonly direction: Vector3 = new Vector3()
-  private readonly velocity: Vector3 = new Vector3()
+  private velocity: Vector3 = new Vector3()
+  private controls: PointerControls
+  private camera: PerspectiveCamera
+  private room: HTMLCanvasElement
+  private scene: Scene
 
-  private readonly controls: PointerControls
-  private readonly camera: PerspectiveCamera
-  private readonly room: HTMLCanvasElement
-  private readonly scene: Scene
-
-  private readonly pointerLock = this.room.requestPointerLock
-  private readonly fullscreen = this.room.requestFullscreen
+  private pointerLock = this.room.requestPointerLock
+  private fullscreen = this.room.requestFullscreen
 
   public onEnterFullscreen: Function | null = null
   public onExitFullscreen: Function | null = null
 
-  private prevTime: number = performance.now()
-  private inFullscreen: boolean = false
+  private delta: number = performance.now()
   private activated: boolean = false
   private enabled: boolean = false
   public error: boolean = false
 
-  private readonly move: Direction<boolean> = {
-    [Directions.UP]: false,
-    [Directions.RIGHT]: false,
-    [Directions.DOWN]: false,
-    [Directions.LEFT]: false
+  private move: Directions<boolean> = {
+    [Direction.UP]: false,
+    [Direction.RIGHT]: false,
+    [Direction.DOWN]: false,
+    [Direction.LEFT]: false
   }
 
-  private borders: Direction<number> = {
-    [Directions.UP]: 0,
-    [Directions.RIGHT]: 0,
-    [Directions.DOWN]: 0,
-    [Directions.LEFT]: 0
+  private borders: Directions<number> = {
+    [Direction.UP]: 0,
+    [Direction.RIGHT]: 0,
+    [Direction.DOWN]: 0,
+    [Direction.LEFT]: 0
   }
 
   constructor (room: HTMLCanvasElement, scene: Scene, camera: PerspectiveCamera) {
@@ -63,49 +59,8 @@ export default class FirstPersonControls {
     this.controls = new PointerControls(this.camera, 16)
     this.error = !this.fullscreen || !this.pointerLock
     this.scene.add(this.controls.object)
-    // this.setExperimentalAPIs()
     this.addEventListeners()
   }
-
-  /* private setExperimentalAPIs (): void {
-    this.fullscreen =
-      this.room.requestFullscreen ||
-      this.room.msRequestFullscreen ||
-      this.room.mozRequestFullScreen ||
-      this.room.webkitRequestFullscreen
-
-    this.pointerLock =
-      this.room.requestPointerLock ||
-      this.room.mozRequestPointerLock ||
-      this.room.webkitRequestPointerLock
-
-    if (this.fullscreen) {
-      this.room.requestFullscreen =
-        this.room.requestFullscreen ||
-        this.room.msRequestFullscreen ||
-        this.room.mozRequestFullScreen ||
-        this.room.webkitRequestFullscreen
-    }
-
-    if (this.pointerLock) {
-      this.room.requestPointerLock =
-        this.room.requestPointerLock ||
-        this.room.mozRequestPointerLock ||
-        this.room.webkitRequestPointerLock
-
-      this.addEventListeners()
-    }
-
-    document.exitFullscreen =
-      document.exitFullscreen ||
-      document.mozCancelFullScreen ||
-      document.webkitCancelFullScreen
-
-    document.exitPointerLock =
-      document.exitPointerLock ||
-      document.mozExitPointerLock ||
-      document.webkitExitPointerLock
-  } */
 
   private addEventListeners (): void {
     document.addEventListener('mozpointerlockchange', this.onPointerChange, false)
@@ -121,7 +76,9 @@ export default class FirstPersonControls {
 
   private onPointerLockChange (): void {
     setTimeout(() => {
-      if (!this.isFullscreen && this.onExitFullscreen) {
+      if (this.isFullscreen && this.onEnterFullscreen) {
+        this.onEnterFullscreen()
+      } else if (!this.isFullscreen && this.onExitFullscreen) {
         this.onExitFullscreen()
       }
     }, 100)
@@ -139,19 +96,19 @@ export default class FirstPersonControls {
         break
 
       case 38: case 87:
-        this.move[Directions.UP] = pressed
+        this.move[Direction.UP] = pressed
         break
 
       case 39: case 68:
-        this.move[Directions.RIGHT] = pressed
+        this.move[Direction.RIGHT] = pressed
         break
 
       case 40: case 83:
-        this.move[Directions.DOWN] = pressed
+        this.move[Direction.DOWN] = pressed
         break
 
       case 37: case 65:
-        this.move[Directions.LEFT] = pressed
+        this.move[Direction.LEFT] = pressed
         break
     }
   }
@@ -164,9 +121,16 @@ export default class FirstPersonControls {
     this.keyHandler(event.keyCode, true)
   }
 
-  private setFullscreenMode (fullscreen: boolean): void {
-    this.inFullscreen = fullscreen
+  private checkCollision (yaw: Object3D): boolean {
+    return (
+      yaw.position.z < this.borders[Direction.UP] ||
+      yaw.position.x > this.borders[Direction.RIGHT] ||
+      yaw.position.z > this.borders[Direction.DOWN] ||
+      yaw.position.x < this.borders[Direction.LEFT]
+    )
+  }
 
+  public setFullscreenMode (fullscreen: boolean): void {
     if (fullscreen) {
       this.enable(true)
       this.room.requestPointerLock()
@@ -183,16 +147,7 @@ export default class FirstPersonControls {
     }
   }
 
-  /* private checkCollision (current: Object3D): boolean {
-    return (
-      current.position.z < this.borders[Directions.UP] ||
-      current.position.x > this.borders[Directions.RIGHT] ||
-      current.position.z > this.borders[Directions.DOWN] ||
-      current.position.x < this.borders[Directions.LEFT]
-    )
-  } */
-
-  public setBorders (borders: Direction<number>) {
+  public setBorders (borders: Directions<number>) {
     this.borders = borders
   }
 
@@ -201,18 +156,63 @@ export default class FirstPersonControls {
     if (this.isFullscreen) this.enable(true)
   }
 
-  private enable (enable: boolean): void {
+  public enable (enable: boolean): void {
     this.controls.enabled = enable && this.activated
     this.enabled = enable && this.activated
 
     if (this.enabled) {
-      this.prevTime = performance.now()
+      this.delta = performance.now()
     }
   }
 
-  private get isFullscreen (): boolean {
-    if (LOCK_ONLY) return this.isLocked
-    return document.fullscreen // || document.mozFullScreen || document.webkitIsFullScreen
+  public update (): void {
+    if (!this.controls.enabled) return
+
+    const time = performance.now()
+    const position = this.controls.object
+    const delta = (time - this.delta) / 1000
+
+    this.velocity.x -= this.velocity.x * 10 * delta
+    this.velocity.z -= this.velocity.z * 10 * delta
+
+    if (this.move[Direction.UP]) {
+      this.velocity.z -= 750 * delta
+    }
+
+    if (this.move[Direction.RIGHT]) {
+      this.velocity.x += 500 * delta
+    }
+
+    if (this.move[Direction.DOWN]) {
+      this.velocity.z += 500 * delta
+    }
+
+    if (this.move[Direction.LEFT]) {
+      this.velocity.x -= 500 * delta
+    }
+
+    const step = {
+      x: this.velocity.x * delta,
+      z: this.velocity.z * delta
+    }
+
+    position.translateX(step.x)
+    position.translateZ(step.z)
+
+    if (this.checkCollision(position)) {
+      position.translateX(-step.x)
+      position.translateZ(-step.z)
+    }
+
+    this.delta = time
+  }
+
+  public get cameraDirection (): Vector3 {
+    return this.controls.direction
+  }
+
+  public get isFullscreen (): boolean {
+    return LOCK_ONLY ? this.isLocked : document.fullscreen
   }
 
   private get isLocked (): boolean {
@@ -232,5 +232,19 @@ export default class FirstPersonControls {
 
     this.setFullscreenMode(false)
     this.controls.dispose()
+
+    delete this.onEnterFullscreen
+    delete this.onExitFullscreen
+    delete this.pointerLock
+    delete this.fullscreen
+
+    delete this.velocity
+    delete this.controls
+    delete this.borders
+
+    delete this.camera
+    delete this.scene
+    delete this.room
+    delete this.move
   }
 }

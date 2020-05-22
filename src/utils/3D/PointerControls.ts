@@ -6,20 +6,22 @@ import { Euler } from '@three/math/Euler'
 import { PI } from '@/utils/Number'
 
 export default class PointerControls {
-  private readonly rotation: Euler = new Euler(0, 0, 0, 'YXZ')
-  private readonly direction: Vector3 = new Vector3(0, 0, -1)
+  private orientation: Vector3 = new Vector3(0, 0, -1)
+  private rotation: Euler = new Euler(0, 0, 0, 'YXZ')
+  private directionVector: Vector3 = new Vector3()
 
-  private readonly pitchObject: Object3D = new Object3D()
-  private readonly yawObject: Object3D = new Object3D()
+  private pitch: Object3D = new Object3D()
+  private yaw: Object3D = new Object3D()
 
-  private readonly move = this.rotate.bind(this)
+  private move = this.rotate.bind(this)
   private active: boolean = false
 
   constructor (camera: PerspectiveCamera, height: number = 10) {
-    this.pitchObject.add(camera)
-    this.yawObject.position.y = height
-    this.yawObject.add(this.pitchObject)
     document.addEventListener('mousemove', this.move, false)
+    this.yaw.position.y = height
+
+    this.yaw.add(this.pitch)
+    this.pitch.add(camera)
   }
 
   private rotate (event: MouseEventInit): void {
@@ -28,24 +30,19 @@ export default class PointerControls {
     const movementX: number = event.movementX || 0
     const movementY: number = event.movementY || 0
 
-    this.yawObject.rotation.y -= movementX * 0.002
-    this.pitchObject.rotation.x -= movementY * 0.002
-    this.pitchObject.rotation.x = Math.max(-PI.d2, Math.min(PI.d2, this.pitchObject.rotation.x))
+    this.yaw.rotation.y -= movementX * 0.002
+    this.pitch.rotation.x -= movementY * 0.002
+    this.pitch.rotation.x = Math.max(-PI.d2, Math.min(PI.d2, this.pitch.rotation.x))
 
-    if (this.pitchObject.rotation.x < -0.5) {
-      this.pitchObject.rotation.x = -0.5
+    if (this.pitch.rotation.x < -0.5) {
+      this.pitch.rotation.x = -0.5
     }
   }
 
-  public getDirection (way: Vector3): Vector3 {
-    this.rotation.set(this.pitchObject.rotation.x, this.yawObject.rotation.y, 0)
-    way.copy(this.direction).applyEuler(this.rotation)
-    return way
-  }
-
-  public dispose (): void {
-    document.removeEventListener('mousemove', this.move, false)
-    this.active = false
+  public get direction (): Vector3 {
+    this.rotation.set(this.pitch.rotation.x, this.yaw.rotation.y, 0)
+    this.directionVector.copy(this.orientation).applyEuler(this.rotation)
+    return this.directionVector
   }
 
   public set enabled (active: boolean) {
@@ -57,6 +54,17 @@ export default class PointerControls {
   }
 
   public get object (): Object3D {
-    return this.yawObject
+    return this.yaw
+  }
+
+  public dispose (): void {
+    document.removeEventListener('mousemove', this.move, false)
+    delete this.directionVector
+    delete this.orientation
+    delete this.rotation
+
+    this.active = false
+    delete this.pitch
+    delete this.yaw
   }
 }
