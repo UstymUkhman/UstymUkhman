@@ -18,9 +18,9 @@ const LINE_HEIGHT = 27
 const OFFSET = 18
 
 interface TemplateValues {
-  readonly code: Ref<null>
   readonly mobile: boolean
   readonly ratio: number
+  readonly code: Ref
 }
 
 export default defineComponent({
@@ -64,8 +64,8 @@ export default defineComponent({
       height = size.height
       width = size.width / props.ratio
 
-      canvas!.width = width
-      canvas!.height = height
+      canvas.width = width
+      canvas.height = height
 
       rows = Math.ceil(height / LINE_HEIGHT)
       columns = Math.ceil(width / OFFSET)
@@ -114,7 +114,7 @@ export default defineComponent({
       const now = Date.now()
       if (now - lastUpdate < 50) return
 
-      context!.clearRect(0, 0, canvas!.width, canvas!.height)
+      context!.clearRect(0, 0, canvas.width, canvas.height)
       updateVisibleColumns()
       lastUpdate = now
 
@@ -155,32 +155,30 @@ export default defineComponent({
     }
 
     let context: CanvasRenderingContext2D | null
-    let canvas: HTMLCanvasElement | null
-
     const screen = new Viewport(onResize)
     let height = screen.size.height + 16
     let width = screen.size.width + 16
-
-    let lastUpdate = Date.now()
-    const code = ref(null)
+    let canvas: HTMLCanvasElement
 
     let duration: number[] = []
     let visible: boolean[] = []
     let chars: string[][] = []
     let index: number[] = []
 
+    let lastUpdate = Date.now()
     let columns: number = 0
     let frame: number = 0
     let rows: number = 0
+    const code = ref()
 
     onMounted(() => {
       canvas = code.value
-      canvas!.width = width
-      canvas!.height = height
+      canvas.width = width
+      canvas.height = height
 
       rows = Math.ceil(height / LINE_HEIGHT)
       columns = Math.ceil(width / OFFSET)
-      context = canvas!.getContext('2d')
+      context = canvas.getContext('2d')
 
       context!.fillStyle = `rgba(${green}, 1.0)`
       context!.shadowColor = `rgb(${green})`

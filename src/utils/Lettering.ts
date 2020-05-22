@@ -13,14 +13,14 @@ export default class Lettering {
   private index: number = 0
   private frame: number = 0
 
-  constructor (message: HTMLElement, slowTyping: number = 0, timeout: number = 1000) {
-    this.slowly = slowTyping
+  constructor (message: HTMLElement, slowTyping?: number, timeout?: number) {
+    this.timeout = timeout || 1000
+    this.slowly = slowTyping || 0
     this.message = message
-    this.timeout = timeout
     this.last = null
   }
 
-  public animate (callback: Function | undefined): HTMLElement[] | undefined {
+  public animate (callback: Function | undefined): HTMLElement[] | void {
     if (this.message && this.message.textContent) {
       this.word = this.message.textContent?.split('')
     }

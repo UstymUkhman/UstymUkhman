@@ -121,7 +121,6 @@ h2 {
 
 p {
   @include back-button;
-
   cursor: default;
   margin: 0px;
 }

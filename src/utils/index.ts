@@ -19,6 +19,7 @@ if (navigator && navigator.userLanguage) {
 const language = mainLanguage || navigator.language || userLanguage
 
 export type KeyboardEventListener = (event: KeyboardEvent) => void
+export type TouchEventListener = (event: TouchEvent) => void
 
 export interface AppProps {
   readonly version: string | undefined;

@@ -65,9 +65,10 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import 'mixins';
+
 iframe {
-  height: 100%;
-  width: 100%;
+  @include size;
   border: 0;
 }
 </style>

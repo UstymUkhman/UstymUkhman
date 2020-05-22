@@ -39,8 +39,8 @@ const LINE_HEIGHT = 25.6
 interface TemplateValues {
   readonly prerenderer: boolean
   readonly block: Ref<boolean>
-  readonly numbers: Ref<null>
   readonly mobile: boolean
+  readonly numbers: Ref
 }
 
 export default defineComponent({
@@ -101,8 +101,8 @@ export default defineComponent({
     }
 
     const setCanvasStyle = (): void => {
-      canvas!.height = height
-      canvas!.width = width
+      canvas.height = height
+      canvas.width = width
 
       context!.shadowColor = `rgb(${green})`
       context!.fillStyle = `rgb(${green})`
@@ -130,21 +130,21 @@ export default defineComponent({
     const prerenderer: boolean = Platform.prerenderer
     let context: CanvasRenderingContext2D | null
     const mobile: boolean = Platform.mobile
-    let canvas: HTMLCanvasElement | null
+    let canvas: HTMLCanvasElement
 
     const screen = new Viewport(onResize)
     let { width, height } = screen.size
 
     let skipColumns: boolean = false
-    const numbers: Ref = ref(null)
     const block: Ref = ref(false)
+    const numbers: Ref = ref()
 
     let frame: number = 0
     let chars: string[][]
 
     onMounted(() => {
       canvas = numbers.value
-      context = canvas!.getContext('2d')
+      context = canvas.getContext('2d')
 
       fillColumns()
       setCanvasStyle()
@@ -157,7 +157,7 @@ export default defineComponent({
       frame = requestAnimationFrame(animate)
       setTimeout(() => { skipColumns = true }, 1500)
       setTimeout(() => { block.value = true }, 4500)
-      setTimeout(() => { canvas!.style.opacity = '1' })
+      setTimeout(() => { canvas.style.opacity = '1' })
     })
 
     onBeforeUnmount(() => {

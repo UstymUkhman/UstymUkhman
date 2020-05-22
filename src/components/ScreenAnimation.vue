@@ -46,12 +46,12 @@ export default defineComponent({
     let halfWidth = width / 2
 
     let drawingTime: number = 0
-    const loader = ref(null)
     let radius: number = 0
     let frame: number = 0
+    const loader = ref()
 
     onMounted(() => {
-      context = (loader!.value! as HTMLCanvasElement).getContext('2d')
+      context = loader.value.getContext('2d')
       radius = width > height ? halfWidth * 1.2 : halfHeight * 1.2
 
       drawingTime = Date.now()
@@ -73,13 +73,13 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+@import 'mixins';
+
 canvas {
   background-color: $black;
-  position: absolute;
-  overflow: hidden;
+  @include absolute-size;
 
-  height: 100%;
-  width: 100%;
+  overflow: hidden;
   z-index: 2;
 }
 </style>
