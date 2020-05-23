@@ -21,22 +21,22 @@ export default defineComponent({
     }
 
     const animate = (): void => {
-      context!.clearRect(0, 0, width, height)
+      context.clearRect(0, 0, width, height)
       radius -= ((Date.now() - drawingTime) / 1000 * 75)
 
       if (radius > 0) {
         frame = requestAnimationFrame(animate)
-        context!.beginPath()
+        context.beginPath()
 
-        context!.arc(halfWidth, halfHeight, radius, 0, PI.m2)
-        context!.fillStyle = '#FFFFFF'
+        context.arc(halfWidth, halfHeight, radius, 0, PI.m2)
+        context.fillStyle = '#FFFFFF'
 
-        context!.stroke()
-        context!.fill()
+        context.stroke()
+        context.fill()
       }
     }
 
-    let context: CanvasRenderingContext2D | null
+    let context: CanvasRenderingContext2D
     const screen = new Viewport(onResize)
 
     let height = screen.size.height

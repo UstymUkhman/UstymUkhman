@@ -69,7 +69,7 @@ export default defineComponent({
 
       rows = Math.ceil(height / LINE_HEIGHT)
       columns = Math.ceil(width / OFFSET)
-      context!.font = matrixFont
+      context.font = matrixFont
 
       _rows = Math.max(rows - _rows, 0)
       _columns = Math.max(columns - _columns, 0)
@@ -114,7 +114,7 @@ export default defineComponent({
       const now = Date.now()
       if (now - lastUpdate < 50) return
 
-      context!.clearRect(0, 0, canvas.width, canvas.height)
+      context.clearRect(0, 0, canvas.width, canvas.height)
       updateVisibleColumns()
       lastUpdate = now
 
@@ -142,8 +142,8 @@ export default defineComponent({
           const a = +(chars[i].length / (chars[i].length - j)).toFixed(1) / 100
           alpha = j < index[i] ? alpha * Math.min(a, 0.2) : 0
 
-          context!.fillStyle = `rgba(${color}, ${alpha})`
-          context!.fillText(chars[i][j], i * OFFSET, j * LINE_HEIGHT)
+          context.fillStyle = `rgba(${color}, ${alpha})`
+          context.fillText(chars[i][j], i * OFFSET, j * LINE_HEIGHT)
 
           if (Math.random() < update) {
             chars[i][j] = getCharCode()
@@ -154,7 +154,7 @@ export default defineComponent({
       }
     }
 
-    let context: CanvasRenderingContext2D | null
+    let context: CanvasRenderingContext2D
     const screen = new Viewport(onResize)
     let height = screen.size.height + 16
     let width = screen.size.width + 16
@@ -178,13 +178,13 @@ export default defineComponent({
 
       rows = Math.ceil(height / LINE_HEIGHT)
       columns = Math.ceil(width / OFFSET)
-      context = canvas.getContext('2d')
+      context = canvas.getContext('2d')!
 
-      context!.fillStyle = `rgba(${green}, 1.0)`
-      context!.shadowColor = `rgb(${green})`
-      context!.textBaseline = 'middle'
-      context!.font = matrixFont
-      context!.shadowBlur = 5
+      context.fillStyle = `rgba(${green}, 1.0)`
+      context.shadowColor = `rgb(${green})`
+      context.textBaseline = 'middle'
+      context.font = matrixFont
+      context.shadowBlur = 5
 
       duration = Array.from(new Array(columns), d => randomInt(rows, 100))
       visible = Array.from(new Array(columns), v => false)

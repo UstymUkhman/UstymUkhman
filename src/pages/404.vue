@@ -52,7 +52,7 @@ export default defineComponent({
 
   setup (): TemplateValues {
     const animate = (): void => {
-      context!.clearRect(0, 0, width, height)
+      context.clearRect(0, 0, width, height)
       updateNumbers()
 
       for (let i = 0, c = 1, length = chars.length; i < length; i++, c++) {
@@ -60,7 +60,7 @@ export default defineComponent({
         const columnLength = chars[i].length
 
         for (let j = 0, x = i * LEFT_OFFSET; j < columnLength; j++) {
-          context!.fillText(chars[i][j], x, j * LINE_HEIGHT + 12)
+          context.fillText(chars[i][j], x, j * LINE_HEIGHT + 12)
         }
       }
 
@@ -104,11 +104,11 @@ export default defineComponent({
       canvas.height = height
       canvas.width = width
 
-      context!.shadowColor = `rgb(${green})`
-      context!.fillStyle = `rgb(${green})`
-      context!.textBaseline = 'middle'
-      context!.font = matrixFont
-      context!.shadowBlur = 5
+      context.shadowColor = `rgb(${green})`
+      context.fillStyle = `rgb(${green})`
+      context.textBaseline = 'middle'
+      context.font = matrixFont
+      context.shadowBlur = 5
     }
 
     const getCharCode = (): string => {
@@ -128,8 +128,8 @@ export default defineComponent({
     }
 
     const prerenderer: boolean = Platform.prerenderer
-    let context: CanvasRenderingContext2D | null
     const mobile: boolean = Platform.mobile
+    let context: CanvasRenderingContext2D
     let canvas: HTMLCanvasElement
 
     const screen = new Viewport(onResize)
@@ -144,7 +144,7 @@ export default defineComponent({
 
     onMounted(() => {
       canvas = numbers.value
-      context = canvas.getContext('2d')
+      context = canvas.getContext('2d')!
 
       fillColumns()
       setCanvasStyle()

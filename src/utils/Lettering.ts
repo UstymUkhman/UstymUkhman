@@ -1,26 +1,26 @@
 export default class Lettering {
-  private readonly letters: HTMLElement[] = []
-  private lastLetter: HTMLElement | undefined
-  private callback: Function | undefined
+  private readonly letters: Array<HTMLSpanElement> = []
+  private lastLetter: HTMLSpanElement | undefined
+  private readonly message: HTMLParagraphElement
 
   private readonly timeout: number = 1000
-  private readonly message: HTMLElement
+  private callback: Function | undefined
+  private last: HTMLSpanElement | null
   private readonly slowly: number = 0
 
-  private last: HTMLElement | null
+  private word: Array<string> = []
   private nextTiming: number = 0
-  private word: string[] = []
   private index: number = 0
   private frame: number = 0
 
-  constructor (message: HTMLElement, slowTyping?: number, timeout?: number) {
+  constructor (message: HTMLParagraphElement, slowTyping?: number, timeout?: number) {
     this.timeout = timeout || 1000
     this.slowly = slowTyping || 0
     this.message = message
     this.last = null
   }
 
-  public animate (callback: Function | undefined): HTMLElement[] | void {
+  public animate (callback: Function | undefined): Array<HTMLSpanElement> | void {
     if (this.message && this.message.textContent) {
       this.word = this.message.textContent?.split('')
     }
@@ -79,7 +79,7 @@ export default class Lettering {
     this.frame = requestAnimationFrame(this.lettersAnimation.bind(this))
   }
 
-  private showLetter (letter: HTMLElement): void {
+  private showLetter (letter: HTMLSpanElement): void {
     const delay = `${this.getAnimationDelay()}ms`
 
     letter.style.transitionDelay = delay
@@ -109,7 +109,7 @@ export default class Lettering {
     if (this.callback) setTimeout(this.callback)
   }
 
-  public disposeAll (words: HTMLElement[][]): void {
+  public disposeAll (words: Array<Array<HTMLSpanElement>>): void {
     for (const w in words) {
       for (const l in words[w]) {
         words[w][l].classList.add('dissolve')

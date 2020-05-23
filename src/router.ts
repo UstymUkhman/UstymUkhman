@@ -44,6 +44,10 @@ export default createRouter({
     name: 'Home',
     path: '/'
   }, {
+    component: () => import(/* webpackChunkName: "about-page" */ '@pages/About.vue'),
+    path: '/about',
+    name: 'About'
+  }, {
     component: () => import(/* webpackChunkName: "more-page" */ '@pages/More.vue'),
     // beforeEnter: checkWebGLCompatibility,
     path: '/more',

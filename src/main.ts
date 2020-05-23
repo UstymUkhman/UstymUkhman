@@ -1,14 +1,18 @@
 import 'intersection-observer'
-// import '@/utils/ServiceWorker'
 
 import App from '@/App.vue'
 import router from '@/router'
 import { createApp } from 'vue'
-// eslint-disable-next-line no-unused-vars
-import { AppProps } from '@/utils'
 
 const root = document.getElementById('root') ||
              document.createElement('div')
+
+export interface AppProps {
+  readonly version: string | undefined;
+  readonly deploy: Boolean | undefined;
+  readonly domain: string | undefined;
+  readonly app?: HTMLElement;
+}
 
 const app: AppProps = {
   deploy: root.dataset.deploy === 'true',

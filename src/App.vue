@@ -5,9 +5,8 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
-import { AppProps, Platform } from '@/utils'
 import { defineComponent } from 'vue'
+import { Platform } from '@/utils'
 
 export default defineComponent({
   name: 'App',
@@ -29,12 +28,9 @@ export default defineComponent({
     }
   },
 
-  setup (props: AppProps): { prerender: boolean } {
+  setup (props): { prerender: boolean } {
     console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
-
-    return {
-      prerender: Platform.prerender
-    }
+    return { prerender: Platform.prerender }
   }
 })
 </script>
@@ -50,19 +46,19 @@ html {
   -webkit-overflow-scrolling: touch;
   -webkit-touch-callout: none;
 
-  font-family: 'White Rabbit', monospace;
   text-rendering: optimizeLegibility;
   font-variant-ligatures: none;
-  text-size-adjust: none;
-  font-weight: 400;
-
   backface-visibility: hidden;
   background-color: $black;
-  appearance: none;
-  color: $green;
+  text-size-adjust: none;
 
+  @include white-rabbit;
   user-select: none;
+  font-weight: 400;
+
+  appearance: none;
   overflow: hidden;
+  @include size;
   // cursor: none;
 
   max-height: 100%;
@@ -70,9 +66,6 @@ html {
 
   max-width: 100%;
   min-width: 100%;
-
-  height: 100%;
-  width: 100%;
 
   padding: 0;
   margin: 0;
@@ -100,6 +93,7 @@ canvas {
 h1 {
   font-weight: 700;
   font-size: 48px;
+
   cursor: default;
   margin: 0px;
 
@@ -111,6 +105,7 @@ h1 {
 h2 {
   font-weight: 400;
   font-size: 32px;
+
   cursor: default;
   margin: 0px;
 
@@ -121,7 +116,6 @@ h2 {
 
 p {
   @include back-button;
-  cursor: default;
   margin: 0px;
 }
 
@@ -131,11 +125,6 @@ span.lettering {
   &.dissolve {
     opacity: 0;
   }
-}
-
-a {
-  text-decoration: none;
-  cursor: pointer;
 }
 
 .app-container {

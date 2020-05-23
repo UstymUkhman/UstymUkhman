@@ -1,6 +1,6 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="experiments-page" itemscope>
-    <ScreenOverlay v-if="!isPrerenderer" />
+    <ScreenOverlay v-if="!prerenderer" />
 
     <transition appear>
       <router-view class="page" />
@@ -28,9 +28,7 @@ export default defineComponent({
     }
   },
 
-  setup ({ experiments }): { isPrerenderer: boolean } {
-    const isPrerenderer = Platform.prerenderer
-
+  setup ({ experiments }): { prerenderer: boolean } {
     console.log(experiments)
 
     onMounted(() => {
@@ -38,7 +36,9 @@ export default defineComponent({
       firePrerender({ title: 'Experiments' })
     })
 
-    return { isPrerenderer }
+    return {
+      prerenderer: Platform.prerenderer
+    }
   }
 })
 </script>

@@ -5,7 +5,7 @@
         <div class="button-box" :class="{'active': active, 'pressed': pressed, 'selected': selected || (active && touching)}">
 
           <div class="button-background"></div>
-          <p ref="text" class="button back" :class="{'active': active}">&lt; b@cK</p>
+          <p ref="button" class="button back" :class="{'active': active}">&lt; b@cK</p>
 
         </div>
       </div>
@@ -16,18 +16,18 @@
 <script lang="ts">
 /* eslint-disable no-unused-vars */
 import { SetupContext, Ref, defineComponent, watch, watchEffect, onMounted, ref } from 'vue'
-import { TouchEventListener, Lettering, Loading, Platform } from '@/utils'
+import { TouchEventListener, VueRef, Lettering, Loading, Platform } from '@/utils'
 /* eslint-enable no-unused-vars */
 import router from '@/router'
 
 interface TemplateValues {
+  readonly button: Ref<HTMLParagraphElement>
   readonly onTouchStart: TouchEventListener
   readonly onTouchEnd: TouchEventListener
-  readonly touching: boolean
-  readonly selected: boolean
-  readonly pressed: boolean
-  readonly active: boolean
-  readonly text: Ref
+  readonly selected: VueRef<boolean>
+  readonly pressed: VueRef<boolean>
+  readonly active: VueRef<boolean>
+  readonly touching: Ref<boolean>
 }
 
 export default defineComponent({
@@ -49,23 +49,18 @@ export default defineComponent({
 
   setup (props, context: SetupContext): TemplateValues {
     function onTouchStart (event: TouchEvent): void {
-      touching = true
-      pressed = true
+      touching.value = true
+      pressed.value = true
       back = true
     }
 
     function onTouchEnd (event: TouchEvent): void {
-      touching = false
-      pressed = false
-      let delay = 0
+      const delay = !props.active ? 800 : 0
+      touching.value = false
+      pressed.value = false
 
-      if (!props.active) {
-        active = !back && !isMobile
-        delay = 800
-      }
-
-      lettering.dispose()
       context.emit('close:page')
+      lettering.dispose()
 
       setTimeout(() => {
         Loading.checkActiveItem()
@@ -73,26 +68,26 @@ export default defineComponent({
       }, delay + 2500)
     }
 
-    const isMobile: boolean = Platform.mobile as boolean
-    const selected: boolean = props.selected as boolean
-    let pressed: boolean = props.selected as boolean
-    let active: boolean = props.active as boolean
+    const selected: VueRef<boolean> = ref(props.selected)
+    const pressed: VueRef<boolean> = ref(props.selected)
+    const active: VueRef<boolean> = ref(props.active)
 
-    let touching: boolean = false
+    const button: Ref<HTMLParagraphElement> = ref()!
+    const touching: Ref<boolean> = ref(false)
+
     let back: boolean = false
-
     let lettering: Lettering
-    const text: Ref = ref()
 
-    watchEffect(() => { active = props.active as boolean })
+    watchEffect(() => { selected.value = props.selected })
+    watchEffect(() => { active.value = props.active })
 
-    watch(props.selected, (now, before) => {
-      pressed = true
+    watch(() => props.selected, (now, before): void => {
+      pressed.value = true
 
       if (before && !now) {
         setTimeout(() => {
+          active.value = false
           lettering.dispose()
-          active = false
         }, 500)
 
         setTimeout(() => {
@@ -103,8 +98,8 @@ export default defineComponent({
     })
 
     onMounted(() => {
-      lettering = new Lettering(text.value, 100)
-      lettering.animate((): void => { active = !back && (active || isMobile) })
+      lettering = new Lettering(button.value, 100)
+      lettering.animate((): void => { active.value = !back && (active.value || Platform.mobile) })
     })
 
     return {
@@ -114,7 +109,7 @@ export default defineComponent({
       selected,
       pressed,
       active,
-      text
+      button
     }
   }
 })

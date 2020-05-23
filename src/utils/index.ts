@@ -1,12 +1,15 @@
-import ScrollObserver from './ScrollObserver'
-import { Viewport, Size } from './Viewport'
-import firePrerender from './Prerender'
-import Lettering from './Lettering'
-import Platform from './Platform'
-import Loading from './Loading'
-import Sounds from './Sounds'
-import wheel from './Wheel'
+// eslint-disable-next-line no-unused-vars
+import { Ref } from 'vue'
+
 import Rain from './Rain'
+import wheel from './Wheel'
+import Sounds from './Sounds'
+import Loading from './Loading'
+import Platform from './Platform'
+import Lettering from './Lettering'
+import firePrerender from './Prerender'
+import { Viewport, Size } from './Viewport'
+import ScrollObserver from './ScrollObserver'
 
 let userLanguage: string = 'en'
 const navigator: any = window.navigator
@@ -20,13 +23,7 @@ const language = mainLanguage || navigator.language || userLanguage
 
 export type KeyboardEventListener = (event: KeyboardEvent) => void
 export type TouchEventListener = (event: TouchEvent) => void
-
-export interface AppProps {
-  readonly version: string | undefined;
-  readonly deploy: Boolean | undefined;
-  readonly domain: string | undefined;
-  readonly app?: HTMLElement;
-}
+export type VueRef<Type> = Ref<{ valueOf: () => Type }>
 
 export {
   Viewport, Size,
