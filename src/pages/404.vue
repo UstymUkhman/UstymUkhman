@@ -134,13 +134,12 @@ export default defineComponent({
 
     const screen = new Viewport(onResize)
     let { width, height } = screen.size
-
     let skipColumns: boolean = false
+    let chars: Array<Array<string>>
+
     const block: Ref = ref(false)
     const numbers: Ref = ref()
-
     let frame: number = 0
-    let chars: string[][]
 
     onMounted(() => {
       canvas = numbers.value
@@ -149,15 +148,12 @@ export default defineComponent({
       fillColumns()
       setCanvasStyle()
 
-      firePrerender({
-        title: 'System Failure',
-        fullTitle: true
-      })
-
-      frame = requestAnimationFrame(animate)
       setTimeout(() => { skipColumns = true }, 1500)
       setTimeout(() => { block.value = true }, 4500)
       setTimeout(() => { canvas.style.opacity = '1' })
+
+      firePrerender({ title: 'System Failure', fullTitle: true })
+      frame = requestAnimationFrame(animate)
     })
 
     onBeforeUnmount(() => {
@@ -209,17 +205,16 @@ export default defineComponent({
   text-align: center;
 
   span {
-    @include white-rabbit;
     text-shadow: $energy-green 0 0 10px;
+    @include white-rabbit(24px);
 
     text-transform: uppercase;
     vertical-align: middle;
     text-align: center;
-    color: $fade-green;
 
     position: relative;
+    color: $fade-green;
     line-height: 26px;
-    font-size: 24px;
 
     display: table;
     width: 100%;
@@ -228,7 +223,7 @@ export default defineComponent({
 }
 
 .failure-enter-active {
-  transition: opacity 100ms $ease-in-quart 600ms;
+  transition: opacity 100ms $ease-in-quart 650ms;
 }
 
 .failure-enter-from {

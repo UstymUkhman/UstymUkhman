@@ -42,7 +42,7 @@ export default defineComponent({
     }
 
     function onKeyDown (event: KeyboardEvent | TouchEvent): void {
-      if (activeButton && enterKey(event)) {
+      if (activeButton.value && enterKey(event)) {
         selectedButton.value = true
       }
 
@@ -53,7 +53,7 @@ export default defineComponent({
     }
 
     function onKeyUp (event: KeyboardEvent | TouchEvent): void {
-      if (activeButton && enterKey(event)) {
+      if (activeButton.value && enterKey(event)) {
         closeAboutPage()
       }
     }

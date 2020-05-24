@@ -50,7 +50,7 @@ export default defineComponent({
     }
   },
 
-  setup ({ name, image, page, description }): { page: string } {
+  setup ({ name, image, page, description }): { readonly page: string } {
     onMounted(() => {
       firePrerender({
         title: name,

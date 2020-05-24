@@ -239,9 +239,9 @@
   color: $green;
 }
 
-@mixin white-rabbit {
+@mixin white-rabbit ($size: 18px) {
   font-family: 'White Rabbit', monospace;
-  font-size: 18px;
+  font-size: $size;
   color: $green;
 }
 

@@ -28,7 +28,7 @@ export default defineComponent({
     }
   },
 
-  setup ({ experiments }): { prerenderer: boolean } {
+  setup ({ experiments }): { readonly prerenderer: boolean } {
     console.log(experiments)
 
     onMounted(() => {

@@ -11,7 +11,7 @@
 }, {
   "page": "https://ustymukhman.github.io/Dynamic.css/public/",
   "github": "https://github.com/UstymUkhman/Dynamic.css",
-  "description": "Awesome Library of CSS3 animations.",
+  "description": "Awesome Library of CSS3 animations",
 
   "image": "DynamicCss.jpg",
   "video": "DynamicCss.mp4",
@@ -19,18 +19,18 @@
   "route": "DynamicCss",
   "name": "Dynamic.css"
 }, {
-  "page": "https://ustymukhman.github.io/FaceMasking/public/",
-  "github": "https://github.com/UstymUkhman/FaceMasking",
-  "description": "Real-time webcam face masking.",
+  "page": "https://ustymukhman.github.io/face-masking/public/",
+  "github": "https://github.com/UstymUkhman/face-masking",
+  "description": "Real-time webcam face masking",
 
-  "image": "FaceMasking.jpg",
-  "video": "FaceMasking.mp4",
+  "image": "face-masking.jpg",
+  "video": "face-masking.mp4",
 
-  "route": "FaceMasking",
-  "name": "FaceMasking"
+  "route": "face-masking",
+  "name": "face-masking"
 }, {
   "page": "https://ustymukhman.github.io/ImageDrawer.js/public/",
-  "description": "A jQuery plugin to animate a drawing image.",
+  "description": "A jQuery plugin to animate a drawing image",
   "github": "https://github.com/UstymUkhman/ImageDrawer.js",
 
   "image": "ImageDrawer.jpg",

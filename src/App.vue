@@ -28,7 +28,7 @@ export default defineComponent({
     }
   },
 
-  setup (props): { prerender: boolean } {
+  setup (props): { readonly prerender: boolean } {
     console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
     return { prerender: Platform.prerender }
   }

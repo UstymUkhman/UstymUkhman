@@ -99,7 +99,10 @@ export default defineComponent({
 
     onMounted(() => {
       lettering = new Lettering(button.value, 100)
-      lettering.animate((): void => { active.value = !back && (active.value || Platform.mobile) })
+
+      lettering.animate((): void => {
+        active.value = !back && (active.value || Platform.mobile)
+      })
     })
 
     return {
@@ -120,7 +123,6 @@ export default defineComponent({
 
 .back-button {
   @include center-size;
-  pointer-events: none;
   overflow: hidden;
 
   .back-button-container {
@@ -168,11 +170,9 @@ export default defineComponent({
     }
 
     .button.back {
-      @include white-rabbit;
+      @include white-rabbit(25px);
       padding: 0 10% 0 30%;
-
       line-height: 50px;
-      font-size: 25px;
 
       @include breakpoint($sm-down) {
         padding-left: 25%;
