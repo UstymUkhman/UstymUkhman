@@ -5,9 +5,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watchEffect, ref } from 'vue'
-// eslint-disable-next-line no-unused-vars
-import { VueRef } from '@/utils'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'ExperimentTitle',
@@ -17,19 +15,11 @@ export default defineComponent({
       required: true,
       type: String
     }
-  },
-
-  setup (props): { readonly title: VueRef<string> } {
-    watchEffect(() => { title.value = props.title })
-    const title: VueRef<string> = ref(props.title)
-
-    return { title }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-@import 'variables';
 @import 'mixins';
 
 .title-container {

@@ -100,7 +100,6 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif)(\?.*)?$/,
-        exclude: /assets(\\|\/)3D/,
         loader: 'url-loader',
         options: {
           limit: 10000,
@@ -115,18 +114,18 @@ module.exports = {
           name: utils.assetsPath('media/[name].[hash:7].[ext]')
         }
       },
-      {
-        test: /\.svg$/,
-        loader: 'vue-svg-loader',
-        exclude: /assets(\\|\/)fonts/,
-        options: {
-          svgo: {
-            plugins: [{
-              removeViewBox: false
-            }]
-          }
-        }
-      },
+      // {
+      //   test: /\.svg$/,
+      //   loader: 'vue-svg-loader',
+      //   exclude: /assets(\\|\/)fonts/,
+      //   options: {
+      //     svgo: {
+      //       plugins: [{
+      //         removeViewBox: false
+      //       }]
+      //     }
+      //   }
+      // },
       {
         test: /\.(eot|woff2?|otf|ttf|svg)(\?.*)?$/,
         loader: 'url-loader',
@@ -144,15 +143,8 @@ module.exports = {
         loader: 'gltf-loader-2'
       },
       {
-        test: /3d(\\|\/)assets.*\.(bin|png|jpe?g|gif|glb|json)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: utils.assetsPath('assets-3d/[name].[hash:7].[ext]')
-            }
-          }
-        ]
+        test: /\.(bin||glb)$/,
+        loader: 'file-loader'
       }
     ]
   },

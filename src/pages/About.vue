@@ -97,7 +97,7 @@ export default defineComponent({
       firePrerender({ title: 'About' })
       Loading.setActiveItem(0)
 
-      lettering.animate((): void => {
+      lettering.animate(() => {
         setTimeout(() => { activeButton.value = true }, 1000)
         context.emit('toggle:rain', true)
         visibleButton.value = true

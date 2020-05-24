@@ -81,11 +81,13 @@ const devWebpackConfig = merge(baseConfig, {
       files: ['**/*.vue', '**/*.scss']
     }),
 
-    new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, '../public'),
-      to: config.dev.assetsSubDirectory,
-      ignore: ['.*']
-    }])
+    new CopyWebpackPlugin({
+      patterns: [{
+        from: path.resolve(__dirname, '../public'),
+        to: config.dev.assetsSubDirectory,
+        globOptions: { ignore: ['.*'] }
+      }]
+    })
   ]
 })
 
@@ -110,12 +112,11 @@ module.exports = new Promise((resolve, reject) => {
           return (severity, errors) => {
             if (severity !== 'error') return
 
-            const error = errors[0]
-            const filename = error.file && error.file.split('!').pop()
+            const filename = errors[0].file && errors[0].file.split('!').pop()
 
             notifier.notify({
               icon: path.join(__dirname, 'logo.png'),
-              message: severity + ': ' + error.name,
+              message: severity + ': ' + errors[0].name,
               subtitle: filename || '',
               title: jsonConfig.name
             })

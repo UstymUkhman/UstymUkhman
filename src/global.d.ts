@@ -10,5 +10,6 @@ declare module '*.json' {
   export default value
 }
 
+declare module '*.svg'
 declare module '*.scss'
 declare module 'object-fit-images'

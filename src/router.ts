@@ -13,7 +13,7 @@ interface ExperimentProps {
   readonly image: string
   readonly video: string
 
-  readonly name: string
+  readonly title: string
   readonly page: string
 }
 
@@ -64,8 +64,8 @@ export default createRouter({
     }, ...experiments.map((experiment: ExperimentProps): PageRoute => {
       return {
         component: () => import(/* webpackChunkName: "experiment-page" */ '@pages/Experiment.vue'),
+        name: experiment.title,
         path: experiment.route,
-        name: experiment.name,
         props: experiment
       }
     })]

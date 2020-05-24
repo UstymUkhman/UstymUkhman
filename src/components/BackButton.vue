@@ -100,7 +100,7 @@ export default defineComponent({
     onMounted(() => {
       lettering = new Lettering(button.value, 100)
 
-      lettering.animate((): void => {
+      lettering.animate(() => {
         active.value = !back && (active.value || Platform.mobile)
       })
     })

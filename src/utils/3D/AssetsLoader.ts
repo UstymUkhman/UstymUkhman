@@ -33,21 +33,21 @@ export default class AssetsLoader extends LoadingManager {
   }
 
   private load (loader: JSONLoader, ...args: any[]): Promise<JSONModel> {
-    return this.execute.call(null, loader, 'load', args)
+    return this.execute(loader, 'load', args)
   }
 
   private parse (loader: JSONLoader, ...args: any[]): Promise<JSONModel> {
-    return this.execute.call(null, loader, 'parse', args)
+    return this.execute(loader, 'parse', args)
   }
 
   private execute (loader: any, fn: string, args: any[]): Promise<JSONModel> {
     return new Promise((resolve, reject) => {
-      const onError: Function = (error: Error) => { reject(error) }
-      const onLoad: Function = (result: JSONPromise) => { resolve(result) }
-      const onProgress: Function = (progress: number) => { console.log(`Loading... ${progress}%`, progress) }
+      const onError: Function = (error: Error) => reject(error)
+      const onLoad: Function = (result: JSONPromise) => resolve(result)
+      const onProgress: Function = (progress: number) => console.log(`Loading... ${progress}%`, progress)
 
       const loaderCallbacks = fn === 'load' ? [onLoad, onProgress, onError] : [onLoad, onError]
-      resolve(loader[fn].apply(loader, args.concat(loaderCallbacks)))
+      resolve(loader[fn](...args.concat(loaderCallbacks)))
     })
   }
 

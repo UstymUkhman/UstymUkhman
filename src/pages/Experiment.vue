@@ -1,15 +1,27 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="experiment-page" itemscope>
+    <ExperimentHeader :title="title" :github="github" :scroll="title === 'Dynamic.css'" />
     <iframe :src="page" allowfullscreen></iframe>
   </article>
 </template>
 
 <script lang="ts">
+import ExperimentHeader from '@components/ExperimentHeader.vue'
 import { defineComponent, onMounted } from 'vue'
 import { firePrerender } from '@/utils'
 
+interface TemplateValues {
+  readonly title: string
+  readonly github: string
+  readonly page: string
+}
+
 export default defineComponent({
   name: 'Experiment',
+
+  components: {
+    ExperimentHeader
+  },
 
   props: {
     description: {
@@ -39,7 +51,7 @@ export default defineComponent({
       type: String
     },
 
-    name: {
+    title: {
       required: true,
       type: String
     },
@@ -50,16 +62,10 @@ export default defineComponent({
     }
   },
 
-  setup ({ name, image, page, description }): { readonly page: string } {
-    onMounted(() => {
-      firePrerender({
-        title: name,
-        description,
-        image
-      })
-    })
+  setup ({ title, description, image, page, github }): TemplateValues {
+    onMounted(() => { firePrerender({ title, description, image }) })
 
-    return { page }
+    return { title, github, page }
   }
 })
 </script>
