@@ -1,29 +1,24 @@
 <template>
-  <header itemtype="https://schema.org/WPHeader" itemscope
-          class="header" :class="{'scrollable': scroll}"
-          @mouseover="toggleVisibility(false)"
-          @mouseout="toggleVisibility(true)">
+  <header class="header" :class="{'scrollable': scroll}" itemtype="https://schema.org/WPHeader" itemscope
+          @mouseover="toggleVisibility($event, true)" @mouseout="toggleVisibility($event, false)">
 
     <transition name="header" appear>
       <div v-show="visible" class="header-container">
         <ExperimentTitle :title="title" />
-        <!-- <ExperimentButtons :github="github" /> -->
+        <ExperimentButtons :description="description" :repository="github" />
       </div>
     </transition>
-
-    <div class="header-trigger" :class="{'active': trigger}"></div>
   </header>
 </template>
 
 <script lang="ts">
 // eslint-disable-next-line no-unused-vars
-import { Ref, defineComponent, watchEffect, onMounted, ref } from 'vue'
-import ExperimentButtons from '@components/ExperimentButtons.vue'
+import { Ref, defineComponent, onMounted, ref } from 'vue'
 import ExperimentTitle from '@components/ExperimentTitle.vue'
+import ExperimentButtons from '@components/ExperimentButtons.vue'
 
 interface TemplateValues {
   readonly toggleVisibility: Function
-  readonly trigger: Ref<boolean>
   readonly visible: Ref<boolean>
   readonly hover: Ref<boolean>
 }
@@ -32,57 +27,53 @@ export default defineComponent({
   name: 'ExperimentHeader',
 
   components: {
-    ExperimentButtons,
-    ExperimentTitle
+    ExperimentTitle,
+    ExperimentButtons
   },
 
   props: {
     title: {
-      required: true,
-      type: String
+      type: String,
+      required: true
+    },
+
+    description: {
+      type: String,
+      required: true
     },
 
     github: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
 
     scroll: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     }
   },
 
   setup (props): TemplateValues {
-    function toggleVisibility (hidden: boolean): void {
-      if (hidden && trigger.value) return
-      const now = Date.now()
+    function toggleVisibility (event: MouseEvent, show: boolean): void {
+      const target = event.relatedTarget as HTMLElement
+      const button = target && target.tagName.toLowerCase() !== 'iframe'
 
-      if (now - interaction > 500) {
-        visible.value = !hidden
-        hover.value = !hidden
-        interaction = now
-      }
+      visible.value = show || button
+      hover.value = show || button
     }
 
-    const trigger: Ref<boolean> = ref(false)
     const visible: Ref<boolean> = ref(true)
     const hover: Ref<boolean> = ref(false)
-    let interaction: number = Date.now()
-
-    watchEffect(() => { trigger.value = !visible.value })
 
     onMounted(() => {
       setTimeout(() => {
         visible.value = hover.value
-        interaction = Date.now()
       }, 2500)
     })
 
     return {
       toggleVisibility,
-      trigger,
       visible,
       hover
     }
@@ -91,10 +82,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import 'mixins';
-
 .header {
-  @include size(100%, 80px);
+  @include size(100%, 160px);
   line-height: 80px;
 
   position: fixed;
@@ -109,34 +98,12 @@ export default defineComponent({
 
   .header-container {
     background-image: linear-gradient($black, rgba($black, 0.9));
-    @include size;
-  }
-
-  .header-trigger {
-    @include absolute-size;
-    pointer-events: none;
-
-    &.active {
-      pointer-events: all;
-    }
-
-    @include breakpoint($sm-down) {
-      display: none;
-    }
+    @include size(100%, 50%);
   }
 
   @include breakpoint($xs) {
     line-height: 50px;
-    height: 50px;
-  }
-
-  .title-container {
-    pointer-events: none;
-    width: 50%;
-  }
-
-  .buttons-container {
-    width: 50%;
+    height: 100px;
   }
 }
 

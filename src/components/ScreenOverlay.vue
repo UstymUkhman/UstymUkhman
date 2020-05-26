@@ -11,8 +11,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import 'mixins';
-
 .screen-overlay {
   background-image: url('../assets/img/overlay.png');
   background-position: top left;

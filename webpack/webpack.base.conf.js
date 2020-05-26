@@ -27,10 +27,7 @@ const createLintingRule = () => ({
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
-
-  entry: {
-    app: './src/main.ts'
-  },
+  entry: { app: './src/main.ts' },
 
   plugins: [
     threeMinifierPlugin,
@@ -69,8 +66,7 @@ module.exports = {
 
   module: {
     rules: [
-      ...(config.dev.useEslint ? [createLintingRule()] : []),
-      {
+      ...(config.dev.useEslint ? [createLintingRule()] : []), {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
@@ -89,61 +85,45 @@ module.exports = {
             img: 'src'
           }
         }
-      },
-      {
+      }, {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         exclude: /node_modules/,
-        options: {
-          appendTsSuffixTo: [/\.vue$/]
-        }
-      },
-      {
+        options: { appendTsSuffixTo: [/\.vue$/] }
+      }, {
         test: /\.(png|jpe?g|gif)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('img/[name].[hash:7].[ext]'),
+          limit: 10000
         }
-      },
-      {
+      }, {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
-          name: utils.assetsPath('media/[name].[hash:7].[ext]')
+          name: utils.assetsPath('media/[name].[hash:7].[ext]'),
+          limit: 10000
         }
-      },
-      // {
-      //   test: /\.svg$/,
-      //   loader: 'vue-svg-loader',
-      //   exclude: /assets(\\|\/)fonts/,
-      //   options: {
-      //     svgo: {
-      //       plugins: [{
-      //         removeViewBox: false
-      //       }]
-      //     }
-      //   }
-      // },
-      {
+      }, {
         test: /\.(eot|woff2?|otf|ttf|svg)(\?.*)?$/,
+        exclude: /assets(\\|\/)img/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+          name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+          limit: 10000
         }
-      },
-      {
+      }, {
         test: /\.(vs|fs|vert|frag|glsl)$/,
         loader: 'threejs-glsl-loader'
-      },
-      {
+      }, {
+        test: /\.svg$/,
+        loader: 'raw-loader',
+        exclude: /assets(\\|\/)fonts/
+      }, {
         test: /\.(gltf)$/,
         loader: 'gltf-loader-2'
-      },
-      {
-        test: /\.(bin||glb)$/,
+      }, {
+        test: /\.(bin|glb)$/,
         loader: 'file-loader'
       }
     ]

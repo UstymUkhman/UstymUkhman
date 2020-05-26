@@ -73,8 +73,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import 'mixins';
-
 canvas {
   background-color: $black;
   @include absolute-size;

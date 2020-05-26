@@ -3,6 +3,7 @@ module.exports = {
   plugins: ['vue'],
 
   parserOptions: {
+    warnOnUnsupportedTypeScriptVersion: false,
     parser: '@typescript-eslint/parser',
     sourceType: 'module'
   },

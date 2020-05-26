@@ -172,8 +172,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import 'mixins';
-
 .numbers-container {
   @include absolute-size;
 

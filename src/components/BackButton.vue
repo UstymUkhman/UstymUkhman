@@ -119,8 +119,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import 'mixins';
-
 .back-button {
   @include center-size;
   overflow: hidden;

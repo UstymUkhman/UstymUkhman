@@ -124,8 +124,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import 'mixins';
-
 .about-page {
   background-color: rgba($black, 0.8);
   @include center-size;

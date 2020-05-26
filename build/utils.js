@@ -44,7 +44,7 @@ exports.cssLoaders = function (options) {
     stylus: generateLoaders('stylus'),
 
     scss: generateLoaders('sass', {
-      prependData: '@import \'variables.scss\';',
+      prependData: '@import \'variables.scss\'; @import \'mixins.scss\';',
 
       sassOptions: {
         includePaths: [path.resolve(__dirname, '../src/scss')]

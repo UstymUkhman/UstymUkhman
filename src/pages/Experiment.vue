@@ -1,6 +1,12 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="experiment-page" itemscope>
-    <ExperimentHeader :title="title" :github="github" :scroll="title === 'Dynamic.css'" />
+    <ExperimentHeader
+      :scroll="title === 'Dynamic.css'"
+      :description="description"
+      :github="github"
+      :title="title"
+    />
+
     <iframe :src="page" allowfullscreen></iframe>
   </article>
 </template>
@@ -12,6 +18,7 @@ import { firePrerender } from '@/utils'
 
 interface TemplateValues {
   readonly title: string
+  readonly description: string
   readonly github: string
   readonly page: string
 }
@@ -65,14 +72,12 @@ export default defineComponent({
   setup ({ title, description, image, page, github }): TemplateValues {
     onMounted(() => { firePrerender({ title, description, image }) })
 
-    return { title, github, page }
+    return { title, description, github, page }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-@import 'mixins';
-
 iframe {
   @include size;
   border: 0;

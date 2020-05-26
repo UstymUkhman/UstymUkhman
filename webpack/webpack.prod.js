@@ -106,7 +106,7 @@ const webpackConfig = merge(baseConfig, {
     new HtmlWebpackPlugin({
       template: 'public/index.html',
       filename: config.build.index,
-      chunksSortMode: 'dependency',
+      chunksSortMode: 'auto',
       inject: true,
 
       minify: {
@@ -150,15 +150,20 @@ const webpackConfig = merge(baseConfig, {
       })
     }),
 
-    new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, '../public'),
-      to: config.build.assetsSubDirectory,
-      ignore: [
-        'browserconfig.xml', 'sitemap.xml',
-        'manifest.json', 'robots.txt',
-        'index.html'
-      ]
-    }])
+    new CopyWebpackPlugin({
+      patterns: [{
+        from: path.resolve(__dirname, '../public'),
+        to: config.build.assetsSubDirectory,
+
+        globOptions: {
+          ignore: [
+            '**/browserconfig.xml', '**/sitemap.xml',
+            '**/manifest.json', '**/robots.txt',
+            '**/index.html'
+          ]
+        }
+      }]
+    })
   ]
 })
 

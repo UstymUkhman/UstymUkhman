@@ -12,16 +12,14 @@ export default defineComponent({
 
   props: {
     title: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     }
   }
 })
 </script>
 
 <style lang="scss" scoped>
-@import 'mixins';
-
 .title-container {
   padding-left: 25px;
   position: absolute;

@@ -216,8 +216,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import 'mixins';
-
 .rain-container {
   position: absolute;
   height: 100%;
