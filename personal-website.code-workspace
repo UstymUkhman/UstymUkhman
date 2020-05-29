@@ -4,6 +4,9 @@
     "js-import.filesToScan": "**/*.{js,jsx,ts,tsx,vue}",
     "git.ignoreLimitWarning": true,
     "js-import.semicolon": false,
+    "tslint.typeCheck": true,
+    "tslint.jsEnable": true,
+		"tslint.enable": true,
 
     "js-import.alias": {
       "@postprocessing": "three/examples/jsm/postprocessing",

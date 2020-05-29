@@ -77,6 +77,7 @@ Object.assign(JSONLoader.prototype, {
   parse: (function () {
     function parseModel (json, geometry) {
       function isBitSet (value, position) {
+        // tslint:disable-next-line: no-bitwise
         return value & (1 << position)
       }
 
@@ -328,6 +329,7 @@ Object.assign(JSONLoader.prototype, {
 
       geometry.bones = json.bones
 
+      // tslint:disable-next-line: max-line-length
       if (geometry.bones && geometry.bones.length > 0 && (geometry.skinWeights.length !== geometry.skinIndices.length || geometry.skinIndices.length !== geometry.vertices.length)) {
         console.warn('When skinning, number of vertices (' + geometry.vertices.length + '), skinIndices (' + geometry.skinIndices.length + '), and skinWeights (' + geometry.skinWeights.length + ') should match.')
       }

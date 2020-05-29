@@ -22,8 +22,6 @@ logs
 *.sublime-workspace
 
 dist/
-coverage/
-tslint.xml
 bitnami.pem
 node_modules/
 public/video/*.mp4

@@ -13,21 +13,34 @@ const sourceMapEnabled = isProduction
   ? config.build.productionSourceMap
   : config.dev.cssSourceMap
 
-const createLintingRule = () => ({
+const setLintingRules = () => !config.dev.useLint ? [] : [{
   enforce: 'pre',
+  test: /\.(ts|tsx)$/,
+  loader: 'tslint-loader',
+  exclude: /node_modules/,
+  include: [utils.resolve('src')],
+  options: {
+    formattersDirectory: 'node_modules/tslint-formatter-beauty',
+    emitWarning: !config.dev.showEslintErrorsInOverlay,
+    configFile: 'tslint.json',
+    formatter: 'beauty'
+  }
+}, {
+  enforce: 'pre',
+  test: /\.(vue|js)$/,
   loader: 'eslint-loader',
-  test: /\.(vue|ts|tsx|js)$/,
+  exclude: /node_modules/,
   include: [utils.resolve('src')],
 
   options: {
     emitWarning: !config.dev.showEslintErrorsInOverlay,
     formatter: require('eslint-friendly-formatter')
   }
-})
+}]
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
-  entry: { app: './src/main.ts' },
+  entry: { app: 'src/main.ts' },
 
   plugins: [
     threeMinifierPlugin,
@@ -66,17 +79,21 @@ module.exports = {
 
   module: {
     rules: [
-      ...(config.dev.useEslint ? [createLintingRule()] : []), {
+      ...setLintingRules(),
+      {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
           cacheBusting: config.dev.cacheBusting,
           cssSourceMap: sourceMapEnabled,
 
-          loaders: utils.cssLoaders({
-            sourceMap: sourceMapEnabled,
-            extract: isProduction
-          }),
+          loaders: {
+            ts: 'ts-loader!tslint-loader',
+            ...utils.cssLoaders({
+              sourceMap: sourceMapEnabled,
+              extract: isProduction
+            })
+          },
 
           transformToRequire: {
             video: ['src', 'poster'],
@@ -89,7 +106,10 @@ module.exports = {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         exclude: /node_modules/,
-        options: { appendTsSuffixTo: [/\.vue$/] }
+        options: {
+          appendTsSuffixTo: [/\.vue$/],
+          transpileOnly: true
+        }
       }, {
         test: /\.(png|jpe?g|gif)(\?.*)?$/,
         loader: 'url-loader',

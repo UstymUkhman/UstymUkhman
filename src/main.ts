@@ -4,12 +4,13 @@ import App from '@/App.vue'
 import router from '@/router'
 import { createApp } from 'vue'
 
+// tslint:disable-next-line: space-within-parens
 const root = document.getElementById('root') ||
              document.createElement('div')
 
 export interface AppProps {
   readonly version: string | undefined;
-  readonly deploy: Boolean | undefined;
+  readonly deploy: boolean | undefined;
   readonly domain: string | undefined;
   readonly app?: HTMLElement;
 }

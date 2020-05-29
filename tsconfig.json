@@ -6,12 +6,13 @@
     "esModuleInterop": true,
     "importHelpers": true,
     "noImplicitAny": true,
-
+    
     "module": "esnext",
     "sourceMap": true,
     "jsx": "preserve",
     "target": "es5",
     "allowJs": true,
+    "checkJs": true,
     "baseUrl": ".",
     "strict": true,
 
@@ -32,6 +33,8 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+
+    "types": [],
 
     "lib": [
       "dom.iterable",

@@ -8,8 +8,8 @@ module.exports = {
   dev: {
     port: 8080,
     poll: false,
+    useLint: true,
     proxyTable: {},
-    useEslint: true,
 
     host: 'localhost',
     errorOverlay: true,
