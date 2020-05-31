@@ -1,5 +1,4 @@
-'use strict'
-
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -15,6 +14,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const PrerenderSpaPlugin = require('prerender-spa-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 const Renderer = PrerenderSpaPlugin.PuppeteerRenderer
 
@@ -173,6 +173,7 @@ if (config.build.analyze) {
 }
 
 if (config.build.gzip) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const CompressionWebpackPlugin = require('compression-webpack-plugin')
 
   webpackConfig.plugins.push(

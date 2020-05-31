@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const experiments = require('../src/assets/data/experiments.json')
 
 const routes = [
@@ -8,6 +9,7 @@ const routes = [
   // '/more',
   // '/hole',
   '/experiments',
+  '/more',
   '/404'
 ]
 

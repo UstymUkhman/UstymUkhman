@@ -1,13 +1,13 @@
 export default class Rain {
   private readonly characters: number = 50
-  private columns: number = 100
+  private columns = 100
 
   constructor (columns = 100, characters = 50) {
     this.characters = characters
     this.columns = columns
   }
 
-  public createRain (container: HTMLElement, name: string, dense: boolean = false): void {
+  public createRain (container: HTMLElement, name: string, dense = false): void {
     if (dense) this.columns *= 5
 
     for (let i = 0; i < this.columns; i++) {

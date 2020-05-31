@@ -8,7 +8,7 @@
 
     <!-- <router-view
       @toggle:overlay="visibleOverlay = $event"
-      @toggle:rain="visibleRain = $event"
+      @toggle-rain="visibleRain = $event"
       v-show="!visibleAnimation"
       class="page"
     /> -->

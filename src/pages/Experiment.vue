@@ -7,7 +7,7 @@
       :title="title"
     />
 
-    <iframe :src="page" allowfullscreen></iframe>
+    <iframe :title="title" :src="page" allowfullscreen></iframe>
   </article>
 </template>
 
@@ -15,13 +15,6 @@
 import ExperimentHeader from '@components/ExperimentHeader.vue'
 import { defineComponent, onMounted } from 'vue'
 import { firePrerender } from '@/utils'
-
-interface TemplateValues {
-  readonly title: string
-  readonly description: string
-  readonly github: string
-  readonly page: string
-}
 
 export default defineComponent({
   name: 'Experiment',
@@ -69,10 +62,14 @@ export default defineComponent({
     }
   },
 
-  setup ({ title, description, image, page, github }): TemplateValues {
-    onMounted(() => { firePrerender({ title, description, image }) })
-
-    return { title, description, github, page }
+  setup (props): void {
+    onMounted(() => {
+      firePrerender({
+        title: props.title,
+        description: props.description,
+        image: props.image
+      })
+    })
   }
 })
 </script>

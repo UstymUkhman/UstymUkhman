@@ -2,9 +2,9 @@ import { MaterialLoader } from '@three/loaders/MaterialLoader'
 import { Loader as THREELoader } from '@three/loaders/Loader'
 import { TextureLoader } from '@three/loaders/TextureLoader'
 
-// eslint-disable-next-line no-unused-vars
 import { Material } from '@three/materials/Material'
 import { MathUtils } from '@three/math/MathUtils'
+import { Texture } from '@three/textures/Texture'
 import { Color } from '@three/math/Color'
 
 import {
@@ -19,6 +19,14 @@ import {
   DoubleSide,
   BackSide
 } from '@three/constants'
+
+type MaterialParams = {
+  [key: string]: string | number | boolean
+}
+
+type Textures = {
+  [key: string]: Texture
+}
 
 type Blending = {
   [key: string]: number
@@ -47,12 +55,12 @@ export class Loader extends THREELoader {
   private static readonly textureLoader: TextureLoader = new TextureLoader()
   private static readonly color: Color = new Color()
 
-  private static readonly textures: any = { }
+  private static readonly textures: Textures = { }
   private static readonly VertexColors = 2
   private static readonly FaceColors = 1
 
-  private static texturePath: string = ''
-  private static crossOrigin: string = ''
+  private static texturePath = ''
+  private static crossOrigin = ''
 
   private static readonly BlendingMode: Blending = {
     SubtractiveBlending: SubtractiveBlending,
@@ -76,8 +84,9 @@ export class Loader extends THREELoader {
     return array
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private static createMaterial (material: any): Material {
-    const json: any = {
+    const json: MaterialParams = {
       uuid: MathUtils.generateUUID(),
       type: 'MeshLambertMaterial'
     }

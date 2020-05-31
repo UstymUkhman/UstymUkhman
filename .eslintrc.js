@@ -1,6 +1,12 @@
 module.exports = {
   root: true,
-  plugins: ['vue'],
+  parser: 'vue-eslint-parser',
+
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:vue/vue3-essential',
+    'eslint:recommended'
+  ],
 
   parserOptions: {
     warnOnUnsupportedTypeScriptVersion: false,
@@ -9,15 +15,15 @@ module.exports = {
   },
 
   rules: {
-    'generator-star-spacing': 'off',
-    'no-debugger': 'off',
-    'no-console': 'off'
+    '@typescript-eslint/no-non-null-assertion': 0,
+    'generator-star-spacing': 0,
+    'no-debugger': 0,
+    'no-console': 0
   },
 
-  extends: [
-    'plugin:vue/essential',
-    '@vue/typescript',
-    '@vue/standard'
+  plugins: [
+    '@typescript-eslint',
+    'vue'
   ],
 
   globals: {

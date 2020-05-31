@@ -76,25 +76,10 @@ export default defineComponent({
 
   a,
   div {
-    cursor: pointer;
     @include size(25px, 25px);
 
     @include breakpoint($xs) {
       @include size(20px, 20px);
-    }
-
-    @include desktop-hover {
-      svg {
-        fill: $green;
-      }
-    }
-
-    svg {
-      transition: fill 0.5s ease-out;
-      fill: $dark-green;
-
-      display: block;
-      @include size;
     }
   }
 }

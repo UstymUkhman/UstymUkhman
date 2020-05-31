@@ -1,5 +1,7 @@
 import { reactive, toRefs } from 'vue'
 
+export type ResizeCallback = (screen: Size, videoScreen?: Size) => unknown
+
 export interface Size {
   height: number
   width: number
@@ -8,7 +10,7 @@ export interface Size {
 export class Viewport {
   private readonly root: CSSStyleDeclaration = document.documentElement.style
   private readonly update: EventListener = this.updateSize.bind(this)
-  private readonly callback: Function | null = null
+  private readonly callback: ResizeCallback | null = null
 
   private readonly videoScreen: Size = reactive({
     height: window.innerHeight,
@@ -20,13 +22,13 @@ export class Viewport {
     width: window.innerWidth
   })
 
-  constructor (callback?: Function) {
+  constructor (callback?: ResizeCallback) {
     window.addEventListener('resize', this.update)
     this.update(new CustomEvent('resize'))
     this.callback = callback || null
   }
 
-  private updateSize (event: Event): void {
+  private updateSize (): void {
     let height = window.innerHeight
     let width = window.innerWidth
 

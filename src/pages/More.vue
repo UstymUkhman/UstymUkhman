@@ -4,13 +4,11 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable no-unused-vars */
 import { defineComponent, onMounted, onBeforeUnmount } from 'vue'
 import { JSONModel, JSONLoader } from '@/utils/3D/JSONLoader'
 import AssetsLoader from '@/utils/3D/AssetsLoader'
 import PILL from '@/assets/models/pill.json'
 import { firePrerender } from '@/utils'
-/* eslint-enable no-unused-vars */
 
 export default defineComponent({
   name: 'More',
@@ -23,7 +21,7 @@ export default defineComponent({
     }
 
     const loader: AssetsLoader = new AssetsLoader()
-    loader.loadJSON(new JSONLoader(), PILL, createPills)
+    loader.loadJSON(new JSONLoader(), PILL as JSON, createPills)
 
     onMounted(() => {
       firePrerender({ title: 'More' })

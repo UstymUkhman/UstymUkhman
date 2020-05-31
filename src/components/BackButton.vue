@@ -14,10 +14,8 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable no-unused-vars */
 import { SetupContext, Ref, defineComponent, watch, watchEffect, onMounted, ref } from 'vue'
 import { TouchEventListener, VueRef, Lettering, Loading, Platform } from '@/utils'
-/* eslint-enable no-unused-vars */
 import router from '@/router'
 
 interface TemplateValues {
@@ -34,13 +32,13 @@ export default defineComponent({
   name: 'BackButton',
 
   props: {
-    active: {
+    focused: {
       required: false,
       default: false,
       type: Boolean
     },
 
-    selected: {
+    enabled: {
       required: false,
       default: false,
       type: Boolean
@@ -48,18 +46,18 @@ export default defineComponent({
   },
 
   setup (props, context: SetupContext): TemplateValues {
-    function onTouchStart (event: TouchEvent): void {
+    function onTouchStart (): void {
       touching.value = true
       pressed.value = true
       back = true
     }
 
-    function onTouchEnd (event: TouchEvent): void {
-      const delay = !props.active ? 800 : 0
+    function onTouchEnd (): void {
+      const delay = !props.focused ? 800 : 0
       touching.value = false
       pressed.value = false
 
-      context.emit('close:page')
+      context.emit('close-page')
       lettering.dispose()
 
       setTimeout(() => {
@@ -68,20 +66,20 @@ export default defineComponent({
       }, delay + 2500)
     }
 
-    const selected: VueRef<boolean> = ref(props.selected)
-    const pressed: VueRef<boolean> = ref(props.selected)
-    const active: VueRef<boolean> = ref(props.active)
+    const selected: VueRef<boolean> = ref(props.enabled)
+    const pressed: VueRef<boolean> = ref(props.enabled)
+    const active: VueRef<boolean> = ref(props.focused)
 
     const button: Ref<HTMLParagraphElement> = ref()!
     const touching: Ref<boolean> = ref(false)
 
-    let back: boolean = false
     let lettering: Lettering
+    let back = false
 
-    watchEffect(() => { selected.value = props.selected })
-    watchEffect(() => { active.value = props.active })
+    watchEffect(() => { active.value = props.focused })
 
-    watch(() => props.selected, (now, before): void => {
+    watch(() => props.enabled, (now, before): void => {
+      selected.value = now
       pressed.value = true
 
       if (before && !now) {

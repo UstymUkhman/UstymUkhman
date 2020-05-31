@@ -103,6 +103,14 @@
  *      Firefox v4/Win7  |     undefined    |       3
  */
 
+interface ScrollEvent extends WheelEvent {
+  HORIZONTAL_AXIS?: number
+  wheelDeltaX?: number
+  wheelDeltaY?: number
+  wheelDelta?: number
+  axis?: number
+}
+
 interface WheelData {
   readonly pixelX: number,
   readonly pixelY: number,
@@ -110,24 +118,22 @@ interface WheelData {
   readonly spinY: number,
 }
 
-const PIXEL_STEP: number = 10
-const LINE_HEIGHT: number = 40
-const PAGE_HEIGHT: number = 800
+const PIXEL_STEP = 10
+const LINE_HEIGHT = 40
+const PAGE_HEIGHT = 800
 
-export default function (event: WheelEvent): WheelData {
-  const scroll: any = event as any
+export default function (event: ScrollEvent): WheelData {
+  let pX = 0
+  let pY = 0
+  let sX = 0
+  let sY = 0
 
-  let pX: number = 0
-  let pY: number = 0
-  let sX: number = 0
-  let sY: number = 0
+  if (event.detail) sY = event.detail
+  if (event.wheelDelta) sY = -event.wheelDelta / 120
+  if (event.wheelDeltaX) sX = -event.wheelDeltaX / 120
+  if (event.wheelDeltaY) sY = -event.wheelDeltaY / 120
 
-  if ('detail' in event) sY = event.detail
-  if ('wheelDelta' in scroll) sY = -scroll.wheelDelta / 120
-  if ('wheelDeltaY' in scroll) sY = -scroll.wheelDeltaY / 120
-  if ('wheelDeltaX' in scroll) sX = -scroll.wheelDeltaX / 120
-
-  if ('axis' in scroll && scroll.axis === scroll.HORIZONTAL_AXIS) {
+  if (event.axis && event.axis === event.HORIZONTAL_AXIS) {
     sX = sY
     sY = 0
   }

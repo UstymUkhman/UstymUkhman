@@ -6,22 +6,14 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { matrixFont, lightGreen, green, white } from '@scss/variables.scss'
 
+import { Viewport, Size } from '@/utils/Viewport'
 import { randomInt } from '@/utils/Number'
-// eslint-disable-next-line no-unused-vars
-import { Viewport, Size } from '@/utils'
 
 const LINE_HEIGHT = 27
 const OFFSET = 18
-
-interface TemplateValues {
-  readonly mobile: boolean
-  readonly ratio: number
-  readonly code: Ref
-}
 
 export default defineComponent({
   name: 'MatrixRain',
@@ -40,7 +32,7 @@ export default defineComponent({
     }
   },
 
-  setup (props): TemplateValues {
+  setup (props): { code: Ref } {
     const getCharCode = (): string => {
       const code = Math.random() < 0.5 ? randomInt(33, 63) : randomInt(90, 126)
       return String.fromCharCode(code)
@@ -75,9 +67,9 @@ export default defineComponent({
       _columns = Math.max(columns - _columns, 0)
 
       if (_rows > 0 || _columns > 0) {
-        const _duration = Array.from(new Array(_columns), d => randomInt(rows, 100))
-        const _visible = Array.from(new Array(_columns), v => false)
-        const _index = Array.from(new Array(_columns), i => 0)
+        const _duration = Array.from(new Array(_columns), () => randomInt(rows, 100))
+        const _visible = Array.from(new Array(_columns), () => false)
+        const _index = Array.from(new Array(_columns), () => 0)
 
         chars = []
 
@@ -166,10 +158,10 @@ export default defineComponent({
     let index: number[] = []
 
     let lastUpdate = Date.now()
-    let columns: number = 0
-    let frame: number = 0
-    let rows: number = 0
     const code = ref()
+    let columns = 0
+    let frame = 0
+    let rows = 0
 
     onMounted(() => {
       canvas = code.value
@@ -186,12 +178,12 @@ export default defineComponent({
       context.font = matrixFont
       context.shadowBlur = 5
 
-      duration = Array.from(new Array(columns), d => randomInt(rows, 100))
-      visible = Array.from(new Array(columns), v => false)
-      index = Array.from(new Array(columns), i => 0)
+      duration = Array.from(new Array(columns), () => randomInt(rows, 100))
+      visible = Array.from(new Array(columns), () => false)
+      index = Array.from(new Array(columns), () => 0)
 
       for (let i = 0; i < columns; i++) {
-        const column = Array.from(new Array(rows), c => getCharCode())
+        const column = Array.from(new Array(rows), () => getCharCode())
         chars.push(column)
       }
 
@@ -206,11 +198,7 @@ export default defineComponent({
       }, 3500)
     })
 
-    return {
-      mobile: props.mobile as boolean,
-      ratio: props.ratio,
-      code
-    }
+    return { code }
   }
 })
 </script>

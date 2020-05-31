@@ -4,8 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
-// eslint-disable-next-line no-unused-vars
-import { Viewport, Size } from '@/utils'
+import { Viewport, Size } from '@/utils/Viewport'
 import { PI } from '@/utils/Number'
 
 export default defineComponent({
@@ -45,10 +44,10 @@ export default defineComponent({
     let halfHeight = height / 2
     let halfWidth = width / 2
 
-    let drawingTime: number = 0
-    let radius: number = 0
-    let frame: number = 0
     const loader = ref()
+    let drawingTime = 0
+    let radius = 0
+    let frame = 0
 
     onMounted(() => {
       context = loader.value.getContext('2d')

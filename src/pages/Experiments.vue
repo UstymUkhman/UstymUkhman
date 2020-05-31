@@ -28,8 +28,8 @@ export default defineComponent({
     }
   },
 
-  setup ({ experiments }): { readonly prerenderer: boolean } {
-    console.log(experiments)
+  setup (props): { readonly prerenderer: boolean } {
+    console.log(props.experiments)
 
     onMounted(() => {
       // objectFitImages(Array<Ref>)

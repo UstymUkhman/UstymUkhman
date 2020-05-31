@@ -1,7 +1,8 @@
-import { LoadingManager } from '@three/loaders/LoadingManager'
-import { Material } from '@three/materials/Material'
 import { Geometry } from '@three/core/Geometry'
+import { Material } from '@three/materials/Material'
+import { LoadingManager } from '@three/loaders/LoadingManager'
 
+export type JSONPromise = PromiseLike<JSONModel> | undefined
 export type JSONModel = { geometry: Geometry, materials?: Array<Material> }
 
 export class JSONLoader {
@@ -10,7 +11,12 @@ export class JSONLoader {
 
   constructor(manager?: LoadingManager)
 
-  public load: (url: string, onLoad: Function, onProgress: Function, onError: Function) => void
+  public load: (
+    url: string,
+    onLoad: (result: JSONPromise) => void,
+    onProgress: (progress: number) => void,
+    onError: (error: Error) => void
+  ) => void
 
   public setPath: (value: string) => JSONLoader
   public setCrossOrigin: (value: string) => JSONLoader

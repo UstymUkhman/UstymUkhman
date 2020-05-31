@@ -1,9 +1,17 @@
 import { readonly } from 'vue'
 import modernizr from 'modernizr'
-const MobileDetect = require('mobile-detect')
+import MobileDetect from 'mobile-detect'
 const md = new MobileDetect(window.navigator.userAgent)
 
-const Platform: any = {
+interface Prerender extends Window {
+  __PRERENDER_INJECTED?: unknown
+}
+
+type PlatformProps = {
+  [prop: string]: boolean
+}
+
+const Platform: PlatformProps = {
   mobile: !!md.mobile(),
   tablet: !!md.tablet(),
   phone: !!md.phone(),
@@ -17,10 +25,10 @@ const Platform: any = {
   firefox: md.version('Gecko') > 1,
   edge: !!/Edge\/\d+/i.test(window.navigator.userAgent),
   ie11: !!/Trident.*rv:11\./i.test(window.navigator.userAgent),
-  prerender: (window as any).__PRERENDER_INJECTED !== undefined,
+  prerender: (window as Prerender).__PRERENDER_INJECTED !== undefined,
   chrome: /Chrome/.test(window.navigator.userAgent) && /Google Inc/.test(window.navigator.vendor),
   safari: /Safari/.test(window.navigator.userAgent) && /Apple Computer/.test(window.navigator.vendor),
-  isIE: window.navigator.userAgent.match(/MSIE 10/i) || !!/Trident.*rv:11\./i.test(window.navigator.userAgent)
+  isIE: !!window.navigator.userAgent.match(/MSIE 10/i) || !!/Trident.*rv:11\./i.test(window.navigator.userAgent)
 }
 
 for (const key in Platform) {

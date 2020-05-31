@@ -1,8 +1,8 @@
-'use strict'
-
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const config = require('./config')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 exports.cssLoaders = function (options) {
   options = options || { }

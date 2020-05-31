@@ -21,10 +21,8 @@
 </template>
 
 <script lang="ts">
-/* eslint-disable no-unused-vars */
 import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
-import { firePrerender, Platform, Viewport, Size } from '@/utils'
-/* eslint-enable no-unused-vars */
+import { firePrerender, Platform, Viewport } from '@/utils'
 
 import ScreenOverlay from '@components/ScreenOverlay.vue'
 import { matrixFont, green } from '@scss/variables.scss'
@@ -134,12 +132,12 @@ export default defineComponent({
 
     const screen = new Viewport(onResize)
     let { width, height } = screen.size
-    let skipColumns: boolean = false
     let chars: Array<Array<string>>
 
     const block: Ref = ref(false)
     const numbers: Ref = ref()
-    let frame: number = 0
+    let skipColumns = false
+    let frame = 0
 
     onMounted(() => {
       canvas = numbers.value

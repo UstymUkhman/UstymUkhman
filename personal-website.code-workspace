@@ -1,12 +1,9 @@
 {
 	"settings": {
 		"js-import.plainFileSuffix": "css,scss,sass,less,svg",
-    "js-import.filesToScan": "**/*.{js,jsx,ts,tsx,vue}",
+    "js-import.filesToScan": "**/*.{vue,ts,tsx,js,jsx}",
     "git.ignoreLimitWarning": true,
     "js-import.semicolon": false,
-    "tslint.typeCheck": true,
-    "tslint.jsEnable": true,
-		"tslint.enable": true,
 
     "js-import.alias": {
       "@postprocessing": "three/examples/jsm/postprocessing",
@@ -15,7 +12,13 @@
       "@loaders": "three/examples/jsm/loaders",
       "@utils": "three/examples/jsm/utils",
       "@three": "three/src",
-      "@": "/src",
+
+      "@components": "/src/components",
+      "modernizr$": ".modernizrrc.js",
+      "vue": "@vue/runtime-dom",
+      "@pages": "/src/pages",
+      "@scss": "/src/scss",
+      "@": "/src"
     }
   },
 

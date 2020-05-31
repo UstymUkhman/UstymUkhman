@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "importHelpers": true,
     "noImplicitAny": true,
-    
+
     "module": "esnext",
     "sourceMap": true,
     "jsx": "preserve",
@@ -34,7 +34,7 @@
       "node_modules/@types"
     ],
 
-    "types": [],
+    "types": ["node"],
 
     "lib": [
       "dom.iterable",

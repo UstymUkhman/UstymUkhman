@@ -1,5 +1,4 @@
-'use strict'
-
+/* eslint-disable @typescript-eslint/no-var-requires */
 const ora = require('ora')
 const rm = require('rimraf')
 const path = require('path')
@@ -13,6 +12,7 @@ const webpack = require('webpack')
 const jsonConfig = require('../package.json')
 const spinner = ora('Building for production...')
 const webpackConfig = require('../webpack/webpack.prod')
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 function exec (cmd) {
   return require('child_process').execSync(cmd).toString().trim()

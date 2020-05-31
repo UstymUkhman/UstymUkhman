@@ -30,14 +30,16 @@ export default class {
       const entry = entries[e]
 
       if (entry.isIntersecting) {
-        this.isVisible(entry.target, entry)
-      } else {
-        this.isHidden(entry.target, entry)
+        this.isVisible(entry.target)
       }
+
+      /* else {
+        this.isHidden(entry.target)
+      } */
     }
   }
 
-  private isVisible (element: Element, entry: IntersectionObserverEntry): boolean {
+  private isVisible (element: Element): boolean {
     const visibleClass = this.observerOptions.visibleClass as string
     const visible = !element.classList.contains(visibleClass)
 
@@ -45,7 +47,7 @@ export default class {
     return visible
   }
 
-  private isHidden (element: Element, entry: IntersectionObserverEntry): void { }
+  // private isHidden (element: Element): void { }
 
   public dispose (): void {
     delete this.observerOptions

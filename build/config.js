@@ -1,8 +1,8 @@
-'use strict'
-
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const jsonConfig = require('../package.json')
 const { analyze, gzip } = require('minimist')(process.argv.slice(2))
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 module.exports = {
   dev: {

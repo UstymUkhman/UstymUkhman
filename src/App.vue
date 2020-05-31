@@ -28,7 +28,7 @@ export default defineComponent({
     }
   },
 
-  setup (props): { readonly prerender: boolean } {
+  setup (): { readonly prerender: boolean } {
     console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
     return { prerender: Platform.prerender }
   }
@@ -86,6 +86,19 @@ canvas {
 
   .color-grading-page & {
     position: relative;
+  }
+}
+
+svg {
+  transition: fill 0.5s ease-out;
+  fill: $dark-green;
+  cursor: pointer;
+
+  display: block;
+  @include size;
+
+  @include desktop-hover {
+    fill: $green;
   }
 }
 

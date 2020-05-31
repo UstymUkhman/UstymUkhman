@@ -1,7 +1,7 @@
 import Platform from '@/utils/Platform'
 import { useRoute } from 'vue-router'
 
-const baseTitle: string = document.getElementsByTagName('title')[0].innerText
+const baseTitle = document.getElementsByTagName('title')[0].innerText
 
 interface MetaTags {
   readonly twitterDescription: HTMLMetaElement | null
@@ -38,7 +38,6 @@ const tags: MetaTags = {
 
 export default function (data: MetaData): void {
   const route = useRoute()
-  const { matched, ...location } = route
   const title = document.getElementsByTagName('title')[0]
 
   if (title.innerText === baseTitle) {
@@ -54,7 +53,7 @@ export default function (data: MetaData): void {
     tags.ogDescription!.content = data.description || tags.ogDescription!.content
     tags.description!.content = data.description || tags.description!.content
 
-    tags.ogURL!.content = `${window.location.origin}${location.fullPath}`
+    tags.ogURL!.content = `${window.location.origin}${route.fullPath}`
     tags.twitterTitle!.content = title.innerText
     tags.ogTitle!.content = title.innerText
 

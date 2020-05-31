@@ -4,7 +4,6 @@ import App from '@/App.vue'
 import router from '@/router'
 import { createApp } from 'vue'
 
-// tslint:disable-next-line: space-within-parens
 const root = document.getElementById('root') ||
              document.createElement('div')
 

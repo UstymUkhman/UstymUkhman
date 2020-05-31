@@ -1,10 +1,10 @@
-'use strict'
-
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const utils = require('../build/utils.js')
 const config = require('../build/config')
 const { VueLoaderPlugin } = require('vue-loader')
 const ThreeMinifierPlugin = require('@yushijinhun/three-minifier-webpack')
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 const isProduction = process.env.NODE_ENV === 'production'
 const threeMinifierPlugin = new ThreeMinifierPlugin()
@@ -13,30 +13,18 @@ const sourceMapEnabled = isProduction
   ? config.build.productionSourceMap
   : config.dev.cssSourceMap
 
-const setLintingRules = () => !config.dev.useLint ? [] : [{
+const lintingRules = () => !config.dev.useLint ? null : {
   enforce: 'pre',
-  test: /\.(ts|tsx)$/,
-  loader: 'tslint-loader',
-  exclude: /node_modules/,
-  include: [utils.resolve('src')],
-  options: {
-    formattersDirectory: 'node_modules/tslint-formatter-beauty',
-    emitWarning: !config.dev.showEslintErrorsInOverlay,
-    configFile: 'tslint.json',
-    formatter: 'beauty'
-  }
-}, {
-  enforce: 'pre',
-  test: /\.(vue|js)$/,
   loader: 'eslint-loader',
   exclude: /node_modules/,
+  test: /\.(vue|ts|tsx|js|jsx)$/,
   include: [utils.resolve('src')],
 
   options: {
     emitWarning: !config.dev.showEslintErrorsInOverlay,
     formatter: require('eslint-friendly-formatter')
   }
-}]
+}
 
 module.exports = {
   context: path.resolve(__dirname, '../'),
@@ -79,7 +67,7 @@ module.exports = {
 
   module: {
     rules: [
-      ...setLintingRules(),
+      lintingRules(),
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -87,13 +75,10 @@ module.exports = {
           cacheBusting: config.dev.cacheBusting,
           cssSourceMap: sourceMapEnabled,
 
-          loaders: {
-            ts: 'ts-loader!tslint-loader',
-            ...utils.cssLoaders({
-              sourceMap: sourceMapEnabled,
-              extract: isProduction
-            })
-          },
+          loaders: utils.cssLoaders({
+            sourceMap: sourceMapEnabled,
+            extract: isProduction
+          }),
 
           transformToRequire: {
             video: ['src', 'poster'],

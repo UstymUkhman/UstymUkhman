@@ -3,20 +3,18 @@
     <p ref="paragraph" itemprop="text" class="about-description">{{ description }}</p>
 
     <BackButton
-      @close:page="closeAboutPage"
-      :selected="selectedButton"
-      :active="activeButton"
+      @close-page="closeAboutPage"
+      :enabled="selectedButton"
+      :focused="activeButton"
       v-if="visibleButton"
     />
   </article>
 </template>
 
 <script lang="ts">
-/* eslint-disable no-unused-vars */
 import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { TouchEventListener, Lettering, Loading, firePrerender } from '@/utils'
 import BackButton from '@components/BackButton.vue'
-/* eslint-enable no-unused-vars */
 
 interface TemplateValues {
   readonly onTouchStart: TouchEventListener
@@ -24,7 +22,7 @@ interface TemplateValues {
   readonly selectedButton: Ref<boolean>
   readonly visibleButton: Ref<boolean>
   readonly activeButton: Ref<boolean>
-  readonly closeAboutPage: Function
+  readonly closeAboutPage: () => void
   readonly description: string
   readonly paragraph: Ref
 }
@@ -47,7 +45,7 @@ export default defineComponent({
       }
 
       if (!visibleButton.value) {
-        context.emit('toggle:rain', true)
+        context.emit('toggle-rain', true)
         lettering.skipLettering()
       }
     }
@@ -59,13 +57,13 @@ export default defineComponent({
     }
 
     function closeAboutPage (): void {
-      context.emit('toggle:rain', false)
+      context.emit('toggle-rain', false)
       selectedButton.value = false
       activeButton.value = false
       lettering.dispose()
     }
 
-    const description: string = `
+    const description = `
       Hi, my name is Ustym and I'm a front-end web developer at Sigma Software.#
       I studied and lived in Florence (Italy) for 14 years and recently I moved to Kiev (Ukraine).##
 
@@ -99,7 +97,7 @@ export default defineComponent({
 
       lettering.animate(() => {
         setTimeout(() => { activeButton.value = true }, 1000)
-        context.emit('toggle:rain', true)
+        context.emit('toggle-rain', true)
         visibleButton.value = true
       })
     })

@@ -17,7 +17,7 @@ export default class Loading {
     return this.routes[item]
   }
 
-  public static checkActiveItem (reset: boolean = false): void {
+  public static checkActiveItem (reset = false): void {
     if (!this.activeItem) this.activeItem = 0
     if (reset) this.activeItem = undefined
   }

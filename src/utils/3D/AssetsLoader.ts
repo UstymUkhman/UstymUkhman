@@ -1,14 +1,13 @@
-// eslint-disable-next-line no-unused-vars
-import { JSONModel, JSONLoader } from '@/utils/3D/JSONLoader'
+import { JSONModel, JSONLoader, JSONPromise } from '@/utils/3D/JSONLoader'
 import { LoadingManager } from '@three/loaders/LoadingManager'
 
-type JSONPromise = PromiseLike<JSONModel> | undefined
+type LoadCallback = (asset: JSONModel) => unknown
 
 export default class AssetsLoader extends LoadingManager {
   private readonly Base64 = /data:image\/([a-zA-Z]*);base64,([^"]*)/
   private readonly IMAGE = /^\.|\.bmp|\.jpg$|\.gif$|.png$|.gif$/
 
-  public onStart = (url: string, loaded: number, total: number): void => {
+  public onStart = (): void => {
     console.info('Loading... 0%')
   }
 
@@ -21,9 +20,7 @@ export default class AssetsLoader extends LoadingManager {
     console.info(`Error occurred loading ${url}.`)
   }
 
-  public onLoad = (): void => { }
-
-  public async loadJSON (loader: JSONLoader, model: JSON | string, callback?: Function): Promise<JSONModel> {
+  public async loadJSON (loader: JSONLoader, model: JSON | string, callback?: LoadCallback): Promise<JSONModel> {
     const asset: JSONModel = this.isJSONType(model)
       ? await this.parse(loader, model)
       : await this.load(loader, model)
@@ -32,22 +29,27 @@ export default class AssetsLoader extends LoadingManager {
     return asset
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private load (loader: JSONLoader, ...args: any[]): Promise<JSONModel> {
     return this.execute(loader, 'load', args)
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private parse (loader: JSONLoader, ...args: any[]): Promise<JSONModel> {
     return this.execute(loader, 'parse', args)
   }
 
-  private execute (loader: any, fn: string, args: any[]): Promise<JSONModel> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private execute (loader: JSONLoader, fn: string, args: any[]): Promise<JSONModel> {
     return new Promise((resolve, reject) => {
-      const onError: Function = (error: Error) => reject(error)
-      const onLoad: Function = (result: JSONPromise) => resolve(result)
-      const onProgress: Function = (progress: number) => console.log(`Loading... ${progress}%`, progress)
+      const onError = (error: Error) => reject(error)
+      const onLoad = (result: JSONPromise) => resolve(result)
+      const onProgress = (progress: number) => console.log(`Loading... ${progress}%`, progress)
 
       const loaderCallbacks = fn === 'load' ? [onLoad, onProgress, onError] : [onLoad, onError]
-      resolve(loader[fn](...args.concat(loaderCallbacks)))
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      resolve((loader as any)[fn](...args.concat(loaderCallbacks)))
     })
   }
 

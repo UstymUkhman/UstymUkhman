@@ -1,17 +1,19 @@
+type AnimationCallback = (() => unknown) | undefined
+
 export default class Lettering {
   private readonly letters: Array<HTMLSpanElement> = []
   private lastLetter: HTMLSpanElement | undefined
   private readonly message: HTMLParagraphElement
+  private callback: AnimationCallback
 
   private readonly timeout: number = 1000
-  private callback: Function | undefined
   private last: HTMLSpanElement | null
   private readonly slowly: number = 0
 
   private word: Array<string> = []
-  private nextTiming: number = 0
-  private index: number = 0
-  private frame: number = 0
+  private nextTiming = 0
+  private index = 0
+  private frame = 0
 
   constructor (message: HTMLParagraphElement, slowTyping?: number, timeout?: number) {
     this.timeout = timeout || 1000
@@ -20,7 +22,7 @@ export default class Lettering {
     this.last = null
   }
 
-  public animate (callback: Function | undefined): Array<HTMLSpanElement> | void {
+  public animate (callback: AnimationCallback | undefined): Array<HTMLSpanElement> | void {
     if (this.message && this.message.textContent) {
       this.word = this.message.textContent?.split('')
     }

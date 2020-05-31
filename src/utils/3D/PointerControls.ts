@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
 import { Object3D } from '@three/core/Object3D'
 import { Vector3 } from '@three/math/Vector3'
@@ -14,9 +13,9 @@ export default class PointerControls {
   private yaw: Object3D = new Object3D()
 
   private move = this.rotate.bind(this)
-  private active: boolean = false
+  private active = false
 
-  constructor (camera: PerspectiveCamera, height: number = 10) {
+  constructor (camera: PerspectiveCamera, height = 10) {
     document.addEventListener('mousemove', this.move, false)
     this.yaw.position.y = height
 

@@ -12,13 +12,14 @@
 </template>
 
 <script lang="ts">
-// eslint-disable-next-line no-unused-vars
 import { Ref, defineComponent, onMounted, ref } from 'vue'
 import ExperimentTitle from '@components/ExperimentTitle.vue'
 import ExperimentButtons from '@components/ExperimentButtons.vue'
 
+type VisibilityCallback = (event: MouseEvent, show: boolean) => void
+
 interface TemplateValues {
-  readonly toggleVisibility: Function
+  readonly toggleVisibility: VisibilityCallback
   readonly visible: Ref<boolean>
   readonly hover: Ref<boolean>
 }
@@ -54,7 +55,7 @@ export default defineComponent({
     }
   },
 
-  setup (props): TemplateValues {
+  setup (): TemplateValues {
     function toggleVisibility (event: MouseEvent, show: boolean): void {
       const target = event.relatedTarget as HTMLElement
       const button = target && target.tagName.toLowerCase() !== 'iframe'

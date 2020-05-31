@@ -1,6 +1,6 @@
-'use strict'
-
 require('modernizr')
+
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
@@ -15,6 +15,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const StylelintPlugin = require('stylelint-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+/* eslint-enable @typescript-eslint/no-var-requires */
 
 const PORT = process.env.PORT && Number(process.env.PORT)
 const HOST = process.env.HOST
@@ -107,6 +108,7 @@ module.exports = new Promise((resolve, reject) => {
         },
 
         onErrors: !config.dev.notifyOnErrors ? undefined : (() => {
+          // eslint-disable-next-line @typescript-eslint/no-var-requires
           const notifier = require('node-notifier')
 
           return (severity, errors) => {

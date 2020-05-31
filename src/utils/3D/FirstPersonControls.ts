@@ -1,13 +1,11 @@
-/* eslint-disable no-unused-vars */
 import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
 import { KeyboardEventListener, Platform } from '@/utils'
 import PointerControls from '@/utils/3D/PointerControls'
 import { Object3D } from '@three/core/Object3D'
 import { Vector3 } from '@three/math/Vector3'
 import { Scene } from '@three/scenes/Scene'
-/* eslint-enable no-unused-vars */
 
-// eslint-disable-next-line no-unused-vars
+type FullscreenCallback = () => unknown
 const enum Direction { UP, RIGHT, DOWN, LEFT }
 type Directions<Type> = { [way in Direction]: Type }
 const LOCK_ONLY = Platform.safari || Platform.edge || Platform.firefox
@@ -28,13 +26,13 @@ export default class FirstPersonControls {
   private pointerLock = this.room.requestPointerLock
   private fullscreen = this.room.requestFullscreen
 
-  public onEnterFullscreen: Function | null = null
-  public onExitFullscreen: Function | null = null
+  public onEnterFullscreen: FullscreenCallback | null = null
+  public onExitFullscreen: FullscreenCallback | null = null
 
   private delta: number = performance.now()
-  private activated: boolean = false
-  private enabled: boolean = false
-  public error: boolean = false
+  private activated = false
+  private enabled = false
+  public error = false
 
   private move: Directions<boolean> = {
     [Direction.UP]: false,
@@ -147,7 +145,7 @@ export default class FirstPersonControls {
     }
   }
 
-  public setBorders (borders: Directions<number>) {
+  public setBorders (borders: Directions<number>): void {
     this.borders = borders
   }
 

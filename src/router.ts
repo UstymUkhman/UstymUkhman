@@ -1,8 +1,9 @@
-// eslint-disable-next-line no-unused-vars
 import { createRouter, createWebHistory, RouteLocationNormalized } from 'vue-router'
 import experiments from '@/assets/data/experiments.json'
 import { Platform } from '@/utils'
 
+type RedirectRoute = (route?: { name: string }) => void
+type VueComponent = Promise<typeof import("*.vue")>
 type PromiseImport = (page: string) => void
 
 interface ExperimentProps {
@@ -24,7 +25,7 @@ interface PageRoute {
   readonly path: string
 }
 
-const checkWebGLCompatibility = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: Function): void => {
+const checkWebGLCompatibility = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: RedirectRoute): void => {
   const notSupportedAutoplay = !from.name && to.name === 'More'
   const notSupportedWebGL = Platform.isIE || Platform.mobile
 
@@ -40,37 +41,38 @@ export default createRouter({
   history: createWebHistory(),
 
   routes: [{
-    component: () => import(/* webpackChunkName: "home-page" */ '@pages/Home.vue'),
+    component: (): VueComponent => import(/* webpackChunkName: "home-page" */ '@pages/Home.vue'),
     name: 'Home',
     path: '/'
   }, {
-    component: () => import(/* webpackChunkName: "about-page" */ '@pages/About.vue'),
+    component: (): VueComponent => import(/* webpackChunkName: "about-page" */ '@pages/About.vue'),
     path: '/about',
     name: 'About'
   }, {
-    component: () => import(/* webpackChunkName: "more-page" */ '@pages/More.vue'),
+    component: (): VueComponent => import(/* webpackChunkName: "more-page" */ '@pages/More.vue'),
     // beforeEnter: checkWebGLCompatibility,
     path: '/more',
     name: 'More'
   }, {
-    component: () => import(/* webpackChunkName: "experiments-page" */ '@pages/Experiments.vue'),
+    component: (): VueComponent => import(/* webpackChunkName: "experiments-page" */ '@pages/Experiments.vue'),
     beforeEnter: checkWebGLCompatibility,
     props: { experiments },
     path: '/experiments',
     children: [{
-      component: () => import(/* webpackChunkName: "experiment-list" */ '@components/ExperimentList.vue'),
+      component: (): VueComponent => import(/* webpackChunkName: "experiment-list" */ '@components/ExperimentList.vue'),
       name: 'Experiments',
       path: ''
-    }, ...experiments.map((experiment: ExperimentProps): PageRoute => {
+    },
+    ...(experiments as Array<ExperimentProps>).map((experiment: ExperimentProps): PageRoute => {
       return {
-        component: () => import(/* webpackChunkName: "experiment-page" */ '@pages/Experiment.vue'),
+        component: (): VueComponent => import(/* webpackChunkName: "experiment-page" */ '@pages/Experiment.vue'),
         name: experiment.title,
         path: experiment.route,
         props: experiment
       }
     })]
   }, {
-    component: () => import(/* webpackChunkName: "404-page" */ '@pages/404.vue'),
+    component: (): VueComponent => import(/* webpackChunkName: "404-page" */ '@pages/404.vue'),
     path: '/404',
     name: '404'
   }, {
