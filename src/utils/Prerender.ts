@@ -40,7 +40,7 @@ export default function (data: MetaData): void {
   const route = useRoute()
   const title = document.getElementsByTagName('title')[0]
 
-  if (title.innerText === baseTitle) {
+  if (!title.innerText.includes('|')) {
     if (data.fullTitle && data.title) title.innerText = data.title
     else title.innerText = data.title ? `${data.title} | ${baseTitle}` : baseTitle
   }
