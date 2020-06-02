@@ -2,7 +2,7 @@ import { Sounds, Platform } from '@/utils'
 
 export default class Loading {
   private static readonly routes = ['About', 'Works', 'Contacts']
-  private static activeItem: number | undefined;
+  private static activeItem: number | undefined
 
   public static getPageName (item: number): string {
     const experiments = Platform.isIE || Platform.mobile

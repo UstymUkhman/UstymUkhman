@@ -17,7 +17,9 @@
     "build": "node build/main.js"
   },
   "dependencies": {
+    "@types/animejs": "^3.1.1",
     "@types/object-fit-images": "^3.2.0",
+    "animejs": "^3.2.0",
     "breakpoint-sass": "^2.7.1",
     "intersection-observer": "^0.10.0",
     "mobile-detect": "^1.4.4",

@@ -1,35 +1,331 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="more-page" itemscope>
+    <div ref="pills"></div>
   </article>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onBeforeUnmount } from 'vue'
+import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+import { Platform, Viewport, Loading, Sounds, firePrerender } from '@/utils'
+import { MeshStandardMaterial } from '@three/materials/MeshStandardMaterial'
+
+import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
+import { DirectionalLight } from '@three/lights/DirectionalLight'
+import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
 import { JSONModel, JSONLoader } from '@/utils/3D/JSONLoader'
+import { AmbientLight } from '@three/lights/AmbientLight'
+
+import { SpotLight } from '@three/lights/SpotLight'
 import AssetsLoader from '@/utils/3D/AssetsLoader'
+import { Geometry } from '@three/core/Geometry'
+import anime, { AnimeInstance } from 'animejs'
+
 import PILL from '@/assets/models/pill.json'
-import { firePrerender } from '@/utils'
+import { Scene } from '@three/scenes/Scene'
+import { Mesh } from '@three/objects/Mesh'
+import router from '@/router'
 
 export default defineComponent({
   name: 'More',
 
-  setup (): void {
-    function createPills (model: JSONModel) {
-      console.log(model)
-      // BLUE: 0x003FFF
-      // RED:  0xB40000
+  setup (props, context: SetupContext): { readonly pills: Ref } {
+    function createPills (model: JSONModel): void {
+      const delay = Loading.getActiveItem() === false ? 0 : 1200
+      const material = new MeshStandardMaterial({
+        emissiveIntensity: 1,
+        emissive: 0x000000,
+        flatShading: true,
+        transparent: true,
+        depthWrite: true,
+        depthTest: true,
+        roughness: 0.2,
+        metalness: 0,
+        opacity: 0
+      })
+
+      createBluePill(model.geometry, material, delay)
+      createRedPill(model.geometry, material, delay)
+
+      createChoice(16000 + delay)
+      render()
     }
 
+    function createBluePill (geometry: Geometry, material: MeshStandardMaterial, delay: number): void {
+      bluePill = new Mesh(geometry, new MeshStandardMaterial({
+        emissiveIntensity: 1,
+        emissive: 0x000000,
+        flatShading: true,
+        transparent: true,
+        depthWrite: true,
+        depthTest: true,
+        color: 0x003FFF,
+        roughness: 0.2,
+        metalness: 0,
+        opacity: 0
+      }))
+
+      bluePill.rotation.set(0, -1.5, -0.4)
+      bluePill.scale.set(0.25, 0.25, 0.25)
+      bluePill.position.set(2.5, 0, 2)
+      scene.add(bluePill)
+
+      blueFade = anime({
+        targets: bluePill.material,
+        delay: 500 + delay,
+        easing: 'linear',
+        duration: 1000,
+        opacity: 1.0
+      })
+    }
+
+    function createRedPill (geometry: Geometry, material: MeshStandardMaterial, delay: number): void {
+      redPill = new Mesh(geometry, new MeshStandardMaterial({
+        emissiveIntensity: 1,
+        emissive: 0x000000,
+        flatShading: true,
+        transparent: true,
+        depthWrite: true,
+        depthTest: true,
+        color: 0xB40000,
+        roughness: 0.2,
+        metalness: 0,
+        opacity: 0
+      }))
+
+      redPill.rotation.set(-0.05, 1.3, 0.4)
+      redPill.scale.set(0.25, 0.25, 0.25)
+      redPill.position.set(-2.5, 0.2, 2)
+      scene.add(redPill)
+
+      redFade = anime({
+        targets: redPill.material,
+        delay: 7500 + delay,
+        easing: 'linear',
+        duration: 1000,
+        opacity: 1.0
+      })
+    }
+
+    function createChoice (delay = 0): void {
+      choiceTimeout = setTimeout(() => {
+        setTimeout(() => { context.emit('toggle-rain', true) }, 1000)
+        interactable = true
+        setChosenPill()
+      }, delay)
+    }
+
+    function onKeyDown (event: KeyboardEvent): void {
+      if (interactable) {
+        const code = event.keyCode
+
+        if (code === 37 || code === 39) {
+          setChosenPill()
+        } else if (code === 13) {
+          animateChosenPill()
+        }
+      }
+
+      else {
+        clearTimeout(choiceTimeout)
+        Sounds.endSpeach()
+        blueFade.pause()
+        redFade.pause()
+        createChoice()
+      }
+    }
+
+    function setChosenPill (): void {
+      const scaleBlue = choice ? 0.35 : 0.15
+      const scaleRed = choice ? 0.15 : 0.35
+      choice = !choice
+
+      anime({
+        targets: redPill.scale,
+        easing: 'easeInQuad',
+        duration: 500,
+        x: scaleRed,
+        y: scaleRed,
+        z: scaleRed
+      })
+
+      anime({
+        targets: redPill.material,
+        easing: 'linear',
+        duration: 500,
+        opacity: 1.0
+      })
+
+      anime({
+        targets: bluePill.scale,
+        easing: 'easeInQuad',
+        duration: 500,
+        x: scaleBlue,
+        y: scaleBlue,
+        z: scaleBlue
+      })
+
+      anime({
+        targets: bluePill.material,
+        easing: 'linear',
+        duration: 500,
+        opacity: 1.0
+      })
+    }
+
+    function animateChosenPill (): void {
+      document.removeEventListener('keydown', onKeyDown, false)
+
+      if (choice) {
+        anime({
+          targets: redPill.position,
+          complete: faceChosenPill,
+          easing: 'easeOutQuad',
+          duration: 800,
+          x: 0,
+          z: 5
+        })
+
+        anime({
+          targets: redPill.rotation,
+          easing: 'easeOutQuad',
+          duration: 800,
+          y: 0.7875,
+          z: 1.525
+        })
+
+        anime({
+          targets: redPill.material,
+          easing: 'linear',
+          duration: 2000,
+          delay: 1000,
+          opacity: 0
+        })
+
+        anime({
+          targets: bluePill.material,
+          easing: 'linear',
+          duration: 500,
+          opacity: 0
+        })
+      }
+
+      else {
+        anime({
+          targets: bluePill.position,
+          complete: faceChosenPill,
+          easing: 'easeOutQuad',
+          duration: 800,
+          x: 0,
+          z: 5
+        })
+
+        anime({
+          targets: bluePill.rotation,
+          easing: 'easeOutQuad',
+          duration: 800,
+          y: -1.5,
+          z: -0.9
+        })
+
+        anime({
+          targets: bluePill.material,
+          easing: 'linear',
+          duration: 2000,
+          delay: 1000,
+          opacity: 0
+        })
+
+        anime({
+          targets: redPill.material,
+          easing: 'linear',
+          duration: 500,
+          opacity: 0
+        })
+      }
+    }
+
+    function faceChosenPill (): void {
+      context.emit('toggle-rain', false)
+
+      setTimeout(() => {
+        Loading.checkActiveItem()
+        router.push({ name: choice ? 'RabbitHole' : 'SiteMenu' })
+      }, 3000)
+    }
+
+    function onResize (): void {
+      width = screen.size.width
+      height = screen.size.height
+
+      renderer.setSize(width, height)
+      camera.aspect = screen.size.ratio
+      camera.updateProjectionMatrix()
+    }
+
+    function createLights (): void {
+      const directional = new DirectionalLight(0xFFFFFF, 0.5)
+      const spot = new SpotLight(0xFFFFFF, 1, 100, 1, 0, 1)
+      const ambient = new AmbientLight(0x444444, 1)
+
+      directional.position.set(25, 50, -50)
+      spot.position.set(-25, 25, 5)
+
+      scene.add(directional)
+      scene.add(ambient)
+      scene.add(spot)
+    }
+
+    function createRenderer (): void {
+      pills.value.appendChild(renderer.domElement)
+      renderer.setClearColor(0x000000, 0)
+      renderer.setSize(width, height)
+    }
+
+    function render (): void {
+      renderer.render(scene, camera)
+      frame = requestAnimationFrame(render)
+    }
+
+    const pills: Ref = ref()
     const loader: AssetsLoader = new AssetsLoader()
     loader.loadJSON(new JSONLoader(), PILL as JSON, createPills)
 
+    const screen = new Viewport(onResize)
+    let height = screen.size.height
+    let width = screen.size.width
+
+    const camera = new PerspectiveCamera(75, screen.size.ratio, 1, 10000)
+    const renderer = new WebGLRenderer({ antialias: true, alpha: true })
+    const scene = new Scene()
+    camera.position.z = 7.5
+
+    let blueFade: AnimeInstance
+    let redFade: AnimeInstance
+    let bluePill: Mesh
+    let redPill: Mesh
+
+    let choiceTimeout: number
+    let interactable = false
+    let choice = true
+    let frame: number
+
     onMounted(() => {
       firePrerender({ title: 'More' })
+
+      if (!Platform.prerenderer) {
+        createLights()
+        createRenderer()
+
+        document.addEventListener('keydown', onKeyDown, false)
+      }
     })
 
     onBeforeUnmount(() => {
-      // cancelAnimationFrame(frame)
+      document.removeEventListener('keydown', onKeyDown, false)
+      cancelAnimationFrame(frame)
     })
+
+    return { pills }
   }
 })
 </script>

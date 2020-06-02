@@ -3,8 +3,9 @@ import { reactive, toRefs } from 'vue'
 export type ResizeCallback = (screen: Size, videoScreen?: Size) => unknown
 
 export interface Size {
-  height: number
   width: number
+  height: number
+  ratio: number
 }
 
 export class Viewport {
@@ -13,11 +14,13 @@ export class Viewport {
   private readonly callback: ResizeCallback | null = null
 
   private readonly videoScreen: Size = reactive({
+    ratio: window.innerWidth / window.innerHeight,
     height: window.innerHeight,
     width: window.innerWidth
   })
 
   private readonly screen: Size = reactive({
+    ratio: window.innerWidth / window.innerHeight,
     height: window.innerHeight,
     width: window.innerWidth
   })
@@ -38,14 +41,16 @@ export class Viewport {
       width = window.innerHeight / 9 * 16
     }
 
-    this.root.setProperty('--height', `${window.innerHeight}px`)
-    this.root.setProperty('--width', `${window.innerWidth}px`)
-
-    this.screen.height = window.innerHeight
-    this.screen.width = window.innerWidth
-
-    this.videoScreen.height = height
     this.videoScreen.width = width
+    this.videoScreen.height = height
+    this.videoScreen.ratio = width / height
+
+    this.screen.width = window.innerWidth
+    this.screen.height = window.innerHeight
+    this.screen.ratio = window.innerWidth / window.innerHeight
+
+    this.root.setProperty('--width', `${window.innerWidth}px`)
+    this.root.setProperty('--height', `${window.innerHeight}px`)
 
     if (this.callback) {
       this.callback(this.screen, this.videoScreen)
@@ -60,8 +65,9 @@ export class Viewport {
     const videoSize = toRefs(this.videoScreen)
 
     return {
+      width: videoSize.width.value,
       height: videoSize.height.value,
-      width: videoSize.width.value
+      ratio: videoSize.ratio.value
     }
   }
 
@@ -69,8 +75,9 @@ export class Viewport {
     const size = toRefs(this.screen)
 
     return {
+      width: size.width.value,
       height: size.height.value,
-      width: size.width.value
+      ratio: size.ratio.value
     }
   }
 }
