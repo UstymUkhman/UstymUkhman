@@ -18,6 +18,7 @@ import { Vector4 } from '@three/math/Vector4'
 import { Face3 } from '@three/core/Face3'
 import { Color } from '@three/math/Color'
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function JSONLoader (manager) {
   if (typeof manager === 'boolean') {
     console.warn('JSONLoader: showStatus parameter has been removed from constructor.')

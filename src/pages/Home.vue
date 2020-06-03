@@ -6,12 +6,12 @@
       <MatrixRain v-if="matrixRain" :ratio="rainRatio" :mobile="isMobile" />
     </transition> -->
 
-    <!-- <router-view
-      @toggle:overlay="visibleOverlay = $event"
+    <router-view
+      @toggle-overlay="visibleOverlay = $event"
       @toggle-rain="visibleRain = $event"
       v-show="!visibleAnimation"
       class="page"
-    /> -->
+    />
 
     <MatrixRain />
 

@@ -5,9 +5,9 @@
 </template>
 
 <script lang="ts">
+import { MeshStandardMaterial, MeshStandardMaterialParameters } from '@three/materials/MeshStandardMaterial'
 import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { Platform, Viewport, Loading, Sounds, firePrerender } from '@/utils'
-import { MeshStandardMaterial } from '@three/materials/MeshStandardMaterial'
 
 import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
 import { DirectionalLight } from '@three/lights/DirectionalLight'
@@ -30,38 +30,17 @@ export default defineComponent({
 
   setup (props, context: SetupContext): { readonly pills: Ref } {
     function createPills (model: JSONModel): void {
-      const delay = Loading.getActiveItem() === false ? 0 : 1200
-      const material = new MeshStandardMaterial({
-        emissiveIntensity: 1,
-        emissive: 0x000000,
-        flatShading: true,
-        transparent: true,
-        depthWrite: true,
-        depthTest: true,
-        roughness: 0.2,
-        metalness: 0,
-        opacity: 0
-      })
+      createBluePill(model.geometry)
+      createRedPill(model.geometry)
 
-      createBluePill(model.geometry, material, delay)
-      createRedPill(model.geometry, material, delay)
-
-      createChoice(16000 + delay)
+      createChoice(17200)
       render()
     }
 
-    function createBluePill (geometry: Geometry, material: MeshStandardMaterial, delay: number): void {
+    function createBluePill (geometry: Geometry): void {
       bluePill = new Mesh(geometry, new MeshStandardMaterial({
-        emissiveIntensity: 1,
-        emissive: 0x000000,
-        flatShading: true,
-        transparent: true,
-        depthWrite: true,
-        depthTest: true,
         color: 0x003FFF,
-        roughness: 0.2,
-        metalness: 0,
-        opacity: 0
+        ...material
       }))
 
       bluePill.rotation.set(0, -1.5, -0.4)
@@ -71,25 +50,17 @@ export default defineComponent({
 
       blueFade = anime({
         targets: bluePill.material,
-        delay: 500 + delay,
         easing: 'linear',
         duration: 1000,
-        opacity: 1.0
+        opacity: 1.0,
+        delay: 1700
       })
     }
 
-    function createRedPill (geometry: Geometry, material: MeshStandardMaterial, delay: number): void {
+    function createRedPill (geometry: Geometry): void {
       redPill = new Mesh(geometry, new MeshStandardMaterial({
-        emissiveIntensity: 1,
-        emissive: 0x000000,
-        flatShading: true,
-        transparent: true,
-        depthWrite: true,
-        depthTest: true,
         color: 0xB40000,
-        roughness: 0.2,
-        metalness: 0,
-        opacity: 0
+        ...material
       }))
 
       redPill.rotation.set(-0.05, 1.3, 0.4)
@@ -99,10 +70,10 @@ export default defineComponent({
 
       redFade = anime({
         targets: redPill.material,
-        delay: 7500 + delay,
         easing: 'linear',
         duration: 1000,
-        opacity: 1.0
+        opacity: 1.0,
+        delay: 8700
       })
     }
 
@@ -249,7 +220,7 @@ export default defineComponent({
 
       setTimeout(() => {
         Loading.checkActiveItem()
-        router.push({ name: choice ? 'RabbitHole' : 'SiteMenu' })
+        router.push({ name: choice ? 'RabbitHole' : 'Home' })
       }, 3000)
     }
 
@@ -289,6 +260,20 @@ export default defineComponent({
     const pills: Ref = ref()
     const loader: AssetsLoader = new AssetsLoader()
     loader.loadJSON(new JSONLoader(), PILL as JSON, createPills)
+
+    const material: MeshStandardMaterialParameters = {
+      emissiveIntensity: 1,
+      emissive: 0x000000,
+
+      flatShading: true,
+      transparent: true,
+      depthWrite: true,
+      depthTest: true,
+
+      roughness: 0.2,
+      metalness: 0,
+      opacity: 0
+    }
 
     const screen = new Viewport(onResize)
     let height = screen.size.height

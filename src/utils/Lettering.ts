@@ -22,7 +22,7 @@ export default class Lettering {
     this.last = null
   }
 
-  public animate (callback: AnimationCallback | undefined): Array<HTMLSpanElement> | void {
+  public animate (callback: AnimationCallback | undefined): Array<HTMLSpanElement> {
     if (this.message && this.message.textContent) {
       this.word = this.message.textContent?.split('')
     }
@@ -37,8 +37,9 @@ export default class Lettering {
 
       this.lastLetter = this.letters[this.letters.length - 1]
       this.lettersAnimation()
-      return this.letters
     }
+
+    return this.letters
   }
 
   private getLetters (): void {

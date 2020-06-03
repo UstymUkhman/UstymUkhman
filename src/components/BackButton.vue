@@ -62,7 +62,7 @@ export default defineComponent({
 
       setTimeout(() => {
         Loading.checkActiveItem()
-        router.push({ name: 'SiteMenu' })
+        router.push({ name: 'Home' })
       }, delay + 2500)
     }
 
@@ -90,7 +90,7 @@ export default defineComponent({
 
         setTimeout(() => {
           Loading.checkActiveItem()
-          router.push({ name: 'SiteMenu' })
+          router.push({ name: 'Home' })
         }, 3000)
       }
     })

@@ -30,7 +30,7 @@ const checkWebGLCompatibility = (to: RouteLocationNormalized, from: RouteLocatio
   const notSupportedWebGL = Platform.isIE || Platform.mobile
 
   if (notSupportedWebGL || notSupportedAutoplay) {
-    next({ name: 'SiteMenu' })
+    next({ name: 'Home' })
     return
   }
 
@@ -41,9 +41,13 @@ export default createRouter({
   history: createWebHistory(),
 
   routes: [{
+    path: '/',
     component: (): VueComponent => import(/* webpackChunkName: "home-page" */ '@pages/Home.vue'),
-    name: 'Home',
-    path: '/'
+    children: [{
+      path: '',
+      name: 'Home',
+      component: (): VueComponent => import(/* webpackChunkName: "home-menu" */ '@components/HomeMenu.vue')
+    }]
   }, {
     component: (): VueComponent => import(/* webpackChunkName: "about-page" */ '@pages/About.vue'),
     path: '/about',

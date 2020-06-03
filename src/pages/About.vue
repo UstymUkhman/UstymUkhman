@@ -93,7 +93,7 @@ export default defineComponent({
 
       lettering = new Lettering(paragraph.value, 50)
       firePrerender({ title: 'About' })
-      Loading.setActiveItem(0)
+      Loading.activeItem = 0
 
       lettering.animate(() => {
         setTimeout(() => { activeButton.value = true }, 1000)
