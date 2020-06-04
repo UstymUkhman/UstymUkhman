@@ -44,26 +44,26 @@ export default createRouter({
     path: '/',
     component: (): VueComponent => import(/* webpackChunkName: "home-page" */ '@pages/Home.vue'),
     children: [{
-      path: '',
+      component: (): VueComponent => import(/* webpackChunkName: "home-menu" */ '@components/HomeMenu.vue'),
       name: 'Home',
-      component: (): VueComponent => import(/* webpackChunkName: "home-menu" */ '@components/HomeMenu.vue')
+      path: ''
+    }, {
+      component: (): VueComponent => import(/* webpackChunkName: "about-page" */ '@pages/About.vue'),
+      name: 'About',
+      path: 'about'
+    }, {
+      component: (): VueComponent => import(/* webpackChunkName: "more-page" */ '@pages/More.vue'),
+      beforeEnter: checkWebGLCompatibility,
+      name: 'More',
+      path: 'more',
     }]
-  }, {
-    component: (): VueComponent => import(/* webpackChunkName: "about-page" */ '@pages/About.vue'),
-    path: '/about',
-    name: 'About'
-  }, {
-    component: (): VueComponent => import(/* webpackChunkName: "more-page" */ '@pages/More.vue'),
-    // beforeEnter: checkWebGLCompatibility,
-    path: '/more',
-    name: 'More'
   }, {
     component: (): VueComponent => import(/* webpackChunkName: "experiments-page" */ '@pages/Experiments.vue'),
     beforeEnter: checkWebGLCompatibility,
     props: { experiments },
     path: '/experiments',
     children: [{
-      component: (): VueComponent => import(/* webpackChunkName: "experiment-list" */ '@components/ExperimentList.vue'),
+      component: (): VueComponent => import(/* webpackChunkName: "experiment-list" */ '@components/experiments/List.vue'),
       name: 'Experiments',
       path: ''
     },

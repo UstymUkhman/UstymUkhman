@@ -17,7 +17,7 @@ export default class Sounds {
   public static endSpeach (): void {
     if (this.speach) {
       this.speach.pause()
-      delete this.speach
+      this.speach.currentTime = 0
     }
   }
 

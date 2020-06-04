@@ -1,6 +1,6 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="experiment-page" itemscope>
-    <ExperimentHeader
+    <Header
       :scroll="title === 'Dynamic.css'"
       :description="description"
       :github="github"
@@ -12,16 +12,14 @@
 </template>
 
 <script lang="ts">
-import ExperimentHeader from '@components/ExperimentHeader.vue'
+import Header from '@components/experiments/Header.vue'
 import { defineComponent, onMounted } from 'vue'
 import { firePrerender } from '@/utils'
 
 export default defineComponent({
   name: 'Experiment',
 
-  components: {
-    ExperimentHeader
-  },
+  components: { Header },
 
   props: {
     description: {

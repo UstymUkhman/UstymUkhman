@@ -4,8 +4,8 @@
 
     <transition name="header" appear>
       <div v-show="visible" class="header-container">
-        <ExperimentTitle :title="title" />
-        <ExperimentButtons :description="description" :repository="github" />
+        <Title :title="title" />
+        <Buttons :description="description" :repository="github" />
       </div>
     </transition>
   </header>
@@ -13,8 +13,8 @@
 
 <script lang="ts">
 import { Ref, defineComponent, onMounted, ref } from 'vue'
-import ExperimentTitle from '@components/ExperimentTitle.vue'
-import ExperimentButtons from '@components/ExperimentButtons.vue'
+import Buttons from '@components/experiments/Buttons.vue'
+import Title from '@components/experiments/Title.vue'
 
 type VisibilityCallback = (event: MouseEvent, show: boolean) => void
 
@@ -25,12 +25,9 @@ interface TemplateValues {
 }
 
 export default defineComponent({
-  name: 'ExperimentHeader',
+  name: 'Header',
 
-  components: {
-    ExperimentTitle,
-    ExperimentButtons
-  },
+  components: { Title, Buttons },
 
   props: {
     title: {

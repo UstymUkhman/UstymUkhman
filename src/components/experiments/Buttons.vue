@@ -22,7 +22,7 @@ interface Buttons {
 }
 
 export default defineComponent({
-  name: 'ExperimentButtons',
+  name: 'Buttons',
 
   props: {
     description: {

@@ -6,8 +6,8 @@
         <div :ref="button => { items[p] = button }" class="button-box" itemtype="https://schema.org/MenuItem"
              @touchstart.once="onTouchStart(p)" @touchend.once="onTouchEnd"
              :class="{
-               'active': (p === currentItem && !nextPage) || visibleButtons.includes(p),
                'selected': p === settedSection && !nextPage,
+               'active': isActiveButton(p),
                'visible': skipLettering,
                'pressed': pressed
              }">
@@ -22,16 +22,16 @@
 </template>
 
 <script lang="ts">
-import { SetupContext, Ref, defineComponent, onMounted, onBeforeUpdate, reactive, ref } from 'vue'
+import { SetupContext, Ref, defineComponent, onMounted, reactive, ref } from 'vue'
 import { TouchEventListener, Lettering, Loading, Platform } from '@/utils'
 import router from '@/router'
 
 type FakeKeyboardEvent = { keyCode: number }
 
 interface TemplateValues {
+  readonly isActiveButton: (index: number) => boolean
   readonly onTouchStart: (index: number) => void
   readonly onTouchEnd: TouchEventListener
-  readonly visibleButtons: Array<number>
   readonly skipLettering: Ref<boolean>
   readonly settedSection: Ref<number>
   readonly currentItem: Ref<number>
@@ -52,7 +52,7 @@ export default defineComponent({
         typingTimeout = 0
 
         if (Platform.mobile) {
-          visibleButtons = [0, 1, 2]
+          visibleButtons = reactive([0, 1, 2])
         }
       }
     }
@@ -125,7 +125,7 @@ export default defineComponent({
       }
 
       onKeyUp({ keyCode: 13 })
-      visibleButtons = []
+      visibleButtons = reactive([])
     }
 
     function setMenuSection (): void {
@@ -136,9 +136,11 @@ export default defineComponent({
       nextPage.value = true
       pressed.value = false
 
-      removeKeyListeners()
       lettering.disposeAll(words)
       context.emit('toggle-rain', visibleRain)
+
+      document.removeEventListener('keyup', onKeyUp, false)
+      document.removeEventListener('keydown', onKeyDown, false)
 
       setTimeout(() => {
         settedSection.value = nextSection
@@ -146,9 +148,9 @@ export default defineComponent({
       }, 2500)
     }
 
-    function removeKeyListeners (): void {
-      document.removeEventListener('keydown', onKeyDown, false)
-      document.removeEventListener('keyup', onKeyUp, false)
+    function isActiveButton (index: number): boolean {
+      const mobileButtons: boolean = visibleButtons.includes(index)
+      return (index === currentItem.value && !nextPage.value) || mobileButtons
     }
 
     const pages = reactive(['Ab0uT_m3', 'My_W0rk5', 'C0nT@cT_m3'])
@@ -184,12 +186,8 @@ export default defineComponent({
       }, 500)
     })
 
-    onBeforeUpdate(() => {
-      items.value = []
-    })
-
     return {
-      visibleButtons,
+      isActiveButton,
       settedSection,
       skipLettering,
       onTouchStart,
