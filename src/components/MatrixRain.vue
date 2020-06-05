@@ -1,12 +1,12 @@
 <template>
-  <div class="rain-container" :class="{'right': ratio > 1}" :style="{'width': `${100 / ratio}%`}">
+  <div class="rain-container">
     <canvas ref="code"></canvas>
     <div v-if="mobile" class="mobile-overlay"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { Ref, defineComponent, watchEffect, onMounted, onBeforeUnmount, ref } from 'vue'
+import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { matrixFont, lightGreen, green, white } from '@scss/variables.scss'
 
 import { Viewport, Size } from '@/utils/Viewport'
@@ -14,6 +14,12 @@ import { randomInt } from '@/utils/Number'
 
 const LINE_HEIGHT = 27
 const OFFSET = 18
+
+type Charset = {
+  duration: Array<number>
+  visible: Array<boolean>
+  index: Array<number>
+}
 
 export default defineComponent({
   name: 'MatrixRain',
@@ -32,61 +38,73 @@ export default defineComponent({
     }
   },
 
-  setup (props): { code: Ref } {
-    const getCharCode = (): string => {
+  setup (): { code: Ref } {
+    function getCharCode (): string {
       const code = Math.random() < 0.5 ? randomInt(33, 63) : randomInt(90, 126)
       return String.fromCharCode(code)
     }
 
-    const getCharAlpha = (index: number, end: number): number => {
+    function getCharAlpha (index: number, end: number): number {
       return index > end ? 50 - (index - end) : 50
     }
 
-    const updateVisibleColumns = (): void => {
+    function updateVisibleColumns (): void {
       if (visible.includes(false)) {
         const int = randomInt(0, columns)
         visible[int] = Math.random() < 0.5 || visible[int]
       }
     }
 
-    const onResize = (size: Size): void => {
-      let _rows = rows
-      let _columns = columns
-
-      height = size.height
-      width = size.width / props.ratio
-
+    function updateCanvasSize (): void {
       canvas.width = width
       canvas.height = height
 
-      rows = Math.ceil(height / LINE_HEIGHT)
       columns = Math.ceil(width / OFFSET)
-      context.font = matrixFont
+      rows = Math.ceil(height / LINE_HEIGHT)
+    }
+
+    function createCharset (): Charset {
+      const duration: Array<number> = Array.from(new Array(columns), () => randomInt(rows, 100))
+      const visible: Array<boolean> = Array.from(new Array(columns), () => false)
+      const index: Array<number> = Array.from(new Array(columns), () => 0)
+
+      chars = []
+
+      for (let i = 0; i < columns; i++) {
+        const column = Array.from(new Array(rows), () => getCharCode())
+        chars.push(column)
+      }
+
+      return { duration, visible, index }
+    }
+
+    function onResize (size: Size): void {
+      height = size.height + 16
+      width = size.width + 16
+
+      let _columns = columns
+      let _rows = rows
+
+      updateCanvasSize()
 
       _rows = Math.max(rows - _rows, 0)
       _columns = Math.max(columns - _columns, 0)
 
+      context.fillStyle = `rgba(${green}, 1.0)`
+      context.shadowColor = `rgb(${green})`
+      context.textBaseline = 'middle'
+      context.font = matrixFont
+      context.shadowBlur = 5
+
       if (_rows > 0 || _columns > 0) {
-        const _duration = Array.from(new Array(_columns), () => randomInt(rows, 100))
-        const _visible = Array.from(new Array(_columns), () => false)
-        const _index = Array.from(new Array(_columns), () => 0)
+        const charset = createCharset()
 
-        chars = []
+        duration.push(...charset.duration.slice(duration.length))
+        visible.push(...charset.visible.slice(visible.length))
+        index.push(...charset.index.slice(index.length))
+      }
 
-        for (let i = 0; i < columns; i++) {
-          const column = new Array(rows)
-
-          for (let j = 0; j < rows; j++) {
-            column[j] = getCharCode()
-          }
-
-          chars.push(column)
-        }
-
-        duration.push(..._duration)
-        visible.push(..._visible)
-        index.push(..._index)
-      } else if (_rows < 0 && _columns < 0) {
+      else if (_rows < 0 || _columns < 0) {
         const columnsAbs = Math.abs(_columns)
         const indexLength = index.length - columnsAbs
         const columnsLength = chars.length - columnsAbs
@@ -100,7 +118,7 @@ export default defineComponent({
       }
     }
 
-    const animate = (): void => {
+    function animate (): void {
       frame = requestAnimationFrame(animate)
 
       const now = Date.now()
@@ -121,7 +139,9 @@ export default defineComponent({
           if (j > i5 && j <= i3) {
             color = lightGreen
             update = 0.25
-          } else if (j > i3) {
+          }
+
+          else if (j > i3) {
             color = white
             update = 0.25
           }
@@ -152,10 +172,10 @@ export default defineComponent({
     let width = screen.size.width + 16
     let canvas: HTMLCanvasElement
 
-    let duration: number[] = []
-    let visible: boolean[] = []
-    let chars: string[][] = []
-    let index: number[] = []
+    let chars: Array<Array<string>>
+    let duration: Array<number>
+    let visible: Array<boolean>
+    let index: Array<number>
 
     let lastUpdate = Date.now()
     const code = ref()
@@ -163,31 +183,22 @@ export default defineComponent({
     let frame = 0
     let rows = 0
 
-    watchEffect(() => { console.log(props.ratio) })
-
     onMounted(() => {
       canvas = code.value
-      canvas.width = width
-      canvas.height = height
+      updateCanvasSize()
 
-      rows = Math.ceil(height / LINE_HEIGHT)
-      columns = Math.ceil(width / OFFSET)
       context = canvas.getContext('2d')!
-
       context.fillStyle = `rgba(${green}, 1.0)`
       context.shadowColor = `rgb(${green})`
       context.textBaseline = 'middle'
       context.font = matrixFont
       context.shadowBlur = 5
 
-      duration = Array.from(new Array(columns), () => randomInt(rows, 100))
-      visible = Array.from(new Array(columns), () => false)
-      index = Array.from(new Array(columns), () => 0)
+      const charset = createCharset()
 
-      for (let i = 0; i < columns; i++) {
-        const column = Array.from(new Array(rows), () => getCharCode())
-        chars.push(column)
-      }
+      duration = charset.duration
+      visible = charset.visible
+      index = charset.index
 
       animate()
     })
@@ -207,13 +218,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .rain-container {
-  position: absolute;
-  height: 100%;
-
-  &.right {
-    left: auto;
-    right: 0;
-  }
+  @include absolute-size;
 
   canvas {
     @include absolute-size;
