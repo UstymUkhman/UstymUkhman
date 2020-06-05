@@ -3,7 +3,7 @@ import experiments from '@/assets/data/experiments.json'
 import { Platform } from '@/utils'
 
 type RedirectRoute = (route?: { name: string }) => void
-type VueComponent = Promise<typeof import("*.vue")>
+type VueComponent = Promise<typeof import('*.vue')>
 type PromiseImport = (page: string) => void
 
 interface ExperimentProps {
@@ -52,29 +52,37 @@ export default createRouter({
       name: 'About',
       path: 'about'
     }, {
+      component: (): VueComponent => import(/* webpackChunkName: "works-page" */ '@pages/Works.vue'),
+      name: 'Works',
+      path: 'works'
+    }, {
+      component: (): VueComponent => import(/* webpackChunkName: "contacts-page" */ '@pages/Contacts.vue'),
+      name: 'Contacts',
+      path: 'contacts'
+    }, {
       component: (): VueComponent => import(/* webpackChunkName: "more-page" */ '@pages/More.vue'),
       beforeEnter: checkWebGLCompatibility,
       name: 'More',
       path: 'more',
+    }, {
+      component: (): VueComponent => import(/* webpackChunkName: "experiments-page" */ '@pages/Experiments.vue'),
+      beforeEnter: checkWebGLCompatibility,
+      props: { experiments },
+      path: 'experiments',
+      children: [{
+        component: (): VueComponent => import(/* webpackChunkName: "experiment-list" */ '@components/experiments/List.vue'),
+        name: 'Experiments',
+        path: ''
+      },
+      ...(experiments as Array<ExperimentProps>).map((experiment: ExperimentProps): PageRoute => {
+        return {
+          component: (): VueComponent => import(/* webpackChunkName: "experiment-page" */ '@pages/Experiment.vue'),
+          name: experiment.title,
+          path: experiment.route,
+          props: experiment
+        }
+      })]
     }]
-  }, {
-    component: (): VueComponent => import(/* webpackChunkName: "experiments-page" */ '@pages/Experiments.vue'),
-    beforeEnter: checkWebGLCompatibility,
-    props: { experiments },
-    path: '/experiments',
-    children: [{
-      component: (): VueComponent => import(/* webpackChunkName: "experiment-list" */ '@components/experiments/List.vue'),
-      name: 'Experiments',
-      path: ''
-    },
-    ...(experiments as Array<ExperimentProps>).map((experiment: ExperimentProps): PageRoute => {
-      return {
-        component: (): VueComponent => import(/* webpackChunkName: "experiment-page" */ '@pages/Experiment.vue'),
-        name: experiment.title,
-        path: experiment.route,
-        props: experiment
-      }
-    })]
   }, {
     component: (): VueComponent => import(/* webpackChunkName: "404-page" */ '@pages/404.vue'),
     path: '/404',

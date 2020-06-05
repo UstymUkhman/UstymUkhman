@@ -4,8 +4,8 @@ const experiments = require('../src/assets/data/experiments.json')
 const routes = [
   '/',
   '/about',
-  // '/works',
-  // '/contacts',
+  '/works',
+  '/contacts',
   '/more',
   // '/hole',
   '/experiments',

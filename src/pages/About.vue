@@ -1,5 +1,5 @@
 <template>
-  <article @touchstart="onTouchStart" @touchend="onTouchEnd"  itemtype="http://schema.org/AboutPage" itemscope class="about-page">
+  <article @touchstart="onTouchStart" @touchend="onTouchEnd" itemtype="http://schema.org/AboutPage" class="about-page" itemscope>
     <p ref="paragraph" itemprop="text" class="about-description">{{ description }}</p>
 
     <BackButton

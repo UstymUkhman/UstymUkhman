@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+import { Ref, defineComponent, watchEffect, onMounted, onBeforeUnmount, ref } from 'vue'
 import { matrixFont, lightGreen, green, white } from '@scss/variables.scss'
 
 import { Viewport, Size } from '@/utils/Viewport'
@@ -162,6 +162,8 @@ export default defineComponent({
     let columns = 0
     let frame = 0
     let rows = 0
+
+    watchEffect(() => { console.log(props.ratio) })
 
     onMounted(() => {
       canvas = code.value

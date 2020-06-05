@@ -1,10 +1,10 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="home-page" itemscope>
-    <!-- <ScreenAnimation v-if="visibleAnimation && !isPrerenderer" /> -->
+    <ScreenAnimation v-if="visibleAnimation && !isPrerenderer" />
 
-    <!-- <transition appear name="matrix-rain">
+    <transition appear name="matrix-rain">
       <MatrixRain v-if="matrixRain" :ratio="rainRatio" :mobile="isMobile" />
-    </transition> -->
+    </transition>
 
     <router-view
       @toggle-overlay="visibleOverlay = $event"
@@ -13,51 +13,58 @@
       class="page"
     />
 
-    <MatrixRain />
-
     <ScreenOverlay v-if="visibleOverlay && !isPrerenderer" />
   </article>
 </template>
 
 <script lang="ts">
-// import ScreenAnimation from '@components/ScreenAnimation.vue'
+import { ComputedRef, Ref, defineComponent, reactive, computed, onMounted, ref } from 'vue'
+import ScreenAnimation from '@components/ScreenAnimation.vue'
 import ScreenOverlay from '@components/ScreenOverlay.vue'
 import MatrixRain from '@components/MatrixRain.vue'
-import { firePrerender, Platform } from '@/utils'
-import { defineComponent, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import { Platform } from '@/utils'
+
+interface TemplateValues {
+  readonly matrixRain: ComputedRef<boolean>
+  readonly rainRatio: ComputedRef<number>
+  readonly visibleAnimation: Ref<boolean>
+  readonly visibleOverlay: Ref<boolean>
+  readonly visibleRain: Ref<boolean>
+  readonly isPrerenderer: boolean
+  readonly isMobile: boolean
+}
 
 export default defineComponent({
   name: 'Home',
 
   components: {
-    // ScreenAnimation,
+    ScreenAnimation,
     ScreenOverlay,
     MatrixRain
   },
 
-  setup () {
-    // const matrixRain = () => {
-    //   return Platform.mobile || (this.$route.name !== 'RabbitHole' && this.visibleRain)
-    // }
-
-    // const rainRatio = () => {
-    //   const fullPage = this.$route.name === 'About' || this.$route.name === 'More'
-    //   const specialPages = fullPage || this.$route.path.includes('experiments')
-    //   return Platform.mobile || specialPages ? 1 : 2.25
-    // }
-
+  setup (): TemplateValues {
     const isPrerenderer = Platform.prerenderer
+    const route = reactive(useRoute())
     const isMobile = Platform.mobile
-    const visibleAnimation = false
-    const visibleOverlay = true
-    const visibleRain = false
+
+    const visibleAnimation = ref(false)
+    const visibleOverlay = ref(true)
+    const visibleRain = ref(false)
+
+    const rainRatio = computed(() =>
+      route.name === 'Works' || route.name === 'Contacts' ? 0.5 : 1
+    )
+
+    const matrixRain = computed(() =>
+      route.name !== 'RabbitHole'
+    )
 
     onMounted(() => {
-      // if (this.$route.name !== 'About' && this.$route.name !== 'More') {
-      //   setTimeout(() => { this.visibleRain = true }, 500)
-      // }
-
-      firePrerender({})
+      if (route.name !== 'About' && route.name !== 'More') {
+        setTimeout(() => { visibleRain.value = true }, 500)
+      }
     })
 
     return {
@@ -65,8 +72,8 @@ export default defineComponent({
       visibleOverlay,
       isPrerenderer,
       visibleRain,
-      // matrixRain,
-      // rainRatio,
+      matrixRain,
+      rainRatio,
       isMobile
     }
   }
