@@ -1,5 +1,4 @@
 import { Ref } from 'vue'
-import Rain from './Rain'
 import wheel from './Wheel'
 import Sounds from './Sounds'
 import Loading from './Loading'
@@ -36,6 +35,5 @@ export {
   language,
   Loading,
   Sounds,
-  wheel,
-  Rain
+  wheel
 }

@@ -8,9 +8,8 @@
 <script lang="ts">
 import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { matrixFont, lightGreen, green, white } from '@scss/variables.scss'
-
+import { randomInt, randomBool } from '@/utils/Number'
 import { Viewport, Size } from '@/utils/Viewport'
-import { randomInt } from '@/utils/Number'
 
 const LINE_HEIGHT = 27
 const OFFSET = 18
@@ -38,9 +37,9 @@ export default defineComponent({
     }
   },
 
-  setup (): { code: Ref } {
+  setup (props): { code: Ref } {
     function getCharCode (): string {
-      const code = Math.random() < 0.5 ? randomInt(33, 63) : randomInt(90, 126)
+      const code = randomBool() ? randomInt(33, 63) : randomInt(90, 126)
       return String.fromCharCode(code)
     }
 
@@ -51,8 +50,12 @@ export default defineComponent({
     function updateVisibleColumns (): void {
       if (visible.includes(false)) {
         const int = randomInt(0, columns)
-        visible[int] = Math.random() < 0.5 || visible[int]
+        visible[int] = int < getFirstColumn() ? visible[int] : randomBool() || visible[int]
       }
+    }
+
+    function getFirstColumn (): number {
+      return visible.length - Math.floor(visible.length * props.ratio)
     }
 
     function updateCanvasSize (): void {
@@ -147,7 +150,7 @@ export default defineComponent({
           }
 
           if (alpha === 0) {
-            duration[i] = randomInt(rows, 100)
+            duration[i] = i < getFirstColumn() ? -50 : randomInt(rows, 100)
             index[i] = 0
           }
 

@@ -8,11 +8,13 @@ const randomInt = (min: number, max: number): number => Math.floor(Math.random()
 const clamp = (value: number, min = 0, max = 1): number => Math.max(min, Math.min(value, max))
 const random = (min: number, max: number): number => Math.random() * (max - min) + min
 const lerp = (v0: number, v1: number, t: number): number => v0 + t * (v1 - v0)
+const randomBool = (): boolean => Math.random() < 0.5
 
 const PI = readonly({ m2: Math.PI * 2, d2: Math.PI / 2 })
 
 export {
   smoothstep,
+  randomBool,
   randomInt,
   random,
   clamp,

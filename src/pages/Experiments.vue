@@ -1,7 +1,5 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="experiments-page" itemscope>
-    <ScreenOverlay v-if="!prerenderer" />
-
     <transition appear>
       <router-view class="page" />
     </transition>
@@ -9,17 +7,12 @@
 </template>
 
 <script lang="ts">
-import ScreenOverlay from '@components/ScreenOverlay.vue'
 import { firePrerender, Platform } from '@/utils'
 import { defineComponent, onMounted } from 'vue'
 // import objectFitImages from 'object-fit-images'
 
 export default defineComponent({
   name: 'Experiments',
-
-  components: {
-    ScreenOverlay
-  },
 
   props: {
     experiments: {
