@@ -9,6 +9,7 @@ export class JSONLoader {
   private crossOrigin: string
   private resourcePath: string
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(manager?: LoadingManager)
 
   public load: (

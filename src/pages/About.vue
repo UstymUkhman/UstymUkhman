@@ -12,8 +12,8 @@
 </template>
 
 <script lang="ts">
-import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { TouchEventListener, Lettering, Loading, firePrerender } from '@/utils'
+import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import BackButton from '@components/BackButton.vue'
 
 interface TemplateValues {
@@ -34,7 +34,7 @@ export default defineComponent({
     BackButton
   },
 
-  setup (props, context: SetupContext): TemplateValues {
+  setup (): TemplateValues {
     function enterKey (event: KeyboardEvent | TouchEvent): boolean {
       return event instanceof KeyboardEvent && event.keyCode === 13
     }
@@ -45,7 +45,6 @@ export default defineComponent({
       }
 
       if (!visibleButton.value) {
-        context.emit('toggle-rain', true)
         lettering.skipLettering()
       }
     }
@@ -57,7 +56,6 @@ export default defineComponent({
     }
 
     function closeAboutPage (): void {
-      context.emit('toggle-rain', false)
       selectedButton.value = false
       activeButton.value = false
       lettering.dispose()
@@ -97,7 +95,6 @@ export default defineComponent({
 
       lettering.animate(() => {
         setTimeout(() => { activeButton.value = true }, 1000)
-        context.emit('toggle-rain', true)
         visibleButton.value = true
       })
     })
@@ -123,15 +120,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .about-page {
-  background-color: rgba($black, 0.8);
   @include center-size;
-
   overflow: hidden;
   z-index: 3;
-
-  @include breakpoint($md-down) {
-    background-color: initial;
-  }
 
   .about-description {
     @include center-size(1050px, 395px);

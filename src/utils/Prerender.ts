@@ -61,4 +61,9 @@ export default function (data: MetaData): void {
       document.dispatchEvent(new Event('custom-post-render-event'))
     }, 1000)
   }
+
+  // else {
+  //   if (data.fullTitle && data.title) title.innerText = data.title
+  //   else title.innerText = data.title ? `${data.title} | ${baseTitle}` : baseTitle
+  // }
 }

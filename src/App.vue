@@ -154,6 +154,7 @@ span.lettering {
 .page {
   @include absolute-size;
   box-sizing: border-box;
+  z-index: 10;
 
   left: 0;
   top: 0;

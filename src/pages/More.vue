@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import { MeshStandardMaterial, MeshStandardMaterialParameters } from '@three/materials/MeshStandardMaterial'
-import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { Platform, Viewport, Loading, Sounds, firePrerender } from '@/utils'
+import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 
 import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
 import { DirectionalLight } from '@three/lights/DirectionalLight'
@@ -28,7 +28,7 @@ import router from '@/router'
 export default defineComponent({
   name: 'More',
 
-  setup (props, context: SetupContext): { readonly pills: Ref } {
+  setup (): { readonly pills: Ref } {
     function createPills (model: JSONModel): void {
       createBluePill(model.geometry)
       createRedPill(model.geometry)
@@ -79,7 +79,6 @@ export default defineComponent({
 
     function createChoice (delay = 0): void {
       choiceTimeout = setTimeout(() => {
-        setTimeout(() => { context.emit('toggle-rain', true) }, 1000)
         interactable = true
         setChosenPill()
       }, delay)
@@ -216,8 +215,6 @@ export default defineComponent({
     }
 
     function faceChosenPill (): void {
-      context.emit('toggle-rain', false)
-
       setTimeout(() => {
         Loading.checkActiveItem()
         router.push({ name: choice ? 'RabbitHole' : 'Home' })

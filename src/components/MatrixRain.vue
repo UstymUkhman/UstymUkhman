@@ -1,12 +1,11 @@
 <template>
   <div class="rain-container">
     <canvas ref="code"></canvas>
-    <div v-if="mobile" class="mobile-overlay"></div>
   </div>
 </template>
 
 <script lang="ts">
-import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { matrixFont, lightGreen, green, white } from '@scss/variables.scss'
 import { randomInt, randomBool } from '@/utils/Number'
 import { Viewport, Size } from '@/utils/Viewport'
@@ -23,21 +22,7 @@ type Charset = {
 export default defineComponent({
   name: 'MatrixRain',
 
-  props: {
-    mobile: {
-      required: false,
-      default: false,
-      type: Boolean
-    },
-
-    ratio: {
-      required: false,
-      type: Number,
-      default: 1
-    }
-  },
-
-  setup (props): { code: Ref } {
+  setup (props, context: SetupContext): { code: Ref } {
     function getCharCode (): string {
       const code = randomBool() ? randomInt(33, 63) : randomInt(90, 126)
       return String.fromCharCode(code)
@@ -50,12 +35,8 @@ export default defineComponent({
     function updateVisibleColumns (): void {
       if (visible.includes(false)) {
         const int = randomInt(0, columns)
-        visible[int] = int < getFirstColumn() ? visible[int] : randomBool() || visible[int]
+        visible[int] = randomBool() || visible[int]
       }
-    }
-
-    function getFirstColumn (): number {
-      return visible.length - Math.floor(visible.length * props.ratio)
     }
 
     function updateCanvasSize (): void {
@@ -63,6 +44,7 @@ export default defineComponent({
       canvas.height = height
 
       columns = Math.ceil(width / OFFSET)
+      context.emit('rain-columns', columns)
       rows = Math.ceil(height / LINE_HEIGHT)
     }
 
@@ -93,11 +75,11 @@ export default defineComponent({
       _rows = Math.max(rows - _rows, 0)
       _columns = Math.max(columns - _columns, 0)
 
-      context.fillStyle = `rgba(${green}, 1.0)`
-      context.shadowColor = `rgb(${green})`
-      context.textBaseline = 'middle'
-      context.font = matrixFont
-      context.shadowBlur = 5
+      canvasContext.fillStyle = `rgba(${green}, 1.0)`
+      canvasContext.shadowColor = `rgb(${green})`
+      canvasContext.textBaseline = 'middle'
+      canvasContext.font = matrixFont
+      canvasContext.shadowBlur = 5
 
       if (_rows > 0 || _columns > 0) {
         const charset = createCharset()
@@ -127,7 +109,7 @@ export default defineComponent({
       const now = Date.now()
       if (now - lastUpdate < 50) return
 
-      context.clearRect(0, 0, canvas.width, canvas.height)
+      canvasContext.clearRect(0, 0, canvas.width, canvas.height)
       updateVisibleColumns()
       lastUpdate = now
 
@@ -150,15 +132,15 @@ export default defineComponent({
           }
 
           if (alpha === 0) {
-            duration[i] = i < getFirstColumn() ? -50 : randomInt(rows, 100)
+            duration[i] = randomInt(rows, 100)
             index[i] = 0
           }
 
           const a = +(chars[i].length / (chars[i].length - j)).toFixed(1) / 100
           alpha = j < index[i] ? alpha * Math.min(a, 0.2) : 0
 
-          context.fillStyle = `rgba(${color}, ${alpha})`
-          context.fillText(chars[i][j], i * OFFSET, j * LINE_HEIGHT)
+          canvasContext.fillStyle = `rgba(${color}, ${alpha})`
+          canvasContext.fillText(chars[i][j], i * OFFSET, j * LINE_HEIGHT)
 
           if (Math.random() < update) {
             chars[i][j] = getCharCode()
@@ -169,7 +151,7 @@ export default defineComponent({
       }
     }
 
-    let context: CanvasRenderingContext2D
+    let canvasContext: CanvasRenderingContext2D
     const screen = new Viewport(onResize)
     let height = screen.size.height + 16
     let width = screen.size.width + 16
@@ -190,20 +172,19 @@ export default defineComponent({
       canvas = code.value
       updateCanvasSize()
 
-      context = canvas.getContext('2d')!
-      context.fillStyle = `rgba(${green}, 1.0)`
-      context.shadowColor = `rgb(${green})`
-      context.textBaseline = 'middle'
-      context.font = matrixFont
-      context.shadowBlur = 5
+      canvasContext = canvas.getContext('2d')!
+      canvasContext.fillStyle = `rgba(${green}, 1.0)`
+      canvasContext.shadowColor = `rgb(${green})`
+      canvasContext.textBaseline = 'middle'
+      canvasContext.font = matrixFont
+      canvasContext.shadowBlur = 5
 
+      frame = requestAnimationFrame(animate)
       const charset = createCharset()
 
       duration = charset.duration
       visible = charset.visible
       index = charset.index
-
-      animate()
     })
 
     onBeforeUnmount(() => {
@@ -226,11 +207,6 @@ export default defineComponent({
   canvas {
     @include absolute-size;
     z-index: 0;
-  }
-
-  .mobile-overlay {
-    background-color: rgba($black, 0.8);
-    @include absolute-size;
   }
 }
 </style>

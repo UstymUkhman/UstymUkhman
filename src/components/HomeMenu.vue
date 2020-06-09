@@ -22,8 +22,8 @@
 </template>
 
 <script lang="ts">
-import { SetupContext, Ref, defineComponent, onMounted, reactive, ref } from 'vue'
 import { TouchEventListener, Lettering, Loading, Platform } from '@/utils'
+import { Ref, defineComponent, onMounted, reactive, ref } from 'vue'
 import router from '@/router'
 
 type FakeKeyboardEvent = { keyCode: number }
@@ -44,7 +44,7 @@ interface TemplateValues {
 export default defineComponent({
   name: 'HomeMenu',
 
-  setup (props, context: SetupContext): TemplateValues {
+  setup (): TemplateValues {
     function skipMenuLettering (): void {
       if (lettering) {
         skipLettering.value = true
@@ -130,14 +130,11 @@ export default defineComponent({
 
     function setMenuSection (): void {
       const nextSection = settedSection.value
-      const visibleRain = nextSection > 0 && nextSection < 3
+      lettering.disposeAll(words)
 
       settedSection.value = -1
       nextPage.value = true
       pressed.value = false
-
-      lettering.disposeAll(words)
-      context.emit('toggle-rain', visibleRain)
 
       document.removeEventListener('keyup', onKeyUp, false)
       document.removeEventListener('keydown', onKeyDown, false)
@@ -180,10 +177,7 @@ export default defineComponent({
         pages.push('M0r3')
       }
 
-      setTimeout(() => {
-        context.emit('toggle-rain', true)
-        showMenuItems()
-      }, 500)
+      setTimeout(showMenuItems, 500)
     })
 
     return {
