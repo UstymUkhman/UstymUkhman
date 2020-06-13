@@ -23,10 +23,10 @@
   "github": "https://github.com/UstymUkhman/face-masking",
   "description": "Real-time webcam face masking",
 
-  "image": "face-masking.jpg",
-  "video": "face-masking.mp4",
+  "image": "FaceMasking.jpg",
+  "video": "FaceMasking.mp4",
 
-  "title": "face-masking",
+  "title": "Face Masking",
   "route": "face-masking"
 }, {
   "page": "https://ustymukhman.github.io/ImageDrawer.js/public/",

@@ -203,6 +203,8 @@ export default defineComponent({
 <style lang="scss" scoped>
 .rain-container {
   @include absolute-size;
+  left: 0;
+  top: 0;
 
   canvas {
     @include absolute-size;

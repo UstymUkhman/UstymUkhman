@@ -1,15 +1,40 @@
 <template>
-  <div id="app" v-show="!prerender">
-    <router-view itemtype="https://schema.org/mainEntity" itemprop="mainEntity" class="page" />
+  <div id="app">
+    <MatrixRain v-if="visibleRain" @rain-columns="rainColumns = $event" />
+    <Background :fullscreen="fullscreenRain" :columns="rainColumns" />
+
+    <router-view
+      @toggle-overlay="visibleOverlay = $event"
+      itemtype="https://schema.org/mainEntity"
+      itemprop="mainEntity" class="page"
+    />
+
+    <ScreenOverlay v-if="visibleOverlay" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import { Platform } from '@/utils'
+import { Ref, ComputedRef, defineComponent, reactive, computed, ref } from 'vue'
+import ScreenOverlay from '@components/ScreenOverlay.vue'
+import MatrixRain from '@components/MatrixRain.vue'
+import Background from '@components/Background.vue'
+import { useRoute } from 'vue-router'
+
+interface TemplateValues {
+  readonly fullscreenRain: ComputedRef<boolean>
+  readonly visibleRain: ComputedRef<boolean>
+  readonly visibleOverlay: Ref<boolean>
+  readonly rainColumns: Ref<number>
+}
 
 export default defineComponent({
   name: 'App',
+
+  components: {
+    ScreenOverlay,
+    MatrixRain,
+    Background
+  },
 
   props: {
     domain: {
@@ -28,9 +53,27 @@ export default defineComponent({
     }
   },
 
-  setup (): { readonly prerender: boolean } {
+  setup (): TemplateValues {
     console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
-    return { prerender: Platform.prerender }
+
+    const route = reactive(useRoute())
+    const visibleOverlay = ref(true)
+    const rainColumns = ref(0)
+
+    const fullscreenRain = computed(() =>
+      ['About', 'More', 'Experiments', '404'].includes(route.name as string)
+    )
+
+    const visibleRain = computed(() =>
+      route.name !== 'RabbitHole' && route.name !== '404'
+    )
+
+    return {
+      fullscreenRain,
+      visibleOverlay,
+      visibleRain,
+      rainColumns
+    }
   }
 })
 </script>

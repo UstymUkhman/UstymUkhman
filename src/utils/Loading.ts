@@ -1,20 +1,16 @@
-import { Sounds, Platform } from '@/utils'
+import { Sounds } from '@/utils'
 
 export default class Loading {
-  private static readonly routes = ['About', 'Works', 'Contacts']
+  private static readonly menu = ['About', 'Works', 'Contacts', 'More']
   private static item = -1
 
   public static getPageName (item: number): string {
-    const experiments = Platform.isIE || Platform.mobile
-
-    this.routes.push(experiments ? 'Experiments' : 'More')
-    this.item = item
-
-    if (item === 3 && !experiments) {
+    if (item === 3) {
       setTimeout(Sounds.playSpeach.bind(Sounds), 500)
     }
 
-    return this.routes[item]
+    this.activeItem = item
+    return this.menu[item]
   }
 
   public static checkActiveItem (reset = false): void {

@@ -1,13 +1,13 @@
 /* stylelint-disable value-keyword-case */
 
-@mixin horizontal-gradient ($color1, $color2) {
+@mixin horizontal-gradient ($color1, $color2, $from: 0%, $to: 100%) {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2', GradientType=1);
-  background: linear-gradient(to right, $color1 0%, $color2 100%);
+  background-image: linear-gradient(to right, $color1 $from, $color2 $to);
 }
 
-@mixin vertical-gradient ($color1, $color2) {
+@mixin vertical-gradient ($color1, $color2, $from: 0%, $to: 100%) {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$color1', endColorstr='$color2', GradientType=0);
-  background: linear-gradient(to bottom, $color1 0%, $color2 100%);
+  background-image: linear-gradient(to bottom, $color1 $from, $color2 $to);
 }
 
 /* stylelint-enable value-keyword-case */

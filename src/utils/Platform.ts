@@ -11,7 +11,7 @@ type PlatformProps = {
   [prop: string]: boolean
 }
 
-const Platform: PlatformProps = {
+const Platform: PlatformProps = readonly({
   mobile: !!md.mobile(),
   tablet: !!md.tablet(),
   phone: !!md.phone(),
@@ -29,10 +29,10 @@ const Platform: PlatformProps = {
   chrome: /Chrome/.test(window.navigator.userAgent) && /Google Inc/.test(window.navigator.vendor),
   safari: /Safari/.test(window.navigator.userAgent) && /Apple Computer/.test(window.navigator.vendor),
   isIE: !!window.navigator.userAgent.match(/MSIE 10/i) || !!/Trident.*rv:11\./i.test(window.navigator.userAgent)
-}
+})
 
 for (const key in Platform) {
   modernizr.addTest(key, () => Platform[key])
 }
 
-export default readonly(Platform)
+export default Platform

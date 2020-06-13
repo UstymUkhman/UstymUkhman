@@ -36,14 +36,12 @@ const tags: MetaTags = {
   ogURL: document.querySelector('meta[property="og:url"]')
 }
 
-export default function (data: MetaData): void {
-  const route = useRoute()
+export default function (data: MetaData = {}): void {
   const title = document.getElementsByTagName('title')[0]
+  if (data.title && title.innerText.includes('|')) return
 
-  if (!title.innerText.includes('|')) {
-    if (data.fullTitle && data.title) title.innerText = data.title
-    else title.innerText = data.title ? `${data.title} | ${baseTitle}` : baseTitle
-  }
+  if (data.fullTitle && data.title) title.innerText = data.title
+  else title.innerText = data.title ? `${data.title} | ${baseTitle}` : baseTitle
 
   if (Platform.prerender) {
     tags.twitterImage!.content = data.image ? `/public/img/${data.image}` : tags.twitterImage!.content
@@ -53,7 +51,7 @@ export default function (data: MetaData): void {
     tags.ogDescription!.content = data.description || tags.ogDescription!.content
     tags.description!.content = data.description || tags.description!.content
 
-    tags.ogURL!.content = `${window.location.origin}${route.fullPath}`
+    tags.ogURL!.content = `${window.location.origin}${useRoute().fullPath}`
     tags.twitterTitle!.content = title.innerText
     tags.ogTitle!.content = title.innerText
 
@@ -61,9 +59,4 @@ export default function (data: MetaData): void {
       document.dispatchEvent(new Event('custom-post-render-event'))
     }, 1000)
   }
-
-  // else {
-  //   if (data.fullTitle && data.title) title.innerText = data.title
-  //   else title.innerText = data.title ? `${data.title} | ${baseTitle}` : baseTitle
-  // }
 }

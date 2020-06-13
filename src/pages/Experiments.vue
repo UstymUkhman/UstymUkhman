@@ -7,8 +7,8 @@
 </template>
 
 <script lang="ts">
+import { SetupContext, defineComponent, onMounted } from 'vue'
 import { firePrerender, Platform } from '@/utils'
-import { defineComponent, onMounted } from 'vue'
 // import objectFitImages from 'object-fit-images'
 
 export default defineComponent({
@@ -21,7 +21,8 @@ export default defineComponent({
     }
   },
 
-  setup (props): { readonly prerenderer: boolean } {
+  setup (props, context: SetupContext): { readonly prerenderer: boolean } {
+    context.emit('toggle-overlay', false)
     console.log(props.experiments)
 
     onMounted(() => {

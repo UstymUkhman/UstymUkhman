@@ -7,7 +7,7 @@
         <div v-if="block" class="block-overlay"></div>
       </transition>
 
-      <div v-if="mobile" class="mobile-overlay"></div>
+      <div class="mobile-overlay"></div>
     </div>
 
     <transition name="failure">
@@ -15,17 +15,13 @@
         <span>System Failure</span>
       </div>
     </transition>
-
-    <ScreenOverlay v-if="!prerenderer" />
   </article>
 </template>
 
 <script lang="ts">
 import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
-import { firePrerender, Platform, Viewport } from '@/utils'
-
-import ScreenOverlay from '@components/ScreenOverlay.vue'
 import { matrixFont, green } from '@scss/variables.scss'
+import { firePrerender, Viewport } from '@/utils'
 import { randomInt } from '@/utils/Number'
 
 const COLUMN_OFFSET = 18
@@ -35,18 +31,12 @@ const LEFT_OFFSET = 19.2
 const LINE_HEIGHT = 25.6
 
 interface TemplateValues {
-  readonly prerenderer: boolean
   readonly block: Ref<boolean>
-  readonly mobile: boolean
   readonly numbers: Ref
 }
 
 export default defineComponent({
   name: '404',
-
-  components: {
-    ScreenOverlay
-  },
 
   setup (): TemplateValues {
     const animate = (): void => {
@@ -125,14 +115,12 @@ export default defineComponent({
       fillColumns()
     }
 
-    const prerenderer: boolean = Platform.prerenderer
-    const mobile: boolean = Platform.mobile
-    let context: CanvasRenderingContext2D
-    let canvas: HTMLCanvasElement
-
     const screen = new Viewport(onResize)
+    let context: CanvasRenderingContext2D
+
     let { width, height } = screen.size
     let chars: Array<Array<string>>
+    let canvas: HTMLCanvasElement
 
     const block: Ref = ref(false)
     const numbers: Ref = ref()
@@ -159,12 +147,7 @@ export default defineComponent({
       screen.dispose()
     })
 
-    return {
-      prerenderer,
-      numbers,
-      mobile,
-      block
-    }
+    return { numbers, block }
   }
 })
 </script>
@@ -190,6 +173,11 @@ export default defineComponent({
   .mobile-overlay {
     background-color: rgba($black, 0.8);
     @include absolute-size;
+    display: none;
+
+    @include breakpoint($sm-down) {
+      display: block;
+    }
   }
 }
 
