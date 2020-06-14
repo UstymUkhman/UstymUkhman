@@ -127,7 +127,7 @@ export default defineComponent({
     }
 
     function setMenuSection (): void {
-      const nextSection = settedSection.value
+      const nextSection = currentItem.value
       lettering.disposeAll(words)
 
       settedSection.value = -1
@@ -139,7 +139,7 @@ export default defineComponent({
 
       setTimeout(() => {
         settedSection.value = nextSection
-        router.push({ name: Loading.getPageName(settedSection.value) })
+        router.push({ name: Loading.getPageName(nextSection) })
       }, 2500)
     }
 

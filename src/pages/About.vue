@@ -44,13 +44,13 @@ export default defineComponent({
         selectedButton.value = true
       }
 
-      if (!visibleButton.value) {
+      else if (!visibleButton.value) {
         lettering.skipLettering()
       }
     }
 
     function onKeyUp (event: KeyboardEvent | TouchEvent): void {
-      if (activeButton.value && enterKey(event)) {
+      if (selectedButton.value && enterKey(event)) {
         closeAboutPage()
       }
     }
