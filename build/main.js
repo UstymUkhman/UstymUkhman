@@ -15,6 +15,7 @@ const webpackConfig = require('../webpack/webpack.prod')
 /* eslint-enable @typescript-eslint/no-var-requires */
 
 function exec (cmd) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   return require('child_process').execSync(cmd).toString().trim()
 }
 

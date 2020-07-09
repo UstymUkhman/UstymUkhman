@@ -2,9 +2,9 @@ import { MaterialLoader } from '@three/loaders/MaterialLoader'
 import { Loader as THREELoader } from '@three/loaders/Loader'
 import { TextureLoader } from '@three/loaders/TextureLoader'
 
-import { Material } from '@three/materials/Material'
+type Material = import('@three/materials/Material').Material
+type Texture = import('@three/textures/Texture').Texture
 import { MathUtils } from '@three/math/MathUtils'
-import { Texture } from '@three/textures/Texture'
 import { Color } from '@three/math/Color'
 
 import {
@@ -20,35 +20,9 @@ import {
   BackSide
 } from '@three/constants'
 
-type MaterialParams = {
-  [key: string]: string | number | boolean
-}
-
-type Textures = {
-  [key: string]: Texture
-}
-
-type Blending = {
-  [key: string]: number
-}
-
-/* class LoadersHandler {
-  private static loaders: Array<THREELoader | RegExp> = []
-
-  public static add (regex: RegExp, loader: THREELoader): void {
-    this.loaders.push(regex, loader)
-  }
-
-  public static get (file: string): THREELoader | Loader | null {
-    for (let i = 0, l = this.loaders.length; i < l; i += 2) {
-      const loader = this.loaders[i + 1] as THREELoader
-      const regex = this.loaders[i] as RegExp
-      if (regex.test(file)) return loader
-    }
-
-    return null
-  }
-} */
+type MaterialParams = { [key: string]: string | number | boolean }
+type Textures = { [key: string]: Texture }
+type Blending = { [key: string]: number }
 
 export class Loader extends THREELoader {
   private static readonly materialLoader: MaterialLoader = new MaterialLoader()
@@ -319,9 +293,8 @@ export class Loader extends THREELoader {
 
   private static loadTexture (path: string, repeat: Array<number>, offset: Array<number>, wrap: Array<string>, anisotropy: number): string {
     const fullPath = this.texturePath + path
-    // const loader = LoadersHandler.get(fullPath)
 
-    const texture = /* loader ? await loader.loadAsync(fullPath) : */ (() => {
+    const texture = (() => {
       this.textureLoader.setCrossOrigin(this.crossOrigin)
       return this.textureLoader.load(fullPath)
     })()

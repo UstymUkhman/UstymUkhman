@@ -1,14 +1,15 @@
-import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
+type PerspectiveCamera = import('@three/cameras/PerspectiveCamera').PerspectiveCamera
 import { KeyboardEventListener, Platform } from '@/utils'
 import PointerControls from '@/utils/3D/PointerControls'
-import { Object3D } from '@three/core/Object3D'
+
+type Object3D = import('@three/core/Object3D').Object3D
+type Scene = import('@three/scenes/Scene').Scene
 import { Vector3 } from '@three/math/Vector3'
-import { Scene } from '@three/scenes/Scene'
 
 type FullscreenCallback = () => unknown
 const enum Direction { UP, RIGHT, DOWN, LEFT }
 type Directions<Type> = { [way in Direction]: Type }
-const LOCK_ONLY = Platform.safari || Platform.edge || Platform.firefox
+const LOCK_ONLY = Platform.safari || Platform.firefox
 
 export default class FirstPersonControls {
   private readonly onPointerChange: EventListener = this.onPointerLockChange.bind(this)
@@ -205,18 +206,6 @@ export default class FirstPersonControls {
     this.delta = time
   }
 
-  public get cameraDirection (): Vector3 {
-    return this.controls.direction
-  }
-
-  public get isFullscreen (): boolean {
-    return LOCK_ONLY ? this.isLocked : document.fullscreen
-  }
-
-  private get isLocked (): boolean {
-    return !!document.pointerLockElement
-  }
-
   public dispose (): void {
     document.removeEventListener('mozpointerlockchange', this.onPointerChange, false)
     document.removeEventListener('pointerlockchange', this.onPointerChange, false)
@@ -244,5 +233,17 @@ export default class FirstPersonControls {
     delete this.scene
     delete this.room
     delete this.move
+  }
+
+  public get cameraDirection (): Vector3 {
+    return this.controls.direction
+  }
+
+  public get isFullscreen (): boolean {
+    return LOCK_ONLY ? this.isLocked : document.fullscreen
+  }
+
+  private get isLocked (): boolean {
+    return !!document.pointerLockElement
   }
 }

@@ -1,4 +1,5 @@
-import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
+type PerspectiveCamera = import('@three/cameras/PerspectiveCamera').PerspectiveCamera
+
 import { Object3D } from '@three/core/Object3D'
 import { Vector3 } from '@three/math/Vector3'
 import { Euler } from '@three/math/Euler'
@@ -38,6 +39,17 @@ export default class PointerControls {
     }
   }
 
+  public dispose (): void {
+    document.removeEventListener('mousemove', this.move, false)
+    delete this.directionVector
+    delete this.orientation
+    delete this.rotation
+
+    this.active = false
+    delete this.pitch
+    delete this.yaw
+  }
+
   public get direction (): Vector3 {
     this.rotation.set(this.pitch.rotation.x, this.yaw.rotation.y, 0)
     this.directionVector.copy(this.orientation).applyEuler(this.rotation)
@@ -54,16 +66,5 @@ export default class PointerControls {
 
   public get object (): Object3D {
     return this.yaw
-  }
-
-  public dispose (): void {
-    document.removeEventListener('mousemove', this.move, false)
-    delete this.directionVector
-    delete this.orientation
-    delete this.rotation
-
-    this.active = false
-    delete this.pitch
-    delete this.yaw
   }
 }
