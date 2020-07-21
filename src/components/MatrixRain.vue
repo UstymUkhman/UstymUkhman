@@ -6,9 +6,9 @@
 
 <script lang="ts">
 import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
-import { matrixFont, lightGreen, green, white } from '@scss/variables.scss'
 import { randomInt, randomBool } from '@/utils/Number'
 import { Viewport, Size } from '@/utils/Viewport'
+import { matrixFont, Color } from '@/utils'
 
 const LINE_HEIGHT = 27
 const OFFSET = 18
@@ -75,8 +75,8 @@ export default defineComponent({
       _rows = Math.max(rows - _rows, 0)
       _columns = Math.max(columns - _columns, 0)
 
-      canvasContext.fillStyle = `rgba(${green}, 1.0)`
-      canvasContext.shadowColor = `rgb(${green})`
+      canvasContext.fillStyle = `rgba(${Color.green}, 1.0)`
+      canvasContext.shadowColor = `rgb(${Color.green})`
       canvasContext.textBaseline = 'middle'
       canvasContext.font = matrixFont
       canvasContext.shadowBlur = 5
@@ -118,16 +118,16 @@ export default defineComponent({
 
         for (let j = 0, i5 = index[i] - 5, i3 = index[i] - 3; j < chars[i].length; j++) {
           let alpha = getCharAlpha(index[i], duration[i])
-          let color = green
+          let color = Color.green
           let update = 0.1
 
           if (j > i5 && j <= i3) {
-            color = lightGreen
+            color = Color.lightGreen
             update = 0.25
           }
 
           else if (j > i3) {
-            color = white
+            color = Color.white
             update = 0.25
           }
 
@@ -173,8 +173,8 @@ export default defineComponent({
       updateCanvasSize()
 
       canvasContext = canvas.getContext('2d')!
-      canvasContext.fillStyle = `rgba(${green}, 1.0)`
-      canvasContext.shadowColor = `rgb(${green})`
+      canvasContext.fillStyle = `rgba(${Color.green}, 1.0)`
+      canvasContext.shadowColor = `rgb(${Color.green})`
       canvasContext.textBaseline = 'middle'
       canvasContext.font = matrixFont
       canvasContext.shadowBlur = 5

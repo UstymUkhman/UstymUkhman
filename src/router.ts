@@ -85,6 +85,6 @@ export default createRouter({
   }],
 
   scrollBehavior: () => ({
-    x: 0, y: 0
+    top: 0, left: 0
   })
 })

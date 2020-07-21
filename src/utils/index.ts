@@ -8,6 +8,10 @@ import { Viewport } from './Viewport'
 import firePrerender from './Prerender'
 import ScrollObserver from './ScrollObserver'
 
+export type KeyboardEventListener = (event: KeyboardEvent) => void
+export type TouchEventListener = (event: TouchEvent) => void
+export type VueRef<Type> = Ref<{ valueOf: () => Type }>
+
 interface WindowNavigator extends Navigator {
   userLanguage?: string
 }
@@ -21,19 +25,30 @@ if (navigator && navigator.userLanguage) {
 }
 
 const language = mainLanguage || navigator.language || userLanguage
+const matrixFont = 'normal 24px Martix Code NFI'
 
-export type KeyboardEventListener = (event: KeyboardEvent) => void
-export type TouchEventListener = (event: TouchEvent) => void
-export type VueRef<Type> = Ref<{ valueOf: () => Type }>
+const Color = {
+  lightGreen: '187, 255, 187',
+  white: '255, 255, 255',
+  green: '0, 204, 0',
+  black: '0, 0, 0'
+}
+
+const mobileWidth = 992
+const phoneWidth = 768
 
 export {
   ScrollObserver,
   firePrerender,
+  mobileWidth,
+  phoneWidth,
+  matrixFont,
   Lettering,
   Platform,
   Viewport,
   language,
   Loading,
   Sounds,
+  Color,
   wheel
 }

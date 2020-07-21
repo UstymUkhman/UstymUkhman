@@ -20,8 +20,7 @@
 
 <script lang="ts">
 import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
-import { matrixFont, green } from '@scss/variables.scss'
-import { firePrerender, Viewport } from '@/utils'
+import { firePrerender, Viewport, matrixFont, Color } from '@/utils'
 import { randomInt } from '@/utils/Number'
 
 const COLUMN_OFFSET = 18
@@ -92,8 +91,8 @@ export default defineComponent({
       canvas.height = height
       canvas.width = width
 
-      context.shadowColor = `rgb(${green})`
-      context.fillStyle = `rgb(${green})`
+      context.shadowColor = `rgb(${Color.green})`
+      context.fillStyle = `rgb(${Color.green})`
       context.textBaseline = 'middle'
       context.font = matrixFont
       context.shadowBlur = 5

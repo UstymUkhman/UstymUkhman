@@ -3,11 +3,11 @@ require('modernizr')
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const webpack = require('webpack')
-const merge = require('webpack-merge')
+const utils = require('../build/utils')
 const portfinder = require('portfinder')
 
-const utils = require('../build/utils')
 const config = require('../build/config')
+const { merge } = require('webpack-merge')
 const jsonConfig = require('../package.json')
 const baseConfig = require('./webpack.base.conf')
 

@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
 const webpack = require('webpack')
-const merge = require('webpack-merge')
-
 const utils = require('../build/utils')
 const config = require('../build/config')
+const { merge } = require('webpack-merge')
 const baseConfig = require('./webpack.base.conf')
 const prerenderPaths = require('../build/prerender')
 

@@ -64,19 +64,3 @@ $top    : 100;
 $screen : 25;
 $menu   : 12;
 $pills  : 8;
-
-/* stylelint-disable property-no-unknown */
-
-:export {
-  /* stylelint-disable property-case */
-  matrixFont: unquote('normal 24px Martix Code NFI');
-  lightGreen: unquote($light-green-code);
-  /* stylelint-enable property-case */
-  green: unquote($green-code);
-  white: unquote($white-code);
-
-  mobile: $sm-screen;
-  phone: $xs-screen;
-}
-
-/* stylelint-enable property-no-unknown */
