@@ -1,4 +1,4 @@
-**Hi** 👋,
+**Hi** comrade 👋,
 
 my name is **Ustym** and I'm a _front-end developer_.
 

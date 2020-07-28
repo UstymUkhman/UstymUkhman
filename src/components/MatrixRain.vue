@@ -7,8 +7,8 @@
 <script lang="ts">
 import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { randomInt, randomBool } from '@/utils/Number'
+import { Platform, Color, matrixFont } from '@/utils'
 import { Viewport, Size } from '@/utils/Viewport'
-import { matrixFont, Color } from '@/utils'
 
 const LINE_HEIGHT = 27
 const OFFSET = 18
@@ -103,15 +103,13 @@ export default defineComponent({
       }
     }
 
-    function animate (): void {
+    function animate (delta: number): void {
       frame = requestAnimationFrame(animate)
-
-      const now = Date.now()
-      if (now - lastUpdate < 50) return
+      if (delta - lastUpdate < 50) return
 
       canvasContext.clearRect(0, 0, canvas.width, canvas.height)
       updateVisibleColumns()
-      lastUpdate = now
+      lastUpdate = delta
 
       for (let i = 0; i < chars.length; i++) {
         if (!visible[i]) continue
@@ -162,7 +160,7 @@ export default defineComponent({
     let visible: Array<boolean>
     let index: Array<number>
 
-    let lastUpdate = Date.now()
+    let lastUpdate = 0
     const code = ref()
     let columns = 0
     let frame = 0
@@ -172,12 +170,13 @@ export default defineComponent({
       canvas = code.value
       updateCanvasSize()
 
-      canvasContext = canvas.getContext('2d')!
+      canvasContext = canvas.getContext('2d', { alpha: false })!
       canvasContext.fillStyle = `rgba(${Color.green}, 1.0)`
+      if (!Platform.firefox) canvasContext.shadowBlur = 5
+
       canvasContext.shadowColor = `rgb(${Color.green})`
       canvasContext.textBaseline = 'middle'
       canvasContext.font = matrixFont
-      canvasContext.shadowBlur = 5
 
       frame = requestAnimationFrame(animate)
       const charset = createCharset()

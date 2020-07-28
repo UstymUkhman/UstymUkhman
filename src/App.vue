@@ -81,36 +81,11 @@ export default defineComponent({
 <style lang="scss">
 @import 'fonts';
 
-html {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-overflow-scrolling: touch;
-  -webkit-touch-callout: none;
-
-  text-rendering: optimizeLegibility;
-  font-variant-ligatures: none;
-  backface-visibility: hidden;
-  background-color: $black;
-  text-size-adjust: none;
-
+html,
+body {
   @include white-rabbit;
-  user-select: none;
-  font-weight: 400;
-
-  appearance: none;
-  overflow: hidden;
   @include size;
   // cursor: none;
-
-  max-height: 100%;
-  min-height: 100%;
-
-  max-width: 100%;
-  min-width: 100%;
-
-  padding: 0;
-  margin: 0;
 }
 
 canvas {
@@ -182,22 +157,9 @@ span.lettering {
   }
 }
 
-.app-container {
-  height: 100%;
-
-  .background-video {
-    position: fixed;
-
-    @include breakpoint($sm-down) {
-      display: none;
-    }
-  }
-}
-
 .page {
   @include absolute-size;
   box-sizing: border-box;
-  z-index: 10;
 
   left: 0;
   top: 0;

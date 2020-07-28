@@ -51,8 +51,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/public/favicon/android-icon-192x192.png" />
     <link rel="manifest" href="/<%= htmlWebpackPlugin.options.build.deploy ? '' : 'public/' %>manifest.json" />
 
-    <!-- Initial Setup: -->
-    <script type="text/javascript" src="/public/js/initial.js"></script>
+    <!-- Disabled JavaScript and unsupported browser message styling: -->
     <link rel="stylesheet" href="/public/css/initial.css" />
   </head>
 
@@ -63,13 +62,14 @@
          id="root">
     </div>
 
-    <noscript>
-      <div class="not-supported-msg">
-        <div class="not-supported-msg-copy">
-          <strong>Sorry This Browser is not Supported.</strong>
-          <span>Please make sure you enabled JavaScript and use an updated browser to visit this website.</span>
-        </div>
+    <div class="not-supported-msg">
+      <div class="not-supported-msg-copy">
+        <strong>Sorry This Browser is not Supported.</strong>
+        <span>Please make sure you enabled JavaScript and use an updated browser to visit this website.</span>
       </div>
-    </noscript>
+    </div>
+
+    <!-- JavaScript browser support check: -->
+    <script type="text/javascript" src="/public/js/initial.js"></script>
   </body>
 </html>
