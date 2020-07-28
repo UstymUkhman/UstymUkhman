@@ -19,6 +19,26 @@
   "title": "Dynamic.css",
   "route": "DynamicCss"
 }, {
+  "page": "https://ustymukhman.github.io/video-transition/public/",
+  "github": "https://github.com/UstymUkhman/video-transition",
+  "description": "WebGL Video Transition",
+
+  "image": "VideoTransition.jpg",
+  "video": "VideoTransition.mp4",
+
+  "title": "Video Transition",
+  "route": "video-transition"
+}, {
+  "page": "https://ustymukhman.github.io/color-grading/public/",
+  "github": "https://github.com/UstymUkhman/color-grading",
+  "description": "WebGL Color Grading",
+
+  "image": "ColorGrading.jpg",
+  "video": "ColorGrading.mp4",
+
+  "title": "Color Grading",
+  "route": "color-grading"
+}, {
   "page": "https://ustymukhman.github.io/face-masking/public/",
   "github": "https://github.com/UstymUkhman/face-masking",
   "description": "Real-time webcam face masking",
