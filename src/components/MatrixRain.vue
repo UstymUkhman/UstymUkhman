@@ -6,8 +6,8 @@
 
 <script lang="ts">
 import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+import { Platform, Color, matrixFont, mobileWidth } from '@/utils'
 import { randomInt, randomBool } from '@/utils/Number'
-import { Platform, Color, matrixFont } from '@/utils'
 import { Viewport, Size } from '@/utils/Viewport'
 
 const LINE_HEIGHT = 27
@@ -26,6 +26,11 @@ export default defineComponent({
     function getCharCode (): string {
       const code = randomBool() ? randomInt(33, 63) : randomInt(90, 126)
       return String.fromCharCode(code)
+    }
+
+    function getShadowBlur (): number {
+      const mobile = Platform.mobile || screen.size.width < mobileWidth
+      return Platform.firefox || mobile ? 0 : 5
     }
 
     function getCharAlpha (index: number, end: number): number {
@@ -77,9 +82,10 @@ export default defineComponent({
 
       canvasContext.fillStyle = `rgba(${Color.green}, 1.0)`
       canvasContext.shadowColor = `rgb(${Color.green})`
+
+      canvasContext.shadowBlur = getShadowBlur()
       canvasContext.textBaseline = 'middle'
       canvasContext.font = matrixFont
-      canvasContext.shadowBlur = 5
 
       if (_rows > 0 || _columns > 0) {
         const charset = createCharset()
@@ -172,9 +178,9 @@ export default defineComponent({
 
       canvasContext = canvas.getContext('2d', { alpha: false })!
       canvasContext.fillStyle = `rgba(${Color.green}, 1.0)`
-      if (!Platform.firefox) canvasContext.shadowBlur = 5
-
       canvasContext.shadowColor = `rgb(${Color.green})`
+
+      canvasContext.shadowBlur = getShadowBlur()
       canvasContext.textBaseline = 'middle'
       canvasContext.font = matrixFont
 

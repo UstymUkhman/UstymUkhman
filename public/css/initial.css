@@ -31,10 +31,10 @@ body {
 #root #app {
   background-color: #000;
   display: block;
-  z-index: 1;
 
   height: 100%;
   width: 100%;
+  z-index: 1;
 }
 
 .not-supported-msg {
@@ -44,10 +44,10 @@ body {
   position: absolute;
   cursor: default;
   display: none;
-  z-index: 0;
 
   height: 100%;
   width: 100%;
+  z-index: 0;
 }
 
 .not-supported-msg .not-supported-msg-copy {
@@ -127,4 +127,14 @@ body {
     display: block;
     margin: 0 auto;
   }
+}
+
+::-moz-selection {
+  background-color: #0c0;
+  color: #000;
+}
+
+::selection {
+  background-color: #0c0;
+  color: #000;
 }
