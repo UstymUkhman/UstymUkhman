@@ -202,6 +202,11 @@ export default defineComponent({
     display: table;
     width: 100%;
     left: 0;
+
+    @include breakpoint($xs) {
+      line-height: 20px;
+      font-size: 18px;
+    }
   }
 }
 
