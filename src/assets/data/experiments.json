@@ -1,5 +1,5 @@
 [{
-  "description": "Classic DOOM recompiled with WebAssembly.",
+  "description": "Classic DOOM recompiled with WebAssembly",
   "page": "https://ustymukhman.github.io/webDOOM/public/",
   "github": "https://github.com/UstymUkhman/webDOOM",
 
@@ -29,6 +29,16 @@
   "title": "Video Transition",
   "route": "video-transition"
 }, {
+  "page": "https://ustymukhman.github.io/video-glitch/public/",
+  "github": "https://github.com/UstymUkhman/video-glitch",
+  "description": "WebGL video glitch effects",
+
+  "image": "VideoGlitch.jpg",
+  "video": "VideoGlitch.mp4",
+
+  "title": "Video Glitch",
+  "route": "video-glitch"
+}, {
   "page": "https://ustymukhman.github.io/color-grading/public/",
   "github": "https://github.com/UstymUkhman/color-grading",
   "description": "WebGL Color Grading",
@@ -38,6 +48,16 @@
 
   "title": "Color Grading",
   "route": "color-grading"
+}, {
+  "page": "https://ustymukhman.github.io/sound-particles/public/",
+  "github": "https://github.com/UstymUkhman/sound-particles",
+  "description": "PixiJS audio reactive particles",
+
+  "image": "SoundParticles.jpg",
+  "video": "SoundParticles.mp4",
+
+  "title": "Sound Particles",
+  "route": "sound-particles"
 }, {
   "page": "https://ustymukhman.github.io/face-masking/public/",
   "github": "https://github.com/UstymUkhman/face-masking",

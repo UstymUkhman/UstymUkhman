@@ -24,4 +24,4 @@ logs
 dist/
 bitnami.pem
 node_modules/
-public/video/*.mp4
+public/**/*.mp4
