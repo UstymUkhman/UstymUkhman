@@ -6,8 +6,8 @@ type VueComponent = Promise<typeof import('*.vue')>
 type PromiseImport = (page: string) => void
 
 interface ExperimentProps {
-  readonly description: string | undefined
-  readonly github: string | undefined
+  readonly description: string
+  readonly github: string
   readonly route: string
 
   readonly image: string
@@ -25,7 +25,9 @@ interface PageRoute {
 }
 
 const checkHomeRedirect = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: RedirectRoute): void => {
-  if (!from.name && to.name === 'More') {
+  const forbiddenDestination = to.name === 'More' || to.name === 'Hole'
+
+  if (!from.name && forbiddenDestination) {
     next({ name: 'Home' })
     return
   }
@@ -59,11 +61,10 @@ export default createRouter({
     name: 'More'
   }, {
     component: (): VueComponent => import(/* webpackChunkName: "experiments-page" */ '@pages/Experiments.vue'),
-    beforeEnter: checkHomeRedirect,
-    props: { experiments },
     path: '/experiments',
     children: [{
       component: (): VueComponent => import(/* webpackChunkName: "experiment-list" */ '@components/experiments/List.vue'),
+      props: { experiments },
       name: 'Experiments',
       path: ''
     },
@@ -80,7 +81,7 @@ export default createRouter({
     path: '/404',
     name: '404'
   }, {
-    redirect: { name: 'Home' },
+    redirect: { name: '404' },
     path: '/:catchAll(.*)'
   }],
 

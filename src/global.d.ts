@@ -11,4 +11,3 @@ declare module '*.json' {
 
 declare module '*.svg'
 declare module '*.scss'
-declare module 'object-fit-images'

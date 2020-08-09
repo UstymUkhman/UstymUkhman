@@ -139,8 +139,12 @@ h2 {
   cursor: default;
   margin: 0px;
 
+  @include breakpoint($md-down) {
+    font-size: 28px;
+  }
+
   @include breakpoint($xs) {
-    font-size: 25px;
+    font-size: 20px;
   }
 }
 

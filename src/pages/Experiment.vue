@@ -1,5 +1,5 @@
 <template>
-  <article itemtype="http://schema.org/WebPage" class="experiment-page" itemscope>
+  <article itemtype="http://schema.org/CreativeWork" class="experiment-page" itemscope>
     <Header
       :scroll="title === 'Dynamic.css'"
       :description="description"
@@ -7,7 +7,12 @@
       :title="title"
     />
 
-    <iframe :title="title" :src="page" allowfullscreen></iframe>
+    <iframe
+      itemtype="https://schema.org/mainEntity" itemprop="mainEntity"
+      :title="title" :name="title" :abstract="description"
+      author="Ustym Ukhman" maintainer="Ustym Ukhman"
+      :src="page" :url="github" allowfullscreen>
+    </iframe>
   </article>
 </template>
 
@@ -23,14 +28,12 @@ export default defineComponent({
 
   props: {
     description: {
-      default: undefined,
-      required: false,
+      required: true,
       type: String
     },
 
     github: {
-      default: undefined,
-      required: false,
+      required: true,
       type: String
     },
 
