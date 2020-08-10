@@ -61,11 +61,12 @@ export default defineComponent({
     const rainColumns = ref(0)
 
     const fullscreenRain = computed(() =>
-      ['About', 'More', 'Experiments', '404'].includes(route.name as string)
+      ['About', 'More', 'Experiments'].includes(route.name as string)
     )
 
     const visibleRain = computed(() =>
-      route.name !== 'RabbitHole' && route.name !== '404'
+      !['RabbitHole', '404'].includes(route.name as string) &&
+      !/experiments\/[^\n+]/.test(route.path)
     )
 
     return {
@@ -86,6 +87,12 @@ body {
   @include white-rabbit;
   @include size;
   // cursor: none;
+}
+
+#app {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
 canvas {
@@ -123,8 +130,6 @@ svg {
 h1 {
   font-weight: 700;
   font-size: 48px;
-
-  cursor: default;
   margin: 0px;
 
   @include breakpoint($xs) {
@@ -135,16 +140,24 @@ h1 {
 h2 {
   font-weight: 400;
   font-size: 32px;
-
-  cursor: default;
   margin: 0px;
 
-  @include breakpoint($md-down) {
-    font-size: 28px;
+  @include breakpoint($xs) {
+    font-size: 25px;
+  }
+}
+
+h5 {
+  font-weight: 400;
+  font-size: 2vw;
+  margin: 0px;
+
+  @include breakpoint($sm-down) {
+    font-size: 30px;
   }
 
   @include breakpoint($xs) {
-    font-size: 20px;
+    font-size: 18px;
   }
 }
 

@@ -28,7 +28,7 @@ body {
   margin: 0;
 }
 
-#root #app {
+#root {
   background-color: #000;
   display: block;
 
@@ -90,9 +90,9 @@ body {
   display: block !important;
 }
 
-.no-js #root #app,
-.no-es5object #root #app,
-.no-csstransforms3d #root #app {
+.no-js #root,
+.no-es5object #root,
+.no-csstransforms3d #root {
   display: none !important;
 }
 

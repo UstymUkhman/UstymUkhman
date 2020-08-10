@@ -11,7 +11,7 @@
 <script lang="ts">
 import { ComputedRef, defineComponent, computed, onMounted } from 'vue'
 import { Viewport, mobileWidth, firePrerender } from '@/utils'
-import Preview from '@/components/experiments/Preview.vue'
+import Preview from '@components/experiment/Preview.vue'
 
 export default defineComponent({
   name: 'List',

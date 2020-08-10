@@ -27,7 +27,10 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .background-container {
-  background-color: rgba($black, 0.75);
+  transition: background-color 500ms 500ms;
+  background-color: rgba($black, 0);
+
+  backface-visibility: hidden;
   @include absolute-size;
   pointer-events: none;
 
@@ -36,6 +39,7 @@ export default defineComponent({
 
   .background {
     @include horizontal-gradient($black, transparent, 75%, 100%);
+    backface-visibility: hidden;
     transition: opacity 500ms;
 
     position: absolute;
@@ -51,9 +55,21 @@ export default defineComponent({
   }
 
   &.fullscreen {
+    background-color: rgba($black, 0.9);
+    transition-delay: 0ms;
+
     .background {
       transition-delay: 400ms;
       opacity: 0;
+    }
+  }
+
+  @include breakpoint($sm-down) {
+    background-color: rgba($black, 0.8);
+    transition: none;
+
+    .background {
+      display: none;
     }
   }
 }

@@ -1,30 +1,27 @@
 <template>
   <article itemtype="http://schema.org/CreativeWork" class="experiment-page" itemscope>
-    <Header
-      :scroll="title === 'Dynamic.css'"
-      :description="description"
-      :github="github"
-      :title="title"
-    />
-
     <iframe
       itemtype="https://schema.org/mainEntity" itemprop="mainEntity"
       :title="title" :name="title" :abstract="description"
       author="Ustym Ukhman" maintainer="Ustym Ukhman"
       :src="page" :url="github" allowfullscreen>
     </iframe>
+
+    <Buttons :description="description" :repository="github" />
   </article>
 </template>
 
 <script lang="ts">
-import Header from '@components/experiments/Header.vue'
+import Buttons from '@components/experiment/Buttons.vue'
 import { defineComponent, onMounted } from 'vue'
 import { firePrerender } from '@/utils'
 
 export default defineComponent({
   name: 'Experiment',
 
-  components: { Header },
+  components: {
+    Buttons
+  },
 
   props: {
     description: {

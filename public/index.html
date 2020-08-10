@@ -56,17 +56,17 @@
   </head>
 
   <body>
-    <div data-domain=<%= htmlWebpackPlugin.options.build.domain %>
-         data-version=<%= htmlWebpackPlugin.options.build.version %>
-         data-deploy=<%= htmlWebpackPlugin.options.build.deploy %>
-         id="root">
-    </div>
-
     <div class="not-supported-msg">
       <div class="not-supported-msg-copy">
         <strong>Sorry This Browser is not Supported.</strong>
         <span>Please make sure you enabled JavaScript and use an updated browser to visit this website.</span>
       </div>
+    </div>
+
+    <div data-domain=<%= htmlWebpackPlugin.options.build.domain %>
+         data-version=<%= htmlWebpackPlugin.options.build.version %>
+         data-deploy=<%= htmlWebpackPlugin.options.build.deploy %>
+         id="root">
     </div>
 
     <!-- JavaScript browser support check: -->

@@ -15,7 +15,7 @@
       />
 
       <div class="experiment-overlay"></div>
-      <h2>{{ experiment.title }}</h2>
+      <h5>{{ experiment.title }}</h5>
     </router-link>
   </div>
 </template>
@@ -84,7 +84,7 @@ export default defineComponent({
     width: 100%;
   }
 
-  h2 {
+  h5 {
     transform: translate(-50%, -50%);
     transition: opacity 0.25s 0.75s;
 
@@ -110,7 +110,7 @@ export default defineComponent({
       opacity: 0;
     }
 
-    h2 {
+    h5 {
       transition-delay: 0s;
       opacity: 0;
     }

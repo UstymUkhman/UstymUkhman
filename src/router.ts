@@ -25,7 +25,7 @@ interface PageRoute {
 }
 
 const checkHomeRedirect = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: RedirectRoute): void => {
-  const forbiddenDestination = to.name === 'More' || to.name === 'Hole'
+  const forbiddenDestination = to.name === 'More' || to.name === 'RabbitHole'
 
   if (!from.name && forbiddenDestination) {
     next({ name: 'Home' })
@@ -63,7 +63,7 @@ export default createRouter({
     component: (): VueComponent => import(/* webpackChunkName: "experiments-page" */ '@pages/Experiments.vue'),
     path: '/experiments',
     children: [{
-      component: (): VueComponent => import(/* webpackChunkName: "experiment-list" */ '@components/experiments/List.vue'),
+      component: (): VueComponent => import(/* webpackChunkName: "experiment-list" */ '@components/experiment/List.vue'),
       props: { experiments },
       name: 'Experiments',
       path: ''
