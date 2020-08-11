@@ -2,9 +2,9 @@
   <article itemtype="http://schema.org/CreativeWork" class="experiment-page" itemscope>
     <iframe
       itemtype="https://schema.org/mainEntity" itemprop="mainEntity"
+      :src="page" :url="github" allow="camera" allowfullscreen
       :title="title" :name="title" :abstract="description"
-      author="Ustym Ukhman" maintainer="Ustym Ukhman"
-      :src="page" :url="github" allowfullscreen>
+      author="Ustym Ukhman" maintainer="Ustym Ukhman">
     </iframe>
 
     <Buttons :description="description" :repository="github" />

@@ -48,7 +48,7 @@ export default defineComponent({
       window.open(url, '_blank', 'width=640,height=400,status=no,toolbar=no,titlebar=no')
     }
 
-    const visible: Ref = ref(true)
+    const visible: Ref<boolean> = ref(true)
 
     onMounted(() => setTimeout(() => visible.value = false, 1000))
 

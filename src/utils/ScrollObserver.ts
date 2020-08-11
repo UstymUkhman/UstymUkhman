@@ -2,7 +2,7 @@ interface ScrollObserverOptions extends IntersectionObserverInit {
   readonly visibleClass?: string
 }
 
-export default class {
+export class ScrollObserver {
   private observer: IntersectionObserver
   private observerOptions: ScrollObserverOptions
   private onIntersect: IntersectionObserverCallback
@@ -10,12 +10,12 @@ export default class {
   private readonly defaultOptions: ScrollObserverOptions = {
     visibleClass: 'visible',
     rootMargin: '0px',
-    root: undefined,
-    threshold: 0
+    threshold: 0.0,
+    root: null
   }
 
-  constructor (callback?: IntersectionObserverCallback, options?: ScrollObserverOptions) {
-    this.onIntersect = typeof callback === 'function' ? callback : this.defaultCallback
+  constructor (options?: ScrollObserverOptions, callback?: IntersectionObserverCallback) {
+    this.onIntersect = typeof callback === 'function' ? callback : this.defaultCallback.bind(this)
     this.observerOptions = { ...this.defaultOptions, ...options }
 
     this.observer = new IntersectionObserver(this.onIntersect, {
@@ -30,28 +30,40 @@ export default class {
       const entry = entries[e]
 
       if (entry.isIntersecting) {
-        this.isVisible(entry.target)
+        this.toggleVisible(entry.target)
+      } else {
+        this.toggleHidden(entry.target)
       }
-
-      /* else {
-        this.isHidden(entry.target)
-      } */
     }
   }
 
-  private isVisible (element: Element): boolean {
+  private toggleVisible (element: Element): void {
     const visibleClass = this.observerOptions.visibleClass as string
-    const visible = !element.classList.contains(visibleClass)
-
-    if (visible) element.classList.add(visibleClass)
-    return visible
+    const visible = element.classList.contains(visibleClass)
+    if (!visible) element.classList.add(visibleClass)
   }
 
-  // private isHidden (element: Element): void { }
+  private toggleHidden (element: Element): void {
+    const visibleClass = this.observerOptions.visibleClass as string
+    const visible = element.classList.contains(visibleClass)
+    if (visible) element.classList.remove(visibleClass)
+  }
+
+  public unobserve (target: HTMLElement): void {
+    this.observer.unobserve(target)
+  }
+
+  public observe (target: HTMLElement): void {
+    this.observer.observe(target)
+  }
 
   public dispose (): void {
+    this.observer.disconnect()
+
     delete this.observerOptions
     delete this.onIntersect
     delete this.observer
   }
 }
+
+export default new ScrollObserver();

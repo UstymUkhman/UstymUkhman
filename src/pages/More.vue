@@ -28,7 +28,7 @@ import router from '@/router'
 export default defineComponent({
   name: 'More',
 
-  setup (): { readonly pills: Ref } {
+  setup (): { readonly pills: Ref<HTMLDivElement> } {
     function createPills (model: JSONModel): void {
       createBluePill(model.geometry)
       createRedPill(model.geometry)
@@ -254,7 +254,7 @@ export default defineComponent({
       frame = requestAnimationFrame(render)
     }
 
-    const pills: Ref = ref()
+    const pills: Ref<HTMLDivElement> = ref()!
     const loader: AssetsLoader = new AssetsLoader()
     loader.loadJSON(new JSONLoader(), PILL as JSON, createPills)
 

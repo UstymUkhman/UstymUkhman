@@ -30,8 +30,8 @@ const LEFT_OFFSET = 19.2
 const LINE_HEIGHT = 25.6
 
 interface TemplateValues {
+  readonly numbers: Ref<HTMLCanvasElement>
   readonly block: Ref<boolean>
-  readonly numbers: Ref
 }
 
 export default defineComponent({
@@ -114,6 +114,9 @@ export default defineComponent({
       fillColumns()
     }
 
+    const numbers: Ref<HTMLCanvasElement> = ref()!
+    const block: Ref<boolean> = ref(false)
+
     const screen = new Viewport(onResize)
     let context: CanvasRenderingContext2D
 
@@ -121,8 +124,6 @@ export default defineComponent({
     let chars: Array<Array<string>>
     let canvas: HTMLCanvasElement
 
-    const block: Ref = ref(false)
-    const numbers: Ref = ref()
     let skipColumns = false
     let frame = 0
 

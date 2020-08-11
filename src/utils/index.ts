@@ -9,6 +9,7 @@ import firePrerender from './Prerender'
 import ScrollObserver from './ScrollObserver'
 
 export type KeyboardEventListener = (event: KeyboardEvent) => void
+export type MouseEventListener = (event: MouseEvent) => void
 export type TouchEventListener = (event: TouchEvent) => void
 export type VueRef<Type> = Ref<{ valueOf: () => Type }>
 

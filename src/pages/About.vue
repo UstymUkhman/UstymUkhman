@@ -17,6 +17,7 @@ import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import BackButton from '@components/BackButton.vue'
 
 interface TemplateValues {
+  readonly paragraph: Ref<HTMLParagraphElement>
   readonly onTouchStart: TouchEventListener
   readonly onTouchEnd: TouchEventListener
   readonly selectedButton: Ref<boolean>
@@ -24,7 +25,6 @@ interface TemplateValues {
   readonly activeButton: Ref<boolean>
   readonly closeAboutPage: () => void
   readonly description: string
-  readonly paragraph: Ref
 }
 
 export default defineComponent({
@@ -78,11 +78,11 @@ export default defineComponent({
       %- Mondays#
     `
 
-    const selectedButton: Ref = ref(false)
-    const visibleButton: Ref = ref(false)
-    const activeButton: Ref = ref(false)
+    const paragraph: Ref<HTMLParagraphElement> = ref()!
+    const selectedButton: Ref<boolean> = ref(false)
+    const visibleButton: Ref<boolean> = ref(false)
+    const activeButton: Ref<boolean> = ref(false)
 
-    const paragraph: Ref = ref()
     let lettering: Lettering
 
     onMounted(() => {
