@@ -50,7 +50,7 @@ export default defineComponent({
 
     const visible: Ref<boolean> = ref(true)
 
-    onMounted(() => setTimeout(() => visible.value = false, 1000))
+    onMounted(() => setTimeout(() => visible.value = false, 1500))
 
     return {
       socialShare,

@@ -2,7 +2,7 @@
 
 my name is **Ustym** and I'm a _front-end developer_.
 
-I'm currently working on too many things, trying to hack ⌚ to get more than `24` hours a 📆.
+I'm working on too many things, trying to hack ⌚ to get more than `24` hours a 📆.
 
 <br />
 

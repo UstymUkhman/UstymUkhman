@@ -1,17 +1,19 @@
 <template>
   <section itemtype="http://schema.org/ItemList" class="experiment-list" itemscope>
     <Preview
-      :experiment="experiment" :style="{'height': `${previewHeight}px`}"
-      itemtype="http://schema.org/ListItem" itemprop="itemListElement"
-      v-for="experiment in experiments" :key="experiment.title"
+      itemtype="http://schema.org/ListItem"
+      v-for="experiment in experiments"
+      itemprop="itemListElement"
+      :experiment="experiment"
+      :key="experiment.title"
     />
   </section>
 </template>
 
 <script lang="ts">
-import { ComputedRef, defineComponent, computed, onMounted } from 'vue'
-import { Viewport, mobileWidth, firePrerender } from '@/utils'
 import Preview from '@components/experiment/Preview.vue'
+import { defineComponent, onMounted } from 'vue'
+import { firePrerender } from '@/utils'
 
 export default defineComponent({
   name: 'List',
@@ -27,19 +29,10 @@ export default defineComponent({
     }
   },
 
-  setup (): { readonly previewHeight: ComputedRef<number> } {
-    const screen = new Viewport()
-
-    const previewHeight = computed(() => {
-      const width = screen.size.width
-      return width * (width < mobileWidth ? 0.66 : 0.33) / 16 * 9
-    })
-
+  setup () {
     onMounted(() => {
       firePrerender({ title: 'Experiments' })
     })
-
-    return { previewHeight }
   }
 })
 </script>
@@ -49,16 +42,16 @@ export default defineComponent({
   -webkit-overflow-scrolling: touch;
   justify-content: space-evenly;
 
+  overflow: hidden auto;
   align-items: center;
-  overflow-x: hidden;
-  overflow-y: auto;
+  position: relative;
 
   padding: 2.5vw 0;
   flex-wrap: wrap;
   display: flex;
 
   @include breakpoint($sm-down) {
-    padding: 5vw 0;
+    padding: 7.5vw 0;
   }
 }
 </style>

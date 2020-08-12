@@ -10,7 +10,7 @@ export class ScrollObserver {
   private readonly defaultOptions: ScrollObserverOptions = {
     visibleClass: 'visible',
     rootMargin: '0px',
-    threshold: 0.0,
+    threshold: 0.25,
     root: null
   }
 

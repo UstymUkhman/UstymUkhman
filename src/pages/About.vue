@@ -62,14 +62,14 @@ export default defineComponent({
     }
 
     const description = `
-      Hi, my name is Ustym and I'm a front-end web developer at Sigma Software.#
+      Hi, my name is Ustym and I'm a front-end web developer.#
+      I'm working on too many things, trying to hack time to get more than 24 hours a day.#
       I studied and lived in Florence (Italy) for 14 years and recently I moved to Kiev (Ukraine).##
 
       Things I love:#
-      %- Learning and using innovative web technologies#
-      %- JavaScript in (almost) all its forms#
-      %- CSS3 (and SCSS preprocessor)#
-      %- Cat Videos, Music, Films & Coffee##
+      %- Learning and using new web technologies#
+      %- JavaScript, TypeScript, Vue.js & WebGL#
+      %- Cinema, music, games, coffee & cats##
 
       Things I hate:#
       %- Internet Explorer#
