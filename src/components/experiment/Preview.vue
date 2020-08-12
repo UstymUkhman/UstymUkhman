@@ -141,6 +141,7 @@ $mobileHeight: 100 * 0.66 / 16 * 9;
 
   h5 {
     transition: opacity 0.25s 0.75s;
+    backface-visibility: hidden;
     @include center-transform;
 
     pointer-events: none;

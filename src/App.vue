@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <MatrixRain v-if="visibleRain" @rain-columns="rainColumns = $event" />
+    <MatrixRain v-if="visibleRain" :fullscreen="fullscreenRain" @rain-columns="rainColumns = $event" />
     <Background :fullscreen="fullscreenRain" :columns="rainColumns" />
 
     <router-view

@@ -48,15 +48,15 @@ export default defineComponent({
     right: auto;
     left: 0;
     top: 0;
-
-    @include breakpoint($sm-down) {
-      display: none;
-    }
   }
 
   &.fullscreen {
     background-color: rgba($black, 0.9);
     transition-delay: 0ms;
+
+    @include breakpoint($sm-down) {
+      background-color: rgba($black, 0.8);
+    }
 
     .background {
       transition-delay: 400ms;

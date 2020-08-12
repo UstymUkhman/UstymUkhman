@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { SetupContext, Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+import { SetupContext, Ref, defineComponent, watch, onMounted, onBeforeUnmount, ref } from 'vue'
 import { Platform, Color, matrixFont, mobileWidth } from '@/utils'
 import { randomInt, randomBool } from '@/utils/Number'
 import { Viewport, Size } from '@/utils/Viewport'
@@ -22,19 +22,27 @@ type Charset = {
 export default defineComponent({
   name: 'MatrixRain',
 
+  props: {
+    fullscreen: {
+      required: false,
+      default: false,
+      type: Boolean
+    }
+  },
+
   setup (props, context: SetupContext): { code: Ref } {
     function getCharCode (): string {
       const code = randomBool() ? randomInt(33, 63) : randomInt(90, 126)
       return String.fromCharCode(code)
     }
 
-    function getShadowBlur (): number {
-      const mobile = Platform.mobile || screen.size.width < mobileWidth
-      return Platform.firefox || mobile ? 0 : 5
-    }
-
     function getCharAlpha (index: number, end: number): number {
       return index > end ? 50 - (index - end) : 50
+    }
+
+    function getShadowBlur (fullscreen = props.fullscreen): number {
+      const mobile = Platform.mobile || screen.size.width < mobileWidth
+      return Platform.firefox || Platform.safari || mobile || fullscreen ? 0 : 5
     }
 
     function updateVisibleColumns (): void {
@@ -154,6 +162,10 @@ export default defineComponent({
         index[i]++
       }
     }
+
+    watch(() => props.fullscreen, (now): void => {
+      canvasContext.shadowBlur = getShadowBlur(now)
+    })
 
     let canvasContext: CanvasRenderingContext2D
     const screen = new Viewport(onResize)
