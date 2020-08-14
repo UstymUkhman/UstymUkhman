@@ -1,7 +1,7 @@
 {
   "name": "UstymUkhman",
-  "description": "My website: http://54.93.165.244/",
   "author": "Ustym Ukhman <ustym.ukhman@gmail.com>",
+  "description": "Coffee is never enough.",
   "domain": "http://54.93.165.244/",
   "main": "src/main.ts",
   "version": "2.0.0",

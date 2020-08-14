@@ -26,6 +26,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+$mobileBackground: rgba($black, 0.8);
+
 .background-container {
   transition: background-color 500ms 500ms;
   background-color: rgba($black, 0);
@@ -38,7 +40,7 @@ export default defineComponent({
   top: 0;
 
   .background {
-    @include horizontal-gradient($black, transparent, 75%, 100%);
+    @include horizontal-gradient($black, transparent, 75%);
     backface-visibility: hidden;
     transition: opacity 500ms;
 
@@ -55,7 +57,7 @@ export default defineComponent({
     transition-delay: 0ms;
 
     @include breakpoint($sm-down) {
-      background-color: rgba($black, 0.8);
+      background-color: $mobileBackground;
     }
 
     .background {
@@ -65,7 +67,7 @@ export default defineComponent({
   }
 
   @include breakpoint($sm-down) {
-    background-color: rgba($black, 0.8);
+    background-color: $mobileBackground;
     transition: none;
 
     .background {
