@@ -58,7 +58,7 @@ export default defineComponent({
     function closeAboutPage (): void {
       selectedButton.value = false
       activeButton.value = false
-      lettering.dispose()
+      lettering.dissolve()
     }
 
     const description = `

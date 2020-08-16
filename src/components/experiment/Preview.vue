@@ -1,6 +1,6 @@
 <template>
   <div ref="preview" itemtype="http://schema.org/WebPageElement" class="experiment-preview" itemscope>
-    <router-link :title="experiment.title" :to="{name: experiment.title}" class="experiment-link">
+    <router-link :title="experiment.title" :to="{name: experiment.title}" class="link">
       <div @mouseover="onMouseOver" @mouseout="onMouseOut" class="preview-content">
 
         <video
@@ -163,26 +163,24 @@ $mobileHeight: 100 * 0.66 / 16 * 9;
   }
 
   @include desktop-hover {
-    .experiment-link {
-      .preview-content {
-        border-color: $green;
-        transition-delay: 0s;
-      }
+    .preview-content {
+      border-color: $green;
+      transition-delay: 0s;
+    }
 
-      .experiment-overlay {
-        transition-delay: 0.25s;
-        opacity: 0;
-      }
+    .experiment-overlay {
+      transition-delay: 0.25s;
+      opacity: 0;
+    }
 
-      img {
-        transform: scale(1.5);
-        opacity: 0;
-      }
+    img {
+      transform: scale(1.5);
+      opacity: 0;
+    }
 
-      h5 {
-        transition-delay: 0s;
-        opacity: 0;
-      }
+    h5 {
+      transition-delay: 0s;
+      opacity: 0;
     }
   }
 

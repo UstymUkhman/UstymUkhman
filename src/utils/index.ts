@@ -8,6 +8,7 @@ import { Viewport } from './Viewport'
 import firePrerender from './Prerender'
 import ScrollObserver from './ScrollObserver'
 
+export type VueHTMLElement<HTMLElement> = HTMLElement & { $el: HTMLElement }
 export type KeyboardEventListener = (event: KeyboardEvent) => void
 export type MouseEventListener = (event: MouseEvent) => void
 export type TouchEventListener = (event: TouchEvent) => void

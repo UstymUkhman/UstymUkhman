@@ -1,3 +1,5 @@
+type Page = { name: string; url: string; }
+
 declare module '*.vue' {
   import { ComponentOptions } from 'vue'
   const component: ComponentOptions
@@ -5,7 +7,7 @@ declare module '*.vue' {
 }
 
 declare module '*.json' {
-  const value: JSON | Array<unknown>
+  const value: JSON | Array<Page>
   export default value
 }
 

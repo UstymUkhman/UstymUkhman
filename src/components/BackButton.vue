@@ -58,7 +58,7 @@ export default defineComponent({
       pressed.value = false
 
       context.emit('close-page')
-      lettering.dispose()
+      lettering.dissolve()
 
       setTimeout(() => {
         Loading.checkActiveItem()
@@ -85,7 +85,7 @@ export default defineComponent({
       if (before && !now) {
         setTimeout(() => {
           active.value = false
-          lettering.dispose()
+          lettering.dissolve()
         }, 500)
 
         setTimeout(() => {

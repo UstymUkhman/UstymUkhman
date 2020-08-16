@@ -31,6 +31,7 @@ type FakeKeyboardEvent = { keyCode: number }
 interface TemplateValues {
   readonly isActiveButton: (index: number) => boolean
   readonly onTouchStart: (index: number) => void
+  readonly items: Ref<Array<HTMLDivElement>>
   readonly onTouchEnd: TouchEventListener
   readonly skipLettering: Ref<boolean>
   readonly settedSection: Ref<number>
@@ -38,7 +39,6 @@ interface TemplateValues {
   readonly nextPage: Ref<boolean>
   readonly pressed: Ref<boolean>
   readonly pages: Array<string>
-  readonly items: Ref<never[]>
 }
 
 export default defineComponent({
@@ -128,7 +128,7 @@ export default defineComponent({
 
     function setMenuSection (): void {
       const nextSection = currentItem.value
-      lettering.disposeAll(words)
+      lettering.dissolveAll(words)
 
       settedSection.value = -1
       nextPage.value = true
@@ -149,6 +149,7 @@ export default defineComponent({
     }
 
     const pages = reactive(['Ab0uT_m3', 'My_W0rk5', 'C0nT@cT_m3'])
+    const items: Ref<Array<HTMLDivElement>> = ref([])
     let visibleButtons: Array<number> = reactive([])
     const words: Array<Array<HTMLSpanElement>> = []
 
@@ -157,7 +158,6 @@ export default defineComponent({
     let currentItem = ref(-1)
     let nextPage = ref(false)
     let pressed = ref(false)
-    const items = ref([])
 
     let lettering: Lettering
     let visibleItems: number

@@ -112,7 +112,7 @@ export default class Lettering {
     if (this.callback) setTimeout(this.callback)
   }
 
-  public disposeAll (words: Array<Array<HTMLSpanElement>>): void {
+  public dissolveAll (words: Array<Array<HTMLSpanElement>>): void {
     for (const w in words) {
       for (const l in words[w]) {
         words[w][l].classList.add('dissolve')
@@ -120,7 +120,7 @@ export default class Lettering {
     }
   }
 
-  public dispose (): void {
+  public dissolve (): void {
     for (const l in this.letters) {
       this.letters[l].classList.add('dissolve')
     }

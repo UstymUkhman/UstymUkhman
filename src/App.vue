@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <main id="app">
     <MatrixRain v-if="visibleRain" :fullscreen="fullscreenRain" @rain-columns="rainColumns = $event" />
     <Background :fullscreen="fullscreenRain" :columns="rainColumns" />
 
@@ -10,7 +10,7 @@
     />
 
     <ScreenOverlay v-if="visibleOverlay" />
-  </div>
+  </main>
 </template>
 
 <script lang="ts">

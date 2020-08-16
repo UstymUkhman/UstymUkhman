@@ -1,14 +1,18 @@
 [
   {
-    "GitHub": "https://github.com/UstymUkhman/"
+    "name": "GitHub",
+    "url": "https://github.com/UstymUkhman/"
   },
   {
-    "LinkedIn": "https://www.linkedin.com/in/ustymukhman"
+    "name": "LinkedIn",
+    "url": "https://www.linkedin.com/in/ustymukhman"
   },
   {
-    "CodePen": "https://codepen.io/UstymUkhman/"
+    "name": "CodePen",
+    "url": "https://codepen.io/UstymUkhman/"
   },
   {
-    "E-mail": "mailto:ustym.ukhman@gmail.com"
+    "name": "E-mail",
+    "url": "mailto:ustym.ukhman@gmail.com"
   }
 ]
