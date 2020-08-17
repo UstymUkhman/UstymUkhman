@@ -119,6 +119,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .back-button {
   @include center-size;
+  pointer-events: none;
   overflow: hidden;
 
   .back-button-container {

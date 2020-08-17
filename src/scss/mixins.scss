@@ -178,10 +178,6 @@
       @include breakpoint($sm-down) {
         transform: translateX(-15px);
       }
-
-      .isie & {
-        transform: translateX(-10px);
-      }
     }
 
     &.active {
@@ -190,10 +186,6 @@
 
         @include breakpoint($sm-down) {
           transform: translateX(-25px);
-        }
-
-        .isie & {
-          transform: translateX(-20px);
         }
       }
     }

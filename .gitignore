@@ -2,13 +2,6 @@ tmp
 pids
 logs
 
-.idea
-.vscode
-.DS_Store
-.env.local
-.env.*.local
-.lock-wscript
-
 *.pid
 *.log
 *.log*
@@ -18,8 +11,13 @@ logs
 *.seed
 *.ntvs*
 *.njsproj
-*.code-workspace
-*.sublime-workspace
+
+.idea
+.vscode
+.DS_Store
+.env.local
+.env.*.local
+.lock-wscript
 
 dist/
 bitnami.pem

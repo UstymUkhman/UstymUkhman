@@ -110,7 +110,7 @@ export default defineComponent({
     margin: auto;
     bottom: auto;
 
-    /deep/ ul {
+    ::v-deep(ul) {
       top: 50%;
     }
 
