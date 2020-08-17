@@ -16,8 +16,8 @@ export default class Lettering {
   private frame = 0
 
   constructor (message: HTMLParagraphElement, slowTyping?: number, timeout?: number) {
-    this.timeout = timeout || 1000
-    this.slowly = slowTyping || 0
+    this.timeout = timeout ?? 1000
+    this.slowly = slowTyping ?? 0
     this.message = message
     this.last = null
   }

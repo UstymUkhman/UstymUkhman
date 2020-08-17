@@ -35,18 +35,18 @@ export default class FirstPersonControls {
   private enabled = false
   public error = false
 
-  private move: Directions<boolean> = {
-    [Direction.UP]: false,
-    [Direction.RIGHT]: false,
-    [Direction.DOWN]: false,
-    [Direction.LEFT]: false
-  }
-
   private borders: Directions<number> = {
     [Direction.UP]: 0,
     [Direction.RIGHT]: 0,
     [Direction.DOWN]: 0,
     [Direction.LEFT]: 0
+  }
+
+  private move: Directions<boolean> = {
+    [Direction.UP]: false,
+    [Direction.RIGHT]: false,
+    [Direction.DOWN]: false,
+    [Direction.LEFT]: false
   }
 
   constructor (room: HTMLCanvasElement, scene: Scene, camera: PerspectiveCamera) {

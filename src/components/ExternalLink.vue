@@ -79,7 +79,6 @@ li {
 
   pre {
     transition: opacity 0.2s $ease-in-out-cubic;
-    visibility: hidden;
     opacity: 0;
   }
 
@@ -96,10 +95,9 @@ li {
     transition: transform 0.4s $ease-out-quart, opacity 0.3s;
     @include size(auto, 25px);
     margin: auto 0 auto 10px;
-    @include white-rabbit;
 
+    @include white-rabbit;
     white-space: nowrap;
-    visibility: visible;
     position: absolute;
 
     color: $fade-green;
@@ -110,21 +108,14 @@ li {
     bottom: 0;
     top: 0;
 
-    @include breakpoint($sm-down) {
-      line-height: 25px;
-      margin-top: 5px;
-    }
-
     @include breakpoint($xs) {
       font-size: 13px;
-      margin-left: 0;
-      margin-top: 0;
+      margin: auto 0;
     }
   }
 
   &.active {
     pre {
-      visibility: visible;
       opacity: 1;
 
       &.dissolve {
