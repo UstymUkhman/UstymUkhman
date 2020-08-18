@@ -53,12 +53,14 @@ export default defineComponent({
     }
 
     function onTouchEnd (): void {
+      active.value = !back && !Platform.mobile
       const delay = !props.focused ? 800 : 0
-      touching.value = false
-      pressed.value = false
 
       context.emit('close-page')
       lettering.dissolve()
+
+      touching.value = false
+      pressed.value = false
 
       setTimeout(() => {
         Loading.checkActiveItem()

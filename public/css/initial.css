@@ -28,6 +28,16 @@ body {
   margin: 0;
 }
 
+.no-js body,
+.no-es5object body,
+.no-csstransforms3d body {
+  overflow: hidden;
+  height: 100%;
+
+  padding: 0;
+  margin: 0;
+}
+
 #root {
   background-color: #000;
   display: block;
@@ -37,7 +47,8 @@ body {
   z-index: 1;
 }
 
-.not-supported-msg {
+.disabled-js,
+.not-supported {
   background-color: #000;
   text-align: center;
 
@@ -50,7 +61,8 @@ body {
   z-index: 0;
 }
 
-.not-supported-msg .not-supported-msg-copy {
+.disabled-js .disabled-js-copy,
+.not-supported .not-supported-copy {
   font-family: monospace;
   position: absolute;
   max-width: 625px;
@@ -58,7 +70,7 @@ body {
   color: #0c0;
   margin: auto;
 
-  height: 95px;
+  height: 120px;
   width: 100%;
 
   bottom: 0;
@@ -67,7 +79,12 @@ body {
   top: 0;
 }
 
-.not-supported-msg .not-supported-msg-copy strong {
+.not-supported .not-supported-copy {
+  height: 95px;
+}
+
+.disabled-js .disabled-js-copy strong,
+.not-supported .not-supported-copy strong {
   text-transform: uppercase;
   margin-bottom: 30px;
 
@@ -78,54 +95,92 @@ body {
   display: block;
 }
 
-.not-supported-msg .not-supported-msg-copy span {
+.disabled-js .disabled-js-copy span,
+.not-supported .not-supported-copy span {
   letter-spacing: 3px;
   line-height: 20px;
   font-size: 16px;
 }
 
-.no-js .not-supported-msg,
-.no-es5object .not-supported-msg,
-.no-csstransforms3d .not-supported-msg {
+.not-supported .not-supported-copy span {
+  max-width: 460px;
+  display: block;
+  margin: 0 auto;
+}
+
+.not-supported .not-supported-copy span a {
+  background-color: #0c0;
+  text-decoration: none;
+  padding: 0 2px 0 5px;
+  color: #000;
+}
+
+.not-supported .not-supported-copy span a:hover {
+  font-weight: bold;
+}
+
+.no-js .disabled-js,
+.ms-ie .not-supported,
+.no-webgl .not-supported,
+.no-canvas .not-supported,
+.no-history .not-supported,
+.no-es5object .not-supported,
+.no-canvastext .not-supported,
+.no-csstransforms3d .not-supported,
+.no-csspointerevents .not-supported {
   display: block !important;
 }
 
 .no-js #root,
+.no-webgl #root,
+.no-canvas #root,
+.no-history #root,
 .no-es5object #root,
-.no-csstransforms3d #root {
+.no-canvastext #root,
+.no-csstransforms3d #root,
+.no-csspointerevents #root {
   display: none !important;
 }
 
-.no-js body,
-.no-es5object body,
-.no-csstransforms3d body {
-  overflow: hidden;
-  height: 100%;
-
-  padding: 0;
-  margin: 0;
-}
-
 @media (max-width: 767px) {
-  .not-supported-msg .not-supported-msg-copy {
+  .disabled-js .disabled-js-copy,
+  .not-supported .not-supported-copy {
     max-width: 95%;
-    height: 150px;
+    height: 115px;
     width: 95%;
   }
 
-  .not-supported-msg .not-supported-msg-copy strong {
+  .not-supported .not-supported-copy {
+    height: 110px;
+  }
+
+  .disabled-js .disabled-js-copy strong,
+  .not-supported .not-supported-copy strong {
+    letter-spacing: 0px;
     margin: 0 auto 25px;
-    max-width: 285px;
+
+    max-width: 320px;
     font-size: 18px;
   }
 
-  .not-supported-msg .not-supported-msg-copy span {
+  .not-supported .not-supported-copy strong {
+    max-width: 200px;
+  }
+
+  .disabled-js .disabled-js-copy span,
+  .not-supported .not-supported-copy span {
+    letter-spacing: 0px;
     line-height: 18px;
-    max-width: 330px;
+
+    max-width: 325px;
     font-size: 14px;
 
     display: block;
     margin: 0 auto;
+  }
+
+  .not-supported .not-supported-copy span {
+    max-width: 310px;
   }
 }
 

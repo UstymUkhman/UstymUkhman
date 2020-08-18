@@ -3,7 +3,7 @@
     <LinksList
       v-model:selectedBack="selectedButton"
       v-model:activeBack="activeButton"
-      @show-components="showComponents"
+      @show-button="showBackButton"
       v-model:skip="lettering"
       class="contact-links"
       :dispose="closePage"
@@ -28,7 +28,7 @@ import LinksList from '@components/LinksList.vue'
 import { firePrerender } from '@/utils'
 
 interface TemplateValues {
-  readonly showComponents: () => void
+  readonly showBackButton: () => void
   readonly selectedButton: Ref<boolean>
   readonly visibleButton: Ref<boolean>
   readonly activeButton: Ref<boolean>
@@ -49,6 +49,7 @@ export default defineComponent({
     const selectedButton: Ref<boolean> = ref(false)
     const visibleButton: Ref<boolean> = ref(false)
     const activeButton: Ref<boolean> = ref(false)
+
     const lettering: Ref<boolean> = ref(false)
     const closePage: Ref<boolean> = ref(false)
 
@@ -57,7 +58,7 @@ export default defineComponent({
       document.removeEventListener('keyup', skipLettering, false)
     }
 
-    function showComponents (): void {
+    function showBackButton (): void {
       setTimeout(() => { visibleButton.value = true }, 500)
     }
 
@@ -78,7 +79,7 @@ export default defineComponent({
 
     return {
       contacts: Contacts as Array<Page>,
-      showComponents,
+      showBackButton,
       selectedButton,
       visibleButton,
       activeButton,

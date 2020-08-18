@@ -57,7 +57,7 @@ module.exports = {
       '@three': utils.resolve('node_modules/three/src'),
 
       '@components': utils.resolve('src/components'),
-      modernizr$: utils.resolve('.modernizrrc.js'),
+      modernizr$: utils.resolve('modernizr'),
       '@pages': utils.resolve('src/pages'),
       '@scss': utils.resolve('src/scss'),
       '@': utils.resolve('src'),

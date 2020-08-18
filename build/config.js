@@ -32,6 +32,7 @@ module.exports = {
     gzipExtensions: ['js', 'css'],
     assetsSubDirectory: 'public',
     version: jsonConfig.version,
+    productionSourceMap: false,
     devtool: '#source-map',
     assetsPublicPath: '/',
 

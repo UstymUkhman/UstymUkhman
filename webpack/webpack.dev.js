@@ -30,7 +30,7 @@ const devWebpackConfig = merge(baseConfig, {
       usePostCSS: true
     }), {
       use: 'webpack-modernizr-loader',
-      test: /\.modernizrrc.js$/
+      test: /modernizr$/
     }]
   },
 

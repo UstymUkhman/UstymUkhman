@@ -56,12 +56,21 @@
   </head>
 
   <body>
-    <div class="not-supported-msg">
-      <div class="not-supported-msg-copy">
-        <strong>Sorry This Browser is not Supported.</strong>
-        <span>Please make sure you enabled JavaScript and use an updated browser to visit this website.</span>
+    <div class="not-supported">
+      <div class="not-supported-copy">
+        <strong>Sorry this browser is not supported</strong>
+        <span>Please make sure to update it or use a <a href="https://www.google.com/chrome/" target="_blank">better one</a> to visit this website.</span>
       </div>
     </div>
+
+    <noscript>
+      <div class="disabled-js">
+        <div class="disabled-js-copy">
+          <strong>Oops.., it seems you've disabled JavaScript on this browser</strong>
+          <span>Please make sure to enable it<br />and reload the page to visit this website.</span>
+        </div>
+      </div>
+    </noscript>
 
     <div data-domain=<%= htmlWebpackPlugin.options.build.domain %>
          data-version=<%= htmlWebpackPlugin.options.build.version %>

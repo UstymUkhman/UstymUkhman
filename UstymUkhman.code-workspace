@@ -15,7 +15,7 @@
       "@three": "three/src",
 
       "@components": "/src/components",
-      "modernizr$": ".modernizrrc.js",
+      "modernizr$": "modernizr",
       "vue": "@vue/runtime-dom",
       "@pages": "/src/pages",
       "@scss": "/src/scss",

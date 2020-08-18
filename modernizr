@@ -5,7 +5,9 @@ module.exports = {
   'feature-detects': [
     'webrtc/getusermedia',
     'css/pointerevents',
+    'test/canvastext',
     'fullscreen-api',
+    'test/canvas',
     'history',
     'webgl'
   ]

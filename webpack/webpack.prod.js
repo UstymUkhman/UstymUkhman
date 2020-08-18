@@ -28,7 +28,7 @@ const webpackConfig = merge(baseConfig, {
       extract: true
     }), {
       use: 'webpack-modernizr-loader',
-      test: /\.modernizrrc.js$/
+      test: /modernizr$/
     }]
   },
 

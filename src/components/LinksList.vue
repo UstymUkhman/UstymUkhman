@@ -191,7 +191,7 @@ export default defineComponent({
 
       else {
         enabled.value = true
-        context.emit('show-components')
+        context.emit('show-button')
         context.emit('update:skip', true)
         listOffset.value = props.urls.length < 6 ? '-50%' : '0px'
       }
@@ -278,13 +278,16 @@ export default defineComponent({
   ul {
     transition: transform 0.5s $ease-out-sine;
     backface-visibility: hidden;
+
     list-style-type: unset;
     position: absolute;
+
+    margin: 0;
     top: 0;
 
     @include breakpoint($sm-down) {
       padding-left: 50px;
-      width: 100%;
+      width: auto;
     }
 
     @include breakpoint($xs) {
