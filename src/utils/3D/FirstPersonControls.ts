@@ -6,10 +6,10 @@ type Object3D = import('@three/core/Object3D').Object3D
 type Scene = import('@three/scenes/Scene').Scene
 import { Vector3 } from '@three/math/Vector3'
 
-type FullscreenCallback = () => unknown
-const enum Direction { UP, RIGHT, DOWN, LEFT }
 type Directions<Type> = { [way in Direction]: Type }
-const LOCK_ONLY = Platform.safari || Platform.firefox
+const enum Direction { UP, RIGHT, DOWN, LEFT }
+type FullscreenCallback = () => unknown
+const LOCK_ONLY = !Platform.chromium
 
 export default class FirstPersonControls {
   private readonly onPointerChange: EventListener = this.onPointerLockChange.bind(this)

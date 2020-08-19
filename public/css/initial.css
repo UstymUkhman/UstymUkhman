@@ -44,7 +44,7 @@ body {
 
   height: 100%;
   width: 100%;
-  z-index: 1;
+  z-index: 0;
 }
 
 .disabled-js,
@@ -55,10 +55,10 @@ body {
   position: absolute;
   cursor: default;
   display: none;
+  z-index: 999;
 
   height: 100%;
   width: 100%;
-  z-index: 0;
 }
 
 .disabled-js .disabled-js-copy,
@@ -164,7 +164,7 @@ body {
   }
 
   .not-supported .not-supported-copy strong {
-    max-width: 200px;
+    max-width: 210px;
   }
 
   .disabled-js .disabled-js-copy span,

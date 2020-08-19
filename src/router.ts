@@ -17,19 +17,11 @@ interface ExperimentProps {
   readonly page: string
 }
 
-interface PageRoute {
-  readonly component: PromiseImport
-  readonly props: ExperimentProps
-  readonly name: string
-  readonly path: string
-}
-
 const checkHomeRedirect = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: RedirectRoute): void => {
   const forbiddenDestination = to.name === 'More' || to.name === 'RabbitHole'
 
   if (!from.name && forbiddenDestination) {
-    next({ name: 'Home' })
-    return
+    return next({ name: 'Home' })
   }
 
   next()
@@ -68,7 +60,7 @@ export default createRouter({
       name: 'Experiments',
       path: ''
     },
-    ...(experiments as Array<ExperimentProps>).map((experiment: ExperimentProps): PageRoute => {
+    ...((experiments as Array<unknown>) as Array<ExperimentProps>).map(experiment => {
       return {
         component: (): VueComponent => import(/* webpackChunkName: "experiment-page" */ '@pages/Experiment.vue'),
         name: experiment.title,

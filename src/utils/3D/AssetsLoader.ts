@@ -25,7 +25,7 @@ export default class AssetsLoader extends LoadingManager {
       ? await this.parse(loader, model)
       : await this.load(loader, model)
 
-    if (callback) { callback(asset) }
+    if (callback) callback(asset)
     return asset
   }
 

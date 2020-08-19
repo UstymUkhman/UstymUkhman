@@ -2,11 +2,12 @@
   "root": true,
   "parser": "vue-eslint-parser",
 
-  "extends": [
-    "plugin:@typescript-eslint/recommended",
-    "plugin:vue/vue3-essential",
-    "eslint:recommended"
-  ],
+  "rules": {
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "generator-star-spacing": 0,
+    "no-debugger": 1,
+    "no-console": 0
+  },
 
   "parserOptions": {
     "warnOnUnsupportedTypeScriptVersion": false,
@@ -14,12 +15,11 @@
     "sourceType": "module"
   },
 
-  "rules": {
-    "@typescript-eslint/no-non-null-assertion": 0,
-    "generator-star-spacing": 0,
-    "no-debugger": 0,
-    "no-console": 0
-  },
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:vue/vue3-essential",
+    "eslint:recommended"
+  ],
 
   "plugins": [
     "@typescript-eslint",

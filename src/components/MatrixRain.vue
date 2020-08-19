@@ -42,7 +42,7 @@ export default defineComponent({
 
     function getShadowBlur (fullscreen = props.fullscreen): number {
       const mobile = Platform.mobile || screen.size.width < mobileWidth
-      return Platform.firefox || Platform.safari || mobile || fullscreen ? 0 : 5
+      return !Platform.chromium || mobile || fullscreen ? 0 : 5
     }
 
     function updateVisibleColumns (): void {
@@ -62,9 +62,9 @@ export default defineComponent({
     }
 
     function createCharset (): Charset {
-      const duration: Array<number> = Array.from(new Array(columns), () => randomInt(rows, 100))
-      const visible: Array<boolean> = Array.from(new Array(columns), () => false)
-      const index: Array<number> = Array.from(new Array(columns), () => 0)
+      const duration = Array.from(new Array(columns), () => randomInt(rows, 100))
+      const visible = Array.from(new Array(columns), () => false)
+      const index = Array.from(new Array(columns), () => 0)
 
       chars = []
 

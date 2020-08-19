@@ -115,7 +115,6 @@ module.exports = new Promise((resolve, reject) => {
 
           return (severity, errors) => {
             if (severity !== 'error') return
-
             const filename = errors[0].file && errors[0].file.split('!').pop()
 
             notifier.notify({

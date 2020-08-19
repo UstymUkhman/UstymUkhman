@@ -10,18 +10,18 @@ const config = require('./config')
 const webpack = require('webpack')
 
 const jsonConfig = require('../package.json')
-const spinner = ora('Building for production...')
 const webpackConfig = require('../webpack/webpack.prod')
-/* eslint-enable @typescript-eslint/no-var-requires */
 
 function exec (cmd) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   return require('child_process').execSync(cmd).toString().trim()
 }
 
+/* eslint-enable @typescript-eslint/no-var-requires */
+const spinner = ora('Building for production...')
+
 const versionRequirements = [{
-  versionRequirement: jsonConfig.engines.node,
   currentVersion: semver.clean(process.version),
+  versionRequirement: jsonConfig.engines.node,
   name: 'node'
 }]
 
@@ -53,8 +53,7 @@ if (shell.which('npm')) {
     console.log()
 
     for (let i = 0; i < warnings.length; i++) {
-      const warning = warnings[i]
-      console.log('  ' + warning)
+      console.log(`   ${warnings[i]}`)
     }
 
     console.log()

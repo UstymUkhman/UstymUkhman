@@ -1,8 +1,8 @@
 <template>
   <div class="share-buttons" :class="{'visible': visible}">
-    <div v-html="facebook" @click="socialShare('facebook')"></div>
-    <div v-html="twitter" @click="socialShare('twitter')"></div>
-    <a v-html="github" :href="repository" target="_blank"></a>
+    <div v-html="facebook" @click="socialShare('facebook')" itemtype="http://schema.org/ShareAction"></div>
+    <div v-html="twitter" @click="socialShare('twitter')" itemtype="http://schema.org/ShareAction"></div>
+    <a v-html="github" :href="repository" target="_blank" itemtype="http://schema.org/LinkRole"></a>
   </div>
 </template>
 
@@ -38,19 +38,21 @@ export default defineComponent({
   },
 
   setup (props): Buttons {
-    function socialShare (social: string): void {
-      const page: string = encodeURIComponent(window.location.href)
+    const visible = ref(true)
 
-      const url: string = social === 'facebook'
+    function socialShare (social: string): void {
+      const page = encodeURIComponent(window.location.href)
+
+      const url = social === 'facebook'
         ? `https://facebook.com/sharer.php?u=${page}`
         : `https://twitter.com/intent/tweet?url=${page}&text=${props.description}`
 
       window.open(url, '_blank', 'width=640,height=400,status=no,toolbar=no,titlebar=no')
     }
 
-    const visible: Ref<boolean> = ref(true)
-
-    onMounted(() => setTimeout(() => visible.value = false, 1500))
+    onMounted(() =>
+      setTimeout(() => visible.value = false, 1500)
+    )
 
     return {
       socialShare,

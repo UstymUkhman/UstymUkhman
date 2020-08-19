@@ -7,10 +7,11 @@
     "importHelpers": true,
     "noImplicitAny": true,
 
-    "module": "esnext",
+    "module": "ESNext",
     "sourceMap": true,
     "jsx": "preserve",
-    "target": "es5",
+    "target": "ES5",
+
     "allowJs": true,
     "checkJs": true,
     "baseUrl": ".",
@@ -34,16 +35,14 @@
       "node_modules/@types"
     ],
 
-    "types": [
-      "@types/node"
-    ],
-
     "lib": [
       "dom.iterable",
       "scripthost",
       "esnext",
       "dom"
-    ]
+    ],
+
+    "types": []
   },
 
   "include": [

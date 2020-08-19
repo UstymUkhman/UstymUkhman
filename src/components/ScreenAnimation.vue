@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
 import { Viewport, Size } from '@/utils/Viewport'
 import { PI } from '@/utils/Number'
 
@@ -35,6 +35,7 @@ export default defineComponent({
       }
     }
 
+    const loader: Ref<HTMLCanvasElement> = ref()!
     let context: CanvasRenderingContext2D
     const screen = new Viewport(onResize)
 
@@ -44,14 +45,13 @@ export default defineComponent({
     let halfHeight = height / 2
     let halfWidth = width / 2
 
-    const loader = ref()
     let drawingTime = 0
     let radius = 0
     let frame = 0
 
     onMounted(() => {
-      context = loader.value.getContext('2d')
-      radius = width > height ? halfWidth * 1.2 : halfHeight * 1.2
+      context = loader.value.getContext('2d')!
+      radius = (width > height ? halfWidth : halfHeight) * 1.2
 
       drawingTime = Date.now()
       animate()

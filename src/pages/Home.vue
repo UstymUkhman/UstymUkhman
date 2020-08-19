@@ -109,18 +109,14 @@ export default defineComponent({
     }
 
     function onTouchStart (index: number) {
-      if (visibleButtons.length < 3) {
-        return
-      }
+      if (visibleButtons.length < 3) return
 
       currentItem.value = index
       onKeyDown({ keyCode: 13 })
     }
 
     function onTouchEnd () {
-      if (visibleButtons.length < 3) {
-        return
-      }
+      if (visibleButtons.length < 3) return
 
       onKeyUp({ keyCode: 13 })
       visibleButtons = reactive([])

@@ -24,15 +24,15 @@ export default defineComponent({
 
   props: {
     experiments: {
-      required: true,
-      type: Array
+      type: Array,
+      required: true
     }
   },
 
   setup () {
-    onMounted(() => {
+    onMounted(() =>
       firePrerender({ title: 'Experiments' })
-    })
+    )
   }
 })
 </script>

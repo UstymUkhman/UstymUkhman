@@ -22,11 +22,11 @@
     }],
 
     "selector-pseudo-element-no-unknown": [true, {
-      "ignorePseudoElements": ["v-deep"],
+      "ignorePseudoElements": ["v-deep"]
     }],
 
     "selector-pseudo-class-no-unknown": [true, {
-      "ignorePseudoClasses": ["export"],
+      "ignorePseudoClasses": ["export"]
     }]
   }
 }

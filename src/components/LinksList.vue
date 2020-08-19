@@ -4,10 +4,14 @@
 
       <ExternalLink
         v-for="(page, p) in urls" :key="page.name"
+        itemtype="http://schema.org/ListItem"
         :active="enabled && current === p"
+
         :cursor="contacts ? '>' : '//'"
         :ref="li => { pages[p] = li }"
         :mail="contacts && p === 3"
+        itemprop="itemListElement"
+
         @click="onPageClick(p)"
         :dissolve="dispose"
         :page="page.name"
@@ -90,12 +94,10 @@ export default defineComponent({
         const direction = distance > 0 ? 3 : -3
         let scroll = +listOffset.value.slice(0, -2)
 
-        if ((scroll <= scrollOffset && direction === 3) || (!scroll && direction === -3)) {
-          return
-        }
+        if ((scroll <= scrollOffset && direction === 3) || (!scroll && direction === -3)) return
 
         if (Math.abs(distance) > 100) {
-          scroll = scroll - listStep * direction
+          scroll -= listStep * direction
           listOffset.value = `${+scroll.toFixed(1)}px`
         }
       }

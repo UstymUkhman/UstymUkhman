@@ -71,7 +71,7 @@ exports.styleLoaders = function (options) {
     const loader = loaders[extension]
 
     output.push({
-      test: new RegExp('\\.' + extension + '$'),
+      test: new RegExp(`\\.${extension}$`),
       use: loader
     })
   }
@@ -80,11 +80,12 @@ exports.styleLoaders = function (options) {
 }
 
 exports.assetsPath = function (_path) {
-  const assetsSubDirectory = process.env.NODE_ENV === 'production'
-    ? config.build.assetsSubDirectory
-    : config.dev.assetsSubDirectory
-
-  return path.posix.join(assetsSubDirectory, _path)
+  return path.posix.join(
+    process.env.NODE_ENV === 'production'
+      ? config.build.assetsSubDirectory
+      : config.dev.assetsSubDirectory
+    , _path
+  )
 }
 
 exports.resolve = function (dir) {

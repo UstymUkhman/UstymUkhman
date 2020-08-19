@@ -25,8 +25,8 @@ module.exports = {
   },
 
   build: {
+    domain: jsonConfig.domain || 'http://localhost:8080/',
     index: path.resolve(__dirname, '../dist/index.html'),
-    domain: jsonConfig.domain || 'http://localhost:8080',
     assetsRoot: path.resolve(__dirname, '../dist'),
 
     gzipExtensions: ['js', 'css'],

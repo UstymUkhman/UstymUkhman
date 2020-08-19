@@ -2,20 +2,19 @@ import App from '@/App.vue'
 import router from '@/router'
 import { createApp } from 'vue'
 
-const root = document.getElementById('root') ||
-             document.createElement('div')
+const root = document.getElementById('root')!
 
-export interface AppProps {
-  readonly version: string | undefined;
-  readonly deploy: boolean | undefined;
-  readonly domain: string | undefined;
-  readonly app?: HTMLElement;
+interface AppProps {
+  readonly app: HTMLElement
+  readonly version: string
+  readonly deploy: boolean
+  readonly domain: string
 }
 
 const app: AppProps = {
   deploy: root.dataset.deploy === 'true',
-  version: root.dataset.version,
-  domain: root.dataset.domain,
+  version: root.dataset.version!,
+  domain: root.dataset.domain!,
   app: root
 }
 
@@ -23,6 +22,4 @@ createApp(App, {
   domain: app.domain,
   version: app.version,
   deploy: app.deploy
-})
-  .use(router)
-  .mount('#root')
+}).use(router).mount('#root')

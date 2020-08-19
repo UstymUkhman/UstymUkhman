@@ -1,38 +1,37 @@
-[
-  {
-    "Suburra The Game": "http://suburrathegame.com/"
-  },
-  {
-    "Wildman Films": "https://wildmanfilms.com/"
-  },
-  {
-    "Plus": "http://www.plusrl.com/"
-  },
-  {
-    "LaFil": "https://lafil.com/"
-  },
-  {
-    "Temera": "https://www.temera.it/"
-  },
-  {
-    "Fendi App": "https://play.google.com/store/apps/details?id=com.fendi.fendi"
-  },
-  {
-    "Art & Fashion": "http://www.artandfashiongroup.com/"
-  },
-  {
-    "Spoiler Killers": "http://monogrid-spoiler-killer-master.s3-website.eu-central-1.amazonaws.com/"
-  },
-  {
-    "Give Me Gif": "http://givemegif.com/"
-  },
-  {
-    "Jagermeister": "http://monogrid-jagermeister-hub-master.s3-website.eu-central-1.amazonaws.com/"
-  },
-  {
-    "Nuova Dacia Sandero": "http://monogrid-dacia-website-master.s3-website.eu-central-1.amazonaws.com/#/"
-  },
-  {
-    "Peugeot Sensation Driver": "http://peugeotsensationdriver.it/"
-  }
-]
+[{
+  "name": "Suburra The Game",
+  "url": "http://suburrathegame.com/"
+}, {
+  "name": "Wildman Films",
+  "url": "https://wildmanfilms.com/"
+}, {
+  "name": "Plus",
+  "url": "http://www.plusrl.com/"
+}, {
+  "name": "LaFil",
+  "url": "https://lafil.com/"
+}, {
+  "name": "Temera",
+  "url": "https://www.temera.it/"
+}, {
+  "name": "Fendi App",
+  "url": "https://play.google.com/store/apps/details?id=com.fendi.fendi"
+}, {
+  "name": "Art & Fashion",
+  "url": "http://www.artandfashiongroup.com/"
+}, {
+  "name": "Spoiler Killers",
+  "url": "http://monogrid-spoiler-killer-master.s3-website.eu-central-1.amazonaws.com/"
+}, {
+  "name": "Give Me Gif",
+  "url": "http://givemegif.com/"
+}, {
+  "name": "Jagermeister",
+  "url": "http://monogrid-jagermeister-hub-master.s3-website.eu-central-1.amazonaws.com/"
+}, {
+  "name": "Nuova Dacia Sandero",
+  "url": "http://monogrid-dacia-website-master.s3-website.eu-central-1.amazonaws.com/#/"
+}, {
+  "name": "Peugeot Sensation Driver",
+  "url": "http://peugeotsensationdriver.it/"
+}]

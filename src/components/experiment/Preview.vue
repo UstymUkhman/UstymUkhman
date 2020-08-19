@@ -6,17 +6,19 @@
         <video
           :video="`public/videos/${experiment.video}`"
           :src="`public/videos/${experiment.video}`"
+          itemtype="http://schema.org/VideoObject"
           ref="video" preload="auto"
           autoload muted loop>
         </video>
 
         <img
           :image="`public/img/${experiment.image}`"
+          itemtype="http://schema.org/ImageObject"
           :src="`public/img/${experiment.image}`"
         />
 
         <div class="experiment-overlay"></div>
-        <h5>{{ experiment.title }}</h5>
+        <h5 itemprop="name">{{ experiment.title }}</h5>
       </div>
     </router-link>
   </div>
@@ -39,16 +41,16 @@ export default defineComponent({
 
   props: {
     experiment: {
-      required: true,
-      type: Object
+      type: Object,
+      required: true
     }
   },
 
   setup (): TemplateValues {
+    let pauseTimeout: number
+
     const preview: Ref<HTMLDivElement> = ref()!
     const video: Ref<HTMLVideoElement> = ref()!
-
-    let pauseTimeout: number
 
     function onMouseOver (): void {
       clearTimeout(pauseTimeout)
@@ -56,19 +58,15 @@ export default defineComponent({
     }
 
     function onMouseOut (): void {
-      pauseTimeout = window.setTimeout(() => {
+      pauseTimeout = setTimeout(() => {
         video.value.currentTime = 0.0
         video.value.pause()
       }, 500)
     }
 
-    onMounted(() => {
-      Observer.observe(preview.value)
-    })
+    onMounted(() => Observer.observe(preview.value))
 
-    onBeforeUnmount(() => {
-      Observer.unobserve(preview.value)
-    })
+    onBeforeUnmount(() => Observer.unobserve(preview.value))
 
     return {
       onMouseOver,

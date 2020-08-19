@@ -15,17 +15,17 @@
 
 <script lang="ts">
 import { SetupContext, Ref, defineComponent, watch, watchEffect, onMounted, ref } from 'vue'
-import { TouchEventListener, VueRef, Lettering, Loading, Platform } from '@/utils'
+import { TouchEventListener, Lettering, Loading, Platform } from '@/utils'
 import router from '@/router'
 
 interface TemplateValues {
   readonly button: Ref<HTMLParagraphElement>
   readonly onTouchStart: TouchEventListener
   readonly onTouchEnd: TouchEventListener
-  readonly selected: VueRef<boolean>
-  readonly pressed: VueRef<boolean>
-  readonly active: VueRef<boolean>
   readonly touching: Ref<boolean>
+  readonly selected: Ref<boolean>
+  readonly pressed: Ref<boolean>
+  readonly active: Ref<boolean>
 }
 
 export default defineComponent({
@@ -68,9 +68,9 @@ export default defineComponent({
       }, delay + 2500)
     }
 
-    const selected: VueRef<boolean> = ref(props.enabled)
-    const pressed: VueRef<boolean> = ref(props.enabled)
-    const active: VueRef<boolean> = ref(props.focused)
+    const selected: Ref<boolean> = ref(props.enabled)
+    const pressed: Ref<boolean> = ref(props.enabled)
+    const active: Ref<boolean> = ref(props.focused)
 
     const button: Ref<HTMLParagraphElement> = ref()!
     const touching: Ref<boolean> = ref(false)

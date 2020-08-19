@@ -1,4 +1,3 @@
-import { Ref } from 'vue'
 import wheel from './Wheel'
 import Sounds from './Sounds'
 import Loading from './Loading'
@@ -12,7 +11,6 @@ export type VueHTMLElement<HTMLElement> = HTMLElement & { $el: HTMLElement }
 export type KeyboardEventListener = (event: KeyboardEvent) => void
 export type MouseEventListener = (event: MouseEvent) => void
 export type TouchEventListener = (event: TouchEvent) => void
-export type VueRef<Type> = Ref<{ valueOf: () => Type }>
 
 interface WindowNavigator extends Navigator {
   userLanguage?: string

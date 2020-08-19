@@ -89,7 +89,7 @@ body {
   // cursor: none;
 }
 
-#app {
+main {
   display: block;
   height: 100%;
   width: 100%;
@@ -101,17 +101,6 @@ canvas {
 
   left: 0;
   top: 0;
-
-  .sound-particles-page & {
-    @include center-size;
-
-    padding: 0;
-    margin: 0;
-  }
-
-  .color-grading-page & {
-    position: relative;
-  }
 }
 
 svg {

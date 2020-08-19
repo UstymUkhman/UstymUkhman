@@ -12,8 +12,8 @@
   font-style: normal;
   font-family: 'White Rabbit';
   src:
-    url('assets/fonts/white-rabbit/White-Rabbit.eot?') format('eot'),
-    url('assets/fonts/white-rabbit/White-Rabbit.woff') format('woff'),
+    url('assets/fonts/white-rabbit/White-Rabbit.svg#WhiteRabbit') format('svg'),
     url('assets/fonts/white-rabbit/White-Rabbit.ttf') format('truetype'),
-    url('./assets/fonts/white-rabbit/White-Rabbit.svg#WhiteRabbit') format('svg');
+    url('assets/fonts/white-rabbit/White-Rabbit.woff') format('woff'),
+    url('assets/fonts/white-rabbit/White-Rabbit.eot?') format('eot');
 }

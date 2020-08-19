@@ -78,7 +78,7 @@ export default defineComponent({
     }
 
     function createChoice (delay = 0): void {
-      choiceTimeout = window.setTimeout(() => {
+      choiceTimeout = setTimeout(() => {
         interactable = true
         setChosenPill()
       }, delay)

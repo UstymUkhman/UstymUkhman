@@ -7,7 +7,7 @@ declare module '*.vue' {
 }
 
 declare module '*.json' {
-  const value: JSON | Array<Page>
+  const value: Array<Page> | JSON
   export default value
 }
 

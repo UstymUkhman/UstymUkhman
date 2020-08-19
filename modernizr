@@ -1,6 +1,6 @@
 module.exports = {
-  options: ['addTest', 'setClasses'],
   minify: true,
+  options: ['addTest', 'setClasses'],
 
   'feature-detects': [
     'webrtc/getusermedia',
