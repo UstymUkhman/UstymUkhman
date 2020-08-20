@@ -2,10 +2,11 @@ import wheel from './Wheel'
 import Sounds from './Sounds'
 import Loading from './Loading'
 import Platform from './Platform'
+
+import Observer from './Observer'
 import Lettering from './Lettering'
 import { Viewport } from './Viewport'
 import firePrerender from './Prerender'
-import ScrollObserver from './ScrollObserver'
 
 export type VueHTMLElement<HTMLElement> = HTMLElement & { $el: HTMLElement }
 export type KeyboardEventListener = (event: KeyboardEvent) => void
@@ -24,6 +25,11 @@ if (navigator && navigator.userLanguage) {
   userLanguage = navigator.userLanguage
 }
 
+export function getShadowBlur (fullscreen = false): number {
+  const mobile = Platform.mobile || window.innerWidth < mobileWidth
+  return !Platform.chromium || mobile || fullscreen ? 0 : 5
+}
+
 const language = mainLanguage || navigator.language || userLanguage
 const matrixFont = 'normal 24px Martix Code NFI'
 
@@ -38,13 +44,13 @@ const mobileWidth = 992
 const phoneWidth = 768
 
 export {
-  ScrollObserver,
   firePrerender,
   mobileWidth,
   phoneWidth,
   matrixFont,
   Lettering,
   Platform,
+  Observer,
   Viewport,
   language,
   Loading,

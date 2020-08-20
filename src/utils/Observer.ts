@@ -1,20 +1,20 @@
-interface ScrollObserverOptions extends IntersectionObserverInit {
+interface ObserverOptions extends IntersectionObserverInit {
   readonly visibleClass?: string
 }
 
-export class ScrollObserver {
+export class Observer {
   private observer: IntersectionObserver
-  private observerOptions: ScrollObserverOptions
+  private observerOptions: ObserverOptions
   private onIntersect: IntersectionObserverCallback
 
-  private readonly defaultOptions: ScrollObserverOptions = {
+  private readonly defaultOptions: ObserverOptions = {
     visibleClass: 'visible',
     rootMargin: '0px',
     threshold: 0.25,
     root: null
   }
 
-  constructor (options?: ScrollObserverOptions, callback?: IntersectionObserverCallback) {
+  constructor (options?: ObserverOptions, callback?: IntersectionObserverCallback) {
     this.onIntersect = typeof callback === 'function' ? callback : this.defaultCallback.bind(this)
     this.observerOptions = { ...this.defaultOptions, ...options }
 
@@ -66,4 +66,4 @@ export class ScrollObserver {
   }
 }
 
-export default new ScrollObserver();
+export default new Observer();

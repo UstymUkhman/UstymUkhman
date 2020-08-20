@@ -28,9 +28,9 @@ const Platform: PlatformProps = readonly({
   prerender: (window as Prerender).__PRERENDER_INJECTED !== undefined,
 
   chrome: /Chrome/.test(window.navigator.userAgent) && /Google Inc/.test(window.navigator.vendor),
-  chromium: navigator.userAgent.includes('Chrome') && !/Edge\/\d+/i.test(window.navigator.userAgent),
   safari: /Safari/.test(window.navigator.userAgent) && /Apple Computer/.test(window.navigator.vendor),
-  isIE: !!window.navigator.userAgent.match(/MSIE /i) || !!/Trident\//i.test(window.navigator.userAgent)
+  isIE: !!window.navigator.userAgent.match(/MSIE /i) || !!/Trident\//i.test(window.navigator.userAgent),
+  chromium: /Chrome/.test(window.navigator.userAgent) && !/Edge\/\d+/i.test(window.navigator.userAgent)
 })
 
 for (const key in Platform) {

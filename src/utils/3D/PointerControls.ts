@@ -27,8 +27,8 @@ export default class PointerControls {
   private rotate (event: MouseEventInit): void {
     if (!this.active) return
 
-    const movementX: number = event.movementX || 0
-    const movementY: number = event.movementY || 0
+    const movementX = event.movementX || 0
+    const movementY = event.movementY || 0
 
     this.yaw.rotation.y -= movementX * 0.002
     this.pitch.rotation.x -= movementY * 0.002

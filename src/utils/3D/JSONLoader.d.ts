@@ -2,14 +2,13 @@ import { Geometry } from '@three/core/Geometry'
 import { Material } from '@three/materials/Material'
 import { LoadingManager } from '@three/loaders/LoadingManager'
 
-export type JSONPromise = PromiseLike<JSONModel> | undefined
 export type JSONModel = { geometry: Geometry, materials?: Array<Material> }
+export type JSONPromise = PromiseLike<JSONModel> | undefined
 
 export class JSONLoader {
   private crossOrigin: string
   private resourcePath: string
 
-  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   constructor(manager?: LoadingManager)
 
   public load: (
@@ -22,6 +21,5 @@ export class JSONLoader {
   public setPath: (value: string) => JSONLoader
   public setCrossOrigin: (value: string) => JSONLoader
   public setResourcePath: (value: string) => JSONLoader
-
   public parse: () => (json: JSON, path: string) => JSONModel
 }

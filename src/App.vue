@@ -31,25 +31,25 @@ export default defineComponent({
   name: 'App',
 
   components: {
-    ScreenOverlay,
     MatrixRain,
-    Background
+    Background,
+    ScreenOverlay
   },
 
   props: {
     domain: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
 
     version: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
 
     deploy: {
-      required: true,
-      type: Boolean
+      type: Boolean,
+      required: true
     }
   },
 
@@ -91,20 +91,19 @@ body {
 
 main {
   display: block;
-  height: 100%;
-  width: 100%;
+  @include size;
 }
 
 canvas {
-  position: absolute;
-  z-index: $pills;
-
+  @include absolute-size;
   left: 0;
   top: 0;
 }
 
 svg {
   transition: fill 0.5s ease-out;
+  backface-visibility: hidden;
+
   fill: $dark-green;
   cursor: pointer;
 
@@ -116,40 +115,6 @@ svg {
   }
 }
 
-h1 {
-  font-weight: 700;
-  font-size: 48px;
-  margin: 0px;
-
-  @include breakpoint($xs) {
-    font-size: 32px;
-  }
-}
-
-h2 {
-  font-weight: 400;
-  font-size: 32px;
-  margin: 0px;
-
-  @include breakpoint($xs) {
-    font-size: 25px;
-  }
-}
-
-h5 {
-  font-weight: 400;
-  font-size: 2vw;
-  margin: 0px;
-
-  @include breakpoint($sm-down) {
-    font-size: 30px;
-  }
-
-  @include breakpoint($xs) {
-    font-size: 18px;
-  }
-}
-
 p {
   @include back-button;
   margin: 0px;
@@ -157,6 +122,7 @@ p {
 
 span.lettering {
   transition: opacity 0.5s $ease-in-out-cubic;
+  backface-visibility: hidden;
 
   &.dissolve {
     opacity: 0;

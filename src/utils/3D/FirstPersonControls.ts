@@ -24,11 +24,11 @@ export default class FirstPersonControls {
   private room: HTMLCanvasElement
   private scene: Scene
 
-  private pointerLock = this.room.requestPointerLock
-  private fullscreen = this.room.requestFullscreen
-
   public onEnterFullscreen: FullscreenCallback | null = null
   public onExitFullscreen: FullscreenCallback | null = null
+
+  private pointerLock = this.room.requestPointerLock
+  private fullscreen = this.room.requestFullscreen
 
   private delta: number = performance.now()
   private activated = false
@@ -62,6 +62,7 @@ export default class FirstPersonControls {
   }
 
   private addEventListeners (): void {
+    document.addEventListener('webkitpointerlockchange', this.onPointerChange, false)
     document.addEventListener('mozpointerlockchange', this.onPointerChange, false)
     document.addEventListener('pointerlockchange', this.onPointerChange, false)
 
@@ -77,7 +78,9 @@ export default class FirstPersonControls {
     setTimeout(() => {
       if (this.isFullscreen && this.onEnterFullscreen) {
         this.onEnterFullscreen()
-      } else if (!this.isFullscreen && this.onExitFullscreen) {
+      }
+
+      else if (!this.isFullscreen && this.onExitFullscreen) {
         this.onExitFullscreen()
       }
     }, 100)
@@ -134,7 +137,9 @@ export default class FirstPersonControls {
       this.enable(true)
       this.room.requestPointerLock()
       if (!LOCK_ONLY) this.room.requestFullscreen()
-    } else {
+    }
+
+    else {
       if (!LOCK_ONLY) {
         setTimeout(() => {
           if (!document.hidden) document.exitFullscreen()

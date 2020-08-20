@@ -26,8 +26,7 @@
 
 <script lang="ts">
 import { Ref, defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
-import Observer from '@/utils/ScrollObserver'
-import { MouseEventListener } from '@/utils'
+import { Observer, MouseEventListener } from '@/utils'
 
 interface TemplateValues {
   readonly onMouseOver: MouseEventListener
@@ -144,7 +143,19 @@ $mobileHeight: 100 * 0.66 / 16 * 9;
 
     pointer-events: none;
     white-space: nowrap;
+    font-weight: 400;
+
+    font-size: 2vw;
     color: $green;
+    margin: 0px;
+
+    @include breakpoint($sm-down) {
+      font-size: 30px;
+    }
+
+    @include breakpoint($xs) {
+      font-size: 18px;
+    }
   }
 
   &:nth-child(even) .preview-content {

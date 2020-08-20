@@ -118,9 +118,9 @@ interface WheelData {
   readonly spinY: number,
 }
 
-const PIXEL_STEP = 10
-const LINE_HEIGHT = 40
 const PAGE_HEIGHT = 800
+const LINE_HEIGHT = 40
+const PIXEL_STEP = 10
 
 export default function (event: ScrollEvent): WheelData {
   let pX = 0

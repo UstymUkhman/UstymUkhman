@@ -46,38 +46,38 @@ export default defineComponent({
 
   props: {
     urls: {
-      required: true,
-      type: Array
+      type: Array,
+      required: true
     },
 
     selectedBack: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     },
 
     activeBack: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     },
 
     contacts: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     },
 
     dispose: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     },
 
     skip: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     }
   },
 
@@ -152,7 +152,7 @@ export default defineComponent({
     function onPageClick (page: number): void {
       if (enabled.value) {
         current.value = page
-        setTimeout(() => { openPageUrl(page) }, 400)
+        setTimeout(() => openPageUrl(page), 400)
       }
     }
 
@@ -179,8 +179,7 @@ export default defineComponent({
 
           lettering = new Lettering((
             pages.value[next] as VueHTMLElement<HTMLLIElement>
-          ).$el.children[1] as HTMLParagraphElement,
-          50, 0)
+          ).$el.children[1] as HTMLParagraphElement, 50, 0)
 
           words.push(lettering.animate(preparePages))
 
@@ -218,10 +217,11 @@ export default defineComponent({
     const current: Ref<number> = ref(Platform.mobile ? -1 : 0)
     const pages: Ref<Array<HTMLLIElement>> = ref([])
     const words: Array<Array<HTMLSpanElement>> = []
+
     const listOffset: Ref<string> = ref('0px')
     const enabled: Ref<boolean> = ref(false)
 
-    const screen = new Viewport((size) => {
+    const screen = new Viewport(size => {
       listStep = size.height * 0.14 + (size.width < phoneWidth ? 18 : 21)
       scrollOffset = (props.urls.length - 5) * -listStep
     })
@@ -238,8 +238,8 @@ export default defineComponent({
     onMounted(() => {
       document.addEventListener('keydown', onKeyDown, false)
       document.addEventListener('keyup', onKeyUp, false)
-      Loading.activeItem = props.contacts ? 2 : 1
 
+      Loading.activeItem = props.contacts ? 2 : 1
       showPages()
     })
 

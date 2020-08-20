@@ -49,11 +49,9 @@ Object.assign(JSONLoader.prototype, {
       if (metadata !== undefined) {
         const type = metadata.type
 
-        if (type !== undefined) {
-          if (type.toLowerCase() === 'object') {
-            console.error('JSONLoader: ' + url + ' should be loaded with ObjectLoader instead.')
-            return
-          }
+        if (type !== undefined && type.toLowerCase() === 'object') {
+          console.error('JSONLoader: ' + url + ' should be loaded with ObjectLoader instead.')
+          return
         }
       }
 
@@ -230,7 +228,9 @@ Object.assign(JSONLoader.prototype, {
 
           geometry.faces.push(faceA)
           geometry.faces.push(faceB)
-        } else {
+        }
+
+        else {
           face = new Face3()
 
           face.a = faces[offset++]
@@ -398,7 +398,9 @@ Object.assign(JSONLoader.prototype, {
         outputAnimations = outputAnimations.concat(morphAnimationClips)
       }
 
-      if (outputAnimations.length > 0) geometry.animations = outputAnimations
+      if (outputAnimations.length > 0) {
+        geometry.animations = outputAnimations
+      }
     }
 
     return function parse (json, path) {
@@ -424,7 +426,9 @@ Object.assign(JSONLoader.prototype, {
 
       if (json.materials === undefined || json.materials.length === 0) {
         return { geometry: geometry }
-      } else {
+      }
+
+      else {
         const materials = Loader.initMaterials(json.materials, this.resourcePath || path, this.crossOrigin)
         return { geometry: geometry, materials: materials }
       }

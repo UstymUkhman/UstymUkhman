@@ -51,8 +51,8 @@ body {
 .not-supported {
   background-color: #000;
   text-align: center;
-
   position: absolute;
+
   cursor: default;
   display: none;
   z-index: 999;
@@ -63,14 +63,15 @@ body {
 
 .disabled-js .disabled-js-copy,
 .not-supported .not-supported-copy {
+  text-shadow: 0 0 10px #0c0;
   font-family: monospace;
+
   position: absolute;
   max-width: 625px;
-
   color: #0c0;
-  margin: auto;
 
   height: 120px;
+  margin: auto;
   width: 100%;
 
   bottom: 0;
@@ -109,7 +110,9 @@ body {
 }
 
 .not-supported .not-supported-copy span a {
+  text-shadow: 0 0 10px #000;
   background-color: #0c0;
+
   text-decoration: none;
   padding: 0 2px 0 5px;
   color: #000;
@@ -184,12 +187,12 @@ body {
   }
 }
 
-::-moz-selection {
+::selection {
   background-color: #0c0;
   color: #000;
 }
 
-::selection {
+::-moz-selection {
   background-color: #0c0;
   color: #000;
 }

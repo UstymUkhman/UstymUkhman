@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { SetupContext, Ref, defineComponent, watch, onMounted, onBeforeUnmount, ref } from 'vue'
-import { Platform, Color, matrixFont, mobileWidth } from '@/utils'
+import { Color, getShadowBlur, matrixFont } from '@/utils'
 import { randomInt, randomBool } from '@/utils/Number'
 import { Viewport, Size } from '@/utils/Viewport'
 
@@ -24,9 +24,9 @@ export default defineComponent({
 
   props: {
     fullscreen: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     }
   },
 
@@ -38,11 +38,6 @@ export default defineComponent({
 
     function getCharAlpha (index: number, end: number): number {
       return index > end ? 50 - (index - end) : 50
-    }
-
-    function getShadowBlur (fullscreen = props.fullscreen): number {
-      const mobile = Platform.mobile || screen.size.width < mobileWidth
-      return !Platform.chromium || mobile || fullscreen ? 0 : 5
     }
 
     function updateVisibleColumns (): void {
@@ -88,10 +83,10 @@ export default defineComponent({
       _rows = Math.max(rows - _rows, 0)
       _columns = Math.max(columns - _columns, 0)
 
+      canvasContext.shadowBlur = getShadowBlur(props.fullscreen)
       canvasContext.fillStyle = `rgba(${Color.green}, 1.0)`
       canvasContext.shadowColor = `rgb(${Color.green})`
 
-      canvasContext.shadowBlur = getShadowBlur()
       canvasContext.textBaseline = 'middle'
       canvasContext.font = matrixFont
 
@@ -121,7 +116,7 @@ export default defineComponent({
       frame = requestAnimationFrame(animate)
       if (delta - lastUpdate < 50) return
 
-      canvasContext.clearRect(0, 0, canvas.width, canvas.height)
+      canvasContext.clearRect(0, 0, width, height)
       updateVisibleColumns()
       lastUpdate = delta
 
@@ -154,18 +149,16 @@ export default defineComponent({
           canvasContext.fillStyle = `rgba(${color}, ${alpha})`
           canvasContext.fillText(chars[i][j], i * OFFSET, j * LINE_HEIGHT)
 
-          if (Math.random() < update) {
-            chars[i][j] = getCharCode()
-          }
+          if (Math.random() < update) chars[i][j] = getCharCode()
         }
 
         index[i]++
       }
     }
 
-    watch(() => props.fullscreen, (now): void => {
+    watch(() => props.fullscreen, now =>
       canvasContext.shadowBlur = getShadowBlur(now)
-    })
+    )
 
     let canvasContext: CanvasRenderingContext2D
     const screen = new Viewport(onResize)
@@ -189,10 +182,10 @@ export default defineComponent({
       updateCanvasSize()
 
       canvasContext = canvas.getContext('2d', { alpha: false })!
+      canvasContext.shadowBlur = getShadowBlur(props.fullscreen)
       canvasContext.fillStyle = `rgba(${Color.green}, 1.0)`
       canvasContext.shadowColor = `rgb(${Color.green})`
 
-      canvasContext.shadowBlur = getShadowBlur()
       canvasContext.textBaseline = 'middle'
       canvasContext.font = matrixFont
 
@@ -207,9 +200,9 @@ export default defineComponent({
     onBeforeUnmount(() => {
       screen.dispose()
 
-      setTimeout(() => {
+      setTimeout(() =>
         cancelAnimationFrame(frame)
-      }, 3500)
+      , 3500)
     })
 
     return { code }
@@ -222,10 +215,5 @@ export default defineComponent({
   @include absolute-size;
   left: 0;
   top: 0;
-
-  canvas {
-    @include absolute-size;
-    z-index: 0;
-  }
 }
 </style>

@@ -191,7 +191,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .home-page {
   @include center-size;
-  z-index: $menu;
+  z-index: 12;
 
   .menu-items {
     @include console-button(5px);
@@ -215,9 +215,9 @@ export default defineComponent({
       position: absolute;
       overflow: hidden;
 
-      z-index: $pills;
       margin: 0 auto;
       height: auto;
+      z-index: 8;
 
       top: 50%;
       right: 0;

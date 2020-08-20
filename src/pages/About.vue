@@ -1,6 +1,6 @@
 <template>
   <article @touchstart="onTouchStart" @touchend="onTouchEnd" itemtype="http://schema.org/AboutPage" class="about-page" itemscope>
-    <p ref="paragraph" itemprop="text" class="about-description">{{ description }}</p>
+    <p ref="paragraph" class="about-description" itemprop="description">{{ description }}</p>
 
     <BackButton
       @close-page="closeAboutPage"
@@ -125,7 +125,7 @@ export default defineComponent({
   z-index: 3;
 
   .about-description {
-    @include center-size(1050px, 395px);
+    @include center-size(950px, 390px);
     @include white-rabbit;
 
     position: absolute;
@@ -139,19 +139,15 @@ export default defineComponent({
       opacity: 0;
     }
 
-    @include breakpoint($md-down) {
-      width: 900px;
-    }
-
     @include breakpoint($sm-down) {
-      @include size(75vw, 360px);
+      @include size(685px, 300px);
       line-height: 20px;
       font-size: 13px;
     }
 
     @include breakpoint($xs) {
+      @include size(350px, 360px);
       margin-top: 15vh;
-      width: 95vw;
     }
 
     @media only screen and (max-height: 550px) {

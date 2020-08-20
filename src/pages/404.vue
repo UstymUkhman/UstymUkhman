@@ -6,8 +6,6 @@
       <transition name="block">
         <div v-if="block" class="block-overlay"></div>
       </transition>
-
-      <div class="mobile-overlay"></div>
     </div>
 
     <transition name="failure">
@@ -19,8 +17,8 @@
 </template>
 
 <script lang="ts">
+import { Viewport, Color, getShadowBlur, matrixFont, firePrerender } from '@/utils'
 import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
-import { firePrerender, Viewport, matrixFont, Color } from '@/utils'
 import { randomInt } from '@/utils/Number'
 
 const COLUMN_OFFSET = 18
@@ -93,9 +91,10 @@ export default defineComponent({
 
       context.shadowColor = `rgb(${Color.green})`
       context.fillStyle = `rgb(${Color.green})`
+
+      context.shadowBlur = getShadowBlur()
       context.textBaseline = 'middle'
       context.font = matrixFont
-      context.shadowBlur = 5
     }
 
     const getCharCode = (): string => {
@@ -158,10 +157,7 @@ export default defineComponent({
 
   canvas {
     transition: opacity 50ms 450ms;
-    @include absolute-size;
-
     opacity: 0;
-    z-index: 0;
   }
 
   .block-overlay {
@@ -169,19 +165,10 @@ export default defineComponent({
     @include absolute-size;
     opacity: 0;
   }
-
-  .mobile-overlay {
-    background-color: rgba($black, 0.8);
-    @include absolute-size;
-    display: none;
-
-    @include breakpoint($sm-down) {
-      display: block;
-    }
-  }
 }
 
 .system-failure {
+  background-color: rgba($black, 0.8);
   border: solid 2px $energy-green;
   @include center-transform;
 
@@ -189,7 +176,7 @@ export default defineComponent({
   text-align: center;
 
   span {
-    text-shadow: $energy-green 0 0 10px;
+    text-shadow: 0 0 10px $energy-green;
     @include white-rabbit(24px);
 
     text-transform: uppercase;

@@ -4,6 +4,7 @@ import { TextureLoader } from '@three/loaders/TextureLoader'
 
 type Material = import('@three/materials/Material').Material
 type Texture = import('@three/textures/Texture').Texture
+
 import { MathUtils } from '@three/math/MathUtils'
 import { Color } from '@three/math/Color'
 
@@ -305,9 +306,7 @@ export class Loader extends THREELoader {
       if (repeat[1] !== 1) texture.wrapT = RepeatWrapping
     }
 
-    if (offset !== undefined) {
-      texture.offset.fromArray(offset)
-    }
+    if (offset !== undefined) texture.offset.fromArray(offset)
 
     if (wrap !== undefined) {
       if (wrap[0] === 'repeat') texture.wrapS = RepeatWrapping
@@ -317,9 +316,7 @@ export class Loader extends THREELoader {
       if (wrap[1] === 'mirror') texture.wrapT = MirroredRepeatWrapping
     }
 
-    if (anisotropy !== undefined) {
-      texture.anisotropy = anisotropy
-    }
+    if (anisotropy !== undefined) texture.anisotropy = anisotropy
 
     const uuid = MathUtils.generateUUID()
     this.textures[uuid] = texture

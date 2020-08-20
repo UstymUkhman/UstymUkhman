@@ -1,8 +1,8 @@
 export default class Sounds {
+  private static readonly speach: HTMLAudioElement = new Audio('public/sounds/speech.mp3')
   private static readonly close: HTMLAudioElement = new Audio('public/sounds/close.mp3')
   private static readonly open: HTMLAudioElement = new Audio('public/sounds/open.mp3')
 
-  private static speach: HTMLAudioElement = new Audio('public/sounds/speech.mp3')
   private static closePlay: number = Date.now();
 
   public static playSpeach (): void {
@@ -10,6 +10,7 @@ export default class Sounds {
     this.speach.autoplay = false
     this.speach.loop = false
     this.speach.volume = 1
+
     this.speach.load()
     this.speach.play()
   }

@@ -55,8 +55,8 @@ export default function (data: MetaData = {}): void {
     tags.twitterTitle!.content = title.innerText
     tags.ogTitle!.content = title.innerText
 
-    setTimeout(() => {
+    setTimeout(() =>
       document.dispatchEvent(new Event('custom-post-render-event'))
-    }, 1000)
+    , 1000)
   }
 }

@@ -14,37 +14,37 @@ export default defineComponent({
 
   props: {
     page: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
 
     cursor: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
 
     dissolve: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     },
 
     visible: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     },
 
     active: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     },
 
     mail: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     }
   }
 })
@@ -79,6 +79,7 @@ li {
 
   pre {
     transition: opacity 0.2s $ease-in-out-cubic;
+    backface-visibility: hidden;
     opacity: 0;
   }
 
@@ -93,6 +94,7 @@ li {
 
   em {
     transition: transform 0.4s $ease-out-quart, opacity 0.3s;
+    backface-visibility: hidden;
     @include size(auto, 25px);
     margin: auto 0 auto 10px;
 
