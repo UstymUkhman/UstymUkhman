@@ -47,10 +47,7 @@ const devWebpackConfig = merge(baseConfig, {
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
     publicPath: config.dev.assetsPublicPath,
-
-    watchOptions: {
-      poll: config.dev.poll
-    },
+    watchOptions: { poll: config.dev.poll },
 
     overlay: config.dev.errorOverlay
       ? { warnings: false, errors: true }
@@ -60,8 +57,8 @@ const devWebpackConfig = merge(baseConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: '"development"' },
-      __VUE_PROD_DEVTOOLS__: false,
-      __VUE_OPTIONS_API__: false
+      __VUE_PROD_DEVTOOLS__: config.build.prodDevtools,
+      __VUE_OPTIONS_API__: config.dev.optionsAPI
     }),
 
     new webpack.HotModuleReplacementPlugin(),
@@ -95,12 +92,12 @@ const devWebpackConfig = merge(baseConfig, {
 })
 
 module.exports = new Promise((resolve, reject) => {
-  portfinder.basePort = process.env.PORT || config.dev.port
+  portfinder.basePort = PORT || config.dev.port
 
   portfinder.getPort((err, port) => {
-    if (err) {
-      reject(err)
-    } else {
+    if (err) reject(err)
+
+    else {
       process.env.PORT = port
       devWebpackConfig.devServer.port = port
 
@@ -118,7 +115,7 @@ module.exports = new Promise((resolve, reject) => {
             const filename = errors[0].file && errors[0].file.split('!').pop()
 
             notifier.notify({
-              icon: path.join(__dirname, 'logo.png'),
+              icon: path.join(__dirname, '../public/favicon/android-icon-36x36.png'),
               message: severity + ': ' + errors[0].name,
               subtitle: filename || '',
               title: jsonConfig.name

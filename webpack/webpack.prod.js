@@ -42,6 +42,7 @@ const webpackConfig = merge(baseConfig, {
     mergeDuplicateChunks: true,
     flagIncludedChunks: true,
     removeEmptyChunks: true,
+
     runtimeChunk: true,
     namedModules: true,
     namedChunks: true,
@@ -90,8 +91,8 @@ const webpackConfig = merge(baseConfig, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': { NODE_ENV: '"production"' },
-      __VUE_PROD_DEVTOOLS__: false,
-      __VUE_OPTIONS_API__: false
+      __VUE_PROD_DEVTOOLS__: config.build.prodDevtools,
+      __VUE_OPTIONS_API__: config.dev.optionsAPI
     }),
 
     new MiniCssExtractPlugin({
@@ -111,9 +112,9 @@ const webpackConfig = merge(baseConfig, {
       inject: true,
 
       minify: {
-        removeComments: true,
+        removeAttributeQuotes: true,
         collapseWhitespace: true,
-        removeAttributeQuotes: true
+        removeComments: true
       },
 
       build: {
@@ -142,12 +143,9 @@ const webpackConfig = merge(baseConfig, {
       renderer: new Renderer({
         renderAfterDocumentEvent: 'custom-post-render-event',
         injectProperty: '__PRERENDER_INJECTED',
-        maxConcurrentRoutes: 20,
-        headless: true,
-
-        inject: {
-          prerenderer: true
-        }
+        inject: { prerenderer: true },
+        maxConcurrentRoutes: 25,
+        headless: true
       })
     }),
 
@@ -158,8 +156,10 @@ const webpackConfig = merge(baseConfig, {
 
         globOptions: {
           ignore: [
-            '**/browserconfig.xml', '**/sitemap.xml',
-            '**/manifest.json', '**/robots.txt',
+            '**/browserconfig.xml',
+            '**/manifest.json',
+            '**/sitemap.xml',
+            '**/robots.txt',
             '**/index.html'
           ]
         }
@@ -180,17 +180,14 @@ if (config.build.gzip) {
 
   webpackConfig.plugins.push(
     new CompressionWebpackPlugin({
-      filename: '[path].gz[query]',
-      algorithm: 'gzip',
-
       test: new RegExp(
-        '\\.(' +
-        config.build.gzipExtensions.join('|') +
-        ')$'
+        `\\.(${config.build.gzipExtensions.join('|')})$`
       ),
 
+      filename: '[path].gz[query]',
+      algorithm: 'gzip',
       threshold: 10240,
-      minRatio: 0.8
+      minRatio: 0.8,
     })
   )
 }

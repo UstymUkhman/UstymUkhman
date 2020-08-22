@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path')
-const utils = require('../build/utils.js')
 const config = require('../build/config')
+const utils = require('../build/utils.js')
+
 const { VueLoaderPlugin } = require('vue-loader')
 const ThreeMinifierPlugin = require('@yushijinhun/three-minifier-webpack')
 /* eslint-enable @typescript-eslint/no-var-requires */

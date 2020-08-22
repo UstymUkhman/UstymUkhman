@@ -9,56 +9,43 @@ const semver = require('semver')
 const config = require('./config')
 const webpack = require('webpack')
 
+const child = require('child_process')
 const jsonConfig = require('../package.json')
 const webpackConfig = require('../webpack/webpack.prod')
-
-function exec (cmd) {
-  return require('child_process').execSync(cmd).toString().trim()
-}
 
 /* eslint-enable @typescript-eslint/no-var-requires */
 const spinner = ora('Building for production...')
 
 const versionRequirements = [{
   currentVersion: semver.clean(process.version),
-  versionRequirement: jsonConfig.engines.node,
+  requiredVersion: jsonConfig.engines.node,
   name: 'node'
 }]
 
 if (shell.which('npm')) {
   versionRequirements.push({
-    versionRequirement: jsonConfig.engines.npm,
-    currentVersion: exec('npm --version'),
+    currentVersion: child.execSync('npm --version').toString().trim(),
+    requiredVersion: jsonConfig.engines.npm,
     name: 'npm'
   })
 }
 
 (function () {
-  const warnings = []
+  const warnings = versionRequirements.map(
+    requirement => semver.satisfies(requirement.currentVersion, requirement.requiredVersion) ? '' :
+      `${requirement.name}: ${chalk.red(requirement.currentVersion)} should be ${chalk.green(requirement.requiredVersion)}`
+  ).filter(requirement => requirement.length)
 
-  for (let i = 0; i < versionRequirements.length; i++) {
-    const mod = versionRequirements[i]
+  if (!warnings.length) return
 
-    if (!semver.satisfies(mod.currentVersion, mod.versionRequirement)) {
-      warnings.push(mod.name + ': ' +
-        chalk.red(mod.currentVersion) + ' should be ' +
-        chalk.green(mod.versionRequirement)
-      )
-    }
-  }
+  console.log()
+  console.log(chalk.yellow('To use this template, you must update the following modules:'))
 
-  if (warnings.length) {
-    console.log()
-    console.log(chalk.yellow('To use this template, you must update following to modules:'))
-    console.log()
+  console.log()
+  warnings.forEach(warning => console.log(`   ${warning}`))
 
-    for (let i = 0; i < warnings.length; i++) {
-      console.log(`   ${warnings[i]}`)
-    }
-
-    console.log()
-    process.exit(1)
-  }
+  console.log()
+  process.exit(1)
 })()
 
 spinner.start()
@@ -70,24 +57,24 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
     spinner.stop()
     if (err) throw err
 
-    process.stdout.write(stats.toString({
+    process.stdout.write(`${stats.toString({
       chunkModules: false,
       children: false,
       modules: false,
       chunks: false,
       colors: true
-    }) + '\n\n')
+    })}\n\n`)
 
     if (stats.hasErrors()) {
-      console.log(chalk.red('  Build failed with errors.\n'))
+      console.log(chalk.red('   Build failed with errors.\n'))
       process.exit(1)
     }
 
-    console.log(chalk.cyan('  Build complete.\n'))
+    console.log(chalk.cyan('   Build completed.\n'))
 
-    console.log(chalk.yellow(
-      '  Tip: built files are meant to be served over an HTTP server.\n' +
-      '  Opening index.html over file:// won\'t work.\n'
-    ))
+    console.log(chalk.yellow(`
+       Built files are meant to be served over an HTTP server.\n
+       Opening index.html over file:// won't work.\n
+    `))
   })
 })

@@ -12,6 +12,7 @@ module.exports = {
     proxyTable: {},
 
     host: 'localhost',
+    optionsAPI: false,
     errorOverlay: true,
     cacheBusting: true,
     cssSourceMap: true,
@@ -36,17 +37,18 @@ module.exports = {
     devtool: '#source-map',
     assetsPublicPath: '/',
 
-    htmlComments: false,
-    analyze: analyze,
-    sourceMap: true,
-    comments: false,
-    gzip: gzip,
-
     compressOptions: {
       drop_debugger: true,
       keep_infinity: true,
       drop_console: true,
       warnings: false
-    }
+    },
+
+    prodDevtools: false,
+    htmlComments: false,
+    analyze: analyze,
+    sourceMap: true,
+    comments: false,
+    gzip: gzip
   }
 }

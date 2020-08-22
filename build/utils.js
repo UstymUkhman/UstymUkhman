@@ -18,7 +18,8 @@ exports.cssLoaders = function (options) {
   }
 
   function generateLoaders (loader, loaderOptions) {
-    const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
+    const loaders = options.usePostCSS
+      ? [cssLoader, postcssLoader] : [cssLoader]
 
     if (loader) {
       loaders.push({
@@ -29,11 +30,9 @@ exports.cssLoaders = function (options) {
       })
     }
 
-    if (options.extract) {
-      return [MiniCssExtractPlugin.loader].concat(loaders)
-    } else {
-      return ['vue-style-loader'].concat(loaders)
-    }
+    return options.extract
+      ? [MiniCssExtractPlugin.loader].concat(loaders)
+      : ['vue-style-loader'].concat(loaders)
   }
 
   return {
@@ -44,39 +43,32 @@ exports.cssLoaders = function (options) {
     stylus: generateLoaders('stylus'),
 
     scss: generateLoaders('sass', {
+      sassOptions: {
+        includePaths: [path.resolve(__dirname, '../src/scss')]
+      },
+
       additionalData: `
         @import 'variables.scss';
         @import 'mixins.scss';
-      `,
-
-      sassOptions: {
-        includePaths: [path.resolve(__dirname, '../src/scss')]
-      }
+      `
     }),
 
     sass: generateLoaders('sass', {
       sassOptions: {
-        indentedSyntax: true,
-        includePaths: [path.resolve(__dirname, '../src/sass')]
+        includePaths: [path.resolve(__dirname, '../src/sass')],
+        indentedSyntax: true
       }
     })
   }
 }
 
 exports.styleLoaders = function (options) {
-  const output = []
   const loaders = exports.cssLoaders(options)
 
-  for (const extension in loaders) {
-    const loader = loaders[extension]
-
-    output.push({
-      test: new RegExp(`\\.${extension}$`),
-      use: loader
-    })
-  }
-
-  return output
+  return Array.from(Object.keys(loaders), loader => ({
+    test: new RegExp(`\\.${loader}$`),
+    use: loaders[loader]
+  }))
 }
 
 exports.assetsPath = function (_path) {
