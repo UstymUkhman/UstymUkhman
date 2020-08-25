@@ -12,7 +12,7 @@
       v-model:activeBack="activeButton"
       @show-button="showBackButton"
       :dispose="closePage"
-      :urls="projects"
+      :links="projects"
     />
 
     <BackButton
@@ -27,6 +27,7 @@
 <script lang="ts">
 import { Ref, ComputedRef, defineComponent, ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Platform, Viewport, firePrerender, mobileWidth } from '@/utils'
+
 import BackButton from '@components/BackButton.vue'
 import Projects from '@/assets/data/projects.json'
 import LinksList from '@components/LinksList.vue'
@@ -50,7 +51,7 @@ export default defineComponent({
     LinksList
   },
 
-  setup () {
+  setup (): TemplateValues {
     const visibleCounter = computed(() =>
       !(Platform.mobile || screen.size.width < mobileWidth) && !activeButton.value
     )

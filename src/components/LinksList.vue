@@ -3,18 +3,18 @@
     <ul :style="{'transform': `translateY(${listOffset})`}" itemtype="http://schema.org/ItemList" itemscope>
 
       <ExternalLink
-        v-for="(page, p) in urls" :key="page.name"
+        v-for="(link, l) in links" :key="link.name"
         itemtype="http://schema.org/ListItem"
-        :active="enabled && current === p"
+        :active="enabled && current === l"
 
         :cursor="contacts ? '>' : '//'"
-        :ref="li => { pages[p] = li }"
-        :mail="contacts && p === 3"
+        :ref="li => { pages[l] = li }"
+        :mail="contacts && l === 3"
         itemprop="itemListElement"
 
-        @click="onPageClick(p)"
+        @click="onLinkClick(l)"
         :dissolve="dispose"
-        :page="page.name"
+        :link="link.name"
         :visible="skip"
       />
 
@@ -25,11 +25,12 @@
 <script lang="ts">
 import { SetupContext, Ref, defineComponent, watchEffect, onMounted, onBeforeUnmount, ref } from 'vue'
 import { VueHTMLElement, TouchEventListener, Lettering, Loading, Platform, phoneWidth } from '@/utils'
+
 import ExternalLink from '@components/ExternalLink.vue'
 import { Viewport, Size } from '@/utils/Viewport'
 
 interface TemplateValues {
-  readonly onPageClick: (index: number) => void
+  readonly onLinkClick: (index: number) => void
   readonly pages: Ref<Array<HTMLLIElement>>
   readonly onTouchStart: TouchEventListener
   readonly onTouchEnd: TouchEventListener
@@ -47,7 +48,7 @@ export default defineComponent({
   },
 
   props: {
-    urls: {
+    links: {
       type: Array,
       required: true
     },
@@ -79,18 +80,18 @@ export default defineComponent({
 
   setup (props, context: SetupContext): TemplateValues {
     function onTouchStart (event: TouchEvent): void {
-      if (props.urls.length > 5) {
+      if (props.links.length > 5) {
         touchStart = event.changedTouches[0].clientY
       }
     }
 
     function onTouchEnd (event: TouchEvent): void {
-      if (props.urls.length > 5) {
+      if (props.links.length > 5) {
         const distance = touchStart - event.changedTouches[0].clientY
         const direction = distance > 0 ? 3 : -3
         let scroll = +listOffset.value.slice(0, -2)
 
-        if ((scroll <= scrollOffset && direction === 3) || (!scroll && direction === -3)) return
+        if ((scroll <= scrollOffset && distance > 0) || (!scroll && distance < 0)) return
 
         if (Math.abs(distance) > 100) {
           scroll -= listStep * direction
@@ -120,32 +121,31 @@ export default defineComponent({
       }
 
       else if (props.activeBack) {
-        current.value = (code === 38) ? 0 : lastUrl
+        current.value = (code === 38) ? 0 : lastLink
         context.emit('update:activeBack', false)
       }
 
       else {
-        active = ((current.value === lastUrl && code === 40) || (!current.value && code === 38))
+        active = ((current.value === lastLink && code === 40) || (!current.value && code === 38))
         context.emit('update:activeBack', active)
       }
 
       if (code === 13) openPageUrl(page)
-      else if (code === 38) current.value = (!current.value) ? lastUrl : current.value - 1
-      else if (code === 40) current.value = (current.value === lastUrl) ? 0 : current.value + 1
+      else if (code === 38) current.value = (!current.value) ? lastLink : current.value - 1
+      else if (code === 40) current.value = (current.value === lastLink) ? 0 : current.value + 1
 
       context.emit('index-update', current.value)
 
-      listOffset.value = props.urls.length < 6 ? '-50%' :
-        (current.value < lastPage) ? `${current.value * -listStep}px` : listOffset.value
+      listOffset.value = props.links.length < 6 ? '-50%' :
+        (current.value < lastOffset) ? `${current.value * -listStep}px` : listOffset.value
 
       if (active) {
         current.value = -1
-
-        if (props.urls.length > 5) listOffset.value = `${(lastPage - 1) * -listStep}px`
+        if (props.links.length > 5) listOffset.value = `${(lastOffset - 1) * -listStep}px`
       }
     }
 
-    function onPageClick (page: number): void {
+    function onLinkClick (page: number): void {
       if (enabled.value) {
         current.value = page
         setTimeout(() => openPageUrl(page), 400)
@@ -153,7 +153,7 @@ export default defineComponent({
     }
 
     function openPageUrl (page: number): void {
-      window.open((props.urls[page] as Page).url, '_blank')
+      window.open((props.links[page] as Page).url, '_blank')
     }
 
     function preparePages (endAnimation = false): void {
@@ -164,8 +164,8 @@ export default defineComponent({
           const index = pageIndex
           const next = ++pageIndex
 
-          const last = lastPage - (Platform.mobile ? 0 : 1)
-          const scrollableList = props.urls.length > 5 && index < last
+          const last = lastOffset - (Platform.mobile ? 0 : 1)
+          const scrollableList = props.links.length > 5 && index < last
 
           if (!pages.value[next]) return preparePages(true)
 
@@ -190,7 +190,7 @@ export default defineComponent({
         enabled.value = true
         context.emit('show-button')
         context.emit('update:skip', true)
-        listOffset.value = props.urls.length < 6 ? '-50%' : '0px'
+        listOffset.value = props.links.length < 6 ? '-50%' : '0px'
       }
     }
 
@@ -205,42 +205,29 @@ export default defineComponent({
       removeSkipEvent()
     }
 
-    function showPages (): void {
-      if (props.urls.length < 6) {
-        listOffset.value = '-50%'
-      }
-
-      setTimeout(() => {
-        lastPage = props.urls.length - 1 // (Platform.mobile ? 5 : 4)
-        lastUrl = props.urls.length - 1
-        preparePages()
-      })
-    }
-
     function onResize (size: Size): void {
-      listStep = size.height * 0.14 + (size.width < phoneWidth ? 18 : 21)
-      scrollOffset = (props.urls.length - 5) * -listStep
+      listStep = size.height * 0.14 + (size.width < phoneWidth ? 18 : 25)
+      scrollOffset = (props.links.length - 5) * -listStep
     }
 
     watchEffect(() => { if (props.dispose) lettering.dissolveAll(words) })
+    const lastOffset = props.links.length - (Platform.mobile ? 5 : 4)
+    const listOffset = ref(props.links.length < 6 ? '-50%' : '0px')
 
     const pages: Ref<Array<HTMLLIElement>> = ref([])
     const words: Array<Array<HTMLSpanElement>> = []
 
     const current = ref(Platform.mobile ? -1 : 0)
+    const lastLink = props.links.length - 1
     const screen = new Viewport(onResize)
 
-    const listOffset = ref('0px')
     const enabled = ref(false)
+    let lettering: Lettering
     const skip = ref(false)
 
-    let lettering: Lettering
     let scrollOffset: number
     let touchStart: number
-    let lastPage: number
-
     let listStep: number
-    let lastUrl: number
     let pageIndex = -1
 
     onMounted(() => {
@@ -252,7 +239,7 @@ export default defineComponent({
 
       Loading.activeItem = props.contacts ? 2 : 1
       onResize(screen.size)
-      showPages()
+      preparePages()
     })
 
     onBeforeUnmount(() => {
@@ -265,7 +252,7 @@ export default defineComponent({
 
     return {
       onTouchStart,
-      onPageClick,
+      onLinkClick,
       onTouchEnd,
       listOffset,
       current,
@@ -298,6 +285,7 @@ export default defineComponent({
 
     list-style-type: none;
     position: absolute;
+    padding-left: 0;
 
     margin: 0;
     top: 0;

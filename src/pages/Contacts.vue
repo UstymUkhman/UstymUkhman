@@ -6,7 +6,7 @@
       @show-button="showBackButton"
       class="contact-links"
       :dispose="closePage"
-      :urls="contacts"
+      :links="contacts"
       contacts
     />
 

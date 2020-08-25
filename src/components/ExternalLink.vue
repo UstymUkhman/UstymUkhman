@@ -1,7 +1,7 @@
 <template>
   <li :class="{'active': active, 'visible': visible}" itemscope>
     <pre :class="{'dissolve': dissolve}">{{ cursor }}</pre>
-    <p itemprop="name">{{ page }}</p>
+    <p itemprop="name">{{ link }}</p>
     <em v-if="mail" itemprop="email"> - ustym.ukhman@gmail.com</em>
   </li>
 </template>
@@ -13,7 +13,7 @@ export default defineComponent({
   name: 'ExternalLink',
 
   props: {
-    page: {
+    link: {
       type: String,
       required: true
     },
@@ -67,12 +67,16 @@ li {
   }
 
   p,
+  em,
   pre {
     @include white-rabbit;
     display: inline-block;
+
+    line-height: 25px;
     font-size: 25px;
 
     @include breakpoint($xs) {
+      line-height: 18px;
       font-size: 18px;
     }
   }
@@ -80,40 +84,39 @@ li {
   pre {
     transition: opacity 0.2s $ease-in-out-cubic;
     backface-visibility: hidden;
+
+    color: $energy-green;
     visibility: visible;
+
     opacity: 0;
+    margin: 0;
   }
 
   p {
     transition: transform 0.4s $ease-out-quart;
-    line-height: 20px;
-
-    @include breakpoint($xs) {
-      line-height: 18px;
-    }
   }
 
   em {
     transition: transform 0.4s $ease-out-quart, opacity 0.3s;
     backface-visibility: hidden;
     @include size(auto, 25px);
+
     margin: auto 0 auto 10px;
-
-    @include white-rabbit;
     white-space: nowrap;
-    position: absolute;
 
+    position: absolute;
     color: $fade-green;
-    line-height: 25px;
-    font-size: 25px;
 
     opacity: 0;
     bottom: 0;
     top: 0;
 
     @include breakpoint($xs) {
+      line-height: 18px;
       font-size: 13px;
+
       margin: auto 0;
+      height: 18px;
     }
   }
 

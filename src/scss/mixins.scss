@@ -73,6 +73,8 @@
       .button::after {
         transition: transform 0.15s cubic-bezier(1, 0.75, 0.15, 0.9);
         background-color: $light-green;
+
+        visibility: visible;
         position: absolute;
         content: '';
       }
@@ -107,6 +109,7 @@
       .button {
         transition: color 0.5s;
         visibility: hidden;
+
         position: relative;
         color: $green;
 
@@ -198,6 +201,7 @@
     span:first-child {
       transition: transform 0.3s ease-out;
       transition-delay: 0.5s !important;
+
       transform: translateX(-25px);
       position: absolute;
 
