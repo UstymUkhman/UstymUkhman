@@ -80,6 +80,7 @@ li {
   pre {
     transition: opacity 0.2s $ease-in-out-cubic;
     backface-visibility: hidden;
+    visibility: visible;
     opacity: 0;
   }
 

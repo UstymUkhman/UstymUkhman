@@ -4,7 +4,6 @@
       v-model:selectedBack="selectedButton"
       v-model:activeBack="activeButton"
       @show-button="showBackButton"
-      v-model:skip="lettering"
       class="contact-links"
       :dispose="closePage"
       :urls="contacts"
@@ -21,18 +20,17 @@
 </template>
 
 <script lang="ts">
-import { Ref, defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
+import { Ref, defineComponent, ref, onMounted } from 'vue'
 import BackButton from '@components/BackButton.vue'
 import Contacts from '@/assets/data/contacts.json'
 import LinksList from '@components/LinksList.vue'
 import { firePrerender } from '@/utils'
 
 interface TemplateValues {
-  readonly showBackButton: () => void
   readonly selectedButton: Ref<boolean>
   readonly visibleButton: Ref<boolean>
   readonly activeButton: Ref<boolean>
-  readonly lettering: Ref<boolean>
+  readonly showBackButton: () => void
   readonly closePage: Ref<boolean>
   readonly contacts: Array<Page>
 }
@@ -46,36 +44,16 @@ export default defineComponent({
   },
 
   setup (): TemplateValues {
-    const selectedButton: Ref<boolean> = ref(false)
-    const visibleButton: Ref<boolean> = ref(false)
-    const activeButton: Ref<boolean> = ref(false)
-
-    const lettering: Ref<boolean> = ref(false)
-    const closePage: Ref<boolean> = ref(false)
-
-    function removeSkipEvent (): void {
-      document.removeEventListener('touchend', skipLettering, false)
-      document.removeEventListener('keyup', skipLettering, false)
-    }
-
     function showBackButton (): void {
-      setTimeout(() => { visibleButton.value = true }, 500)
+      setTimeout(() => visibleButton.value = true, 500)
     }
 
-    function skipLettering (): void {
-      if (!lettering.value) {
-        lettering.value = true
-        removeSkipEvent()
-      }
-    }
+    const selectedButton = ref(false)
+    const visibleButton = ref(false)
+    const activeButton = ref(false)
+    const closePage = ref(false)
 
-    onMounted(() => {
-      document.addEventListener('touchend', skipLettering, false)
-      document.addEventListener('keyup', skipLettering, false)
-      firePrerender({ title: 'Contacts' })
-    })
-
-    onBeforeUnmount(removeSkipEvent)
+    onMounted(() => firePrerender({ title: 'Contacts' }))
 
     return {
       contacts: Contacts as Array<Page>,
@@ -83,7 +61,6 @@ export default defineComponent({
       selectedButton,
       visibleButton,
       activeButton,
-      lettering,
       closePage
     }
   }

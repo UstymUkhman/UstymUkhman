@@ -23,9 +23,10 @@
 </template>
 
 <script lang="ts">
-import { VueHTMLElement, TouchEventListener, Lettering, Loading, Viewport, Platform, phoneWidth } from '@/utils'
 import { SetupContext, Ref, defineComponent, watchEffect, onMounted, onBeforeUnmount, ref } from 'vue'
+import { VueHTMLElement, TouchEventListener, Lettering, Loading, Platform, phoneWidth } from '@/utils'
 import ExternalLink from '@components/ExternalLink.vue'
+import { Viewport, Size } from '@/utils/Viewport'
 
 interface TemplateValues {
   readonly onPageClick: (index: number) => void
@@ -35,6 +36,7 @@ interface TemplateValues {
   readonly listOffset: Ref<string>
   readonly enabled: Ref<boolean>
   readonly current: Ref<number>
+  readonly skip: Ref<boolean>
 }
 
 export default defineComponent({
@@ -69,12 +71,6 @@ export default defineComponent({
     },
 
     dispose: {
-      type: Boolean,
-      default: false,
-      required: false
-    },
-
-    skip: {
       type: Boolean,
       default: false,
       required: false
@@ -137,7 +133,7 @@ export default defineComponent({
       else if (code === 38) current.value = (!current.value) ? lastUrl : current.value - 1
       else if (code === 40) current.value = (current.value === lastUrl) ? 0 : current.value + 1
 
-      context.emit('update:index', current.value)
+      context.emit('index-update', current.value)
 
       listOffset.value = props.urls.length < 6 ? '-50%' :
         (current.value < lastPage) ? `${current.value * -listStep}px` : listOffset.value
@@ -162,7 +158,7 @@ export default defineComponent({
 
     function preparePages (endAnimation = false): void {
       if (!endAnimation) {
-        const delay = props.skip ? 0 : 500
+        const delay = skip.value ? 0 : 500
 
         setTimeout(() => {
           const index = pageIndex
@@ -173,7 +169,7 @@ export default defineComponent({
 
           if (!pages.value[next]) return preparePages(true)
 
-          if (!props.skip && scrollableList) {
+          if (!skip.value && scrollableList) {
             listOffset.value = `${next * -listStep}px`
           }
 
@@ -183,7 +179,7 @@ export default defineComponent({
 
           words.push(lettering.animate(preparePages))
 
-          if (props.skip) {
+          if (skip.value) {
             lettering.skipLettering()
             preparePages()
           }
@@ -198,33 +194,45 @@ export default defineComponent({
       }
     }
 
+    function removeSkipEvent (): void {
+      document.removeEventListener('touchend', skipLettering, false)
+      document.removeEventListener('keyup', skipLettering, false)
+    }
+
+    function skipLettering (): void {
+      lettering.skipLettering()
+      skip.value = true
+      removeSkipEvent()
+    }
+
     function showPages (): void {
       if (props.urls.length < 6) {
         listOffset.value = '-50%'
       }
 
       setTimeout(() => {
-        lastPage = props.urls.length - (Platform.mobile ? 5 : 4)
+        lastPage = props.urls.length - 1 // (Platform.mobile ? 5 : 4)
         lastUrl = props.urls.length - 1
         preparePages()
       })
     }
 
-    watchEffect(() => { if (lettering && props.skip) lettering.skipLettering() })
+    function onResize (size: Size): void {
+      listStep = size.height * 0.14 + (size.width < phoneWidth ? 18 : 21)
+      scrollOffset = (props.urls.length - 5) * -listStep
+    }
 
     watchEffect(() => { if (props.dispose) lettering.dissolveAll(words) })
 
-    const current: Ref<number> = ref(Platform.mobile ? -1 : 0)
     const pages: Ref<Array<HTMLLIElement>> = ref([])
     const words: Array<Array<HTMLSpanElement>> = []
 
-    const listOffset: Ref<string> = ref('0px')
-    const enabled: Ref<boolean> = ref(false)
+    const current = ref(Platform.mobile ? -1 : 0)
+    const screen = new Viewport(onResize)
 
-    const screen = new Viewport(size => {
-      listStep = size.height * 0.14 + (size.width < phoneWidth ? 18 : 21)
-      scrollOffset = (props.urls.length - 5) * -listStep
-    })
+    const listOffset = ref('0px')
+    const enabled = ref(false)
+    const skip = ref(false)
 
     let lettering: Lettering
     let scrollOffset: number
@@ -236,16 +244,22 @@ export default defineComponent({
     let pageIndex = -1
 
     onMounted(() => {
+      document.addEventListener('touchend', skipLettering, false)
+      document.addEventListener('keyup', skipLettering, false)
+
       document.addEventListener('keydown', onKeyDown, false)
       document.addEventListener('keyup', onKeyUp, false)
 
       Loading.activeItem = props.contacts ? 2 : 1
+      onResize(screen.size)
       showPages()
     })
 
     onBeforeUnmount(() => {
       document.removeEventListener('keydown', onKeyDown, false)
       document.removeEventListener('keyup', onKeyUp, false)
+
+      removeSkipEvent()
       screen.dispose()
     })
 
@@ -256,7 +270,8 @@ export default defineComponent({
       listOffset,
       current,
       enabled,
-      pages
+      pages,
+      skip
     }
   }
 })
@@ -281,7 +296,7 @@ export default defineComponent({
     transition: transform 0.5s $ease-out-sine;
     backface-visibility: hidden;
 
-    list-style-type: unset;
+    list-style-type: none;
     position: absolute;
 
     margin: 0;
