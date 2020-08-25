@@ -64,8 +64,6 @@
   $animaiton-delay: 0.15s;
 
   .button-border {
-    visibility: visible;
-
     .button-box {
       text-align: center;
 
@@ -75,17 +73,14 @@
       .button::after {
         transition: transform 0.15s cubic-bezier(1, 0.75, 0.15, 0.9);
         background-color: $light-green;
-
-        visibility: visible;
         position: absolute;
         content: '';
       }
 
       &::after,
       &::before {
+        @include size($border-size);
         transform: scale3d(1, 0, 1);
-        width: $border-size;
-        height: 100%;
 
         z-index: 1;
         top: 0;
@@ -120,10 +115,8 @@
 
         &::after,
         &::before {
+          @include size(100%, $border-size);
           transform: scale3d(0, 1, 1);
-          height: $border-size;
-          width: 100%;
-
           z-index: 1;
           left: 0;
         }
@@ -192,7 +185,7 @@
       }
 
       .button {
-        color: rgb(221, 255, 221);
+        color: $energy-green;
       }
     }
   }

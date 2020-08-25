@@ -4,13 +4,13 @@
       <div v-for="(page, p) in pages" :key="page" class="button-border">
 
         <div :ref="button => { items[p] = button }" class="button-box" itemtype="https://schema.org/MenuItem"
-             @touchstart.once="onTouchStart(p)" @touchend.once="onTouchEnd"
+             @touchstart.once="onTouchStart(p)" @touchend.once="onTouchEnd" itemscope
              :class="{
                'selected': p === settedSection && !nextPage,
                'active': isActiveButton(p),
                'visible': skipLettering,
                'pressed': pressed
-             }" itemscope>
+             }">
 
           <div class="button-background"></div>
           <p itemprop="name" class="button">{{ page }}</p>
@@ -59,15 +59,18 @@ export default defineComponent({
 
     function showMenuItems (): void {
       if (++itemIndex < pages.length) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        lettering = new Lettering((items.value[itemIndex] as any).children[1], 50, typingTimeout)
+        lettering = new Lettering(
+          items.value[itemIndex].children[1] as HTMLParagraphElement
+        , 50, typingTimeout)
 
         words.push(lettering.animate(showMenuItems))
 
         if (skipLettering.value) {
           lettering.skipLettering()
-        } else if (Platform.mobile) {
-          setTimeout(() => { visibleButtons.push(itemIndex) }, typingTimeout)
+        }
+
+        else if (Platform.mobile) {
+          setTimeout(() => visibleButtons.push(itemIndex), typingTimeout)
         }
       }
 
@@ -140,7 +143,7 @@ export default defineComponent({
     }
 
     function isActiveButton (index: number): boolean {
-      const mobileButtons: boolean = visibleButtons.includes(index)
+      const mobileButtons = visibleButtons.includes(index)
       return (index === currentItem.value && !nextPage.value) || mobileButtons
     }
 
@@ -161,13 +164,10 @@ export default defineComponent({
     let itemIndex = -1
 
     onMounted(() => {
-      document.addEventListener('keyup', skipMenuLettering, false)
       document.addEventListener('touchend', skipMenuLettering, false)
+      document.addEventListener('keyup', skipMenuLettering, false)
 
-      if (!Platform.mobile) {
-        pages.push('M0r3')
-      }
-
+      if (!Platform.mobile) pages.push('M0r3')
       setTimeout(showMenuItems, 500)
       firePrerender()
     })
@@ -197,14 +197,6 @@ export default defineComponent({
     @include console-button(5px);
     margin-left: 100px;
     height: 100%;
-
-    .isie & {
-      transform: translateY(-50%);
-      position: absolute;
-
-      height: auto;
-      top: 50%;
-    }
 
     @include breakpoint($md-down) {
       margin-left: 0;
@@ -263,10 +255,6 @@ export default defineComponent({
     transform: translateY(-50%);
     position: relative;
     top: 50%;
-
-    &.visible {
-      visibility: visible;
-    }
 
     @include breakpoint($sm-down) {
       @include size(350px, 100px);

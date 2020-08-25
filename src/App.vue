@@ -116,6 +116,7 @@ svg {
 }
 
 p {
+  backface-visibility: hidden;
   @include back-button;
   margin: 0px;
 }
