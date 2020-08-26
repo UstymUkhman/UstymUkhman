@@ -27,6 +27,14 @@
   }
 }
 
+@mixin vh ($prop, $height, $additionalProps: null) {
+  #{$prop}: calc(var(--height) / 100 * #{$height}) $additionalProps;
+}
+
+@mixin vw ($prop, $width, $additionalProps: null) {
+  #{$prop}: calc(var(--width) / 100 * #{$width}) $additionalProps;
+}
+
 @mixin center-size ($width: 100%, $height: 100%) {
   @include size($width, $height);
   position: absolute;

@@ -12,14 +12,14 @@ export default defineComponent({
 
   props: {
     fullscreen: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     },
 
     columns: {
-      required: true,
-      type: Number
+      type: Number,
+      required: true
     }
   }
 })

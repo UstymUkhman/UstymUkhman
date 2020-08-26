@@ -41,17 +41,17 @@ export default defineComponent({
 .experiment-list {
   -webkit-overflow-scrolling: touch;
   justify-content: space-evenly;
+  @include vw(padding, 2.5, 0);
 
   overflow: hidden auto;
   align-items: center;
   position: relative;
 
-  padding: 2.5vw 0;
   flex-wrap: wrap;
   display: flex;
 
   @include breakpoint($sm-down) {
-    padding: 7.5vw 0;
+    @include vw(padding, 7.5, 0);
   }
 }
 </style>

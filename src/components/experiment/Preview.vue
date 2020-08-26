@@ -78,15 +78,18 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$desktopHeight: 100 * 0.33 / 16 * 9;
-$mobileHeight: 100 * 0.66 / 16 * 9;
+$desktopHeight: 0.33 / 16 * 9;
+$mobileHeight: 0.66 / 16 * 9;
 
 .experiment-preview {
-  @include size(33vw, #{$desktopHeight}vw);
+  @include size(
+    calc(var(--width) * 0.33),
+    calc(var(--width) * #{$desktopHeight})
+  );
 
+  @include vw(margin, 5);
   pointer-events: none;
   position: relative;
-  margin: 5vw;
 
   .preview-content {
     transition: transform 0.5s $ease-out-back, border-color 0.75s ease-in, opacity 0.5s;
@@ -140,12 +143,12 @@ $mobileHeight: 100 * 0.66 / 16 * 9;
     transition: opacity 0.25s 0.75s;
     backface-visibility: hidden;
     @include center-transform;
+    @include vw(font-size, 2);
 
     pointer-events: none;
     white-space: nowrap;
     font-weight: 400;
 
-    font-size: 2vw;
     color: $green;
     margin: 0px;
 
@@ -167,8 +170,12 @@ $mobileHeight: 100 * 0.66 / 16 * 9;
   }
 
   @include breakpoint($sm-down) {
-    @include size(66vw, #{$mobileHeight}vw);
-    margin: 10vw;
+    @include size(
+      calc(var(--width) * 0.66),
+      calc(var(--width) * #{$mobileHeight})
+    );
+
+    @include vw(margin, 10);
   }
 
   @include desktop-hover {

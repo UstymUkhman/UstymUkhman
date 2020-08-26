@@ -208,6 +208,10 @@ export default defineComponent({
     function onResize (size: Size): void {
       listStep = size.height * 0.14 + (size.width < phoneWidth ? 18 : 25)
       scrollOffset = (props.links.length - 5) * -listStep
+
+      listOffset.value = props.links.length < 6 ? '-50%' :
+        props.activeBack ? `${(lastOffset - 1) * -listStep}px` :
+        (current.value < lastOffset) ? `${current.value * -listStep}px` : `${scrollOffset}px`
     }
 
     watchEffect(() => { if (props.dispose) lettering.dissolveAll(words) })

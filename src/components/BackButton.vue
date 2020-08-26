@@ -33,15 +33,15 @@ export default defineComponent({
 
   props: {
     focused: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     },
 
     enabled: {
-      required: false,
+      type: Boolean,
       default: false,
-      type: Boolean
+      required: false
     }
   },
 
@@ -68,13 +68,13 @@ export default defineComponent({
       }, delay + 2500)
     }
 
-    const selected: Ref<boolean> = ref(props.enabled)
-    const pressed: Ref<boolean> = ref(props.enabled)
-    const active: Ref<boolean> = ref(props.focused)
-
     const button: Ref<HTMLParagraphElement> = ref()!
-    const touching: Ref<boolean> = ref(false)
 
+    const selected = ref(props.enabled)
+    const pressed = ref(props.enabled)
+    const active = ref(props.focused)
+
+    const touching = ref(false)
     let lettering: Lettering
     let back = false
 

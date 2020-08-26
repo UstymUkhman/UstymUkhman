@@ -52,18 +52,18 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 li {
+  @include vh(margin, 14, 0);
   visibility: hidden;
-  position: relative;
 
+  position: relative;
   display: block;
-  margin: 14vh 0;
 
   &.visible {
     visibility: visible;
   }
 
   @media only screen and (max-height: 550px) {
-    margin: 12vh 0;
+    @include vh(margin, 12, 0);
   }
 
   p,

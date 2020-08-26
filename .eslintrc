@@ -5,6 +5,7 @@
   "rules": {
     "@typescript-eslint/no-non-null-assertion": 0,
     "generator-star-spacing": 0,
+    "comma-dangle": 2,
     "no-debugger": 1,
     "no-console": 0
   },

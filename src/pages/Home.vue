@@ -218,7 +218,6 @@ export default defineComponent({
 
     @include breakpoint($xs) {
       @include console-button(3px);
-      padding: 5vh 0;
     }
 
     .button {
@@ -242,12 +241,12 @@ export default defineComponent({
 }
 
 .button-border {
+  @include vh(height, 25);
   display: flex;
   margin: auto;
-  height: 25vh;
 
   @include breakpoint($sm-down) {
-    height: 20vh;
+    @include vh(height, 20);
   }
 
   .button-box {
