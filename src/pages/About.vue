@@ -150,7 +150,7 @@ export default defineComponent({
       @include vh(margin-top, 15);
     }
 
-    @media only screen and (max-height: 550px) {
+    @include breakpoint($xs-height) {
       margin-top: 0;
     }
   }

@@ -109,7 +109,7 @@ export default defineComponent({
     right: 0;
     left: 0;
 
-    @media only screen and (max-height: 550px) {
+    @include breakpoint($xs-height) {
       top: 25px;
     }
   }

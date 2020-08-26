@@ -187,12 +187,12 @@ body {
   }
 }
 
-::selection {
+::-moz-selection {
   background-color: #0c0;
   color: #000;
 }
 
-::-moz-selection {
+::selection {
   background-color: #0c0;
   color: #000;
 }

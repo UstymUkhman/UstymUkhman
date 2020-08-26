@@ -62,7 +62,7 @@ li {
     visibility: visible;
   }
 
-  @media only screen and (max-height: 550px) {
+  @include breakpoint($xs-height) {
     @include vh(margin, 12, 0);
   }
 

@@ -148,7 +148,7 @@ export default defineComponent({
       @include console-button(2px);
     }
 
-    @media only screen and (max-height: 550px) {
+    @include breakpoint($xs-height) {
       margin-bottom: 10px;
     }
 
