@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import { MeshStandardMaterial, MeshStandardMaterialParameters } from '@three/materials/MeshStandardMaterial'
-import { Platform, Viewport, Loading, Sounds, firePrerender } from '@/utils'
+import { MeshStandardMaterial } from '@three/materials/MeshStandardMaterial'
 import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
-
 import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
+import { Platform, Loading, Sounds, firePrerender } from '@/utils'
+
 import { DirectionalLight } from '@three/lights/DirectionalLight'
 import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
 import { JSONModel, JSONLoader } from '@/utils/3D/JSONLoader'
@@ -17,6 +17,7 @@ import { AmbientLight } from '@three/lights/AmbientLight'
 
 import { SpotLight } from '@three/lights/SpotLight'
 import AssetsLoader from '@/utils/3D/AssetsLoader'
+import { Viewport, Size } from '@/utils/Viewport'
 import { Geometry } from '@three/core/Geometry'
 import anime, { AnimeInstance } from 'animejs'
 
@@ -221,12 +222,12 @@ export default defineComponent({
       }, 3000)
     }
 
-    function onResize (): void {
-      width = screen.size.width
-      height = screen.size.height
+    function onResize (size: Size): void {
+      width = size.width
+      height = size.height
+      camera.aspect = size.ratio
 
       renderer.setSize(width, height)
-      camera.aspect = screen.size.ratio
       camera.updateProjectionMatrix()
     }
 
@@ -254,11 +255,7 @@ export default defineComponent({
       frame = requestAnimationFrame(render)
     }
 
-    const pills: Ref<HTMLDivElement> = ref()!
-    const loader: AssetsLoader = new AssetsLoader()
-    loader.loadJSON(new JSONLoader(), PILL as JSON, createPills)
-
-    const material: MeshStandardMaterialParameters = {
+    const material = {
       emissiveIntensity: 1,
       emissive: 0x000000,
 
@@ -272,12 +269,15 @@ export default defineComponent({
       opacity: 0
     }
 
-    const screen = new Viewport(onResize)
-    let height = screen.size.height
-    let width = screen.size.width
+    const pills: Ref<HTMLDivElement> = ref()!
+    const loader: AssetsLoader = new AssetsLoader()
+    loader.loadJSON(new JSONLoader(), PILL as JSON, createPills)
 
-    const camera = new PerspectiveCamera(75, screen.size.ratio, 1, 10000)
+    const screen = new Viewport(onResize)
+    let { width, height } = screen.size
+
     const renderer = new WebGLRenderer({ antialias: true, alpha: true })
+    const camera = new PerspectiveCamera(75, screen.size.ratio, 1, 10)
     const scene = new Scene()
     camera.position.z = 7.5
 

@@ -2,7 +2,7 @@ import { reactive, toRefs } from 'vue'
 
 type ResizeCallback = (screen: Size, videoScreen?: Size) => unknown
 
-export interface Size {
+export type Size = {
   width: number
   height: number
   ratio: number

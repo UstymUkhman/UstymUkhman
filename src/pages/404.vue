@@ -17,8 +17,9 @@
 </template>
 
 <script lang="ts">
-import { Viewport, Color, getShadowBlur, matrixFont, firePrerender } from '@/utils'
 import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+import { Color, getShadowBlur, matrixFont, firePrerender } from '@/utils'
+import { Viewport, Size } from '@/utils/Viewport'
 import { randomInt } from '@/utils/Number'
 
 const COLUMN_OFFSET = 18
@@ -105,24 +106,24 @@ export default defineComponent({
         : String.fromCharCode(code)
     }
 
-    const onResize = (): void => {
-      height = screen.size.height
-      width = screen.size.width
+    const onResize = (size: Size): void => {
+      height = size.height
+      width = size.width
 
       setCanvasStyle()
       fillColumns()
     }
 
     const numbers: Ref<HTMLCanvasElement> = ref()!
-    const block: Ref<boolean> = ref(false)
-
-    const screen = new Viewport(onResize)
     let context: CanvasRenderingContext2D
 
+    const screen = new Viewport(onResize)
     let { width, height } = screen.size
+
     let chars: Array<Array<string>>
     let canvas: HTMLCanvasElement
 
+    const block = ref(false)
     let skipColumns = false
     let frame = 0
 
@@ -146,7 +147,10 @@ export default defineComponent({
       screen.dispose()
     })
 
-    return { numbers, block }
+    return {
+      numbers,
+      block
+    }
   }
 })
 </script>

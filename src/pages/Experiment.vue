@@ -25,49 +25,47 @@ export default defineComponent({
 
   props: {
     description: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
 
     github: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
 
     route: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
 
     image: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
 
     video: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
 
     title: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     },
 
     page: {
-      required: true,
-      type: String
+      type: String,
+      required: true
     }
   },
 
   setup (props): void {
-    onMounted(() => {
-      firePrerender({
-        title: props.title,
-        description: props.description,
-        image: props.image
-      })
-    })
+    onMounted(() => firePrerender({
+      title: props.title,
+      description: props.description,
+      image: props.image
+    }))
   }
 })
 </script>

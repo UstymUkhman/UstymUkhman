@@ -32,8 +32,9 @@ export default defineComponent({
 
   setup (props, context: SetupContext): { code: Ref } {
     function getCharCode (): string {
-      const code = randomBool() ? randomInt(33, 63) : randomInt(90, 126)
-      return String.fromCharCode(code)
+      return String.fromCharCode(
+        randomBool() ? randomInt(33, 63) : randomInt(90, 126)
+      )
     }
 
     function getCharAlpha (index: number, end: number): number {

@@ -39,8 +39,8 @@ export default defineComponent({
   name: 'Contacts',
 
   components: {
-    BackButton,
-    LinksList
+    LinksList,
+    BackButton
   },
 
   setup (): TemplateValues {

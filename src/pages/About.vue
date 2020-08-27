@@ -62,9 +62,9 @@ export default defineComponent({
     }
 
     const description = `
-      Hi, my name is Ustym and I'm a front-end web developer.#
-      I'm working on too many things, trying to hack time to get more than 24 hours a day.#
-      I studied and lived in Florence (Italy) for 14 years and recently I moved to Kiev (Ukraine).##
+      Hi, my name is Ustym and I'm a front-end developer.#
+      I'm working on too many things, trying to hack time to have more than 24 hours a day#
+      and stay up to date on modern APIs, tools and all the awesome stuff you can do with them.##
 
       Things I love:#
       %- Learning and using new web technologies#
@@ -79,9 +79,10 @@ export default defineComponent({
     `
 
     const paragraph: Ref<HTMLParagraphElement> = ref()!
-    const selectedButton: Ref<boolean> = ref(false)
-    const visibleButton: Ref<boolean> = ref(false)
-    const activeButton: Ref<boolean> = ref(false)
+
+    const selectedButton = ref(false)
+    const visibleButton = ref(false)
+    const activeButton = ref(false)
 
     let lettering: Lettering
 
@@ -151,7 +152,7 @@ export default defineComponent({
     }
 
     @include breakpoint($xs-height) {
-      margin-top: 0;
+      @include vh(margin-top, 8);
     }
   }
 }

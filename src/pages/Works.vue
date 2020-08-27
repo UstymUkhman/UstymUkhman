@@ -47,8 +47,8 @@ export default defineComponent({
   name: 'Works',
 
   components: {
-    BackButton,
-    LinksList
+    LinksList,
+    BackButton
   },
 
   setup (): TemplateValues {

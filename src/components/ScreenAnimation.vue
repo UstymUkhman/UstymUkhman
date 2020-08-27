@@ -37,10 +37,9 @@ export default defineComponent({
 
     const loader: Ref<HTMLCanvasElement> = ref()!
     let context: CanvasRenderingContext2D
-    const screen = new Viewport(onResize)
 
-    let height = screen.size.height
-    let width = screen.size.width
+    const screen = new Viewport(onResize)
+    let { width, height } = screen.size
 
     let halfHeight = height / 2
     let halfWidth = width / 2
