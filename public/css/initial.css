@@ -39,9 +39,7 @@ body {
 }
 
 #root {
-  background-color: #000;
   display: block;
-
   height: 100%;
   width: 100%;
   z-index: 0;
@@ -49,7 +47,6 @@ body {
 
 .disabled-js,
 .not-supported {
-  background-color: #000;
   text-align: center;
   position: absolute;
 

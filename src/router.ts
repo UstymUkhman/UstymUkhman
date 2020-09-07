@@ -3,7 +3,6 @@ import experiments from '@/assets/data/experiments.json'
 
 type RedirectRoute = (route?: { name: string }) => void
 type VueComponent = Promise<typeof import('*.vue')>
-type PromiseImport = (page: string) => void
 
 interface ExperimentProps {
   readonly description: string
@@ -51,6 +50,11 @@ export default createRouter({
     beforeEnter: checkHomeRedirect,
     path: '/more',
     name: 'More'
+  }, {
+    component: (): VueComponent => import(/* webpackChunkName: "hole-page" */ '@pages/RabbitHole.vue'),
+    beforeEnter: checkHomeRedirect,
+    name: 'RabbitHole',
+    path: '/hole'
   }, {
     component: (): VueComponent => import(/* webpackChunkName: "experiments-page" */ '@pages/Experiments.vue'),
     path: '/experiments',

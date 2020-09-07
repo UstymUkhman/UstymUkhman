@@ -1,4 +1,4 @@
-type Page = { name: string; url: string; }
+declare type Page = { name: string; url: string; }
 
 declare module '*.vue' {
   import { ComponentOptions } from 'vue'

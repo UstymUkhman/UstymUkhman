@@ -72,7 +72,6 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 canvas {
-  background-color: $black;
   z-index: $screen;
 }
 </style>

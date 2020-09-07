@@ -1,6 +1,6 @@
 <template>
   <article itemtype="http://schema.org/WebPage" class="more-page" itemscope>
-    <div ref="pills"></div>
+    <canvas ref="pills"></canvas>
   </article>
 </template>
 
@@ -29,7 +29,7 @@ import router from '@/router'
 export default defineComponent({
   name: 'More',
 
-  setup (): { readonly pills: Ref<HTMLDivElement> } {
+  setup (): { readonly pills: Ref<HTMLCanvasElement> } {
     function createPills (model: JSONModel): void {
       createBluePill(model.geometry)
       createRedPill(model.geometry)
@@ -245,8 +245,12 @@ export default defineComponent({
     }
 
     function createRenderer (): void {
-      pills.value.appendChild(renderer.domElement)
-      renderer.setClearColor(0x000000, 0)
+      renderer = new WebGLRenderer({
+        canvas: pills.value,
+        antialias: true,
+        alpha: true
+      })
+
       renderer.setSize(width, height)
     }
 
@@ -269,15 +273,15 @@ export default defineComponent({
       opacity: 0
     }
 
-    const pills: Ref<HTMLDivElement> = ref()!
+    const pills: Ref<HTMLCanvasElement> = ref()!
     const loader: AssetsLoader = new AssetsLoader()
     loader.loadJSON(new JSONLoader(), PILL as JSON, createPills)
 
     const screen = new Viewport(onResize)
     let { width, height } = screen.size
 
-    const renderer = new WebGLRenderer({ antialias: true, alpha: true })
     const camera = new PerspectiveCamera(75, screen.size.ratio, 1, 10)
+    let renderer: WebGLRenderer
     const scene = new Scene()
     camera.position.z = 7.5
 
@@ -305,6 +309,7 @@ export default defineComponent({
     onBeforeUnmount(() => {
       document.removeEventListener('keydown', onKeyDown, false)
       cancelAnimationFrame(frame)
+      renderer.dispose()
     })
 
     return { pills }

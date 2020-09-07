@@ -19,6 +19,26 @@
   "title": "Dynamic.css",
   "route": "DynamicCss"
 }, {
+  "page": "https://ustymukhman.github.io/fbo-particles/public/",
+  "github": "https://github.com/UstymUkhman/fbo-particles",
+  "description": "WebGL FBO Particles",
+
+  "image": "FBOParticles.jpg",
+  "video": "FBOParticles.mp4",
+
+  "title": "FBO Particles",
+  "route": "fbo-particles"
+}, {
+  "page": "https://ustymukhman.github.io/sound-particles/public/",
+  "github": "https://github.com/UstymUkhman/sound-particles",
+  "description": "PixiJS audio reactive particles",
+
+  "image": "SoundParticles.jpg",
+  "video": "SoundParticles.mp4",
+
+  "title": "Sound Particles",
+  "route": "sound-particles"
+}, {
   "page": "https://ustymukhman.github.io/video-transition/public/",
   "github": "https://github.com/UstymUkhman/video-transition",
   "description": "WebGL Video Transition",
@@ -48,16 +68,6 @@
 
   "title": "Color Grading",
   "route": "color-grading"
-}, {
-  "page": "https://ustymukhman.github.io/sound-particles/public/",
-  "github": "https://github.com/UstymUkhman/sound-particles",
-  "description": "PixiJS audio reactive particles",
-
-  "image": "SoundParticles.jpg",
-  "video": "SoundParticles.mp4",
-
-  "title": "Sound Particles",
-  "route": "sound-particles"
 }, {
   "page": "https://ustymukhman.github.io/face-masking/public/",
   "github": "https://github.com/UstymUkhman/face-masking",
