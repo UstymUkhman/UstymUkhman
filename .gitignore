@@ -1,7 +1,6 @@
 tmp
 pids
 logs
-
 *.pid
 *.log
 *.log*
@@ -11,14 +10,12 @@ logs
 *.seed
 *.ntvs*
 *.njsproj
-
 .idea
 .vscode
 .DS_Store
 .env.local
 .env.*.local
 .lock-wscript
-
 dist/
 bitnami.pem
 node_modules/

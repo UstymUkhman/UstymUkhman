@@ -310,6 +310,7 @@ export default defineComponent({
       document.removeEventListener('keydown', onKeyDown, false)
       cancelAnimationFrame(frame)
       renderer.dispose()
+      screen.dispose()
     })
 
     return { pills }

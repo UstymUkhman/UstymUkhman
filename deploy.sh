@@ -1,5 +1,4 @@
 #!/bin/bash
-
 clear
 
 read -d '' sitemap << EOF
@@ -20,10 +19,9 @@ EOF
 
 echo "$robots" > ./public/robots.txt
 echo "$sitemap" > ./public/sitemap.xml
-
 echo "This script is going to deploy on production."$'\n'
-options=("Let's do this!" "Fuck, no!")
 
+options=("Let's do this!" "Fuck, no!")
 PS3=$'\n'"Are your sure? "
 deploy=false
 

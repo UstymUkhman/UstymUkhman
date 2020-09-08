@@ -52,7 +52,7 @@ export default createRouter({
     name: 'More'
   }, {
     component: (): VueComponent => import(/* webpackChunkName: "hole-page" */ '@pages/RabbitHole.vue'),
-    beforeEnter: checkHomeRedirect,
+    // beforeEnter: checkHomeRedirect,
     name: 'RabbitHole',
     path: '/hole'
   }, {

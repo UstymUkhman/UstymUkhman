@@ -61,7 +61,7 @@ export default defineComponent({
     const rainColumns = ref(0)
 
     const fullscreenRain = computed(() =>
-      ['About', 'More', 'Experiments'].includes(route.name as string)
+      ['About', 'More', 'RabbitHole', 'Experiments'].includes(route.name as string)
     )
 
     const visibleRain = computed(() =>

@@ -4,7 +4,7 @@ export default class Lettering {
   private readonly letters: Array<HTMLSpanElement> = []
   private lastLetter: HTMLSpanElement | undefined
   private readonly message: HTMLParagraphElement
-  private callback: AnimationCallback
+  private callback?: AnimationCallback
 
   private readonly timeout: number = 1000
   private last: HTMLSpanElement | null
@@ -22,7 +22,7 @@ export default class Lettering {
     this.last = null
   }
 
-  public animate (callback: AnimationCallback | undefined): Array<HTMLSpanElement> {
+  public animate (callback?: AnimationCallback | undefined): Array<HTMLSpanElement> {
     if (this.message && this.message.textContent) {
       this.word = this.message.textContent?.split('')
     }
