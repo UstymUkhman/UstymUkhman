@@ -1,17 +1,17 @@
 type PerspectiveCamera = import('@three/cameras/PerspectiveCamera').PerspectiveCamera
-import { KeyboardEventListener, Platform } from '@/utils'
-import PointerControls from '@/utils/3D/PointerControls'
-
 type Object3D = import('@three/core/Object3D').Object3D
 type Scene = import('@three/scenes/Scene').Scene
+
+import { KeyboardEventListener, Platform } from '@/utils'
+import PointerControls from '@/utils/3D/PointerControls'
 import { Vector3 } from '@three/math/Vector3'
 
+export const enum Direction { UP, RIGHT, DOWN, LEFT }
 type Directions<Type> = { [way in Direction]: Type }
-const enum Direction { UP, RIGHT, DOWN, LEFT }
 type FullscreenCallback = () => unknown
 const LOCK_ONLY = !Platform.chromium
 
-export default class FirstPersonControls {
+export class FirstPersonControls {
   private readonly onPointerChange: EventListener = this.onPointerLockChange.bind(this)
   private readonly onPointerError: EventListener = this.onPointerLockError.bind(this)
 

@@ -12,7 +12,7 @@ import { Platform, Loading, Sounds, firePrerender } from '@/utils'
 
 import { DirectionalLight } from '@three/lights/DirectionalLight'
 import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
-import { JSONModel, JSONLoader } from '@/utils/3D/JSONLoader'
+type JSONModel = import('@/utils/3D/JSONLoader').JSONModel
 import { AmbientLight } from '@three/lights/AmbientLight'
 
 import { SpotLight } from '@three/lights/SpotLight'
@@ -275,7 +275,7 @@ export default defineComponent({
 
     const pills: Ref<HTMLCanvasElement> = ref()!
     const loader: AssetsLoader = new AssetsLoader()
-    loader.loadJSON(new JSONLoader(), PILL as JSON, createPills)
+    loader.loadJSON(PILL as JSON, createPills)
 
     const screen = new Viewport(onResize)
     let { width, height } = screen.size

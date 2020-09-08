@@ -1,11 +1,14 @@
 import { JSONModel, JSONLoader, JSONPromise } from '@/utils/3D/JSONLoader'
 import { LoadingManager } from '@three/loaders/LoadingManager'
+import { TextureLoader } from '@three/loaders/TextureLoader'
+import { Texture } from '@three/textures/Texture'
 
-type LoadCallback = (asset: JSONModel) => unknown
+type TextureCallback = (asset: Texture) => unknown
+type JSONCallback = (asset: JSONModel) => unknown
 
 export default class AssetsLoader extends LoadingManager {
-  private readonly Base64 = /data:image\/([a-zA-Z]*);base64,([^"]*)/
-  private readonly IMAGE = /^\.|\.bmp|\.jpg$|\.gif$|.png$|.gif$/
+  private readonly texture = new TextureLoader(this);
+  private readonly json = new JSONLoader(this);
 
   public onStart = (): void => {
     console.info('Loading... 0%')
@@ -20,27 +23,36 @@ export default class AssetsLoader extends LoadingManager {
     console.info(`Error occurred loading ${url}.`)
   }
 
-  public async loadJSON (loader: JSONLoader, model: JSON | string, callback?: LoadCallback): Promise<JSONModel> {
-    const asset: JSONModel = this.isJSONType(model)
-      ? await this.parse(loader, model)
-      : await this.load(loader, model)
+  public async loadTexture (texture: Texture | string, callback?: TextureCallback): Promise<Texture> {
+    const asset = this.isTextureType(texture)
+      ? await this.parse(this.texture, texture) as Texture
+      : await this.load(this.texture, texture) as Texture
+
+    if (callback) callback(asset)
+    return asset as Texture
+  }
+
+  public async loadJSON (model: JSON | string, callback?: JSONCallback): Promise<JSONModel> {
+    const asset = this.isJSONType(model)
+      ? await this.parse(this.json, model) as JSONModel
+      : await this.load(this.json, model) as JSONModel
 
     if (callback) callback(asset)
     return asset
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private load (loader: JSONLoader, ...args: any[]): Promise<JSONModel> {
+  private load (loader: TextureLoader | JSONLoader, ...args: any[]): Promise<Texture | JSONModel> {
     return this.execute(loader, 'load', args)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private parse (loader: JSONLoader, ...args: any[]): Promise<JSONModel> {
+  private parse (loader: TextureLoader | JSONLoader, ...args: any[]): Promise<Texture | JSONModel> {
     return this.execute(loader, 'parse', args)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private execute (loader: JSONLoader, fn: string, args: any[]): Promise<JSONModel> {
+  private execute (loader: TextureLoader | JSONLoader, fn: string, args: any[]): Promise<Texture | JSONModel> {
     return new Promise((resolve, reject) => {
       const onError = (error: Error) => reject(error)
       const onLoad = (result: JSONPromise) => resolve(result)
@@ -53,8 +65,8 @@ export default class AssetsLoader extends LoadingManager {
     })
   }
 
-  private isImageType (asset: string): boolean {
-    return this.IMAGE.test(asset) || this.Base64.test(asset)
+  private isTextureType (image: Texture | string): boolean {
+    return image instanceof Texture
   }
 
   private isJSONType (model: JSON | string): boolean {
