@@ -8,8 +8,10 @@ import { Vector3 } from '@three/math/Vector3'
 
 export const enum Direction { UP, RIGHT, DOWN, LEFT }
 type Directions<Type> = { [way in Direction]: Type }
-type FullscreenCallback = () => unknown
 const LOCK_ONLY = !Platform.chromium
+
+type FullscreenCallback = () => void
+type RequestCallback = () => void
 
 export class FirstPersonControls {
   private readonly onPointerChange: EventListener = this.onPointerLockChange.bind(this)
@@ -18,17 +20,17 @@ export class FirstPersonControls {
   private readonly onKeyDown: KeyboardEventListener = this.onKeyPress.bind(this)
   private readonly onKeyUp: KeyboardEventListener = this.onKeyRelease.bind(this)
 
-  private velocity: Vector3 = new Vector3()
+  public onEnterFullscreen?: FullscreenCallback
+  public onExitFullscreen?: FullscreenCallback
+
+  private pointerLock: RequestCallback
+  private fullscreen: RequestCallback
+
   private controls: PointerControls
   private camera: PerspectiveCamera
+  private velocity = new Vector3()
   private room: HTMLCanvasElement
   private scene: Scene
-
-  public onEnterFullscreen: FullscreenCallback | null = null
-  public onExitFullscreen: FullscreenCallback | null = null
-
-  private pointerLock = this.room.requestPointerLock
-  private fullscreen = this.room.requestFullscreen
 
   private delta: number = performance.now()
   private activated = false
@@ -55,8 +57,12 @@ export class FirstPersonControls {
     this.enabled = true
     this.camera = camera
 
+    this.fullscreen = this.room.requestFullscreen
+    this.pointerLock = this.room.requestPointerLock
+
     this.controls = new PointerControls(this.camera, 16)
     this.error = !this.fullscreen || !this.pointerLock
+
     this.scene.add(this.controls.object)
     this.addEventListeners()
   }
@@ -88,7 +94,7 @@ export class FirstPersonControls {
 
   private onPointerLockError (event: Event): void {
     console.error('\'pointerlockerror\' event occured...', event)
-    if (LOCK_ONLY) this.enable(false)
+    if (LOCK_ONLY) this.enable = false
   }
 
   private keyHandler (code: number, pressed: boolean): void {
@@ -134,7 +140,7 @@ export class FirstPersonControls {
 
   public setFullscreenMode (fullscreen: boolean): void {
     if (fullscreen) {
-      this.enable(true)
+      this.enable = true
       this.room.requestPointerLock()
       if (!LOCK_ONLY) this.room.requestFullscreen()
     }
@@ -147,7 +153,7 @@ export class FirstPersonControls {
       }
 
       document.exitPointerLock()
-      this.enable(false)
+      this.enable = false
     }
   }
 
@@ -157,16 +163,7 @@ export class FirstPersonControls {
 
   public activate (): void {
     this.activated = true
-    if (this.isFullscreen) this.enable(true)
-  }
-
-  public enable (enable: boolean): void {
-    this.controls.enabled = enable && this.activated
-    this.enabled = enable && this.activated
-
-    if (this.enabled) {
-      this.delta = performance.now()
-    }
+    if (this.isFullscreen) this.enable = true
   }
 
   public update (): void {
@@ -238,6 +235,15 @@ export class FirstPersonControls {
     delete this.scene
     delete this.room
     delete this.move
+  }
+
+  public set enable (enable: boolean) {
+    this.controls.enabled = enable && this.activated
+    this.enabled = enable && this.activated
+
+    if (this.enabled) {
+      this.delta = performance.now()
+    }
   }
 
   public get cameraDirection (): Vector3 {

@@ -85,7 +85,6 @@ export default defineComponent({
 html,
 body {
   @include white-rabbit;
-  @include size;
   // cursor: none;
 }
 
@@ -124,6 +123,7 @@ p {
 span.lettering {
   transition: opacity 0.5s $ease-in-out-cubic;
   backface-visibility: hidden;
+  position: relative;
 
   &.dissolve {
     opacity: 0;

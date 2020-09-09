@@ -7,8 +7,8 @@ type TextureCallback = (asset: Texture) => unknown
 type JSONCallback = (asset: JSONModel) => unknown
 
 export default class AssetsLoader extends LoadingManager {
-  private readonly texture = new TextureLoader(this);
-  private readonly json = new JSONLoader(this);
+  private readonly texture = new TextureLoader(this)
+  private readonly json = new JSONLoader(this)
 
   public onStart = (): void => {
     console.info('Loading... 0%')
@@ -24,18 +24,22 @@ export default class AssetsLoader extends LoadingManager {
   }
 
   public async loadTexture (texture: Texture | string, callback?: TextureCallback): Promise<Texture> {
-    const asset = this.isTextureType(texture)
-      ? await this.parse(this.texture, texture) as Texture
-      : await this.load(this.texture, texture) as Texture
+    const asset = (
+      this.isTextureType(texture)
+        ? await this.parse(this.texture, texture)
+        : await this.load(this.texture, texture)
+    ) as Texture
 
     if (callback) callback(asset)
-    return asset as Texture
+    return asset
   }
 
   public async loadJSON (model: JSON | string, callback?: JSONCallback): Promise<JSONModel> {
-    const asset = this.isJSONType(model)
-      ? await this.parse(this.json, model) as JSONModel
-      : await this.load(this.json, model) as JSONModel
+    const asset = (
+      this.isJSONType(model)
+        ? await this.parse(this.json, model)
+        : await this.load(this.json, model)
+    ) as JSONModel
 
     if (callback) callback(asset)
     return asset
@@ -58,10 +62,10 @@ export default class AssetsLoader extends LoadingManager {
       const onLoad = (result: JSONPromise) => resolve(result)
       const onProgress = (progress: number) => console.log(`Loading... ${progress}%`, progress)
 
-      const loaderCallbacks = fn === 'load' ? [onLoad, onProgress, onError] : [onLoad, onError]
-
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      resolve((loader as any)[fn](...args.concat(loaderCallbacks)))
+      resolve((loader as any)[fn](...args.concat(
+        fn === 'load' ? [onLoad, onProgress, onError] : [onLoad, onError]
+      )))
     })
   }
 

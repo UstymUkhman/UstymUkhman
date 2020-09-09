@@ -1,6 +1,8 @@
 <template>
   <div class="background-container" :class="{'fullscreen': fullscreen}">
-    <div class="background" :style="{'width': `${columns * 12}px`}"></div>
+    <div class="background" :style="{'width': `${columns * 12}px`}">
+      <div></div><div></div>
+    </div>
   </div>
 </template>
 
@@ -40,7 +42,6 @@ $mobileBackground: rgba($black, 0.8);
   top: 0;
 
   .background {
-    @include horizontal-gradient($black, transparent, 75%);
     backface-visibility: hidden;
     transition: opacity 500ms;
 
@@ -50,6 +51,25 @@ $mobileBackground: rgba($black, 0.8);
     right: auto;
     left: 0;
     top: 0;
+
+    > div {
+      display: inline-block;
+      position: relative;
+      height: 100%;
+
+      &:first-child {
+        background-color: $black;
+        width: 75%;
+      }
+
+      &:last-child {
+        background-image: url('../assets/img/gradient.png');
+        background-position: top left;
+        background-repeat: repeat-y;
+        background-size: contain;
+        width: 25%;
+      }
+    }
   }
 
   &.fullscreen {

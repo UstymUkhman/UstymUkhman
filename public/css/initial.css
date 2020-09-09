@@ -24,15 +24,8 @@ body {
   max-width: 100%;
   min-width: 100%;
 
-  padding: 0;
-  margin: 0;
-}
-
-.no-js body,
-.no-es5object body,
-.no-csstransforms3d body {
-  overflow: hidden;
   height: 100%;
+  width: 100%;
 
   padding: 0;
   margin: 0;
