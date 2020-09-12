@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import { Ref, defineComponent, onMounted, ref } from 'vue'
+import { Ref, defineComponent, ref, onMounted } from 'vue'
 import facebook from '@/assets/img/facebook.svg'
 import twitter from '@/assets/img/twitter.svg'
 import github from '@/assets/img/github.svg'

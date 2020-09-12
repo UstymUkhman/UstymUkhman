@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { SetupContext, Ref, defineComponent, watch, onMounted, onBeforeUnmount, ref } from 'vue'
+import { SetupContext, Ref, defineComponent, watch, ref, onMounted, onBeforeUnmount } from 'vue'
 import { Color, getShadowBlur, matrixFont } from '@/utils'
 import { randomInt, randomBool } from '@/utils/Number'
 import { Viewport, Size } from '@/utils/Viewport'
@@ -23,7 +23,7 @@ export default defineComponent({
   name: 'MatrixRain',
 
   props: {
-    fullscreen: {
+    fullsize: {
       type: Boolean,
       default: false,
       required: false
@@ -84,7 +84,7 @@ export default defineComponent({
       _rows = Math.max(rows - _rows, 0)
       _columns = Math.max(columns - _columns, 0)
 
-      canvasContext.shadowBlur = getShadowBlur(props.fullscreen)
+      canvasContext.shadowBlur = getShadowBlur(props.fullsize)
       canvasContext.fillStyle = `rgba(${Color.green}, 1.0)`
       canvasContext.shadowColor = `rgb(${Color.green})`
 
@@ -157,7 +157,7 @@ export default defineComponent({
       }
     }
 
-    watch(() => props.fullscreen, now =>
+    watch(() => props.fullsize, now =>
       canvasContext.shadowBlur = getShadowBlur(now)
     )
 
@@ -182,8 +182,8 @@ export default defineComponent({
       canvas = code.value
       updateCanvasSize()
 
-      canvasContext = canvas.getContext('2d', { alpha: false })!
-      canvasContext.shadowBlur = getShadowBlur(props.fullscreen)
+      canvasContext = canvas.getContext('2d')!
+      canvasContext.shadowBlur = getShadowBlur(props.fullsize)
       canvasContext.fillStyle = `rgba(${Color.green}, 1.0)`
       canvasContext.shadowColor = `rgb(${Color.green})`
 

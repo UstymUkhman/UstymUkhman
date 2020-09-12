@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { TouchEventListener, Lettering, Loading, firePrerender } from '@/utils'
-import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+import { Ref, defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
 import BackButton from '@components/BackButton.vue'
 
 interface TemplateValues {
@@ -36,7 +36,7 @@ export default defineComponent({
 
   setup (): TemplateValues {
     function enterKey (event: KeyboardEvent | TouchEvent): boolean {
-      return event instanceof KeyboardEvent && event.keyCode === 13
+      return event instanceof KeyboardEvent && (event.code || event.key) === 'Enter'
     }
 
     function onKeyDown (event: KeyboardEvent | TouchEvent): void {

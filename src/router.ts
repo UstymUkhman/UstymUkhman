@@ -4,18 +4,6 @@ import experiments from '@/assets/data/experiments.json'
 type RedirectRoute = (route?: { name: string }) => void
 type VueComponent = Promise<typeof import('*.vue')>
 
-interface ExperimentProps {
-  readonly description: string
-  readonly github: string
-  readonly route: string
-
-  readonly image: string
-  readonly video: string
-
-  readonly title: string
-  readonly page: string
-}
-
 const checkHomeRedirect = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: RedirectRoute): void => {
   const forbiddenDestination = to.name === 'More' || to.name === 'RabbitHole'
 
@@ -64,7 +52,7 @@ export default createRouter({
       name: 'Experiments',
       path: ''
     },
-    ...((experiments as Array<unknown>) as Array<ExperimentProps>).map(experiment => {
+    ...(experiments as Array<Experiment>).map(experiment => {
       return {
         component: (): VueComponent => import(/* webpackChunkName: "experiment-page" */ '@pages/Experiment.vue'),
         name: experiment.title,

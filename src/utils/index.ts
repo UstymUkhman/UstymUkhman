@@ -8,8 +8,6 @@ import Lettering from './Lettering'
 import { Viewport } from './Viewport'
 import firePrerender from './Prerender'
 
-export type VueHTMLElement<HTMLElement> = HTMLElement & { $el: HTMLElement }
-export type KeyboardEventListener = (event: KeyboardEvent) => void
 export type MouseEventListener = (event: MouseEvent) => void
 export type TouchEventListener = (event: TouchEvent) => void
 
@@ -25,36 +23,43 @@ if (navigator && navigator.userLanguage) {
   userLanguage = navigator.userLanguage
 }
 
-export function getShadowBlur (fullscreen = false): number {
+export function getShadowBlur (fullsize = false): number {
   const mobile = Platform.mobile || window.innerWidth < mobileWidth
-  return !Platform.chromium || mobile || fullscreen ? 0 : 5
+  return !Platform.chromium || mobile || fullsize ? 0 : 5
 }
 
-const language = mainLanguage || navigator.language || userLanguage
-const matrixFont = 'normal 24px Martix Code NFI'
+export const language = mainLanguage || navigator.language || userLanguage
+export const matrixFont = 'normal 24px Martix Code NFI'
 
-const Color = {
+export const mobileWidth = 992
+export const phoneWidth = 768
+
+export const Color = {
   lightGreen: '187, 255, 187',
   white: '255, 255, 255',
   green: '0, 204, 0',
   black: '0, 0, 0'
 }
 
-const mobileWidth = 992
-const phoneWidth = 768
+export interface Experiment {
+  readonly description: string
+  readonly github: string
+  readonly route: string
+
+  readonly image: string
+  readonly video: string
+
+  readonly title: string
+  readonly page: string
+}
 
 export {
   firePrerender,
-  mobileWidth,
-  phoneWidth,
-  matrixFont,
   Lettering,
   Platform,
   Observer,
   Viewport,
-  language,
   Loading,
   Sounds,
-  Color,
   wheel
 }

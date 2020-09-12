@@ -34,7 +34,7 @@ export default class AssetsLoader extends LoadingManager {
     return asset
   }
 
-  public async loadJSON (model: JSON | string, callback?: JSONCallback): Promise<JSONModel> {
+  public async loadModel (model: JSON | string, callback?: JSONCallback): Promise<JSONModel> {
     const asset = (
       this.isJSONType(model)
         ? await this.parse(this.json, model)

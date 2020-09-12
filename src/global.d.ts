@@ -1,3 +1,4 @@
+declare type Experiment = import('@/utils').Experiment
 declare type Page = { name: string; url: string; }
 
 declare module '*.vue' {
@@ -7,9 +8,13 @@ declare module '*.vue' {
 }
 
 declare module '*.json' {
-  const value: Array<Page> | JSON
+  const value: JSON | Array<Page | Experiment>
   export default value
 }
 
 declare module '*.svg'
-declare module '*.scss'
+declare module '*.png'
+declare module '*.jpg'
+
+declare module '*.vert'
+declare module '*.frag'

@@ -1,7 +1,3 @@
-# code coverage directories
-.nyc_output
-coverage
-
 # configs
 codeship-services.yml
 .yarn-metadata.json
@@ -19,27 +15,33 @@ circle.yml
 .jshintrc
 .*ignore
 
-# asset directories
+# build scripts
+Gruntfile.js
+Gulpfile.js
+Makefile
+
+# code coverage
+.nyc_output
+coverage
+
+# examples
+!three/examples
+examples
+example
+
+# tests
+powered-test
+__tests__
+tests
+test
+
+# assets
 website
 assets
 images
 docs
 doc
 
-# test directories
-powered-test
-__tests__
-tests
-test
-
-# build scripts
-Gruntfile.js
-Gulpfile.js
-Makefile
-
-# examples
-examples
-example
-
 # misc
+*.gz
 *.md

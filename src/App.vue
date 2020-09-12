@@ -1,7 +1,7 @@
 <template>
   <main id="app">
-    <MatrixRain v-if="visibleRain" :fullscreen="fullscreenRain" @rain-columns="rainColumns = $event" />
-    <Background :fullscreen="fullscreenRain" :columns="rainColumns" />
+    <MatrixRain v-if="visibleRain" :fullsize="fullsizeRain" @rain-columns="rainColumns = $event" />
+    <Background :fullsize="fullsizeRain" :columns="rainColumns" />
 
     <router-view
       @toggle-overlay="visibleOverlay = $event"
@@ -21,7 +21,7 @@ import Background from '@components/Background.vue'
 import { useRoute } from 'vue-router'
 
 interface TemplateValues {
-  readonly fullscreenRain: ComputedRef<boolean>
+  readonly fullsizeRain: ComputedRef<boolean>
   readonly visibleRain: ComputedRef<boolean>
   readonly visibleOverlay: Ref<boolean>
   readonly rainColumns: Ref<number>
@@ -54,13 +54,13 @@ export default defineComponent({
   },
 
   setup (): TemplateValues {
-    console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
+    console.log('%cCoffee is never enough.', 'background:#000; padding: 5px; color: #0C0;')
 
     const route = reactive(useRoute())
     const visibleOverlay = ref(true)
     const rainColumns = ref(0)
 
-    const fullscreenRain = computed(() =>
+    const fullsizeRain = computed(() =>
       ['About', 'More', 'RabbitHole', 'Experiments'].includes(route.name as string)
     )
 
@@ -70,8 +70,8 @@ export default defineComponent({
     )
 
     return {
-      fullscreenRain,
       visibleOverlay,
+      fullsizeRain,
       visibleRain,
       rainColumns
     }

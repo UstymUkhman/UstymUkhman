@@ -23,8 +23,10 @@
 </template>
 
 <script lang="ts">
-import { SetupContext, Ref, defineComponent, watchEffect, onMounted, onBeforeUnmount, ref } from 'vue'
-import { VueHTMLElement, TouchEventListener, Lettering, Loading, Platform, phoneWidth } from '@/utils'
+import { SetupContext, Ref, defineComponent, watchEffect, ref, onMounted, onBeforeUnmount } from 'vue'
+import { TouchEventListener, Lettering, Loading, Platform, phoneWidth } from '@/utils'
+
+type VueHTMLElement<HTMLElement> = HTMLElement & { $el: HTMLElement }
 
 import ExternalLink from '@components/ExternalLink.vue'
 import { Viewport, Size } from '@/utils/Viewport'
@@ -101,7 +103,7 @@ export default defineComponent({
     }
 
     function onKeyDown (event: KeyboardEvent): void {
-      if (props.activeBack && event.keyCode === 13) {
+      if (props.activeBack && (event.code || event.key) === 'Enter') {
         context.emit('update:selectedBack', true)
       }
     }
@@ -109,30 +111,30 @@ export default defineComponent({
     function onKeyUp (event: KeyboardEvent): void {
       if (!enabled.value) return
 
-      const code = event.keyCode
+      const code = event.code || event.key
       const page = current.value
       let active = false
 
-      if (code !== 13 && code !== 38 && code !== 40) return
+      if (code !== 'Enter' && code !== 'ArrowUp' && code !== 'ArrowDown') return
 
-      else if (props.activeBack && code === 13) {
+      else if (props.activeBack && code === 'Enter') {
         context.emit('update:selectedBack', false)
         return lettering.dissolveAll(words)
       }
 
       else if (props.activeBack) {
-        current.value = (code === 38) ? 0 : lastLink
+        current.value = (code === 'ArrowUp') ? 0 : lastLink
         context.emit('update:activeBack', false)
       }
 
       else {
-        active = ((current.value === lastLink && code === 40) || (!current.value && code === 38))
+        active = ((current.value === lastLink && code === 'ArrowDown') || (!current.value && code === 'ArrowUp'))
         context.emit('update:activeBack', active)
       }
 
-      if (code === 13) openPageUrl(page)
-      else if (code === 38) current.value = (!current.value) ? lastLink : current.value - 1
-      else if (code === 40) current.value = (current.value === lastLink) ? 0 : current.value + 1
+      if (code === 'Enter') openPageUrl(page)
+      else if (code === 'ArrowUp') current.value = (!current.value) ? lastLink : current.value - 1
+      else if (code === 'ArrowDown') current.value = (current.value === lastLink) ? 0 : current.value + 1
 
       context.emit('index-update', current.value)
 

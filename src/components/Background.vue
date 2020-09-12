@@ -1,5 +1,5 @@
 <template>
-  <div class="background-container" :class="{'fullscreen': fullscreen}">
+  <div class="background-container" :class="{'fullsize': fullsize}">
     <div class="background" :style="{'width': `${columns * 12}px`}">
       <div></div><div></div>
     </div>
@@ -13,7 +13,7 @@ export default defineComponent({
   name: 'Background',
 
   props: {
-    fullscreen: {
+    fullsize: {
       type: Boolean,
       default: false,
       required: false
@@ -72,7 +72,7 @@ $mobileBackground: rgba($black, 0.8);
     }
   }
 
-  &.fullscreen {
+  &.fullsize {
     background-color: rgba($black, 0.9);
     transition-delay: 0ms;
 

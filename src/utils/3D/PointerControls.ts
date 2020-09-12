@@ -6,14 +6,13 @@ import { Euler } from '@three/math/Euler'
 import { PI } from '@/utils/Number'
 
 export default class PointerControls {
-  private orientation: Vector3 = new Vector3(0, 0, -1)
-  private rotation: Euler = new Euler(0, 0, 0, 'YXZ')
-  private directionVector: Vector3 = new Vector3()
-
-  private pitch: Object3D = new Object3D()
-  private yaw: Object3D = new Object3D()
+  private rotation = new Euler(0, 0, 0, 'YXZ')
+  private orientation = new Vector3(0, 0, -1)
+  private directionVector = new Vector3()
 
   private move = this.rotate.bind(this)
+  private pitch = new Object3D()
+  private yaw = new Object3D()
   private active = false
 
   constructor (camera: PerspectiveCamera, height = 10) {
@@ -41,13 +40,7 @@ export default class PointerControls {
 
   public dispose (): void {
     document.removeEventListener('mousemove', this.move, false)
-    delete this.directionVector
-    delete this.orientation
-    delete this.rotation
-
     this.active = false
-    delete this.pitch
-    delete this.yaw
   }
 
   public get direction (): Vector3 {

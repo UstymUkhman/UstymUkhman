@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { MeshStandardMaterial } from '@three/materials/MeshStandardMaterial'
-import { Ref, defineComponent, onMounted, onBeforeUnmount, ref } from 'vue'
+import { Ref, defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
 import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
 import { Platform, Loading, Sounds, firePrerender } from '@/utils'
 
@@ -87,11 +87,11 @@ export default defineComponent({
 
     function onKeyDown (event: KeyboardEvent): void {
       if (interactable) {
-        const code = event.keyCode
+        const code = event.code
 
-        if (code === 37 || code === 39) {
+        if (code === 'ArrowLeft' || code === 'ArrowRight') {
           setChosenPill()
-        } else if (code === 13) {
+        } else if (code === 'Enter') {
           animateChosenPill()
         }
       }
@@ -275,7 +275,7 @@ export default defineComponent({
 
     const pills: Ref<HTMLCanvasElement> = ref()!
     const loader: AssetsLoader = new AssetsLoader()
-    loader.loadJSON(PILL as JSON, createPills)
+    loader.loadModel(PILL as JSON, createPills)
 
     const screen = new Viewport(onResize)
     let { width, height } = screen.size

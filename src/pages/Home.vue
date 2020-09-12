@@ -23,10 +23,13 @@
 
 <script lang="ts">
 import { TouchEventListener, Lettering, Loading, Platform, firePrerender } from '@/utils'
-import { Ref, defineComponent, onMounted, reactive, ref } from 'vue'
+import { Ref, defineComponent, reactive, ref, onMounted } from 'vue'
 import router from '@/router'
 
-type FakeKeyboardEvent = { keyCode: number }
+type FakeKeyboardEvent = {
+  code: string
+  key?: string
+}
 
 interface TemplateValues {
   readonly isActiveButton: (index: number) => boolean
@@ -92,21 +95,23 @@ export default defineComponent({
     }
 
     function onKeyDown (event: KeyboardEvent | FakeKeyboardEvent): void {
-      if (event.keyCode === 13 && !pressed.value) {
+      const code = event.code || event.key
+
+      if (code === 'Enter' && !pressed.value) {
         settedSection.value = currentItem.value
         pressed.value = true
       }
     }
 
     function onKeyUp (event: KeyboardEvent | FakeKeyboardEvent): void {
-      const code = event.keyCode
+      const code = event.code || event.key
       const item = currentItem.value
 
-      if (event.keyCode === 13) {
+      if (code === 'Enter') {
         setMenuSection()
-      } else if (code === 38) {
+      } else if (code === 'ArrowUp') {
         currentItem.value = !item ? visibleItems : item - 1
-      } else if (code === 40) {
+      } else if (code === 'ArrowDown') {
         currentItem.value = (item === visibleItems) ? 0 : item + 1
       }
     }
@@ -115,13 +120,13 @@ export default defineComponent({
       if (visibleButtons.length < 3) return
 
       currentItem.value = index
-      onKeyDown({ keyCode: 13 })
+      onKeyDown({ code: 'Enter' })
     }
 
     function onTouchEnd () {
       if (visibleButtons.length < 3) return
 
-      onKeyUp({ keyCode: 13 })
+      onKeyUp({ code: 'Enter' })
       visibleButtons = reactive([])
     }
 
@@ -166,8 +171,8 @@ export default defineComponent({
     onMounted(() => {
       document.addEventListener('touchend', skipMenuLettering, false)
       document.addEventListener('keyup', skipMenuLettering, false)
+      if (!Platform.mobile && !Platform.edge) pages.push('M0r3')
 
-      if (!Platform.mobile) pages.push('M0r3')
       setTimeout(showMenuItems, 500)
       firePrerender()
     })
@@ -195,25 +200,25 @@ export default defineComponent({
 
   .menu-items {
     @include console-button(5px);
+    transform: translateY(-50%);
     margin-left: 100px;
-    height: 100%;
+
+    position: absolute;
+    display: block;
+    top: 50%;
 
     @include breakpoint($md-down) {
       margin-left: 0;
     }
 
     @include breakpoint($sm-down) {
-      transform: translateY(-50%);
-      position: absolute;
-      overflow: hidden;
-
+      transform: translate(-50%, -50%);
       margin: 0 auto;
       height: auto;
-      z-index: 8;
 
+      z-index: 8;
+      left: 50%;
       top: 50%;
-      right: 0;
-      left: 0;
     }
 
     @include breakpoint($xs) {
@@ -241,27 +246,32 @@ export default defineComponent({
 }
 
 .button-border {
+  @include size(500px, 130px);
   @include vh(height, 25);
-  display: flex;
-  margin: auto;
+  display: block;
 
   @include breakpoint($sm-down) {
     @include vh(height, 20);
+    width: 350px;
+  }
+
+  @include breakpoint($xs) {
+    width: 200px;
   }
 
   .button-box {
-    @include size(500px, 130px);
+    @include size(100%, 130px);
     transform: translateY(-50%);
     position: relative;
     top: 50%;
 
     @include breakpoint($sm-down) {
-      @include size(350px, 100px);
       margin: 0 auto;
+      height: 100px;
     }
 
     @include breakpoint($xs) {
-      @include size(200px, 60px);
+      height: 60px;
     }
 
     .button-background {

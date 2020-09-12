@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { SetupContext, Ref, defineComponent, watch, watchEffect, onMounted, ref } from 'vue'
+import { SetupContext, Ref, defineComponent, watch, watchEffect, ref, onMounted } from 'vue'
 import { TouchEventListener, Lettering, Loading, Platform } from '@/utils'
 import router from '@/router'
 
