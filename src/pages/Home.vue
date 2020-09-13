@@ -143,13 +143,12 @@ export default defineComponent({
 
       setTimeout(() => {
         settedSection.value = nextSection
-        router.push({ name: Loading.getPageName(nextSection) })
+        router.push({ name: Loading.getPageName(nextSection), params: { homePage: 'true' }})
       }, 2500)
     }
 
     function isActiveButton (index: number): boolean {
-      const mobileButtons = visibleButtons.includes(index)
-      return (index === currentItem.value && !nextPage.value) || mobileButtons
+      return (index === currentItem.value && !nextPage.value) || visibleButtons.includes(index)
     }
 
     const pages = reactive(['Ab0uT_m3', 'My_W0rk5', 'C0nT@cT_m3'])

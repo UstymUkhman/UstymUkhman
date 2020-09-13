@@ -758,8 +758,8 @@ export default defineComponent({
     let frame: number
 
     onMounted(() => {
-      firePrerender({ title: 'Rabbit Hole', fullTitle: true })
       lettering = new Lettering(message.value, 50, 0)
+      firePrerender({ title: 'Rabbit Hole' })
       if (Platform.prerenderer) return
 
       createCamera()

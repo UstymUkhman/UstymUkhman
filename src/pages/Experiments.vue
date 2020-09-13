@@ -18,6 +18,8 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .experiments-page {
+  scrollbar-color: $dark-green $black;
+  scrollbar-width: thin;
   cursor: auto;
 }
 

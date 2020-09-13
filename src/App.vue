@@ -18,7 +18,6 @@ import { Ref, ComputedRef, defineComponent, reactive, computed, ref } from 'vue'
 import ScreenOverlay from '@components/ScreenOverlay.vue'
 import MatrixRain from '@components/MatrixRain.vue'
 import Background from '@components/Background.vue'
-import { isExperiment } from '@/utils'
 import { useRoute } from 'vue-router'
 
 interface TemplateValues {
@@ -62,7 +61,8 @@ export default defineComponent({
     const rainColumns = ref(0)
 
     const visibleRain = computed(() =>
-      !['RabbitHole', '404'].includes(route.name as string) && !isExperiment(route.path)
+      !['RabbitHole', '404'].includes(route.name as string) &&
+      !/experiments\/[^\n+]/.test(route.path)
     )
 
     const fullsizeRain = computed(() =>

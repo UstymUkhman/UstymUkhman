@@ -4,12 +4,10 @@ import experiments from '@/assets/data/experiments.json'
 type RedirectRoute = (route?: { name: string }) => void
 type VueComponent = Promise<typeof import('*.vue')>
 
-const checkHomeRedirect = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: RedirectRoute): void => {
-  const forbiddenLocation = !from.name || from.name === 'RabbitHole' || from.path.includes('experiments')
-  const forbiddenDestination = to.name === 'More' || to.name === 'RabbitHole'
-
-  if (forbiddenLocation && forbiddenDestination)
+const checkHomeParams = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: RedirectRoute): void => {
+  if (to.name === 'More' && to.params.homePage !== 'true') {
     return next({ name: 'Home' })
+  }
 
   next()
 }
@@ -35,12 +33,11 @@ export default createRouter({
     name: 'Contacts'
   }, {
     component: (): VueComponent => import(/* webpackChunkName: "more-page" */ '@pages/More.vue'),
-    beforeEnter: checkHomeRedirect,
+    beforeEnter: checkHomeParams,
     path: '/more',
     name: 'More'
   }, {
     component: (): VueComponent => import(/* webpackChunkName: "hole-page" */ '@pages/RabbitHole.vue'),
-    beforeEnter: checkHomeRedirect,
     name: 'RabbitHole',
     path: '/hole'
   }, {

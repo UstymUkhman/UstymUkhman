@@ -119,7 +119,7 @@ const webpackConfig = merge(baseConfig, {
     runtimeChunk: true,
     namedModules: true,
     namedChunks: true,
-    minimize: true,
+    minimize: false,
 
     minimizer: [
       new TerserPlugin({
