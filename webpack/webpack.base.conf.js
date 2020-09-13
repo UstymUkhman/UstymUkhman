@@ -28,43 +28,8 @@ const lintingRules = () => !config.dev.useLint ? null : {
 }
 
 module.exports = {
-  context: path.resolve(__dirname, '../'),
   entry: { app: 'src/main.ts' },
-
-  plugins: [
-    threeMinifierPlugin,
-    new VueLoaderPlugin()
-  ],
-
-  output: {
-    filename: '[name].js',
-    path: config.build.assetsRoot,
-
-    publicPath: !isProduction
-      ? config.dev.assetsPublicPath
-      : config.build.assetsPublicPath
-  },
-
-  resolve: {
-    plugins: [threeMinifierPlugin.resolver],
-    extensions: ['.vue', '.ts', '.tsx', '.js', '.jsx', '.json'],
-
-    alias: {
-      '@postprocessing': utils.resolve('node_modules/three/examples/jsm/postprocessing'),
-      '@controls': utils.resolve('node_modules/three/examples/jsm/controls'),
-      '@shaders': utils.resolve('node_modules/three/examples/jsm/shaders'),
-      '@loaders': utils.resolve('node_modules/three/examples/jsm/loaders'),
-      '@utils': utils.resolve('node_modules/three/examples/jsm/utils'),
-      '@three': utils.resolve('node_modules/three/src'),
-
-      '@components': utils.resolve('src/components'),
-      modernizr$: utils.resolve('modernizr'),
-      '@pages': utils.resolve('src/pages'),
-      '@scss': utils.resolve('src/scss'),
-      '@': utils.resolve('src'),
-      vue: '@vue/runtime-dom'
-    }
-  },
+  context: path.resolve(__dirname, '../'),
 
   module: {
     rules: [
@@ -133,6 +98,41 @@ module.exports = {
         loader: 'file-loader'
       }
     ]
+  },
+
+  plugins: [
+    threeMinifierPlugin,
+    new VueLoaderPlugin()
+  ],
+
+  resolve: {
+    plugins: [threeMinifierPlugin.resolver],
+    extensions: ['.vue', '.ts', '.tsx', '.js', '.jsx', '.json'],
+
+    alias: {
+      '@postprocessing': utils.resolve('node_modules/three/examples/jsm/postprocessing'),
+      '@controls': utils.resolve('node_modules/three/examples/jsm/controls'),
+      '@shaders': utils.resolve('node_modules/three/examples/jsm/shaders'),
+      '@loaders': utils.resolve('node_modules/three/examples/jsm/loaders'),
+      '@utils': utils.resolve('node_modules/three/examples/jsm/utils'),
+      '@three': utils.resolve('node_modules/three/src'),
+
+      '@components': utils.resolve('src/components'),
+      modernizr$: utils.resolve('modernizr'),
+      '@pages': utils.resolve('src/pages'),
+      '@scss': utils.resolve('src/scss'),
+      '@': utils.resolve('src'),
+      vue: '@vue/runtime-dom'
+    }
+  },
+
+  output: {
+    filename: '[name].js',
+    path: config.build.assetsRoot,
+
+    publicPath: !isProduction
+      ? config.dev.assetsPublicPath
+      : config.build.assetsPublicPath
   },
 
   node: {

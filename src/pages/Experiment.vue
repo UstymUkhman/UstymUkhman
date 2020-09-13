@@ -1,8 +1,8 @@
 <template>
   <article itemtype="http://schema.org/CreativeWork" class="experiment-page" itemscope>
     <iframe
+      :src="page" :url="github" allow="camera *;microphone *" allowfullscreen
       itemtype="https://schema.org/mainEntity" itemprop="mainEntity"
-      :src="page" :url="github" allow="camera" allowfullscreen
       :title="title" :name="title" :abstract="description"
       author="Ustym Ukhman" maintainer="Ustym Ukhman">
     </iframe>

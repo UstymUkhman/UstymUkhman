@@ -44,14 +44,14 @@ export default class Lettering {
 
   private getLetters (): void {
     this.word.forEach((char) => {
-      if (char === '#') {
+      if (char === '\\') {
         return this.letters.push(document.createElement('br'))
       }
 
       const letter = document.createElement('span')
       letter.textContent = char
 
-      if (char === '%') {
+      if (char === '/') {
         letter.style.marginLeft = '50px'
         letter.textContent = ''
       }

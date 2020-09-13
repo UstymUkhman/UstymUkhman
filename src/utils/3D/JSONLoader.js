@@ -1,7 +1,7 @@
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author alteredq / http://alteredqualia.com/
- * @author UstymUkhman / http://54.93.165.244/
+ * @author UstymUkhman / http://35.158.218.205/
  */
 
 import { DefaultLoadingManager } from '@three/loaders/LoadingManager'

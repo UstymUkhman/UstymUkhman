@@ -18,6 +18,7 @@ import { Ref, ComputedRef, defineComponent, reactive, computed, ref } from 'vue'
 import ScreenOverlay from '@components/ScreenOverlay.vue'
 import MatrixRain from '@components/MatrixRain.vue'
 import Background from '@components/Background.vue'
+import { isExperiment } from '@/utils'
 import { useRoute } from 'vue-router'
 
 interface TemplateValues {
@@ -54,19 +55,18 @@ export default defineComponent({
   },
 
   setup (): TemplateValues {
-    console.log('%cCoffee is never enough.', 'background:#000; padding: 5px; color: #0C0;')
+    console.log('%cCoffee is never too much.', 'background:#000; padding: 5px; color: #0C0;')
 
     const route = reactive(useRoute())
     const visibleOverlay = ref(true)
     const rainColumns = ref(0)
 
-    const fullsizeRain = computed(() =>
-      ['About', 'More', 'RabbitHole', 'Experiments'].includes(route.name as string)
+    const visibleRain = computed(() =>
+      !['RabbitHole', '404'].includes(route.name as string) && !isExperiment(route.path)
     )
 
-    const visibleRain = computed(() =>
-      !['RabbitHole', '404'].includes(route.name as string) &&
-      !/experiments\/[^\n+]/.test(route.path)
+    const fullsizeRain = computed(() =>
+      ['About', 'More', 'RabbitHole', 'Experiments'].includes(route.name as string)
     )
 
     return {
@@ -85,7 +85,7 @@ export default defineComponent({
 html,
 body {
   @include white-rabbit;
-  // cursor: none;
+  cursor: none;
 }
 
 main {

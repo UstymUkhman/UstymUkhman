@@ -68,7 +68,8 @@ export class FirstPersonControls {
   }
 
   private onPointerLockError (event: Event): void {
-    console.error('\'pointerlockerror\' event occured...', event)
+    !this.isLocked && this.onPointerUnlock && this.onPointerUnlock()
+    console.error('PointerLock error occured:', event)
     document.exitPointerLock()
     this.enable = false
   }

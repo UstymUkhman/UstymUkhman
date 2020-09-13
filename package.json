@@ -1,8 +1,8 @@
 {
   "name": "UstymUkhman",
   "author": "Ustym Ukhman <ustym.ukhman@gmail.com>",
-  "description": "Coffee is never enough.",
-  "domain": "http://54.93.165.244/",
+  "description": "Coffee is never too much.",
+  "domain": "http://35.158.218.205/",
   "main": "src/main.ts",
   "version": "2.0.0",
   "private": false,
@@ -12,7 +12,7 @@
     "lint:js": "eslint src/**/*{.vue,.ts,.tsx,.js,.jsx}",
     "build:analyze": "node build/main.js --analyze",
     "build:gzip": "node build/main.js --gzip",
-    "deploy": "./deploy.sh 54.93.165.244",
+    "deploy": "./deploy.sh 35.158.218.205",
     "serve": "npx http-server ./dist",
     "build": "node build/main.js"
   },

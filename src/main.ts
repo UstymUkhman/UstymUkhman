@@ -22,4 +22,4 @@ createApp(App, {
   domain: app.domain,
   version: app.version,
   deploy: app.deploy
-}).use(router).mount('#root')
+}).use(router).mount(root)

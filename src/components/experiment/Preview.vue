@@ -1,6 +1,6 @@
 <template>
   <div ref="preview" itemtype="http://schema.org/WebPageElement" class="experiment-preview" itemscope>
-    <router-link :title="experiment.title" :to="{name: experiment.title}" class="link">
+    <router-link :title="experiment.description" :to="{name: experiment.title}" class="link">
       <div @mouseover="onMouseOver" @mouseout="onMouseOut" class="preview-content">
 
         <video

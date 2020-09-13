@@ -1,6 +1,21 @@
 <template>
   <article @touchstart="onTouchStart" @touchend="onTouchEnd" itemtype="http://schema.org/AboutPage" class="about-page" itemscope>
-    <p ref="paragraph" class="about-description" itemprop="description">{{ description }}</p>
+    <p ref="paragraph" class="about-description" itemprop="description">
+      Hi, my name is Ustym and I'm a front-end developer.\
+      I'm working on too many things, trying to hack time to have more than 24 hours a day\
+      and stay up to date on modern APIs, tools and all the awesome stuff you can do with them.\\
+
+      Things I love:\
+      /- Learning and using new web technologies\
+      /- JavaScript, TypeScript, Vue.js & WebGL\
+      /- Cinema, music, games, coffee & cats\\
+
+      Things I hate:\
+      /- Internet Explorer\
+      /- Social Networks\
+      /- Dirty code\
+      /- Mondays\
+    </p>
 
     <BackButton
       @close-page="closeAboutPage"
@@ -24,7 +39,6 @@ interface TemplateValues {
   readonly visibleButton: Ref<boolean>
   readonly activeButton: Ref<boolean>
   readonly closeAboutPage: () => void
-  readonly description: string
 }
 
 export default defineComponent({
@@ -61,23 +75,6 @@ export default defineComponent({
       lettering.dissolve()
     }
 
-    const description = `
-      Hi, my name is Ustym and I'm a front-end developer.#
-      I'm working on too many things, trying to hack time to have more than 24 hours a day#
-      and stay up to date on modern APIs, tools and all the awesome stuff you can do with them.##
-
-      Things I love:#
-      %- Learning and using new web technologies#
-      %- JavaScript, TypeScript, Vue.js & WebGL#
-      %- Cinema, music, games, coffee & cats##
-
-      Things I hate:#
-      %- Internet Explorer#
-      %- Social Networks#
-      %- Dirty code#
-      %- Mondays#
-    `
-
     const paragraph: Ref<HTMLParagraphElement> = ref()!
 
     const selectedButton = ref(false)
@@ -112,7 +109,6 @@ export default defineComponent({
       selectedButton,
       visibleButton,
       activeButton,
-      description,
       paragraph
     }
   }

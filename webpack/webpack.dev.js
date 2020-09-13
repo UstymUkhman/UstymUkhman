@@ -21,8 +21,8 @@ const PORT = process.env.PORT && Number(process.env.PORT)
 const HOST = process.env.HOST
 
 const devWebpackConfig = merge(baseConfig, {
-  devtool: config.dev.devtool,
   mode: 'development',
+  devtool: config.dev.devtool,
 
   module: {
     rules: [...utils.styleLoaders({
@@ -62,8 +62,6 @@ const devWebpackConfig = merge(baseConfig, {
     }),
 
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NamedModulesPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
 
     new HtmlWebpackPlugin({
       template: 'public/index.html',
@@ -88,7 +86,12 @@ const devWebpackConfig = merge(baseConfig, {
         globOptions: { ignore: ['.*'] }
       }]
     })
-  ]
+  ],
+
+  optimization: {
+    noEmitOnErrors: true,
+    namedModules: true
+  }
 })
 
 module.exports = new Promise((resolve, reject) => {

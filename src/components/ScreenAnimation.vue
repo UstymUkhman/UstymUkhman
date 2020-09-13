@@ -1,16 +1,23 @@
 <template>
-  <canvas ref="loader" :width="width" :height="height"></canvas>
+  <canvas ref="circle" :width="width" :height="height"></canvas>
 </template>
 
 <script lang="ts">
-import { Ref, defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
+import { SetupContext, Ref, defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
 import { Viewport, Size } from '@/utils/Viewport'
 import { PI } from '@/utils/Number'
+import { Color } from '@/utils'
+
+interface TemplateValues {
+  readonly circle: Ref<HTMLCanvasElement>
+  readonly height: number
+  readonly width: number
+}
 
 export default defineComponent({
   name: 'ScreenAnimation',
 
-  setup () {
+  setup (props, context: SetupContext): TemplateValues {
     const onResize = (size: Size): void => {
       halfHeight = size.height / 2
       halfWidth = size.width / 2
@@ -20,23 +27,25 @@ export default defineComponent({
     }
 
     const animate = (): void => {
-      context.clearRect(0, 0, width, height)
+      canvasContext.fillStyle = `rgb(${Color.black})`
+      canvasContext.clearRect(0, 0, width, height)
+      canvasContext.fillRect(0, 0, width, height)
+
       radius -= ((Date.now() - drawingTime) / 1000 * 75)
+      if (radius <= 0) return context.emit('complete-animation')
 
-      if (radius > 0) {
-        frame = requestAnimationFrame(animate)
-        context.beginPath()
+      frame = requestAnimationFrame(animate)
+      canvasContext.beginPath()
 
-        context.arc(halfWidth, halfHeight, radius, 0, PI.m2)
-        context.fillStyle = '#FFFFFF'
+      canvasContext.arc(halfWidth, halfHeight, radius, 0, PI.m2)
+      canvasContext.fillStyle = `rgb(${Color.white})`
 
-        context.stroke()
-        context.fill()
-      }
+      canvasContext.stroke()
+      canvasContext.fill()
     }
 
-    const loader: Ref<HTMLCanvasElement> = ref()!
-    let context: CanvasRenderingContext2D
+    const circle: Ref<HTMLCanvasElement> = ref()!
+    let canvasContext: CanvasRenderingContext2D
 
     const screen = new Viewport(onResize)
     let { width, height } = screen.size
@@ -49,7 +58,7 @@ export default defineComponent({
     let frame = 0
 
     onMounted(() => {
-      context = loader.value.getContext('2d')!
+      canvasContext = circle.value.getContext('2d')!
       radius = (width > height ? halfWidth : halfHeight) * 1.2
 
       drawingTime = Date.now()
@@ -61,11 +70,7 @@ export default defineComponent({
       screen.dispose()
     })
 
-    return {
-      loader,
-      height,
-      width
-    }
+    return { circle, width, height }
   }
 })
 </script>

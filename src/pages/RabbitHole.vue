@@ -5,9 +5,9 @@
     <transition appear>
       <div v-if="visibleGuidelines" class="guidelines" itemprop="description">
         <p ref="message" class="text">
-          Welcome to the real world.          ###
-          Use W, A, S, D keys to move and drag you mouse to look around.##
-          Press left mouse button to interact with the enviroment.#####
+          Welcome to the real world.          \\\
+          Use W, A, S, D keys to move and drag you mouse to look around.\\
+          Press left mouse button to interact with the enviroment.\\\\\
           Press  ENTER  when you're ready.
         </p>
       </div>
@@ -20,6 +20,7 @@
     </transition>
 
     <div class="light" :class="{'fade': visibleLight}"></div>
+    <ScreenAnimation v-if="screenAnimation" @complete-animation="redirect" />
   </article>
 </template>
 
@@ -36,49 +37,47 @@ import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
 import { ShaderMaterial } from '@three/materials/ShaderMaterial'
 import { EffectComposer } from '@postprocessing/EffectComposer'
 import { PlaneGeometry } from '@three/geometries/PlaneGeometry'
+import FRONT_CEILING from '@/assets/textures/front_ceiling.jpg'
 import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
+import ScreenAnimation from '@components/ScreenAnimation.vue'
+import SIDE_CEILING from '@/assets/textures/side_ceiling.jpg'
 
 import { AmbientLight } from '@three/lights/AmbientLight'
+type Texture = import('@three/textures/Texture').Texture
 import Experiments from '@/assets/data/experiments.json'
 import { ShaderPass } from '@postprocessing/ShaderPass'
 import { RenderPass } from '@postprocessing/RenderPass'
+import DOOR_WALL from '@/assets/textures/door_wall.png'
 
+import KEYBOARD from '@/assets/models/keyboard.json'
+import SYSTEM_UNIT from '@/assets/models/case.json'
 import { SpotLight } from '@three/lights/SpotLight'
 import AssetsLoader from '@/utils/3D/AssetsLoader'
+import MONITOR from '@/assets/models/monitor.json'
 import { Viewport, Size } from '@/utils/Viewport'
 import { Raycaster } from '@three/core/Raycaster'
 import { FXAAShader } from '@shaders/FXAAShader'
-import { Object3D } from '@three/core/Object3D'
 
+import { Object3D } from '@three/core/Object3D'
+import FLOOR from '@/assets/textures/floor.jpg'
+import TABLE from '@/assets/models/table.json'
+import FRAME from '@/assets/models/frame.json'
+import WALL from '@/assets/textures/wall.jpg'
 import { Vector2 } from '@three/math/Vector2'
+
+import vertGrading from '@/glsl/grading.vert'
+import fragGrading from '@/glsl/grading.frag'
+import DOOR from '@/assets/models/door.json'
+type Door = { pivot: Object3D, door: Mesh }
+
 import { Scene } from '@three/scenes/Scene'
 import { Mesh } from '@three/objects/Mesh'
 import { Color } from '@three/math/Color'
+import MATRIX from '@/assets/img/lut.png'
 
 import { PI } from '@/utils/Number'
 import router from '@/router'
 import anime from 'animejs'
-
-type Texture = import('@three/textures/Texture').Texture
-type Door = { pivot: Object3D, door: Mesh }
-
-import FRONT_CEILING from '@/assets/textures/front_ceiling.jpg'
-import SIDE_CEILING from '@/assets/textures/side_ceiling.jpg'
-import DOOR_WALL from '@/assets/textures/door_wall.png'
-import FLOOR from '@/assets/textures/floor.jpg'
-import WALL from '@/assets/textures/wall.jpg'
-
-import KEYBOARD from '@/assets/models/keyboard.json'
-import SYSTEM_UNIT from '@/assets/models/case.json'
-import MONITOR from '@/assets/models/monitor.json'
-
-import TABLE from '@/assets/models/table.json'
-import FRAME from '@/assets/models/frame.json'
-import DOOR from '@/assets/models/door.json'
-
-import vertGrading from '@/glsl/grading.vert'
-import fragGrading from '@/glsl/grading.frag'
-import MATRIX from '@/assets/img/lut.png'
 
 const GREEN = 0x7CA294
 const WHITE = 0xFFFFFF
@@ -88,12 +87,18 @@ interface TemplateValues {
   readonly message: Ref<HTMLParagraphElement>
   readonly description: ComputedRef<string>
   readonly visibleGuidelines: Ref<boolean>
+  readonly screenAnimation: Ref<boolean>
   readonly hole: Ref<HTMLCanvasElement>
   readonly visibleLight: Ref<boolean>
+  readonly redirect: () => void
 }
 
 export default defineComponent({
   name: 'RabbitHole',
+
+  components: {
+    ScreenAnimation
+  },
 
   setup (props, context: SetupContext): TemplateValues {
     function createCamera (): void {
@@ -252,16 +257,16 @@ export default defineComponent({
       const rightCeil = leftCeil.clone()
       const backCeil = frontCeil.clone()
 
-      frontCeil.position.set(0, 50.8, center - 247)
+      frontCeil.position.set(0, 50.65, center - 247)
       frontCeil.rotateX(PI.d2)
 
-      backCeil.position.set(0, 50.8, center + 247)
+      backCeil.position.set(0, 50.65, center + 247)
       backCeil.rotation.set(PI.d2, 0, -Math.PI)
 
-      leftCeil.position.set(-22, 50.9, center)
+      leftCeil.position.set(-22, 50.75, center)
       leftCeil.rotation.set(PI.d2, 0, -PI.d2)
 
-      rightCeil.position.set(22, 50.9, center)
+      rightCeil.position.set(22, 50.75, center)
       rightCeil.rotation.set(PI.d2, 0, PI.d2)
 
       ceiling.position.set(0, 51, center)
@@ -371,11 +376,10 @@ export default defineComponent({
     }
 
     async function createTable (): Promise<Mesh> {
-      const model = await loader.loadModel(TABLE as JSON)
-
-      const table = new Mesh(model.geometry, new MeshPhongMaterial({
-        color: 0xBDBDBD
-      }))
+      const table = new Mesh(
+        (await loader.loadModel(TABLE as JSON)).geometry,
+        new MeshPhongMaterial({ color: 0xBDBDBD })
+      )
 
       table.position.set(0, -19.8, -14.1)
       table.rotateY(Math.PI / 2)
@@ -421,17 +425,11 @@ export default defineComponent({
 
     async function createComposer (): Promise<Texture> {
       const lut = await loader.loadTexture(MATRIX)
-      const pixelRatio = renderer.getPixelRatio()
 
       composer = new EffectComposer(renderer)
       fxaa = new ShaderPass(FXAAShader)
 
-      fxaa.material.uniforms.resolution.value.y = 1.0 / (screen.size.height * pixelRatio)
-      fxaa.material.uniforms.resolution.value.x = 1.0 / (screen.size.width * pixelRatio)
-
-      composer.setSize(screen.size.width, screen.size.height)
       composer.addPass(new RenderPass(scene, camera))
-
       lut.minFilter = lut.magFilter = LinearFilter
 
       const pass = new ShaderPass(
@@ -450,6 +448,7 @@ export default defineComponent({
       composer.addPass(pass)
       composer.addPass(fxaa)
 
+      updateComposerSize()
       return lut
     }
 
@@ -497,9 +496,10 @@ export default defineComponent({
 
     function addEventListeners (): void {
       document.addEventListener('mousedown', onMouseDown, false)
-      window.addEventListener('blur', disableControls, false)
       document.addEventListener('mouseup', onMouseUp, false)
       document.addEventListener('keydown', onKeyDown, false)
+
+      window.addEventListener('blur', disableControls, false)
       controls.onPointerUnlock = disableControls
     }
 
@@ -551,40 +551,44 @@ export default defineComponent({
     }
 
     function onResize (size: Size): void {
-      const pixelRatio = renderer.getPixelRatio()
-      const { width, height, ratio } = size
-
-      camera.aspect = ratio
+      renderer.setSize(size.width, size.height)
       camera.updateProjectionMatrix()
+      camera.aspect = size.ratio
+      updateComposerSize()
+    }
 
-      renderer.setSize(width, height)
+    function updateComposerSize (): void {
+      const fxaaResolution = fxaa.material.uniforms.resolution.value
+      const pixelRatio = renderer.getPixelRatio()
+      const { width, height } = screen.size
+
+      fxaaResolution.y = 1.0 / (height * pixelRatio)
+      fxaaResolution.x = 1.0 / (width * pixelRatio)
+
       composer.setSize(width, height)
-
-      fxaa.material.uniforms.resolution.value.x = 1.0 / (width * pixelRatio)
-      fxaa.material.uniforms.resolution.value.y = 1.0 / (height * pixelRatio)
     }
 
     function enableControls (): void {
       document.addEventListener('mousedown', onMouseDown, false)
       document.addEventListener('mouseup', onMouseUp, false)
 
-      forceDescription = false
-      ready = true
+      forceDescription.value = false
+      ready.value = true
     }
 
     function disableControls (): void {
       document.removeEventListener('mousedown', onMouseDown, false)
       document.removeEventListener('mouseup', onMouseUp, false)
 
+      forceDescription.value = true
       controls.pointerLock = false
-      forceDescription = true
-      ready = false
+      ready.value = false
     }
 
     function checkFocusDirection (): void {
       raycaster.ray.direction.copy(controls.cameraDirection).applyEuler(camera.rotation)
       raycaster.setFromCamera(focus, camera)
-      canOpen = false
+      canOpen.value = false
 
       const intersects = raycaster.intersectObjects(doors.map(object => object.door))
 
@@ -597,13 +601,13 @@ export default defineComponent({
         const experiments = Experiments as Array<Experiment>
         const experimentDoor = index !== undefined
 
-        doorDescription = experimentDoor
+        doorDescription.value = experimentDoor
           ? experimentDoor && index < experiments.length
             ? experiments[index].title : ''
-          : 'experiments'
+          : 'all experiments'
 
         selectedDoor = doorObject
-        canOpen = true
+        canOpen.value = true
       }
 
       if (selectedDoor) {
@@ -638,8 +642,8 @@ export default defineComponent({
       }
 
       else if (pivot.rotation.y > 0.5) {
-        canOpen = false
-        exit = true
+        canOpen.value = false
+        exit.value = true
       }
 
       if (pivot.rotation.y <= 0) {
@@ -653,39 +657,31 @@ export default defineComponent({
 
         selectedDoor = undefined
         pivot.rotation.y = 0
-        exit = false
+        exit.value = false
       }
     }
 
     function closedDoor (index: number): boolean {
       const closed = index >= (Experiments as Array<Experiment>).length
-
-      if (closed) Sounds.closedDoor()
-      else Sounds.openedDoor()
-
+      closed ? Sounds.closedDoor() : Sounds.openedDoor()
       return closed
     }
 
     function fadeInLight (): void {
-      if (isExperiment) {
-        ((isRightDoor ? rightLight : leftLight).material as MeshBasicMaterial).opacity += 0.01
-      }
+      !isExperiment
+        ? (backLight.material as MeshBasicMaterial).opacity += 0.01
+        : ((isRightDoor ? rightLight : leftLight).material as MeshBasicMaterial).opacity += 0.01
+    }
 
-      else {
-        (backLight.material as MeshBasicMaterial).opacity += 0.01
-      }
+    function onRedirect (): void {
+      screenAnimation.value = true
+      disableControls()
     }
 
     function redirect (): void {
-      removeEventListeners()
-      disableControls()
-
       if (isExperiment && selectedDoor) {
         const index = selectedDoor.door.userData.index as number
-        const experiment = (Experiments as Array<Experiment>)[index].title
-
-        selectedDoor.pivot.rotation.y = 0
-        router.push({ name: experiment })
+        router.push({ name: (Experiments as Array<Experiment>)[index].title })
       }
 
       else {
@@ -703,64 +699,63 @@ export default defineComponent({
         controls.update()
       }
 
-      if (exit) {
+      if (exit.value) {
         if (visibleLight.value) {
-          cancelAnimationFrame(frame)
-          setTimeout(redirect, 2000)
-          return
+          setTimeout(onRedirect, 2000)
+          return cancelAnimationFrame(frame)
         }
 
         fadeInLight()
       }
     }
 
-    const visibleDescription = computed(() =>
-      !exit && !visibleGuidelines.value && (forceDescription || (canOpen && !!doorDescription))
+    const description = computed(() =>
+      ready.value ? `Hold left mouse button to open ${doorDescription.value}` : 'Press ENTER to interact'
     )
 
-    const description = computed(() =>
-      ready ? `Hold left mouse button to open ${doorDescription}` : 'Press ENTER to interact'
+    const visibleDescription = computed(() =>
+      !exit.value && (forceDescription.value || (canOpen.value && !!doorDescription.value))
     )
 
     const message: Ref<HTMLParagraphElement> = ref()!
     const hole: Ref<HTMLCanvasElement> = ref()!
     const screen = new Viewport(onResize)
-    let selectedDoor: Door | undefined
-    let controls: FirstPersonControls
-
     const visibleGuidelines = ref(true)
+    const forceDescription = ref(false)
+    const screenAnimation = ref(false)
+    let selectedDoor: Door | undefined
+
+    let controls: FirstPersonControls
     const raycaster = new Raycaster()
     const loader = new AssetsLoader()
-    const visibleLight = ref(false)
     const focus = new Vector2(0, 2)
-
+    const doorDescription = ref('')
+    const visibleLight = ref(false)
     const doors: Array<Door> = []
+
     let camera: PerspectiveCamera
     let composer: EffectComposer
-    let renderer: WebGLRenderer
-    let isExperiment: boolean
-    let isRightDoor: boolean
-    let lettering: Lettering
-
-    let forceDescription = false
     let messageComplete = false
+    let renderer: WebGLRenderer
+    const canOpen = ref(false)
     const scene = new Scene()
+    let isExperiment: boolean
+
     let introComplete = false
     let introStarted = false
-    let doorDescription = ''
-
+    let isRightDoor: boolean
+    let lettering: Lettering
+    const ready = ref(false)
+    const exit = ref(false)
     let fxaa: ShaderPass
+
     let rightLight: Mesh
     let leftLight: Mesh
     let backLight: Mesh
-
-    let canOpen = false
     let pressed = false
     raycaster.far = 15
     const center = 225
-    let ready = false
     let frame: number
-    let exit = false
 
     onMounted(() => {
       firePrerender({ title: 'Rabbit Hole', fullTitle: true })
@@ -801,8 +796,10 @@ export default defineComponent({
     return {
       visibleDescription,
       visibleGuidelines,
+      screenAnimation,
       visibleLight,
       description,
+      redirect,
       message,
       hole
     }
@@ -814,17 +811,17 @@ export default defineComponent({
 .guidelines {
   background-color: $black;
   @include center-size;
-  z-index: $screen;
+  z-index: 1;
 
   .text {
     @include center-size(920px, 154px);
-
     text-align: center;
     visibility: hidden;
   }
 }
 
 .description {
+  backface-visibility: hidden;
   transform: translateX(-50%);
   background-color: $black;
 
@@ -839,9 +836,7 @@ export default defineComponent({
 .light {
   transition: background-color 1s;
   background-color: transparent;
-
   @include center-size;
-  pointer-events: none;
 
   &.fade {
     background-color: $white;

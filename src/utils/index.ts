@@ -28,6 +28,10 @@ export function getShadowBlur (fullsize = false): number {
   return !Platform.chromium || mobile || fullsize ? 0 : 5
 }
 
+export function isExperiment (path: string): boolean {
+  return /experiments\/[^\n+]/.test(path)
+}
+
 export const language = mainLanguage || navigator.language || userLanguage
 export const matrixFont = 'normal 24px Martix Code NFI'
 
