@@ -43,6 +43,8 @@ export const Color = {
 
 export interface Experiment {
   readonly description: string
+  readonly newTab?: boolean
+
   readonly github: string
   readonly route: string
 

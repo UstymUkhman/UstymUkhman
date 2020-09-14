@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory, RouteLocationNormalized } from 'vue-router'
 import experiments from '@/assets/data/experiments.json'
+import Platform from '@/utils/Platform'
 
 type RedirectRoute = (route?: { name: string }) => void
 type VueComponent = Promise<typeof import('*.vue')>
 
 const checkHomeParams = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: RedirectRoute): void => {
-  if (to.name === 'More' && to.params.homePage !== 'true') {
+  if (!Platform.prerender && to.name === 'More' && to.params.homePage !== 'true') {
     return next({ name: 'Home' })
   }
 

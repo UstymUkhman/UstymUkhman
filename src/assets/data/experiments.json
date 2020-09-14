@@ -77,7 +77,8 @@
   "video": "FaceMasking.mp4",
 
   "title": "Face Masking",
-  "route": "face-masking"
+  "route": "face-masking",
+  "newTab": true
 }, {
   "page": "https://ustymukhman.github.io/ImageDrawer.js/public/",
   "description": "A jQuery plugin to animate a drawing image",

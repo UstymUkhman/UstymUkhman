@@ -1,8 +1,12 @@
 <template>
   <div ref="preview" itemtype="http://schema.org/WebPageElement" class="experiment-preview" itemscope>
-    <router-link :title="experiment.description" :to="{name: experiment.title}" class="link">
-      <div @mouseover="onMouseOver" @mouseout="onMouseOut" class="preview-content">
+    <component
+      :to="{name: experiment.title}" :href="experiment.page"
+      :target="experiment.newTab ? '_blank' : '_self'"
+      :is="experiment.newTab ? 'a' : 'router-link'"
+      :title="experiment.description">
 
+      <div @mouseover="onMouseOver" @mouseout="onMouseOut" class="preview-content">
         <video
           :video="`public/videos/${experiment.video}`"
           :src="`public/videos/${experiment.video}`"
@@ -20,7 +24,7 @@
         <div class="experiment-overlay"></div>
         <h5 itemprop="name">{{ experiment.title }}</h5>
       </div>
-    </router-link>
+    </component>
   </div>
 </template>
 
@@ -102,6 +106,7 @@ $mobileHeight: 0.66 / 16 * 9;
 
     position: relative;
     overflow: hidden;
+    cursor: pointer;
     display: block;
 
     @include size;

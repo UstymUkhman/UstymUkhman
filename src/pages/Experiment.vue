@@ -1,10 +1,10 @@
 <template>
   <article itemtype="http://schema.org/CreativeWork" class="experiment-page" itemscope>
     <iframe
-      :src="page" :url="github" allow="camera *;microphone *" allowfullscreen
       itemtype="https://schema.org/mainEntity" itemprop="mainEntity"
       :title="title" :name="title" :abstract="description"
-      author="Ustym Ukhman" maintainer="Ustym Ukhman">
+      author="Ustym Ukhman" maintainer="Ustym Ukhman"
+      :src="page" :url="github" allowfullscreen>
     </iframe>
 
     <Buttons :description="description" :repository="github" />

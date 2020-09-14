@@ -8,12 +8,12 @@
 import { MeshStandardMaterial } from '@three/materials/MeshStandardMaterial'
 import { Ref, defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
 import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
-import { Platform, Loading, Sounds, firePrerender } from '@/utils'
-
 import { DirectionalLight } from '@three/lights/DirectionalLight'
 import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
+
 type JSONModel = import('@/utils/3D/JSONLoader').JSONModel
 import { AmbientLight } from '@three/lights/AmbientLight'
+import { Loading, Sounds, firePrerender } from '@/utils'
 
 import { SpotLight } from '@three/lights/SpotLight'
 import AssetsLoader from '@/utils/3D/AssetsLoader'
@@ -296,14 +296,10 @@ export default defineComponent({
     let frame: number
 
     onMounted(() => {
+      document.addEventListener('keydown', onKeyDown, false)
       firePrerender({ title: 'More' })
-
-      if (!Platform.prerenderer) {
-        createLights()
-        createRenderer()
-
-        document.addEventListener('keydown', onKeyDown, false)
-      }
+      createRenderer()
+      createLights()
     })
 
     onBeforeUnmount(() => {

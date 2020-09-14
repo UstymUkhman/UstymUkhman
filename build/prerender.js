@@ -12,7 +12,7 @@ const routes = [
   '/404'
 ]
 
-experiments.forEach(experiment => {
+experiments.filter(experiment => !experiment.newTab).forEach(experiment => {
   routes.push(`/experiments/${experiment.route}`)
 })
 

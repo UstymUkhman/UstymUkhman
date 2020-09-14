@@ -28,11 +28,11 @@
 import { SetupContext, Ref, ComputedRef, defineComponent, computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { FirstPersonControls, Direction } from '@/utils/3D/FirstPersonControls'
 import { LinearFilter, MirroredRepeatWrapping, GLSL3 } from '@three/constants'
-import { Platform, Lettering, Loading, Sounds, firePrerender } from '@/utils'
 
 import { MeshBasicMaterial } from '@three/materials/MeshBasicMaterial'
 import { MeshPhongMaterial } from '@three/materials/MeshPhongMaterial'
 import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
+import { Lettering, Loading, Sounds, firePrerender } from '@/utils'
 
 import { ShaderMaterial } from '@three/materials/ShaderMaterial'
 import { EffectComposer } from '@postprocessing/EffectComposer'
@@ -760,7 +760,6 @@ export default defineComponent({
     onMounted(() => {
       lettering = new Lettering(message.value, 50, 0)
       firePrerender({ title: 'Rabbit Hole' })
-      if (Platform.prerenderer) return
 
       createCamera()
       createLights()

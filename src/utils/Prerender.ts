@@ -1,6 +1,8 @@
+import jsonConfig from '../../package.json'
 import Platform from '@/utils/Platform'
 import { useRoute } from 'vue-router'
 
+const domain = (jsonConfig as { domain?: string }).domain
 const baseTitle = document.getElementsByTagName('title')[0].innerText
 
 interface MetaTags {
@@ -38,7 +40,7 @@ const tags: MetaTags = {
 
 export default function (data: MetaData = {}): void {
   const title = document.getElementsByTagName('title')[0]
-  if (data.title && title.innerText.includes('|')) return
+  if (Platform.prerender && data.title && title.innerText.includes('|')) return
 
   if (data.fullTitle && data.title) title.innerText = data.title
   else title.innerText = data.title ? `${data.title} | ${baseTitle}` : baseTitle
@@ -51,7 +53,7 @@ export default function (data: MetaData = {}): void {
     tags.ogDescription!.content = data.description || tags.ogDescription!.content
     tags.description!.content = data.description || tags.description!.content
 
-    tags.ogURL!.content = `${window.location.origin}${useRoute().fullPath}`
+    tags.ogURL!.content = `${domain?.slice(0, -1)}${useRoute().fullPath}`
     tags.twitterTitle!.content = title.innerText
     tags.ogTitle!.content = title.innerText
 
