@@ -2,8 +2,11 @@ import jsonConfig from '../../package.json'
 import Platform from '@/utils/Platform'
 import { useRoute } from 'vue-router'
 
+let baseTitle = document.getElementsByTagName('title')[0].innerText
 const domain = (jsonConfig as { domain?: string }).domain
-const baseTitle = document.getElementsByTagName('title')[0].innerText
+const separatorIndex = baseTitle.indexOf(' | ')
+
+if (separatorIndex > -1) baseTitle = baseTitle.slice(separatorIndex + 3)
 
 interface MetaTags {
   readonly twitterDescription: HTMLMetaElement | null
@@ -15,6 +18,7 @@ interface MetaTags {
 
   readonly twitterTitle: HTMLMetaElement | null
   readonly ogTitle: HTMLMetaElement | null
+  readonly title: HTMLTitleElement | null
   readonly ogURL: HTMLMetaElement | null
 }
 
@@ -35,17 +39,19 @@ const tags: MetaTags = {
 
   twitterTitle: document.querySelector('meta[name="twitter:title"]'),
   ogTitle: document.querySelector('meta[property="og:title"]'),
-  ogURL: document.querySelector('meta[property="og:url"]')
+  ogURL: document.querySelector('meta[property="og:url"]'),
+  title: document.getElementsByTagName('title')[0]
 }
 
 export default function (data: MetaData = {}): void {
-  const title = document.getElementsByTagName('title')[0]
-  if (Platform.prerender && data.title && title.innerText.includes('|')) return
+  const fullTitle = data.title as string
+  const pageTitle = data.title ? `${data.title} | ` : ''
 
-  if (data.fullTitle && data.title) title.innerText = data.title
-  else title.innerText = data.title ? `${data.title} | ${baseTitle}` : baseTitle
+  tags.title!.innerText = data.fullTitle ? fullTitle : pageTitle + baseTitle
 
   if (Platform.prerender) {
+    const title = data.fullTitle ? fullTitle : data.title ? `${data.title} | ${baseTitle}` : baseTitle
+
     tags.twitterImage!.content = data.image ? `/public/img/${data.image}` : tags.twitterImage!.content
     tags.ogImage!.content = data.image ? `/public/img/${data.image}` : tags.ogImage!.content
 
@@ -54,8 +60,9 @@ export default function (data: MetaData = {}): void {
     tags.description!.content = data.description || tags.description!.content
 
     tags.ogURL!.content = `${domain?.slice(0, -1)}${useRoute().fullPath}`
-    tags.twitterTitle!.content = title.innerText
-    tags.ogTitle!.content = title.innerText
+    tags.twitterTitle!.content = title
+    tags.ogTitle!.content = title
+    tags.title!.innerText = title
 
     setTimeout(() =>
       document.dispatchEvent(new Event('custom-post-render-event'))

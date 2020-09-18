@@ -168,12 +168,14 @@ export default defineComponent({
     let itemIndex = -1
 
     onMounted(() => {
+      firePrerender()
+      if (Platform.prerender) return
+
       document.addEventListener('touchend', skipMenuLettering, false)
       document.addEventListener('keyup', skipMenuLettering, false)
-      if (!Platform.mobile && !Platform.edge) pages.push('M0r3')
 
+      if (!Platform.mobile && !Platform.edge) pages.push('M0r3')
       setTimeout(showMenuItems, 500)
-      firePrerender()
     })
 
     return {

@@ -681,7 +681,11 @@ export default defineComponent({
     function redirect (): void {
       if (isExperiment && selectedDoor) {
         const index = selectedDoor.door.userData.index as number
-        router.push({ name: (Experiments as Array<Experiment>)[index].title })
+        const experiment = (Experiments as Array<Experiment>)[index]
+
+        experiment.newTab
+          ? location.href = experiment.page
+          : router.push({ name: experiment.title })
       }
 
       else {
