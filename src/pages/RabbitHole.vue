@@ -372,6 +372,7 @@ export default defineComponent({
         })
       }
 
+      doorObjects = doors.map(object => object.door)
       return frontDoor
     }
 
@@ -456,9 +457,9 @@ export default defineComponent({
       controls = new FirstPersonControls(scene, camera)
 
       controls.setBorders({
-        [Direction.DOWN]: center + 242,
         [Direction.UP]: center - 230,
         [Direction.RIGHT]: 18,
+        [Direction.DOWN]: center + 242,
         [Direction.LEFT]: -18
       })
     }
@@ -590,14 +591,14 @@ export default defineComponent({
       raycaster.setFromCamera(focus, camera)
       canOpen.value = false
 
-      const intersects = raycaster.intersectObjects(doors.map(object => object.door))
+      const intersects = raycaster.intersectObjects(doorObjects)
 
       if (intersects.length) {
-        const doorObject = doors.find(mesh => {
-          return mesh.door.id === intersects[0].object.id
-        })
+        const doorObject = doors.find(mesh =>
+          mesh.door.id === intersects[0].object.id
+        ) as Door
 
-        const index = doorObject?.door.userData.index as number
+        const index = doorObject.door.userData.index as number
         const experiments = Experiments as Array<Experiment>
         const experimentDoor = index !== undefined
 
@@ -729,6 +730,7 @@ export default defineComponent({
     const screenAnimation = ref(false)
     let selectedDoor: Door | undefined
 
+    let doorObjects: Array<Mesh> = []
     let controls: FirstPersonControls
     const raycaster = new Raycaster()
     const loader = new AssetsLoader()

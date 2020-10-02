@@ -59,10 +59,6 @@ export class Observer {
 
   public dispose (): void {
     this.observer.disconnect()
-
-    delete this.observerOptions
-    delete this.onIntersect
-    delete this.observer
   }
 }
 
