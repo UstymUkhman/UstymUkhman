@@ -14,7 +14,7 @@ export class Observer {
     root: null
   }
 
-  constructor (options?: ObserverOptions, callback?: IntersectionObserverCallback) {
+  public constructor (options?: ObserverOptions, callback?: IntersectionObserverCallback) {
     this.onIntersect = typeof callback === 'function' ? callback : this.defaultCallback.bind(this)
     this.observerOptions = { ...this.defaultOptions, ...options }
 

@@ -1,3 +1,4 @@
+'use strict';
 require('modernizr')
 
 /* eslint-disable @typescript-eslint/no-var-requires */

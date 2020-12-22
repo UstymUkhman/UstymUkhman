@@ -9,7 +9,7 @@ export class JSONLoader {
   private crossOrigin: string
   private resourcePath: string
 
-  constructor(manager?: LoadingManager)
+  public constructor(manager?: LoadingManager)
 
   public load: (
     url: string,

@@ -41,7 +41,7 @@ export class FirstPersonControls {
     [Direction.LEFT]: false
   }
 
-  constructor (scene: Scene, camera: PerspectiveCamera) {
+  public constructor (scene: Scene, camera: PerspectiveCamera) {
     this.controls = new PointerControls(camera, 16)
     scene.add(this.controls.object)
     this.addEventListeners()

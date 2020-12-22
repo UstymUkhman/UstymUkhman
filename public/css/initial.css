@@ -1,5 +1,6 @@
 html,
 body {
+  -webkit-text-rendering: optimizeLegibility;
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -10,11 +11,16 @@ body {
   font-variant-ligatures: none;
   backface-visibility: hidden;
   background-color: #000;
+
   text-size-adjust: none;
+  letter-spacing: normal;
+  line-height: normal;
+
+  font-weight: normal;
+  font-kerning: none;
+  font-style: normal;
 
   user-select: none;
-  font-weight: 400;
-
   appearance: none;
   overflow: hidden;
 

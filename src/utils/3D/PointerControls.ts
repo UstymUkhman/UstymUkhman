@@ -15,7 +15,7 @@ export default class PointerControls {
   private yaw = new Object3D()
   private active = false
 
-  constructor (camera: PerspectiveCamera, height = 10) {
+  public constructor (camera: PerspectiveCamera, height = 10) {
     document.addEventListener('mousemove', this.move, false)
     this.yaw.position.y = height
 

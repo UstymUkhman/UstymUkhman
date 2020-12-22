@@ -25,7 +25,7 @@ export class Viewport {
     width: window.innerWidth
   })
 
-  constructor (callback?: ResizeCallback) {
+  public constructor (callback?: ResizeCallback) {
     window.addEventListener('resize', this.update)
     this.update(new CustomEvent('resize'))
     this.callback = callback || null
