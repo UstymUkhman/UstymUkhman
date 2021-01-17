@@ -8,6 +8,7 @@ body {
   -webkit-touch-callout: none;
 
   text-rendering: optimizeLegibility;
+  font-family: Consolas, monospace;
   font-variant-ligatures: none;
   backface-visibility: hidden;
   background-color: #000;

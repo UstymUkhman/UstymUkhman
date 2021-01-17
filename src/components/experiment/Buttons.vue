@@ -2,7 +2,7 @@
   <div class="share-buttons" :class="{'visible': visible}">
     <div v-html="facebook" @click="socialShare('facebook')" itemtype="http://schema.org/ShareAction"></div>
     <div v-html="twitter" @click="socialShare('twitter')" itemtype="http://schema.org/ShareAction"></div>
-    <a v-html="github" :href="repository" target="_blank" itemtype="http://schema.org/LinkRole"></a>
+    <a v-html="github" :href="repository" target="_blank" rel="noopener" itemtype="http://schema.org/LinkRole"></a>
   </div>
 </template>
 
@@ -47,7 +47,7 @@ export default defineComponent({
         ? `https://facebook.com/sharer.php?u=${page}`
         : `https://twitter.com/intent/tweet?url=${page}&text=${props.description}`
 
-      window.open(url, '_blank', 'width=640,height=400,status=no,toolbar=no,titlebar=no')
+      window.open(url, '_blank', 'width=640,height=400,status=no,toolbar=no,titlebar=no,noopener=yes')
     }
 
     onMounted(() =>

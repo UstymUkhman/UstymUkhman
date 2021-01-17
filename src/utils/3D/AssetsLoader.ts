@@ -5,6 +5,7 @@ import { Texture } from '@three/textures/Texture'
 
 type TextureCallback = (asset: Texture) => unknown
 type JSONCallback = (asset: JSONModel) => unknown
+type AssetPromise = Promise<Texture | JSONModel>
 
 export default class AssetsLoader extends LoadingManager {
   private readonly texture = new TextureLoader(this)
@@ -46,20 +47,20 @@ export default class AssetsLoader extends LoadingManager {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private load (loader: TextureLoader | JSONLoader, ...args: any[]): Promise<Texture | JSONModel> {
+  private load (loader: TextureLoader | JSONLoader, ...args: any[]): AssetPromise {
     return this.execute(loader, 'load', args)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private parse (loader: TextureLoader | JSONLoader, ...args: any[]): Promise<Texture | JSONModel> {
+  private parse (loader: TextureLoader | JSONLoader, ...args: any[]): AssetPromise {
     return this.execute(loader, 'parse', args)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private execute (loader: TextureLoader | JSONLoader, fn: string, args: any[]): Promise<Texture | JSONModel> {
+  private execute (loader: TextureLoader | JSONLoader, fn: string, args: any[]): AssetPromise {
     return new Promise((resolve, reject) => {
       const onError = (error: Error) => reject(error)
-      const onLoad = (result: JSONPromise) => resolve(result)
+      const onLoad = (result: JSONPromise) => resolve(result as AssetPromise)
       const onProgress = (progress: number) => console.log(`Loading... ${progress}%`, progress)
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
