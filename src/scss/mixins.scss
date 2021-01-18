@@ -35,7 +35,7 @@
   #{$prop}: calc(var(--width) / 100 * #{$width}) $additionalProps;
 }
 
-@mixin center-size ($width: 100%, $height: 100%) {
+@mixin center-size ($width: 100%, $height: $width) {
   @include size($width, $height);
   position: absolute;
   display: block;
@@ -63,7 +63,7 @@
   @include size;
 }
 
-@mixin size ($width: 100%, $height: 100%) {
+@mixin size ($width: 100%, $height: $width) {
   height: $height;
   width: $width;
 }
@@ -89,7 +89,7 @@
 
       &::after,
       &::before {
-        @include size($border-size);
+        @include size($border-size, 100%);
         transform: scale3d(1, 0, 1);
 
         z-index: 1;
