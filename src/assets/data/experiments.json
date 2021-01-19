@@ -9,9 +9,7 @@
   "title": "webDOOM",
   "route": "webDOOM"
 }, {
-  "playstore": "https://play.google.com/store/apps/details?id=xyz.appmaker.ymcrxm",
   "page": "https://ustymukhman.github.io/infinite-jumper/public/",
-
   "github": "https://github.com/UstymUkhman/infinite-jumper",
   "description": "8 bit style infinite jumper game",
 
@@ -19,7 +17,8 @@
   "video": "InfiniteJumper.mp4",
 
   "title": "Infinite Jumper",
-  "route": "infinite-jumper"
+  "route": "infinite-jumper",
+  "newTab": true
 }, {
   "page": "https://ustymukhman.github.io/Dynamic.css/public/",
   "github": "https://github.com/UstymUkhman/Dynamic.css",

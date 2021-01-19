@@ -62,6 +62,7 @@ export default defineComponent({
 
     function onMouseOut (): void {
       pauseTimeout = setTimeout(() => {
+        if (!video.value) return;
         video.value.currentTime = 0.0
         video.value.pause()
       }, 500)

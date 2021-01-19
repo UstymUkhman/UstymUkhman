@@ -1,16 +1,13 @@
 <template>
   <div class="share-buttons" :class="{'visible': visible}">
-    <a v-html="github" :href="repository" target="_blank" rel="noopener" itemtype="http://schema.org/LinkRole"></a>
-    <!-- <a v-html="playstore" :href="repository" target="_blank" rel="noopener" itemtype="http://schema.org/LinkRole"></a> -->
-
     <div v-html="facebook" @click="socialPost('facebook')" itemtype="http://schema.org/ShareAction"></div>
     <div v-html="twitter" @click="socialPost('twitter')" itemtype="http://schema.org/ShareAction"></div>
+    <a v-html="github" :href="repository" target="_blank" rel="noopener" itemtype="http://schema.org/LinkRole"></a>
   </div>
 </template>
 
 <script lang="ts">
 import { Ref, defineComponent, ref, onMounted } from 'vue'
-import playstore from '@/assets/img/playstore.svg'
 import facebook from '@/assets/img/facebook.svg'
 import twitter from '@/assets/img/twitter.svg'
 import github from '@/assets/img/github.svg'
@@ -19,7 +16,6 @@ type Share = (social: string) => void
 
 interface Buttons {
   readonly visible: Ref<boolean>
-  readonly playstore: SVGElement
   readonly facebook: SVGElement
   readonly twitter: SVGElement
   readonly github: SVGElement
@@ -60,7 +56,6 @@ export default defineComponent({
 
     return {
       socialPost,
-      playstore,
       facebook,
       twitter,
       visible,
