@@ -55,10 +55,13 @@
     <link rel="icon" type="image/png" sizes="96x96"   href="/public/favicon/favicon-96x96.png" />
     <link rel="icon" type="image/png" sizes="96x96"   href="/public/favicon/favicon-512x512.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/public/favicon/android-icon-192x192.png" />
+
+    <!-- Manifest: -->
     <link rel="manifest" href="/<%= htmlWebpackPlugin.options.build.deploy ? '' : 'public/' %>manifest.json" />
 
-    <!-- Disabled JavaScript and unsupported browser styling: -->
-    <link rel="stylesheet" href="/public/css/initial.css" />
+    <!-- Fonts, disabled JavaScript and unsupported browser styling: -->
+    <link type="text/css" rel="preload" as="style" href="/public/css/fonts.css" onload="this.rel = 'stylesheet'" />
+    <link type="text/css" rel="stylesheet" href="/public/css/initial.css" />
   </head>
 
   <body>

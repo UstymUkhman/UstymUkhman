@@ -11,9 +11,7 @@ import firePrerender from './Prerender'
 export type MouseEventListener = (event: MouseEvent) => void
 export type TouchEventListener = (event: TouchEvent) => void
 
-interface WindowNavigator extends Navigator {
-  userLanguage?: string
-}
+type WindowNavigator = Navigator & { userLanguage?: string }
 
 let userLanguage = 'en'
 const navigator: WindowNavigator = window.navigator

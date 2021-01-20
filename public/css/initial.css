@@ -7,11 +7,12 @@ body {
   -webkit-overflow-scrolling: touch;
   -webkit-touch-callout: none;
 
+  font-family: 'White Rabbit', monospace;
   text-rendering: optimizeLegibility;
-  font-family: Consolas, monospace;
   font-variant-ligatures: none;
   backface-visibility: hidden;
   background-color: #000;
+  color: rgb(0, 204, 0);
 
   text-size-adjust: none;
   letter-spacing: normal;
@@ -20,6 +21,7 @@ body {
   font-weight: normal;
   font-kerning: none;
   font-style: normal;
+  font-size: 18px;
 
   user-select: none;
   appearance: none;
@@ -61,8 +63,6 @@ body {
 .disabled-js .disabled-js-copy,
 .not-supported .not-supported-copy {
   text-shadow: 0 0 10px #0c0;
-  font-family: monospace;
-
   position: absolute;
   max-width: 625px;
   color: #0c0;

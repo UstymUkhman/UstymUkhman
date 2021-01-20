@@ -80,11 +80,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import 'fonts';
-
 html,
 body {
-  @include white-rabbit;
   cursor: none;
 }
 
