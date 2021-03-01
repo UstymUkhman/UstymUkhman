@@ -1783,7 +1783,7 @@ compressible@~2.0.16:
   dependencies:
     mime-db ">= 1.43.0 < 2"
 
-compression-webpack-plugin@6.1.1:
+compression-webpack-plugin@^6.1.1:
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/compression-webpack-plugin/-/compression-webpack-plugin-6.1.1.tgz#ae8e4b2ffdb7396bb776e66918d751a20d8ccf0e"
   integrity sha512-BEHft9M6lwOqVIQFMS/YJGmeCYXVOakC5KzQk05TFpMBlODByh1qNsZCWjUBxCQhUP9x0WfGidxTbGkjbWO/TQ==
@@ -1895,7 +1895,7 @@ copy-descriptor@^0.1.0:
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
-copy-webpack-plugin@6.4.1:
+copy-webpack-plugin@^6.4.1:
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-6.4.1.tgz#138cd9b436dbca0a6d071720d5414848992ec47e"
   integrity sha512-MXyPCjdPVx5iiWyl40Va3JGh27bKzOTNY3NjUTrosD2q7dR/cLD0013uqJ3BpFbUjyONINjb6qI7nDIJujrMbA==
@@ -7666,21 +7666,6 @@ tar@^6.0.2:
     mkdirp "^1.0.3"
     yallist "^4.0.0"
 
-terser-webpack-plugin@4.2.3:
-  version "4.2.3"
-  resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-4.2.3.tgz#28daef4a83bd17c1db0297070adc07fc8cfc6a9a"
-  integrity sha512-jTgXh40RnvOrLQNgIkwEKnQ8rmHjHK4u+6UBEi+W+FPmvb+uo+chJXntKe7/3lW5mNysgSWD60KyesnhW8D6MQ==
-  dependencies:
-    cacache "^15.0.5"
-    find-cache-dir "^3.3.1"
-    jest-worker "^26.5.0"
-    p-limit "^3.0.2"
-    schema-utils "^3.0.0"
-    serialize-javascript "^5.0.1"
-    source-map "^0.6.1"
-    terser "^5.3.4"
-    webpack-sources "^1.4.3"
-
 terser-webpack-plugin@^1.4.3:
   version "1.4.5"
   resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-1.4.5.tgz#a217aefaea330e734ffacb6120ec1fa312d6040b"
@@ -7695,6 +7680,21 @@ terser-webpack-plugin@^1.4.3:
     terser "^4.1.2"
     webpack-sources "^1.4.0"
     worker-farm "^1.7.0"
+
+terser-webpack-plugin@^4.2.3:
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/terser-webpack-plugin/-/terser-webpack-plugin-4.2.3.tgz#28daef4a83bd17c1db0297070adc07fc8cfc6a9a"
+  integrity sha512-jTgXh40RnvOrLQNgIkwEKnQ8rmHjHK4u+6UBEi+W+FPmvb+uo+chJXntKe7/3lW5mNysgSWD60KyesnhW8D6MQ==
+  dependencies:
+    cacache "^15.0.5"
+    find-cache-dir "^3.3.1"
+    jest-worker "^26.5.0"
+    p-limit "^3.0.2"
+    schema-utils "^3.0.0"
+    serialize-javascript "^5.0.1"
+    source-map "^0.6.1"
+    terser "^5.3.4"
+    webpack-sources "^1.4.3"
 
 terser@^4.1.2, terser@^4.6.3:
   version "4.8.0"
@@ -7719,10 +7719,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
-three@^0.124.0:
-  version "0.124.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.124.0.tgz#14ab1a26ba6c56e51190e1b55695cd3c1e69ea55"
-  integrity sha512-ROXp1Ly7YyF+jC910DQyAWj++Qlw2lQv0qwYLNQwdDbjk4bsOXAfGO92wYTMPNei1GMJUmCxSxc3MjGBTS09Rg==
+three@^0.125.0:
+  version "0.125.0"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.125.0.tgz#19e922b9dc51ad0b706893aeee888de68e99850a"
+  integrity sha512-qL36qUGsPQ/Ofo/RZdXwHwM7A8wzUSAIyawtjIebJSPvounUQeneSqxI0aBY2iwKpseGy+RUtj3C5f/z4poyXw==
 
 threejs-glsl-loader@^1.0.4:
   version "1.0.4"
@@ -8294,7 +8294,7 @@ webpack-bundle-analyzer@^4.3.0:
     sirv "^1.0.7"
     ws "^7.3.1"
 
-webpack-cli@3.3.12:
+webpack-cli@^3.3.12:
   version "3.3.12"
   resolved "https://registry.yarnpkg.com/webpack-cli/-/webpack-cli-3.3.12.tgz#94e9ada081453cd0aa609c99e500012fd3ad2d4a"
   integrity sha512-NVWBaz9k839ZH/sinurM+HcDvJOTXwSjYp1ku+5XKeOC03z8v5QitnK/x+lAxGXFyhdayoIf/GOpv85z3/xPag==
@@ -8393,7 +8393,7 @@ webpack-sources@^1.1.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1, webpack-
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack@4.46.0, webpack@^4.44.2:
+webpack@^4.44.2, webpack@^4.46.0:
   version "4.46.0"
   resolved "https://registry.yarnpkg.com/webpack/-/webpack-4.46.0.tgz#bf9b4404ea20a073605e0a011d188d77cb6ad542"
   integrity sha512-6jJuJjg8znb/xRItk7bkT0+Q7AHCYjjFnvKIWQPkNIOyRqoCGvkOs0ipeQzrqz4l5FtN5ZI/ukEHroeX/o1/5Q==
