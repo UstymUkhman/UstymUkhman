@@ -4,18 +4,18 @@
  * @author UstymUkhman / http://35.158.218.205/
  */
 
+import { Face3, Geometry } from 'three/examples/jsm/deprecated/Geometry'
 import { DefaultLoadingManager } from '@three/loaders/LoadingManager'
 import { AnimationClip } from '@three/animation/AnimationClip'
+
 import { LoaderUtils } from '@three/loaders/LoaderUtils'
 import { FileLoader } from '@three/loaders/FileLoader'
-import { Geometry } from '@three/core/Geometry'
-import { Loader } from '@/utils/3D/Loader'
 
 import { Vector2 } from '@three/math/Vector2'
 import { Vector3 } from '@three/math/Vector3'
 import { Vector4 } from '@three/math/Vector4'
 
-import { Face3 } from '@three/core/Face3'
+import { Loader } from '@/utils/3D/Loader'
 import { Color } from '@three/math/Color'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -424,13 +424,15 @@ Object.assign(JSONLoader.prototype, {
       geometry.computeFaceNormals()
       geometry.computeBoundingSphere()
 
+      const bufferGeometry = geometry.toBufferGeometry()
+
       if (json.materials === undefined || json.materials.length === 0) {
-        return { geometry: geometry }
+        return { geometry: bufferGeometry }
       }
 
       else {
         const materials = Loader.initMaterials(json.materials, this.resourcePath || path, this.crossOrigin)
-        return { geometry: geometry, materials: materials }
+        return { geometry: bufferGeometry, materials: materials }
       }
     }
   })()

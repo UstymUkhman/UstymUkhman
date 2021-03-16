@@ -20,13 +20,14 @@
     "animejs": "^3.2.0",
     "breakpoint-sass": "^2.7.1",
     "mobile-detect": "^1.4.4",
-    "three": "^0.124.0",
+    "three": "^0.126.1",
     "vue": "^3.0.5",
     "vue-router": "^4.0.3"
   },
   "devDependencies": {
     "@types/animejs": "^3.1.2",
     "@types/modernizr": "^3.5.3",
+    "@types/three": "^0.126.1",
     "@typescript-eslint/eslint-plugin": "^4.0.1",
     "@typescript-eslint/parser": "^4.0.1",
     "@vue/compiler-sfc": "^3.0.0",

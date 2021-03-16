@@ -1,8 +1,8 @@
-import { Geometry } from '@three/core/Geometry'
-import { Material } from '@three/materials/Material'
-import { LoadingManager } from '@three/loaders/LoadingManager'
+type Material = import('three/src/materials/Material').Material
+type BufferGeometry = import('three/src/core/BufferGeometry').BufferGeometry
+type LoadingManager = import('three/src/loaders/LoadingManager').LoadingManager
 
-export type JSONModel = { geometry: Geometry, materials?: Array<Material> }
+export type JSONModel = { geometry: BufferGeometry, materials?: Array<Material> }
 export type JSONPromise = PromiseLike<JSONModel> | undefined
 
 export class JSONLoader {
