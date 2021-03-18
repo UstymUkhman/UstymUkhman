@@ -1,9 +1,9 @@
-type PerspectiveCamera = import('@three/cameras/PerspectiveCamera').PerspectiveCamera
-type Object3D = import('@three/core/Object3D').Object3D
-type Scene = import('@three/scenes/Scene').Scene
+type PerspectiveCamera = import('three/src/cameras/PerspectiveCamera').PerspectiveCamera
+type Object3D = import('three/src/core/Object3D').Object3D
+type Scene = import('three/src/scenes/Scene').Scene
 
 import PointerControls from '@/utils/3D/PointerControls'
-import { Vector3 } from '@three/math/Vector3'
+import { Vector3 } from 'three/src/math/Vector3'
 
 export const enum Direction { UP, RIGHT, DOWN, LEFT }
 type Directions<Type> = { [way in Direction]: Type }

@@ -44,16 +44,16 @@ export default defineComponent({
       canvasContext.fill()
     }
 
-    const circle: Ref<HTMLCanvasElement> = ref()!
     let canvasContext: CanvasRenderingContext2D
-
     const screen = new Viewport(onResize)
     let { width, height } = screen.size
 
     let halfHeight = height / 2
     let halfWidth = width / 2
 
+    const circle = ref()
     let drawingTime = 0
+
     let radius = 0
     let frame = 0
 

@@ -4,19 +4,19 @@
  * @author UstymUkhman / http://35.158.218.205/
  */
 
+import { DefaultLoadingManager } from 'three/src/loaders/LoadingManager'
 import { Face3, Geometry } from 'three/examples/jsm/deprecated/Geometry'
-import { DefaultLoadingManager } from '@three/loaders/LoadingManager'
-import { AnimationClip } from '@three/animation/AnimationClip'
+import { AnimationClip } from 'three/src/animation/AnimationClip'
 
-import { LoaderUtils } from '@three/loaders/LoaderUtils'
-import { FileLoader } from '@three/loaders/FileLoader'
+import { LoaderUtils } from 'three/src/loaders/LoaderUtils'
+import { FileLoader } from 'three/src/loaders/FileLoader'
 
-import { Vector2 } from '@three/math/Vector2'
-import { Vector3 } from '@three/math/Vector3'
-import { Vector4 } from '@three/math/Vector4'
+import { Vector2 } from 'three/src/math/Vector2'
+import { Vector3 } from 'three/src/math/Vector3'
+import { Vector4 } from 'three/src/math/Vector4'
 
+import { Color } from 'three/src/math/Color'
 import { Loader } from '@/utils/3D/Loader'
-import { Color } from '@three/math/Color'
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function JSONLoader (manager) {

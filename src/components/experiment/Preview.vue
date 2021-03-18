@@ -51,9 +51,8 @@ export default defineComponent({
 
   setup (): TemplateValues {
     let pauseTimeout: number
-
-    const preview: Ref<HTMLDivElement> = ref()!
-    const video: Ref<HTMLVideoElement> = ref()!
+    const preview = ref()
+    const video = ref()
 
     function onMouseOver (): void {
       clearTimeout(pauseTimeout)

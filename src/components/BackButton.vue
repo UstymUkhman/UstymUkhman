@@ -68,14 +68,13 @@ export default defineComponent({
       }, delay + 2500)
     }
 
-    const button: Ref<HTMLParagraphElement> = ref()!
-
     const selected = ref(props.enabled)
     const pressed = ref(props.enabled)
     const active = ref(props.focused)
 
     const touching = ref(false)
     let lettering: Lettering
+    const button = ref()
     let back = false
 
     watchEffect(() => { active.value = props.focused })

@@ -1,8 +1,8 @@
-type PerspectiveCamera = import('@three/cameras/PerspectiveCamera').PerspectiveCamera
+type PerspectiveCamera = import('three/src/cameras/PerspectiveCamera').PerspectiveCamera
 
-import { Object3D } from '@three/core/Object3D'
-import { Vector3 } from '@three/math/Vector3'
-import { Euler } from '@three/math/Euler'
+import { Object3D } from 'three/src/core/Object3D'
+import { Vector3 } from 'three/src/math/Vector3'
+import { Euler } from 'three/src/math/Euler'
 import { PI } from '@/utils/Number'
 
 export default class PointerControls {

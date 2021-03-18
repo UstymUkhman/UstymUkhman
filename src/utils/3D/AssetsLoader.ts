@@ -1,7 +1,7 @@
 import { JSONModel, JSONLoader, JSONPromise } from '@/utils/3D/JSONLoader'
-import { LoadingManager } from '@three/loaders/LoadingManager'
-import { TextureLoader } from '@three/loaders/TextureLoader'
-import { Texture } from '@three/textures/Texture'
+import { LoadingManager } from 'three/src/loaders/LoadingManager'
+import { TextureLoader } from 'three/src/loaders/TextureLoader'
+import { Texture } from 'three/src/textures/Texture'
 
 type TextureCallback = (asset: Texture) => unknown
 type JSONCallback = (asset: JSONModel) => unknown

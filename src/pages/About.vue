@@ -75,13 +75,12 @@ export default defineComponent({
       lettering.dissolve()
     }
 
-    const paragraph: Ref<HTMLParagraphElement> = ref()!
-
     const selectedButton = ref(false)
     const visibleButton = ref(false)
     const activeButton = ref(false)
 
     let lettering: Lettering
+    const paragraph = ref()
 
     onMounted(() => {
       document.addEventListener('keydown', onKeyDown, false)

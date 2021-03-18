@@ -5,25 +5,25 @@
 </template>
 
 <script lang="ts">
-import { MeshStandardMaterial } from '@three/materials/MeshStandardMaterial'
+import { MeshStandardMaterial } from 'three/src/materials/MeshStandardMaterial'
 import { Ref, defineComponent, ref, onMounted, onBeforeUnmount } from 'vue'
-import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
-import { DirectionalLight } from '@three/lights/DirectionalLight'
-import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
+import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
+import { DirectionalLight } from 'three/src/lights/DirectionalLight'
+import { WebGLRenderer } from 'three/src/renderers/WebGLRenderer'
 
+import { BufferGeometry } from 'three/src/core/BufferGeometry'
+import { AmbientLight } from 'three/src/lights/AmbientLight'
 type JSONModel = import('@/utils/3D/JSONLoader').JSONModel
-import { AmbientLight } from '@three/lights/AmbientLight'
 import { Loading, Sounds, firePrerender } from '@/utils'
 
-import { SpotLight } from '@three/lights/SpotLight'
+import { SpotLight } from 'three/src/lights/SpotLight'
 import AssetsLoader from '@/utils/3D/AssetsLoader'
 import { Viewport, Size } from '@/utils/Viewport'
-import { Geometry } from '@three/core/Geometry'
 import anime, { AnimeInstance } from 'animejs'
 
+import { Scene } from 'three/src/scenes/Scene'
+import { Mesh } from 'three/src/objects/Mesh'
 import PILL from '@/assets/models/pill.json'
-import { Scene } from '@three/scenes/Scene'
-import { Mesh } from '@three/objects/Mesh'
 import router from '@/router'
 
 export default defineComponent({
@@ -38,7 +38,7 @@ export default defineComponent({
       render()
     }
 
-    function createBluePill (geometry: Geometry): void {
+    function createBluePill (geometry: BufferGeometry): void {
       bluePill = new Mesh(geometry, new MeshStandardMaterial({
         color: 0x003FFF,
         ...material
@@ -58,7 +58,7 @@ export default defineComponent({
       })
     }
 
-    function createRedPill (geometry: Geometry): void {
+    function createRedPill (geometry: BufferGeometry): void {
       redPill = new Mesh(geometry, new MeshStandardMaterial({
         color: 0xB40000,
         ...material
@@ -273,7 +273,6 @@ export default defineComponent({
       opacity: 0
     }
 
-    const pills: Ref<HTMLCanvasElement> = ref()!
     const loader: AssetsLoader = new AssetsLoader()
     loader.loadModel(PILL as JSON, createPills)
 
@@ -281,9 +280,11 @@ export default defineComponent({
     let { width, height } = screen.size
 
     const camera = new PerspectiveCamera(75, screen.size.ratio, 1, 10)
+    camera.position.z = 7.5
+
     let renderer: WebGLRenderer
     const scene = new Scene()
-    camera.position.z = 7.5
+    const pills = ref()
 
     let blueFade: AnimeInstance
     let redFade: AnimeInstance

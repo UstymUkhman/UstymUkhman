@@ -114,9 +114,7 @@ export default defineComponent({
       fillColumns()
     }
 
-    const numbers: Ref<HTMLCanvasElement> = ref()!
     let context: CanvasRenderingContext2D
-
     const screen = new Viewport(onResize)
     let { width, height } = screen.size
 
@@ -125,6 +123,8 @@ export default defineComponent({
 
     const block = ref(false)
     let skipColumns = false
+
+    const numbers = ref()
     let frame = 0
 
     onMounted(() => {

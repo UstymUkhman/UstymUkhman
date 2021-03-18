@@ -112,13 +112,6 @@ module.exports = {
     extensions: ['.vue', '.ts', '.tsx', '.js', '.jsx', '.json'],
 
     alias: {
-      '@postprocessing': utils.resolve('node_modules/three/examples/jsm/postprocessing'),
-      '@controls': utils.resolve('node_modules/three/examples/jsm/controls'),
-      '@shaders': utils.resolve('node_modules/three/examples/jsm/shaders'),
-      '@loaders': utils.resolve('node_modules/three/examples/jsm/loaders'),
-      '@utils': utils.resolve('node_modules/three/examples/jsm/utils'),
-      '@three': utils.resolve('node_modules/three/src'),
-
       '@components': utils.resolve('src/components'),
       modernizr$: utils.resolve('modernizr'),
       '@pages': utils.resolve('src/pages'),

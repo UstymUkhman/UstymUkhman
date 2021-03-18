@@ -25,6 +25,7 @@ Makefile
 coverage
 
 # examples
+!@types/three/examples
 !three/examples
 examples
 example

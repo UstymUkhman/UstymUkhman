@@ -26,55 +26,56 @@
 
 <script lang="ts">
 import { SetupContext, Ref, ComputedRef, defineComponent, computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { LinearFilter, MirroredRepeatWrapping, GLSL3 } from 'three/src/constants'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { FirstPersonControls, Direction } from '@/utils/3D/FirstPersonControls'
-import { LinearFilter, MirroredRepeatWrapping, GLSL3 } from '@three/constants'
 
-import { MeshBasicMaterial } from '@three/materials/MeshBasicMaterial'
-import { MeshPhongMaterial } from '@three/materials/MeshPhongMaterial'
-import { PerspectiveCamera } from '@three/cameras/PerspectiveCamera'
+import { MeshBasicMaterial } from 'three/src/materials/MeshBasicMaterial'
+import { MeshPhongMaterial } from 'three/src/materials/MeshPhongMaterial'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
+import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
+
 import { Lettering, Loading, Sounds, firePrerender } from '@/utils'
-
-import { ShaderMaterial } from '@three/materials/ShaderMaterial'
-import { EffectComposer } from '@postprocessing/EffectComposer'
-import { PlaneGeometry } from '@three/geometries/PlaneGeometry'
-import FRONT_CEILING from '@/assets/textures/front_ceiling.jpg'
-import { WebGLRenderer } from '@three/renderers/WebGLRenderer'
+import { ShaderMaterial } from 'three/src/materials/ShaderMaterial'
+import { PlaneGeometry } from 'three/src/geometries/PlaneGeometry'
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader'
+import { WebGLRenderer } from 'three/src/renderers/WebGLRenderer'
 import ScreenAnimation from '@components/ScreenAnimation.vue'
-import SIDE_CEILING from '@/assets/textures/side_ceiling.jpg'
 
-import { AmbientLight } from '@three/lights/AmbientLight'
-type Texture = import('@three/textures/Texture').Texture
-import Experiments from '@/assets/data/experiments.json'
-import { ShaderPass } from '@postprocessing/ShaderPass'
-import { RenderPass } from '@postprocessing/RenderPass'
+import FRONT_CEILING from '@/assets/textures/front_ceiling.jpg'
+import SIDE_CEILING from '@/assets/textures/side_ceiling.jpg'
 import DOOR_WALL from '@/assets/textures/door_wall.png'
+import FLOOR from '@/assets/textures/floor.jpg'
+import WALL from '@/assets/textures/wall.jpg'
+import MATRIX from '@/assets/img/lut.png'
+
+import { AmbientLight } from 'three/src/lights/AmbientLight'
+import Experiments from '@/assets/data/experiments.json'
+import { SpotLight } from 'three/src/lights/SpotLight'
+import { Raycaster } from 'three/src/core/Raycaster'
+import { Texture } from 'three/src/textures/Texture'
 
 import KEYBOARD from '@/assets/models/keyboard.json'
 import SYSTEM_UNIT from '@/assets/models/case.json'
-import { SpotLight } from '@three/lights/SpotLight'
-import AssetsLoader from '@/utils/3D/AssetsLoader'
 import MONITOR from '@/assets/models/monitor.json'
-import { Viewport, Size } from '@/utils/Viewport'
-import { Raycaster } from '@three/core/Raycaster'
-import { FXAAShader } from '@shaders/FXAAShader'
-
-import { Object3D } from '@three/core/Object3D'
-import FLOOR from '@/assets/textures/floor.jpg'
 import TABLE from '@/assets/models/table.json'
 import FRAME from '@/assets/models/frame.json'
-import WALL from '@/assets/textures/wall.jpg'
-import { Vector2 } from '@three/math/Vector2'
+import DOOR from '@/assets/models/door.json'
+
+import AssetsLoader from '@/utils/3D/AssetsLoader'
+import { Object3D } from 'three/src/core/Object3D'
+import { Viewport, Size } from '@/utils/Viewport'
+import { Vector2 } from 'three/src/math/Vector2'
+
+import { Scene } from 'three/src/scenes/Scene'
+import { Mesh } from 'three/src/objects/Mesh'
+import { Color } from 'three/src/math/Color'
 
 import vertGrading from '@/glsl/grading.vert'
 import fragGrading from '@/glsl/grading.frag'
-import DOOR from '@/assets/models/door.json'
+
 type Door = { pivot: Object3D, door: Mesh }
-
-import { Scene } from '@three/scenes/Scene'
-import { Mesh } from '@three/objects/Mesh'
-import { Color } from '@three/math/Color'
-import MATRIX from '@/assets/img/lut.png'
-
 import { PI } from '@/utils/Number'
 import router from '@/router'
 import anime from 'animejs'
@@ -166,7 +167,7 @@ export default defineComponent({
       leftLight.position.set(-25.5, 18.5, center)
       leftLight.rotateY(PI.d2)
 
-      rightLight = leftLight.clone()
+      rightLight = leftLight.clone() as Mesh
       rightLight.rotation.y = -PI.d2
       rightLight.position.x = 25.5
 
@@ -191,7 +192,7 @@ export default defineComponent({
       backWall.position.set(0, 18.5, center + 250)
 
       backWall.rotateY(Math.PI)
-      backLight = backWall.clone()
+      backLight = backWall.clone() as Mesh
 
       backLight.geometry = new PlaneGeometry(50, 75, 1, 1)
       backLight.material = lightMaterial
@@ -367,7 +368,7 @@ export default defineComponent({
         scene.add(pitch)
 
         doors.push({
-          door: sideDoor,
+          door: sideDoor as Mesh,
           pivot: pivot
         })
       }
@@ -722,8 +723,6 @@ export default defineComponent({
       !exit.value && (forceDescription.value || (canOpen.value && !!doorDescription.value))
     )
 
-    const message: Ref<HTMLParagraphElement> = ref()!
-    const hole: Ref<HTMLCanvasElement> = ref()!
     const screen = new Viewport(onResize)
     const visibleGuidelines = ref(true)
     const forceDescription = ref(false)
@@ -751,9 +750,12 @@ export default defineComponent({
     let introStarted = false
     let isRightDoor: boolean
     let lettering: Lettering
+    let fxaa: ShaderPass
+
     const ready = ref(false)
     const exit = ref(false)
-    let fxaa: ShaderPass
+    const message = ref()
+    const hole = ref()
 
     let rightLight: Mesh
     let leftLight: Mesh

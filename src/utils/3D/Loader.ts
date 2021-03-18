@@ -1,12 +1,12 @@
-import { MaterialLoader } from '@three/loaders/MaterialLoader'
-import { Loader as THREELoader } from '@three/loaders/Loader'
-import { TextureLoader } from '@three/loaders/TextureLoader'
+import { MaterialLoader } from 'three/src/loaders/MaterialLoader'
+import { Loader as THREELoader } from 'three/src/loaders/Loader'
+import { TextureLoader } from 'three/src/loaders/TextureLoader'
 
-type Material = import('@three/materials/Material').Material
-type Texture = import('@three/textures/Texture').Texture
+type Material = import('three/src/materials/Material').Material
+type Texture = import('three/src/textures/Texture').Texture
 
-import { MathUtils } from '@three/math/MathUtils'
-import { Color } from '@three/math/Color'
+import { MathUtils } from 'three/src/math/MathUtils'
+import { Color } from 'three/src/math/Color'
 
 import {
   MirroredRepeatWrapping,
@@ -19,7 +19,7 @@ import {
   NoBlending,
   DoubleSide,
   BackSide
-} from '@three/constants'
+} from 'three/src/constants'
 
 type MaterialParams = { [key: string]: string | number | boolean }
 type Textures = { [key: string]: Texture }

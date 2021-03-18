@@ -7,13 +7,6 @@
     "js-import.semicolon": false,
 
     "js-import.alias": {
-      "@postprocessing": "three/examples/jsm/postprocessing",
-      "@controls": "three/examples/jsm/controls",
-      "@shaders": "three/examples/jsm/shaders",
-      "@loaders": "three/examples/jsm/loaders",
-      "@utils": "three/examples/jsm/utils",
-      "@three": "three/src",
-
       "@components": "/src/components",
       "modernizr$": "modernizr",
       "vue": "@vue/runtime-dom",
