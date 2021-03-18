@@ -91,7 +91,7 @@ $mobileHeight: 0.66 / 16 * 9;
     calc(var(--width) * #{$desktopHeight})
   );
 
-  @include vw(margin, 5);
+  @include vw(padding, 5);
   pointer-events: none;
   position: relative;
 
@@ -180,7 +180,7 @@ $mobileHeight: 0.66 / 16 * 9;
       calc(var(--width) * #{$mobileHeight})
     );
 
-    @include vw(margin, 10);
+    @include vw(padding, 10);
   }
 
   @include desktop-hover {
