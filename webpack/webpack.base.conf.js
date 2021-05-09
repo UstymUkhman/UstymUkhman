@@ -6,6 +6,7 @@ const config = require('../build/config')
 const utils = require('../build/utils.js')
 
 const { VueLoaderPlugin } = require('vue-loader')
+const ESLintPlugin = require('eslint-webpack-plugin')
 const ThreeMinifierPlugin = require('@yushijinhun/three-minifier-webpack')
 /* eslint-enable @typescript-eslint/no-var-requires */
 
@@ -16,95 +17,84 @@ const sourceMapEnabled = isProduction
   ? config.build.productionSourceMap
   : config.dev.cssSourceMap
 
-const lintingRules = () => !config.dev.useLint ? null : {
-  enforce: 'pre',
-  loader: 'eslint-loader',
-  exclude: /node_modules/,
-  test: /\.(vue|ts|tsx|js|jsx)$/,
-  include: [utils.resolve('src')],
-
-  options: {
-    emitWarning: !config.dev.showEslintErrorsInOverlay,
-    formatter: require('eslint-friendly-formatter')
-  }
-}
-
 module.exports = {
   entry: { app: 'src/main.ts' },
   context: path.resolve(__dirname, '../'),
 
   module: {
-    rules: [
-      lintingRules(),
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          cacheBusting: config.dev.cacheBusting,
-          cssSourceMap: sourceMapEnabled,
+    rules: [{
+      test: /\.vue$/,
+      loader: 'vue-loader',
+      options: {
+        cacheBusting: config.dev.cacheBusting,
+        cssSourceMap: sourceMapEnabled,
 
-          loaders: utils.cssLoaders({
-            sourceMap: sourceMapEnabled,
-            extract: isProduction
-          }),
+        loaders: utils.cssLoaders({
+          sourceMap: sourceMapEnabled,
+          extract: isProduction
+        }),
 
-          transformToRequire: {
-            video: ['src', 'poster'],
-            image: 'xlink:href',
-            source: 'src',
-            img: 'src'
-          }
+        transformToRequire: {
+          video: ['src', 'poster'],
+          image: 'xlink:href',
+          source: 'src',
+          img: 'src'
         }
-      }, {
-        test: /\.tsx?$/,
-        loader: 'ts-loader',
-        exclude: /node_modules/,
-        options: {
-          appendTsSuffixTo: [/\.vue$/],
-          transpileOnly: true
-        }
-      }, {
-        test: /\.(png|jpe?g|gif)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          name: utils.assetsPath('img/[name].[hash:7].[ext]'),
-          limit: 10000
-        }
-      }, {
-        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-        loader: 'url-loader',
-        options: {
-          name: utils.assetsPath('media/[name].[hash:7].[ext]'),
-          limit: 10000
-        }
-      }, {
-        test: /\.(eot|woff2?|otf|ttf|svg)(\?.*)?$/,
-        exclude: /assets(\\|\/)img/,
-        loader: 'url-loader',
-        options: {
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
-          limit: 10000
-        }
-      }, {
-        test: /\.(vs|fs|vert|frag|glsl)$/,
-        loader: 'threejs-glsl-loader'
-      }, {
-        test: /\.svg$/,
-        loader: 'raw-loader',
-        exclude: /assets(\\|\/)fonts/
-      }, {
-        test: /\.(gltf)$/,
-        loader: 'gltf-loader-2'
-      }, {
-        test: /\.(bin|glb)$/,
-        loader: 'file-loader'
       }
-    ]
+    }, {
+      test: /\.tsx?$/,
+      loader: 'ts-loader',
+      exclude: /node_modules/,
+      options: {
+        appendTsSuffixTo: [/\.vue$/],
+        transpileOnly: true
+      }
+    }, {
+      test: /\.(png|jpe?g|gif)(\?.*)?$/,
+      loader: 'url-loader',
+      options: {
+        name: utils.assetsPath('img/[name].[hash:7].[ext]'),
+        limit: 10000
+      }
+    }, {
+      test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+      loader: 'url-loader',
+      options: {
+        name: utils.assetsPath('media/[name].[hash:7].[ext]'),
+        limit: 10000
+      }
+    }, {
+      test: /\.(eot|woff2?|otf|ttf|svg)(\?.*)?$/,
+      exclude: /assets(\\|\/)img/,
+      loader: 'url-loader',
+      options: {
+        name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
+        limit: 10000
+      }
+    }, {
+      test: /\.(vs|fs|vert|frag|glsl)$/,
+      loader: 'threejs-glsl-loader'
+    }, {
+      test: /\.svg$/,
+      loader: 'raw-loader',
+      exclude: /assets(\\|\/)fonts/
+    }, {
+      test: /\.(gltf)$/,
+      loader: 'gltf-loader-2'
+    }, {
+      test: /\.(bin|glb)$/,
+      loader: 'file-loader'
+    }]
   },
 
   plugins: [
     threeMinifierPlugin,
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+
+    new ESLintPlugin({
+      emitWarning: !config.dev.showEslintErrorsInOverlay,
+      formatter: require('eslint-friendly-formatter')
+    })
   ],
 
   resolve: {

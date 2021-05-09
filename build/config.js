@@ -8,7 +8,6 @@ module.exports = {
   dev: {
     port: 8080,
     poll: false,
-    useLint: true,
     proxyTable: {},
 
     host: 'localhost',
