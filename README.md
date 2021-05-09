@@ -1,4 +1,4 @@
-**Hi** comrade <img src="./public/img/wave.gif" style="width: 16px; margin-bottom: 5px; display: inline-block; vertical-align: bottom;">,
+**Hi** comrade <img src="./public/img/wave.gif" />,
 
 my name is **Ustym** and I'm a _front-end developer_.
 
