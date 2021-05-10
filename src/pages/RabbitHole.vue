@@ -515,7 +515,7 @@ export default defineComponent({
     }
 
     function onKeyDown (event: KeyboardEvent): void {
-      const enable = event.code === 'Enter'
+      const enable = event.key === 'Enter'
       if (introStarted) return
 
       if (!introComplete && !messageComplete) {
@@ -723,6 +723,8 @@ export default defineComponent({
       !exit.value && (forceDescription.value || (canOpen.value && !!doorDescription.value))
     )
 
+    let messageComplete = router.currentRoute.value.params.skipLettering === 'true'
+
     const screen = new Viewport(onResize)
     const visibleGuidelines = ref(true)
     const forceDescription = ref(false)
@@ -740,7 +742,6 @@ export default defineComponent({
 
     let camera: PerspectiveCamera
     let composer: EffectComposer
-    let messageComplete = false
     let renderer: WebGLRenderer
     const canOpen = ref(false)
     const scene = new Scene()
@@ -789,6 +790,8 @@ export default defineComponent({
         messageComplete = true
         animate()
       })
+
+      messageComplete && lettering.skipLettering()
     })
 
     onBeforeUnmount(() => {

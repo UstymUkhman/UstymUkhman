@@ -50,7 +50,7 @@ export default defineComponent({
 
   setup (): TemplateValues {
     function enterKey (event: KeyboardEvent | TouchEvent): boolean {
-      return event instanceof KeyboardEvent && (event.code || event.key) === 'Enter'
+      return event instanceof KeyboardEvent && event.key === 'Enter'
     }
 
     function onKeyDown (event: KeyboardEvent | TouchEvent): void {

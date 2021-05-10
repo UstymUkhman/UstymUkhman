@@ -74,36 +74,40 @@ export class FirstPersonControls {
     this.enable = false
   }
 
-  private keyHandler (code: string, pressed: boolean): void {
-    switch (code) {
+  private keyHandler (key: string, pressed: boolean): void {
+    switch (key) {
       case 'Escape':
         this.pointerLock = false
         break
 
-      case 'ArrowUp': case 'KeyW':
+      case 'ArrowUp':
+      case 'W': case 'w':
         this.move[Direction.UP] = pressed
         break
 
-      case 'ArrowRight': case 'KeyD':
+      case 'ArrowRight':
+      case 'D': case 'd':
         this.move[Direction.RIGHT] = pressed
         break
 
-      case 'ArrowDown': case 'KeyS':
+      case 'ArrowDown':
+      case 'S': case 's':
         this.move[Direction.DOWN] = pressed
         break
 
-      case 'ArrowLeft': case 'KeyA':
+      case 'ArrowLeft':
+      case 'A': case 'a':
         this.move[Direction.LEFT] = pressed
         break
     }
   }
 
   private onKeyRelease (event: KeyboardEvent): void {
-    this.keyHandler(event.code, false)
+    this.keyHandler(event.key, false)
   }
 
   private onKeyPress (event: KeyboardEvent): void {
-    this.keyHandler(event.code, true)
+    this.keyHandler(event.key, true)
   }
 
   private checkCollision (yaw: Object3D): boolean {

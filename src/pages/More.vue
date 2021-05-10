@@ -87,11 +87,11 @@ export default defineComponent({
 
     function onKeyDown (event: KeyboardEvent): void {
       if (interactable) {
-        const code = event.code
+        const key = event.key
 
-        if (code === 'ArrowLeft' || code === 'ArrowRight') {
+        if (key === 'ArrowLeft' || key === 'ArrowRight') {
           setChosenPill()
-        } else if (code === 'Enter') {
+        } else if (key === 'Enter') {
           animateChosenPill()
         }
       }

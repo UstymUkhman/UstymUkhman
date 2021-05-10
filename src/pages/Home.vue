@@ -27,8 +27,8 @@ import { Ref, defineComponent, reactive, ref, onMounted } from 'vue'
 import router from '@/router'
 
 type FakeKeyboardEvent = {
-  code: string
-  key?: string
+  code?: string
+  key: string
 }
 
 interface TemplateValues {
@@ -95,23 +95,21 @@ export default defineComponent({
     }
 
     function onKeyDown (event: KeyboardEvent | FakeKeyboardEvent): void {
-      const code = event.code || event.key
-
-      if (code === 'Enter' && !pressed.value) {
+      if (event.key === 'Enter' && !pressed.value) {
         settedSection.value = currentItem.value
         pressed.value = true
       }
     }
 
     function onKeyUp (event: KeyboardEvent | FakeKeyboardEvent): void {
-      const code = event.code || event.key
       const item = currentItem.value
+      const key = event.key
 
-      if (code === 'Enter') {
+      if (key === 'Enter') {
         setMenuSection()
-      } else if (code === 'ArrowUp') {
+      } else if (key === 'ArrowUp') {
         currentItem.value = !item ? visibleItems : item - 1
-      } else if (code === 'ArrowDown') {
+      } else if (key === 'ArrowDown') {
         currentItem.value = (item === visibleItems) ? 0 : item + 1
       }
     }
@@ -120,13 +118,13 @@ export default defineComponent({
       if (visibleButtons.length < 3) return
 
       currentItem.value = index
-      onKeyDown({ code: 'Enter' })
+      onKeyDown({ key: 'Enter' })
     }
 
     function onTouchEnd () {
       if (visibleButtons.length < 3) return
 
-      onKeyUp({ code: 'Enter' })
+      onKeyUp({ key: 'Enter' })
       visibleButtons = reactive([])
     }
 

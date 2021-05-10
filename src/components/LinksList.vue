@@ -103,7 +103,7 @@ export default defineComponent({
     }
 
     function onKeyDown (event: KeyboardEvent): void {
-      if (props.activeBack && (event.code || event.key) === 'Enter') {
+      if (props.activeBack && event.key === 'Enter') {
         context.emit('update:selectedBack', true)
       }
     }
@@ -111,30 +111,30 @@ export default defineComponent({
     function onKeyUp (event: KeyboardEvent): void {
       if (!enabled.value) return
 
-      const code = event.code || event.key
       const page = current.value
+      const key = event.key
       let active = false
 
-      if (code !== 'Enter' && code !== 'ArrowUp' && code !== 'ArrowDown') return
+      if (key !== 'Enter' && key !== 'ArrowUp' && key !== 'ArrowDown') return
 
-      else if (props.activeBack && code === 'Enter') {
+      else if (props.activeBack && key === 'Enter') {
         context.emit('update:selectedBack', false)
         return lettering.dissolveAll(words)
       }
 
       else if (props.activeBack) {
-        current.value = (code === 'ArrowUp') ? 0 : lastLink
+        current.value = (key === 'ArrowUp') ? 0 : lastLink
         context.emit('update:activeBack', false)
       }
 
       else {
-        active = ((current.value === lastLink && code === 'ArrowDown') || (!current.value && code === 'ArrowUp'))
+        active = ((current.value === lastLink && key === 'ArrowDown') || (!current.value && key === 'ArrowUp'))
         context.emit('update:activeBack', active)
       }
 
-      if (code === 'Enter') openPageUrl(page)
-      else if (code === 'ArrowUp') current.value = (!current.value) ? lastLink : current.value - 1
-      else if (code === 'ArrowDown') current.value = (current.value === lastLink) ? 0 : current.value + 1
+      if (key === 'Enter') openPageUrl(page)
+      else if (key === 'ArrowUp') current.value = (!current.value) ? lastLink : current.value - 1
+      else if (key === 'ArrowDown') current.value = (current.value === lastLink) ? 0 : current.value + 1
 
       context.emit('index-update', current.value)
 

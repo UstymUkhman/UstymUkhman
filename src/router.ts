@@ -13,6 +13,11 @@ const checkHomeParams = (to: RouteLocationNormalized, from: RouteLocationNormali
   next()
 }
 
+const checkHoleLettering = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: RedirectRoute): void => {
+  to.params.skipLettering = from.path.includes('/experiments').toString()
+  next()
+}
+
 export default createRouter({
   history: createWebHistory(),
 
@@ -39,6 +44,7 @@ export default createRouter({
     name: 'More'
   }, {
     component: (): VueComponent => import(/* webpackChunkName: "hole-page" */ '@pages/RabbitHole.vue'),
+    beforeEnter: checkHoleLettering,
     name: 'RabbitHole',
     path: '/hole'
   }, {
