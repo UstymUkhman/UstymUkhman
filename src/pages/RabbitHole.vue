@@ -25,8 +25,8 @@
 </template>
 
 <script lang="ts">
-import { SetupContext, Ref, ComputedRef, defineComponent, computed, ref, onMounted, onBeforeUnmount } from 'vue'
-import { LinearFilter, MirroredRepeatWrapping, GLSL3 } from 'three/src/constants'
+import { MirroredRepeatWrapping, ACESFilmicToneMapping, PCFSoftShadowMap, LinearFilter, sRGBEncoding, GLSL3 } from 'three/src/constants'
+import { defineComponent, onBeforeUnmount, SetupContext, ComputedRef, onMounted, computed, Ref, ref } from 'vue'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { FirstPersonControls, Direction } from '@/utils/3D/FirstPersonControls'
 
@@ -35,13 +35,13 @@ import { MeshPhongMaterial } from 'three/src/materials/MeshPhongMaterial'
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
+import { DirectionalLight } from 'three/src/lights/DirectionalLight'
 
 import { Lettering, Loading, Sounds, firePrerender } from '@/utils'
 import { ShaderMaterial } from 'three/src/materials/ShaderMaterial'
 import { PlaneGeometry } from 'three/src/geometries/PlaneGeometry'
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader'
 import { WebGLRenderer } from 'three/src/renderers/WebGLRenderer'
-import ScreenAnimation from '@components/ScreenAnimation.vue'
 
 import FRONT_CEILING from '@/assets/textures/front_ceiling.jpg'
 import SIDE_CEILING from '@/assets/textures/side_ceiling.jpg'
@@ -50,9 +50,9 @@ import FLOOR from '@/assets/textures/floor.jpg'
 import WALL from '@/assets/textures/wall.jpg'
 import MATRIX from '@/assets/img/lut.png'
 
+import ScreenAnimation from '@components/ScreenAnimation.vue'
 import { AmbientLight } from 'three/src/lights/AmbientLight'
 import Experiments from '@/assets/data/experiments.json'
-import { SpotLight } from 'three/src/lights/SpotLight'
 import { Raycaster } from 'three/src/core/Raycaster'
 import { Texture } from 'three/src/textures/Texture'
 
@@ -72,16 +72,12 @@ import { Scene } from 'three/src/scenes/Scene'
 import { Mesh } from 'three/src/objects/Mesh'
 import { Color } from 'three/src/math/Color'
 
-import vertGrading from '@/glsl/grading.vert'
-import fragGrading from '@/glsl/grading.frag'
+import vertShader from '@/glsl/main.vert'
+import fragShader from '@/glsl/main.frag'
 
-type Door = { pivot: Object3D, door: Mesh }
 import { PI } from '@/utils/Number'
 import router from '@/router'
 import anime from 'animejs'
-
-const GREEN = 0x7CA294
-const WHITE = 0xFFFFFF
 
 interface TemplateValues {
   readonly visibleDescription: ComputedRef<boolean>
@@ -94,6 +90,14 @@ interface TemplateValues {
   readonly redirect: () => void
 }
 
+const GREEN = 0x7CA294
+const WHITE = 0xFFFFFF
+
+type Door = {
+  pivot: Object3D,
+  door: Mesh
+}
+
 export default defineComponent({
   name: 'RabbitHole',
 
@@ -104,26 +108,35 @@ export default defineComponent({
   setup (props, context: SetupContext): TemplateValues {
     function createCamera (): void {
       camera = new PerspectiveCamera(4, screen.size.ratio, 1, 500)
-      camera.rotation.x = -Math.PI / 4.075
+      camera.rotation.x = -Math.PI / 4.8825
       camera.position.z = -0.25
       scene.add(camera)
     }
 
     function createLights (): void {
       const ambientLight = new AmbientLight(WHITE, 0.25)
-      const firstLight = new SpotLight(WHITE, 0.8)
+      const directionalLight = new DirectionalLight(WHITE, 0.75)
 
-      firstLight.target.position.set(0, 0, center)
-      firstLight.target.updateMatrixWorld()
-      firstLight.position.set(0, 300, -75)
-      firstLight.distance = 750
+      directionalLight.target.position.set(0, -14, center)
+      directionalLight.position.set(0, 51, center)
+      directionalLight.target.updateMatrixWorld()
 
-      const secondLight = firstLight.clone()
-      secondLight.position.z = 525
+      directionalLight.shadow.mapSize.height = 2048
+      directionalLight.shadow.mapSize.width = 2048
+      directionalLight.shadow.camera.near = 0.5
+      directionalLight.shadow.camera.far = 65
 
+      directionalLight.shadow.camera.bottom = -250
+      directionalLight.shadow.camera.right = 25
+      directionalLight.shadow.camera.left = -25
+      directionalLight.shadow.camera.top = 250
+
+      directionalLight.scale.set(2.5, 1, 25)
+      directionalLight.shadow.bias = -0.001
+      directionalLight.castShadow = true
+
+      scene.add(directionalLight)
       scene.add(ambientLight)
-      scene.add(secondLight)
-      scene.add(firstLight)
     }
 
     async function createFloor (): Promise<Mesh> {
@@ -144,6 +157,7 @@ export default defineComponent({
 
       floor.position.set(0, -14, center)
       floor.rotation.x = -Math.PI / 2
+      floor.receiveShadow = true
 
       scene.add(floor)
       return floor
@@ -383,9 +397,12 @@ export default defineComponent({
         new MeshPhongMaterial({ color: 0xBDBDBD })
       )
 
-      table.position.set(0, -19.8, -14.1)
+      table.position.set(0, -21.4, -11.7)
+      table.scale.set(7.5, 7.5, 7.5)
       table.rotateY(Math.PI / 2)
-      table.scale.set(6, 6, 6)
+
+      table.receiveShadow = true
+      table.castShadow = true
 
       scene.add(table)
       return table
@@ -400,15 +417,18 @@ export default defineComponent({
       const monitor = new Mesh(monitorModel.geometry, monitorModel.materials)
       const systemUnit = new Mesh(unitModel.geometry, unitModel.materials)
 
-      systemUnit.position.set(-1, 0, -19)
-      systemUnit.scale.set(0.8, 0.8, 0.8)
+      systemUnit.position.set(-1.2, 3.4, -19)
+      systemUnit.receiveShadow = true
+      systemUnit.castShadow = true
 
-      keyboard.position.set(0, 0, -16.5)
-      keyboard.scale.set(0.8, 0.8, 0.8)
+      keyboard.position.set(0, 3.35, -16.5)
+      keyboard.receiveShadow = true
+      keyboard.castShadow = true
 
-      monitor.position.set(0, 0, -16.5)
+      monitor.position.set(0, 3.45, -16.5)
       monitor.rotation.set(-0.05, 0, 0)
-      monitor.scale.set(0.8, 0.8, 0.8)
+      monitor.receiveShadow = true
+      monitor.castShadow = true
 
       scene.add(systemUnit)
       scene.add(keyboard)
@@ -418,10 +438,19 @@ export default defineComponent({
     }
 
     function createRenderer (): void {
+      const { width, height } = screen.size
+
       renderer = new WebGLRenderer({ canvas: hole.value })
-      renderer.setSize(screen.size.width, screen.size.height)
       renderer.setPixelRatio(window.devicePixelRatio || 1)
+
+      renderer.toneMapping = ACESFilmicToneMapping
+      renderer.shadowMap.type = PCFSoftShadowMap
+      renderer.outputEncoding = sRGBEncoding
+      renderer.toneMappingExposure = 0.666
+
       renderer.setClearColor(0x000000, 0)
+      renderer.shadowMap.enabled = true
+      renderer.setSize(width, height)
       renderer.domElement.focus()
     }
 
@@ -434,20 +463,21 @@ export default defineComponent({
       composer.addPass(new RenderPass(scene, camera))
       lut.minFilter = lut.magFilter = LinearFilter
 
-      const pass = new ShaderPass(
+      shader = new ShaderPass(
         new ShaderMaterial({
-          fragmentShader: fragGrading,
-          vertexShader: vertGrading,
+          fragmentShader: fragShader,
+          vertexShader: vertShader,
           glslVersion: GLSL3,
 
           uniforms: {
+            ratio: { value: screen.size.ratio },
             tDiffuse: { value: null },
-            grading: { value: lut }
+            lut: { value: lut }
           }
         })
       )
 
-      composer.addPass(pass)
+      composer.addPass(shader)
       composer.addPass(fxaa)
 
       updateComposerSize()
@@ -471,7 +501,7 @@ export default defineComponent({
         targets: camera,
         duration: 5000,
         delay: 3000,
-        fov: 50,
+        fov: 45,
 
         begin: () => {
           setTimeout(() => {
@@ -506,7 +536,7 @@ export default defineComponent({
     }
 
     function onMouseDown (event: MouseEvent): void {
-      if (event.which !== 1) return
+      if (event.button) return
       pressed = controls.isLocked
     }
 
@@ -554,13 +584,16 @@ export default defineComponent({
 
     function onResize (size: Size): void {
       renderer.setSize(size.width, size.height)
-      camera.updateProjectionMatrix()
       camera.aspect = size.ratio
+
+      camera.updateProjectionMatrix()
       updateComposerSize()
     }
 
     function updateComposerSize (): void {
       const fxaaResolution = fxaa.material.uniforms.resolution.value
+      shader.material.uniforms.ratio.value = screen.size.ratio
+
       const pixelRatio = renderer.getPixelRatio()
       const { width, height } = screen.size
 
@@ -751,6 +784,7 @@ export default defineComponent({
     let introStarted = false
     let isRightDoor: boolean
     let lettering: Lettering
+    let shader: ShaderPass
     let fxaa: ShaderPass
 
     const ready = ref(false)

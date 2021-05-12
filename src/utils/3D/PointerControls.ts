@@ -3,7 +3,7 @@ type PerspectiveCamera = import('three/src/cameras/PerspectiveCamera').Perspecti
 import { Object3D } from 'three/src/core/Object3D'
 import { Vector3 } from 'three/src/math/Vector3'
 import { Euler } from 'three/src/math/Euler'
-import { PI } from '@/utils/Number'
+import { PI, clamp } from '@/utils/Number'
 
 export default class PointerControls {
   private rotation = new Euler(0, 0, 0, 'YXZ')
@@ -31,11 +31,7 @@ export default class PointerControls {
 
     this.yaw.rotation.y -= movementX * 0.002
     this.pitch.rotation.x -= movementY * 0.002
-    this.pitch.rotation.x = Math.max(-PI.d2, Math.min(PI.d2, this.pitch.rotation.x))
-
-    if (this.pitch.rotation.x < -0.5) {
-      this.pitch.rotation.x = -0.5
-    }
+    this.pitch.rotation.x = clamp(this.pitch.rotation.x, -0.25, PI.d2)
   }
 
   public dispose (): void {

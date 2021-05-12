@@ -16,6 +16,11 @@ export class FirstPersonControls {
   private readonly onKeyDown = this.onKeyPress.bind(this)
   private readonly onKeyUp = this.onKeyRelease.bind(this)
 
+  private borders: Directions<number> = [0, 0, 0, 0]
+  private readonly move: Directions<boolean> = [
+    false, false, false, false
+  ]
+
   public onPointerUnlock?: EventCallback
   public onPointerLock?: EventCallback
 
@@ -26,20 +31,6 @@ export class FirstPersonControls {
   private activated = false
   private enabled = false
   public error = false
-
-  private borders: Directions<number> = {
-    [Direction.UP]: 0,
-    [Direction.RIGHT]: 0,
-    [Direction.DOWN]: 0,
-    [Direction.LEFT]: 0
-  }
-
-  private move: Directions<boolean> = {
-    [Direction.UP]: false,
-    [Direction.RIGHT]: false,
-    [Direction.DOWN]: false,
-    [Direction.LEFT]: false
-  }
 
   public constructor (scene: Scene, camera: PerspectiveCamera) {
     this.controls = new PointerControls(camera, 16)
@@ -165,6 +156,11 @@ export class FirstPersonControls {
     if (this.checkCollision(position)) {
       position.translateX(-step.x)
       position.translateZ(-step.z)
+
+      if (!this.isMoving) {
+        this.velocity.x *= -0.1
+        this.velocity.z *= -0.1
+      }
     }
 
     this.delta = time
@@ -204,6 +200,10 @@ export class FirstPersonControls {
 
   public get cameraDirection (): Vector3 {
     return this.controls.direction
+  }
+
+  private get isMoving (): boolean {
+    return (this.move as unknown as Array<boolean>).includes(true)
   }
 
   public get isLocked (): boolean {
