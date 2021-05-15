@@ -24,8 +24,8 @@ export default class Sounds {
 
   public static openedDoor (): void {
     this.open.autoplay = true
+    this.open.volume = 0.25
     this.open.loop = false
-    this.open.volume = 1
     this.open.load()
   }
 
@@ -36,8 +36,8 @@ export default class Sounds {
     if (now > playEnd) {
       this.closePlay = Date.now()
       this.close.autoplay = true
+      this.close.volume = 0.25
       this.close.loop = false
-      this.close.volume = 1
       this.close.load()
     }
   }

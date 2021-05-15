@@ -45,6 +45,7 @@ import { WebGLRenderer } from 'three/src/renderers/WebGLRenderer'
 
 import FRONT_CEILING from '@/assets/textures/front_ceiling.jpg'
 import SIDE_CEILING from '@/assets/textures/side_ceiling.jpg'
+import FLOOR_BOUND from '@/assets/textures/floor_bound.jpg'
 import DOOR_WALL from '@/assets/textures/door_wall.png'
 import FLOOR from '@/assets/textures/floor.jpg'
 import WALL from '@/assets/textures/wall.jpg'
@@ -67,6 +68,7 @@ import AssetsLoader from '@/utils/3D/AssetsLoader'
 import { Object3D } from 'three/src/core/Object3D'
 import { Viewport, Size } from '@/utils/Viewport'
 import { Vector2 } from 'three/src/math/Vector2'
+import { Group } from 'three/src/objects/Group'
 
 import { Scene } from 'three/src/scenes/Scene'
 import { Mesh } from 'three/src/objects/Mesh'
@@ -90,7 +92,7 @@ interface TemplateValues {
   readonly redirect: () => void
 }
 
-const GREEN = 0x7CA294
+const GREEN = 0x00CC00
 const WHITE = 0xFFFFFF
 
 type Door = {
@@ -107,7 +109,7 @@ export default defineComponent({
 
   setup (props, context: SetupContext): TemplateValues {
     function createCamera (): void {
-      camera = new PerspectiveCamera(4, screen.size.ratio, 1, 500)
+      camera = new PerspectiveCamera(4, screen.size.ratio, 1, depth)
       camera.rotation.x = -Math.PI / 4.8825
       camera.position.z = -0.25
       scene.add(camera)
@@ -115,23 +117,23 @@ export default defineComponent({
 
     function createLights (): void {
       const ambientLight = new AmbientLight(WHITE, 0.25)
-      const directionalLight = new DirectionalLight(WHITE, 0.75)
+      const directionalLight = new DirectionalLight(WHITE, 0.5)
 
       directionalLight.target.position.set(0, -14, center)
+      directionalLight.scale.set(2.5, 1, depth / 20)
       directionalLight.position.set(0, 51, center)
       directionalLight.target.updateMatrixWorld()
 
+      directionalLight.shadow.camera.bottom = -depth / 2
+      directionalLight.shadow.camera.top = depth / 2
       directionalLight.shadow.mapSize.height = 2048
       directionalLight.shadow.mapSize.width = 2048
+
+      directionalLight.shadow.camera.right = 25.0
+      directionalLight.shadow.camera.left = -25.0
       directionalLight.shadow.camera.near = 0.5
-      directionalLight.shadow.camera.far = 65
+      directionalLight.shadow.camera.far = 65.0
 
-      directionalLight.shadow.camera.bottom = -250
-      directionalLight.shadow.camera.right = 25
-      directionalLight.shadow.camera.left = -25
-      directionalLight.shadow.camera.top = 250
-
-      directionalLight.scale.set(2.5, 1, 25)
       directionalLight.shadow.bias = -0.001
       directionalLight.castShadow = true
 
@@ -139,25 +141,36 @@ export default defineComponent({
       scene.add(ambientLight)
     }
 
-    async function createFloor (): Promise<Mesh> {
+    async function createFloor (): Promise<Group> {
+      const bound = await loader.loadTexture(FLOOR_BOUND)
       const texture = await loader.loadTexture(FLOOR)
+
+      const floor = new Group()
+      const geometry = new PlaneGeometry(50, 50)
+      const length = Math.ceil(experiments.length / 2) * 2
 
       texture.wrapS = texture.wrapT = MirroredRepeatWrapping
       texture.needsUpdate = true
 
-      const floor = new Mesh(
-        new PlaneGeometry(50, 500),
-        new MeshPhongMaterial({
-          premultipliedAlpha: true,
-          transparent: true,
-          color: 0x406550,
-          map: texture
-        })
-      )
+      for (let i = 0, last = length - 1; i < length; i++) {
+        const tile = new Mesh(
+          geometry, new MeshPhongMaterial({
+            map: !i || i === last ? bound : texture,
+            premultipliedAlpha: true,
+            transparent: true,
+            color: 0x32784B
+          })
+        )
 
-      floor.position.set(0, -14, center)
-      floor.rotation.x = -Math.PI / 2
-      floor.receiveShadow = true
+        if (i === last) tile.rotateZ(Math.PI)
+        else if (!i) tile.receiveShadow = true
+
+        tile.position.set(0, i * -50, 0)
+        floor.add(tile)
+      }
+
+      floor.position.set(0, -14, 0)
+      floor.rotation.x = -PI.d2
 
       scene.add(floor)
       return floor
@@ -170,14 +183,14 @@ export default defineComponent({
       emptyWall.wrapS = emptyWall.wrapT = MirroredRepeatWrapping
       fullWall.wrapS = fullWall.wrapT = MirroredRepeatWrapping
 
-      const wallGeometry = new PlaneGeometry(50, 65, 1, 1)
+      const wallGeometry = new PlaneGeometry(50, 65)
       const lightMaterial = new MeshBasicMaterial({
         transparent: true,
         color: WHITE,
         opacity: 0
       })
 
-      leftLight = new Mesh(new PlaneGeometry(510, 75, 1, 1), lightMaterial)
+      leftLight = new Mesh(new PlaneGeometry(depth + 10, 75), lightMaterial)
       leftLight.position.set(-25.5, 18.5, center)
       leftLight.rotateY(PI.d2)
 
@@ -202,17 +215,17 @@ export default defineComponent({
       const frontWall = new Mesh(wallGeometry, fullMaterial)
       const backWall = new Mesh(wallGeometry, emptyMaterial)
 
-      frontWall.position.set(0, 18.5, center - 250)
-      backWall.position.set(0, 18.5, center + 250)
+      frontWall.position.set(0, 18.5, center - depth / 2)
+      backWall.position.set(0, 18.5, center + depth / 2)
 
       backWall.rotateY(Math.PI)
       backLight = backWall.clone() as Mesh
 
-      backLight.geometry = new PlaneGeometry(50, 75, 1, 1)
+      backLight.geometry = new PlaneGeometry(50, 75)
       backLight.material = lightMaterial
       backLight.position.z += 0.5
 
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0, length = Math.ceil(experiments.length / 2) * 4; i < length; i++) {
         const material = (i % 4 > 1) ? emptyMaterial : fullMaterial
         const wall = new Mesh(wallGeometry, material)
 
@@ -242,40 +255,43 @@ export default defineComponent({
     }
 
     async function createCeiling (): Promise<Mesh> {
-      const frontTexture = await loader.loadTexture(FRONT_CEILING)
       const sideTexture = await loader.loadTexture(SIDE_CEILING)
+      const frontTexture = await loader.loadTexture(FRONT_CEILING)
 
       frontTexture.wrapS = frontTexture.wrapT = MirroredRepeatWrapping
       sideTexture.wrapS = sideTexture.wrapT = MirroredRepeatWrapping
+
+      const segments = depth / 50
+      const offset = depth / 2 - 3
 
       frontTexture.needsUpdate = true
       sideTexture.needsUpdate = true
 
       frontTexture.repeat.set(1, 1)
-      sideTexture.repeat.set(10, 1)
+      sideTexture.repeat.set(segments, 1)
 
       const frontCeil = new Mesh(
-        new PlaneGeometry(50, 6, 1, 10),
+        new PlaneGeometry(50, 6, 1, segments),
         new MeshBasicMaterial({ map: frontTexture })
       )
 
       const leftCeil = new Mesh(
-        new PlaneGeometry(500, 6, 1, 10),
+        new PlaneGeometry(depth, 6, 1, segments),
         new MeshBasicMaterial({ map: sideTexture })
       )
 
       const ceiling = new Mesh(
-        new PlaneGeometry(50, 500),
+        new PlaneGeometry(50, depth),
         new MeshBasicMaterial({ color: WHITE })
       )
 
       const rightCeil = leftCeil.clone()
       const backCeil = frontCeil.clone()
 
-      frontCeil.position.set(0, 50.65, center - 247)
+      frontCeil.position.set(0, 50.65, center - offset)
       frontCeil.rotateX(PI.d2)
 
-      backCeil.position.set(0, 50.65, center + 247)
+      backCeil.position.set(0, 50.65, center + offset)
       backCeil.rotation.set(PI.d2, 0, -Math.PI)
 
       leftCeil.position.set(-22, 50.75, center)
@@ -314,13 +330,13 @@ export default defineComponent({
       frameMaterials[0].color = new Color(GREEN)
       frameMaterials[1].color = new Color(GREEN)
 
-      doorMaterials[0].color = new Color(0xEEEEEE)
+      doorMaterials[0].color = new Color(WHITE)
       doorMaterials[1].color = new Color(GREEN)
 
       const frontFrame = new Mesh(frame.geometry, frameMaterials)
       const frontDoor = new Mesh(door.geometry, doorMaterials)
 
-      frontFrame.position.set(0, -10.5, 475)
+      frontFrame.position.set(0, -10.5, depth - 25)
       frontFrame.rotation.y = Math.PI
       frontFrame.scale.set(4, 4, 4)
 
@@ -330,7 +346,7 @@ export default defineComponent({
 
       const pivot = new Object3D()
 
-      pivot.position.set(-8.75, -10.4, 474.75)
+      pivot.position.set(-8.75, -10.4, depth - 25.25)
       pivot.rotation.y = 0
 
       scene.add(frontFrame)
@@ -339,7 +355,7 @@ export default defineComponent({
       doors.push({ door: frontDoor, pivot: pivot })
       scene.add(new Object3D().add(pivot))
 
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0, length = Math.ceil(experiments.length / 2) * 2; i < length; i++) {
         const sideFrame = frontFrame.clone()
         const sideDoor = frontDoor.clone()
 
@@ -356,8 +372,8 @@ export default defineComponent({
         let pivotRotation = positionZ - 8.75
 
         if (i % 2) {
-          rotation = -8.75
-          rotationY = -rotationY
+          rotation *= -1
+          rotationY *= -1
 
           positionZ = (i - 1) * 50 + 50
           doorPositionX = -doorPositionX
@@ -399,7 +415,7 @@ export default defineComponent({
 
       table.position.set(0, -21.4, -11.7)
       table.scale.set(7.5, 7.5, 7.5)
-      table.rotateY(Math.PI / 2)
+      table.rotateY(PI.d2)
 
       table.receiveShadow = true
       table.castShadow = true
@@ -488,9 +504,9 @@ export default defineComponent({
       controls = new FirstPersonControls(scene, camera)
 
       controls.setBorders({
-        [Direction.UP]: center - 230,
+        [Direction.UP]: -5,
         [Direction.RIGHT]: 18,
-        [Direction.DOWN]: center + 242,
+        [Direction.DOWN]: depth - 32,
         [Direction.LEFT]: -18
       })
     }
@@ -594,8 +610,8 @@ export default defineComponent({
       const fxaaResolution = fxaa.material.uniforms.resolution.value
       shader.material.uniforms.ratio.value = screen.size.ratio
 
-      const pixelRatio = renderer.getPixelRatio()
       const { width, height } = screen.size
+      const pixelRatio = renderer.getPixelRatio()
 
       fxaaResolution.y = 1.0 / (height * pixelRatio)
       fxaaResolution.x = 1.0 / (width * pixelRatio)
@@ -633,7 +649,6 @@ export default defineComponent({
         ) as Door
 
         const index = doorObject.door.userData.index as number
-        const experiments = Experiments as Array<Experiment>
         const experimentDoor = index !== undefined
 
         doorDescription.value = experimentDoor
@@ -697,7 +712,7 @@ export default defineComponent({
     }
 
     function closedDoor (index: number): boolean {
-      const closed = index >= (Experiments as Array<Experiment>).length
+      const closed = index >= experiments.length
       closed ? Sounds.closedDoor() : Sounds.openedDoor()
       return closed
     }
@@ -716,7 +731,7 @@ export default defineComponent({
     function redirect (): void {
       if (isExperiment && selectedDoor) {
         const index = selectedDoor.door.userData.index as number
-        const experiment = (Experiments as Array<Experiment>)[index]
+        const experiment = experiments[index]
 
         experiment.newTab
           ? location.href = experiment.page
@@ -757,20 +772,23 @@ export default defineComponent({
     )
 
     let messageComplete = router.currentRoute.value.params.skipLettering === 'true'
+    const experiments = Experiments as Array<Experiment>
+    const depth = Math.ceil(experiments.length / 2) * 100
 
     const screen = new Viewport(onResize)
     const visibleGuidelines = ref(true)
     const forceDescription = ref(false)
     const screenAnimation = ref(false)
     let selectedDoor: Door | undefined
-
     let doorObjects: Array<Mesh> = []
+
     let controls: FirstPersonControls
     const raycaster = new Raycaster()
     const loader = new AssetsLoader()
     const focus = new Vector2(0, 2)
     const doorDescription = ref('')
     const visibleLight = ref(false)
+    const center = depth / 2 - 25
     const doors: Array<Door> = []
 
     let camera: PerspectiveCamera
@@ -797,12 +815,12 @@ export default defineComponent({
     let backLight: Mesh
     let pressed = false
     raycaster.far = 15
-    const center = 225
     let frame: number
 
     onMounted(() => {
       lettering = new Lettering(message.value, 50, 0)
       firePrerender({ title: 'Rabbit Hole' })
+      context.emit('toggle-overlay', true)
 
       createCamera()
       createLights()

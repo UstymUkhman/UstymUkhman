@@ -145,17 +145,15 @@ export class FirstPersonControls {
       this.velocity.x -= 500 * delta
     }
 
-    const step = {
-      x: this.velocity.x * delta,
-      z: this.velocity.z * delta
-    }
+    const x = this.velocity.x * delta
+    const z = this.velocity.z * delta
 
-    position.translateX(step.x)
-    position.translateZ(step.z)
+    position.translateX(x)
+    position.translateZ(z)
 
     if (this.checkCollision(position)) {
-      position.translateX(-step.x)
-      position.translateZ(-step.z)
+      position.translateX(-x)
+      position.translateZ(-z)
 
       if (!this.isMoving) {
         this.velocity.x *= -0.1
