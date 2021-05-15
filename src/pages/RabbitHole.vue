@@ -137,8 +137,21 @@ export default defineComponent({
       directionalLight.shadow.bias = -0.001
       directionalLight.castShadow = true
 
+      doorLight = new Mesh(
+        new PlaneGeometry(60, 75),
+        new MeshBasicMaterial({
+          transparent: true,
+          color: WHITE,
+          opacity: 0
+        })
+      )
+
+      doorLight.position.set(0, 18.5, -25)
+      doorLight.rotation.set(0, 0, 0)
+
       scene.add(directionalLight)
       scene.add(ambientLight)
+      scene.add(doorLight)
     }
 
     async function createFloor (): Promise<Group> {
@@ -183,28 +196,15 @@ export default defineComponent({
       emptyWall.wrapS = emptyWall.wrapT = MirroredRepeatWrapping
       fullWall.wrapS = fullWall.wrapT = MirroredRepeatWrapping
 
-      const wallGeometry = new PlaneGeometry(50, 65)
-      const lightMaterial = new MeshBasicMaterial({
-        transparent: true,
-        color: WHITE,
-        opacity: 0
-      })
-
-      leftLight = new Mesh(new PlaneGeometry(depth + 10, 75), lightMaterial)
-      leftLight.position.set(-25.5, 18.5, center)
-      leftLight.rotateY(PI.d2)
-
-      rightLight = leftLight.clone() as Mesh
-      rightLight.rotation.y = -PI.d2
-      rightLight.position.x = 25.5
-
       emptyWall.needsUpdate = true
       fullWall.needsUpdate = true
 
       emptyWall.repeat.set(1, 1)
       fullWall.repeat.set(1, 1)
 
+      const wallGeometry = new PlaneGeometry(50, 65)
       const fullMaterial = new MeshBasicMaterial({ map: fullWall })
+
       const emptyMaterial = new MeshBasicMaterial({
         alphaMap: emptyWall,
         transparent: true,
@@ -215,15 +215,9 @@ export default defineComponent({
       const frontWall = new Mesh(wallGeometry, fullMaterial)
       const backWall = new Mesh(wallGeometry, emptyMaterial)
 
-      frontWall.position.set(0, 18.5, center - depth / 2)
-      backWall.position.set(0, 18.5, center + depth / 2)
-
+      backWall.position.set(0, 18.5, depth - 25)
+      frontWall.position.set(0, 18.5, -25)
       backWall.rotateY(Math.PI)
-      backLight = backWall.clone() as Mesh
-
-      backLight.geometry = new PlaneGeometry(50, 75)
-      backLight.material = lightMaterial
-      backLight.position.z += 0.5
 
       for (let i = 0, length = Math.ceil(experiments.length / 2) * 4; i < length; i++) {
         const material = (i % 4 > 1) ? emptyMaterial : fullMaterial
@@ -244,10 +238,6 @@ export default defineComponent({
         scene.add(wall)
       }
 
-      scene.add(rightLight)
-      scene.add(leftLight)
-
-      scene.add(backLight)
       scene.add(frontWall)
       scene.add(backWall)
 
@@ -314,8 +304,8 @@ export default defineComponent({
     }
 
     async function createDoors (): Promise<Mesh> {
-      const frame = await loader.loadModel(FRAME as JSON)
       const door = await loader.loadModel(DOOR as JSON)
+      const frame = await loader.loadModel(FRAME as JSON)
 
       const frameMaterials = [
         (frame.materials![0] as unknown) as MeshPhongMaterial,
@@ -352,12 +342,12 @@ export default defineComponent({
       scene.add(frontFrame)
       pivot.add(frontDoor)
 
-      doors.push({ door: frontDoor, pivot: pivot })
+      doors.push({ door: frontDoor, pivot })
       scene.add(new Object3D().add(pivot))
 
       for (let i = 0, length = Math.ceil(experiments.length / 2) * 2; i < length; i++) {
-        const sideFrame = frontFrame.clone()
-        const sideDoor = frontDoor.clone()
+        const frame = frontFrame.clone()
+        const door = frontDoor.clone()
 
         const pitch = new Object3D()
         const pivot = new Object3D()
@@ -382,28 +372,27 @@ export default defineComponent({
           framePositionX = -framePositionX
         }
 
-        sideFrame.position.set(framePositionX, -10.5, positionZ)
         pivot.position.set(doorPositionX, -10.4, pivotRotation)
-        sideDoor.position.set(0, 0, rotation)
+        frame.position.set(framePositionX, -10.5, positionZ)
+        door.position.set(0, 0, rotation)
 
-        sideFrame.rotation.y = rotationY
-        sideDoor.rotation.y = rotationY
-        sideDoor.userData.index = i
+        frame.rotation.y = rotationY
+        door.rotation.y = rotationY
+        door.userData.index = i
         pivot.rotation.y = 0
 
-        pivot.add(sideDoor)
+        pivot.add(door)
         pitch.add(pivot)
 
-        scene.add(sideFrame)
+        scene.add(frame)
         scene.add(pitch)
 
         doors.push({
-          door: sideDoor as Mesh,
-          pivot: pivot
+          door, pivot
         })
       }
 
-      doorObjects = doors.map(object => object.door)
+      doorObjects = doors.map(({ door }) => door)
       return frontDoor
     }
 
@@ -667,9 +656,10 @@ export default defineComponent({
 
     function openTheDoor (doorObject: Door): void {
       const { door, pivot } = doorObject
+      const lightMaterial = doorLight.material as MeshBasicMaterial
 
       if (pressed && pivot.rotation.y < 1.56) {
-        if (!pivot.rotation.y && closedDoor(door.userData.index)) return
+        if (!pivot.rotation.y && playDoorSound(door)) return
         pivot.rotation.y += 0.01
       }
 
@@ -686,41 +676,51 @@ export default defineComponent({
         pivot.rotation.y = 1.56
       }
 
-      if (pivot.rotation.y > 1) {
-        isRightDoor = door.position.z < 0
-        isExperiment = !!door.position.z
-      }
-
       else if (pivot.rotation.y > 0.5) {
+        lightMaterial.opacity += 0.01
         canOpen.value = false
         exit.value = true
       }
 
-      if (pivot.rotation.y <= 0) {
-        const rightLightMaterial = rightLight.material as MeshBasicMaterial
-        const leftLightMaterial = leftLight.material as MeshBasicMaterial
-        const backLightMaterial = backLight.material as MeshBasicMaterial
-
-        rightLightMaterial.opacity = 0
-        leftLightMaterial.opacity = 0
-        backLightMaterial.opacity = 0
-
-        selectedDoor = undefined
+      else if (pivot.rotation.y <= 0) {
+        lightMaterial.opacity = 0
         pivot.rotation.y = 0
+        selectedDoor = null
         exit.value = false
       }
     }
 
-    function closedDoor (index: number): boolean {
-      const closed = index >= experiments.length
+    function playDoorSound (door: Mesh): boolean {
+      const closed = door.userData.index >= experiments.length
       closed ? Sounds.closedDoor() : Sounds.openedDoor()
+
+      setDoorLight(door)
       return closed
     }
 
-    function fadeInLight (): void {
-      !isExperiment
-        ? (backLight.material as MeshBasicMaterial).opacity += 0.01
-        : ((isRightDoor ? rightLight : leftLight).material as MeshBasicMaterial).opacity += 0.01
+    function setDoorLight (door: Mesh): void {
+      const { index: i } = door.userData
+      const isRightDoor = door.position.z < 0
+      const lightZ = (i % 2 ? i - 1 : i) * 50 + 50
+
+      isExperiment = !!door.position.z
+      doorLight.position.z = lightZ
+
+      if (!isExperiment) {
+        doorLight.position.z = depth - 22.5
+        doorLight.rotation.y = Math.PI
+        doorLight.position.x = 0.0
+      }
+
+      else if (isRightDoor) {
+        doorLight.rotation.y = -PI.d2
+        doorLight.position.x = 27.5
+      }
+
+      else {
+        doorLight.position.x = -27.5
+        doorLight.rotation.y = PI.d2
+      }
     }
 
     function onRedirect (): void {
@@ -753,13 +753,9 @@ export default defineComponent({
         controls.update()
       }
 
-      if (exit.value) {
-        if (visibleLight.value) {
-          setTimeout(onRedirect, 2000)
-          return cancelAnimationFrame(frame)
-        }
-
-        fadeInLight()
+      if (visibleLight.value) {
+        setTimeout(onRedirect, 2000)
+        return cancelAnimationFrame(frame)
       }
     }
 
@@ -776,45 +772,42 @@ export default defineComponent({
     const depth = Math.ceil(experiments.length / 2) * 100
 
     const screen = new Viewport(onResize)
-    const visibleGuidelines = ref(true)
-    const forceDescription = ref(false)
-    const screenAnimation = ref(false)
-    let selectedDoor: Door | undefined
-    let doorObjects: Array<Mesh> = []
-
-    let controls: FirstPersonControls
     const raycaster = new Raycaster()
     const loader = new AssetsLoader()
     const focus = new Vector2(0, 2)
+    const scene = new Scene()
+
+    const visibleGuidelines = ref(true)
+    const forceDescription = ref(false)
+    const screenAnimation = ref(false)
     const doorDescription = ref('')
     const visibleLight = ref(false)
-    const center = depth / 2 - 25
-    const doors: Array<Door> = []
 
+    let doorObjects: Array<Mesh> = []
+    const center = depth / 2 - 25.0
+    const doors: Array<Door> = []
+    raycaster.far = 15.0
+
+    let controls: FirstPersonControls
+    let selectedDoor: Door | null
     let camera: PerspectiveCamera
     let composer: EffectComposer
     let renderer: WebGLRenderer
-    const canOpen = ref(false)
-    const scene = new Scene()
-    let isExperiment: boolean
-
-    let introComplete = false
-    let introStarted = false
-    let isRightDoor: boolean
     let lettering: Lettering
     let shader: ShaderPass
     let fxaa: ShaderPass
+    let doorLight: Mesh
 
+    const canOpen = ref(false)
     const ready = ref(false)
     const exit = ref(false)
     const message = ref()
     const hole = ref()
 
-    let rightLight: Mesh
-    let leftLight: Mesh
-    let backLight: Mesh
+    let isExperiment: boolean
+    let introComplete = false
+    let introStarted = false
     let pressed = false
-    raycaster.far = 15
     let frame: number
 
     onMounted(() => {
