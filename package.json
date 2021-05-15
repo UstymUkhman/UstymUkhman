@@ -39,7 +39,6 @@
     "css-loader": "3.6.0",
     "eslint": "^7.26.0",
     "eslint-friendly-formatter": "^4.0.1",
-    "eslint-loader": "^4.0.2",
     "eslint-plugin-vue": "^7.9.0",
     "eslint-webpack-plugin": "^2.5.4",
     "file-loader": "^6.2.0",
