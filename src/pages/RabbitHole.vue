@@ -358,16 +358,14 @@ export default defineComponent({
         let framePositionX = -25
         let doorPositionX = -24.8
 
-        let positionZ = i * 50 + 50
+        const positionZ = getDoorDepth(i)
         let pivotRotation = positionZ - 8.75
 
         if (i % 2) {
           rotation *= -1
           rotationY *= -1
 
-          positionZ = (i - 1) * 50 + 50
           doorPositionX = -doorPositionX
-
           pivotRotation = positionZ + 8.75
           framePositionX = -framePositionX
         }
@@ -394,6 +392,10 @@ export default defineComponent({
 
       doorObjects = doors.map(({ door }) => door)
       return frontDoor
+    }
+
+    function getDoorDepth (index: number): number {
+      return (index % 2 ? index - 1 : index) * 50 + 50
     }
 
     async function createTable (): Promise<Mesh> {
@@ -699,20 +701,16 @@ export default defineComponent({
     }
 
     function setDoorLight (door: Mesh): void {
-      const { index: i } = door.userData
-      const isRightDoor = door.position.z < 0
-      const lightZ = (i % 2 ? i - 1 : i) * 50 + 50
-
+      doorLight.position.z = getDoorDepth(door.userData.index)
       isExperiment = !!door.position.z
-      doorLight.position.z = lightZ
 
-      if (!isExperiment) {
+      if (!door.position.z) {
         doorLight.position.z = depth - 22.5
         doorLight.rotation.y = Math.PI
         doorLight.position.x = 0.0
       }
 
-      else if (isRightDoor) {
+      else if (door.position.z < 0) {
         doorLight.rotation.y = -PI.d2
         doorLight.position.x = 27.5
       }
@@ -836,7 +834,9 @@ export default defineComponent({
         animate()
       })
 
-      messageComplete && lettering.skipLettering()
+      if (messageComplete) {
+        lettering.skipLettering()
+      }
     })
 
     onBeforeUnmount(() => {

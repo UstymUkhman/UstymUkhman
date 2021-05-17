@@ -8,8 +8,8 @@ export default class Sounds {
   public static playSpeach (): void {
     this.speach.onended = this.endSpeach.bind(this)
     this.speach.autoplay = false
+    this.speach.volume = 0.75
     this.speach.loop = false
-    this.speach.volume = 1
 
     this.speach.load()
     this.speach.play()
