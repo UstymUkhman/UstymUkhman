@@ -148,9 +148,9 @@ export default defineComponent({
     }
 
     function onLinkClick (page: number): void {
-      if (enabled.value) {
-        current.value = page
+      if (enabled.value && !props.dispose) {
         setTimeout(() => openPageUrl(page), 400)
+        current.value = page
       }
     }
 
@@ -202,9 +202,11 @@ export default defineComponent({
     }
 
     function skipLettering (): void {
-      lettering.skipLettering()
-      skip.value = true
-      removeSkipEvent()
+      if (lettering) {
+        lettering.skipLettering()
+        skip.value = true
+        removeSkipEvent()
+      }
     }
 
     function onResize (size: Size): void {
@@ -216,7 +218,8 @@ export default defineComponent({
         (current.value < lastOffset) ? `${current.value * -listStep}px` : `${scrollOffset}px`
     }
 
-    watchEffect(() => { if (props.dispose) lettering.dissolveAll(words) })
+    watchEffect(() => props.dispose && lettering.dissolveAll(words))
+
     const lastOffset = props.links.length - (Platform.mobile ? 5 : 4)
     const listOffset = ref(props.links.length < 6 ? '-50%' : '0px')
 

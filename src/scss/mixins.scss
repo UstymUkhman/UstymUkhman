@@ -73,6 +73,7 @@
 
   .button-border {
     .button-box {
+      pointer-events: none;
       text-align: center;
 
       &::after,
@@ -146,6 +147,8 @@
       }
 
       &.active {
+        pointer-events: all;
+
         &::before {
           transition-delay: $animaiton-delay * 3;
           transform: scale3d(1, 1, 1);
@@ -218,13 +221,11 @@
       }
     }
 
-    &.active {
-      :first-child {
-        transform: translateX(-35px);
+    &.active :first-child {
+      transform: translateX(-35px);
 
-        @include breakpoint($sm-down) {
-          transform: translateX(-25px);
-        }
+      @include breakpoint($sm-down) {
+        transform: translateX(-25px);
       }
     }
   }

@@ -1,5 +1,5 @@
 <template>
-  <li :class="{'active': active, 'visible': visible}" itemscope>
+  <li :class="{'active': active && !dissolve, 'visible': visible}" itemscope>
     <pre :class="{'dissolve': dissolve}">{{ cursor }}</pre>
     <p itemprop="name">{{ link }}</p>
     <em v-if="mail" itemprop="email"> - ustym.ukhman@gmail.com</em>

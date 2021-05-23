@@ -1,6 +1,6 @@
 <template>
   <div class="back-button">
-    <div @touchstart="onTouchStart" @touchend="onTouchEnd" class="back-button-container">
+    <div @touchstart.once="onTouchStart" @touchend.once="onTouchEnd" class="back-button-container">
       <div class="button-border">
         <div class="button-box" :class="{'active': active, 'pressed': pressed, 'selected': selected || (active && touching)}">
 

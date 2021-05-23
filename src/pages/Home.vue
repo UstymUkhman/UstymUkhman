@@ -4,13 +4,12 @@
       <div v-for="(page, p) in pages" :key="page" class="button-border">
 
         <div :ref="button => { items[p] = button }" class="button-box" itemtype="https://schema.org/MenuItem"
-             @touchstart.once="onTouchStart(p)" @touchend.once="onTouchEnd" itemscope
-             :class="{
-               'selected': p === settedSection && !nextPage,
-               'active': isActiveButton(p),
-               'visible': skipLettering,
-               'pressed': pressed
-             }">
+          @touchstart.once="onTouchStart(p)" @touchend.once="onTouchEnd" itemscope :class="{
+            'selected': p === settedSection && !nextPage,
+            'active': isActiveButton(p),
+            'visible': skipLettering,
+            'pressed': pressed
+          }">
 
           <div class="button-background"></div>
           <p itemprop="name" class="button">{{ page }}</p>
@@ -221,7 +220,7 @@ export default defineComponent({
     }
 
     @include breakpoint($xs) {
-      @include console-button(3px);
+      @include console-button;
     }
 
     .button {
