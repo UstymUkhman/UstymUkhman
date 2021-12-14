@@ -7,6 +7,7 @@ import { SetupContext, Ref, defineComponent, ref, onMounted, onBeforeUnmount } f
 import { Viewport, Size } from '@/utils/Viewport'
 import { PI } from '@/utils/Number'
 import { Color } from '@/utils'
+import anime from 'animejs'
 
 interface TemplateValues {
   readonly circle: Ref<HTMLCanvasElement>
@@ -27,20 +28,34 @@ export default defineComponent({
     }
 
     const animate = (): void => {
-      canvasContext.fillStyle = `rgb(${Color.black})`
+      canvasContext = circle.value.getContext('2d')!
+      radius.value = Math.hypot(width, height) / 2
+
+      anime({
+        update: ({ animatables }) => draw(
+          (animatables[0].target as unknown as typeof radius).value
+        ),
+
+        complete: () => context.emit('complete-animation'),
+
+        easing: 'easeInOutQuad',
+        targets: radius,
+        duration: 1e3,
+        value: 0.0
+      });
+    }
+
+    const draw = (radius: number): void => {
       canvasContext.clearRect(0, 0, width, height)
+      canvasContext.globalCompositeOperation = 'source-over'
+
       canvasContext.fillRect(0, 0, width, height)
+      canvasContext.globalCompositeOperation = 'destination-out'
 
-      radius -= ((Date.now() - drawingTime) / 1000 * 75)
-      if (radius <= 0) return context.emit('complete-animation')
-
-      frame = requestAnimationFrame(animate)
       canvasContext.beginPath()
 
       canvasContext.arc(halfWidth, halfHeight, radius, 0, PI.m2)
-      canvasContext.fillStyle = `rgb(${Color.white})`
-
-      canvasContext.stroke()
+      canvasContext.fillStyle = `rgb(${Color.black})`
       canvasContext.fill()
     }
 
@@ -52,23 +67,12 @@ export default defineComponent({
     let halfWidth = width / 2
 
     const circle = ref()
-    let drawingTime = 0
+    const radius = {
+      value: 0
+    }
 
-    let radius = 0
-    let frame = 0
-
-    onMounted(() => {
-      canvasContext = circle.value.getContext('2d')!
-      radius = (width > height ? halfWidth : halfHeight) * 1.2
-
-      drawingTime = Date.now()
-      animate()
-    })
-
-    onBeforeUnmount(() => {
-      cancelAnimationFrame(frame)
-      screen.dispose()
-    })
+    onMounted(animate)
+    onBeforeUnmount(() => screen.dispose())
 
     return { circle, width, height }
   }

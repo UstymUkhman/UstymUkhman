@@ -40,6 +40,16 @@
   "route": "infinite-jumper",
   "newTab": true
 }, {
+  "github": "https://github.com/UstymUkhman/thriller-dance",
+  "description": "AR dance from \"Thriller\" music video",
+  "page": "https://tbwax.8thwall.app/thriller/",
+
+  "image": "ThrillerDance.jpg",
+  "video": "ThrillerDance.mp4",
+
+  "title": "Thriller Dance",
+  "route": "thriller-dance"
+}, {
   "page": "https://ustymukhman.github.io/color-grading/public/",
   "github": "https://github.com/UstymUkhman/color-grading",
   "description": "WebGL Color Grading",

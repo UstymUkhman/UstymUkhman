@@ -2,9 +2,9 @@
 
 my name is **Ustym** and I'm a _front-end developer_.
 
-I'm working on too many things, trying to hack ⌚ to have more than `24` hours a 📆.
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=UstymUkhman&langs_count=10&hide_title=true&layout=compact&exclude_repo=box2d-lite,webDOOM&hide=assembly,c%23,hlsl,shaderlab&text_color=fff&bg_color=00000040&hide_border=true&locale=en&border_radius=6)](https://github.com/anuraghazra/github-readme-stats)
 
-<br />
+I'm working on too many things, trying to hack ⌚ to have more than `24` hours a 📆.
 
 I love new web technologies and APIs but also 🎬, 🎶, 🎮, ☕ and 🐈.
 

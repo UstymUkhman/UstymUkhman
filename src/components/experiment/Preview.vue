@@ -111,6 +111,26 @@ $mobileHeight: 0.66 / 16 * 9;
 
     @include size;
     opacity: 0;
+
+    @include desktop-hover {
+      border-color: $green;
+      transition-delay: 0s;
+
+      .experiment-overlay {
+        transition-delay: 0.25s;
+        opacity: 0;
+      }
+
+      img {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+
+      h5 {
+        transition-delay: 0s;
+        opacity: 0;
+      }
+    }
   }
 
   .experiment-overlay {
@@ -181,28 +201,6 @@ $mobileHeight: 0.66 / 16 * 9;
     );
 
     @include vw(padding, 10);
-  }
-
-  @include desktop-hover {
-    .preview-content {
-      border-color: $green;
-      transition-delay: 0s;
-    }
-
-    .experiment-overlay {
-      transition-delay: 0.25s;
-      opacity: 0;
-    }
-
-    img {
-      transform: scale(1.5);
-      opacity: 0;
-    }
-
-    h5 {
-      transition-delay: 0s;
-      opacity: 0;
-    }
   }
 
   &.visible {
