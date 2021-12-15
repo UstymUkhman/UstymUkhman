@@ -26,6 +26,10 @@ export default defineComponent({
 ::-webkit-scrollbar {
   background-color: $black;
   width: 5px;
+
+  @include breakpoint($sm-down) {
+    width: 1px;
+  }
 }
 
 ::-webkit-scrollbar-thumb {

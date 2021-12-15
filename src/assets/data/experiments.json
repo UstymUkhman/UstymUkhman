@@ -48,7 +48,8 @@
   "video": "ThrillerDance.mp4",
 
   "title": "Thriller Dance",
-  "route": "thriller-dance"
+  "route": "thriller-dance",
+  "newTab": true
 }, {
   "page": "https://ustymukhman.github.io/color-grading/public/",
   "github": "https://github.com/UstymUkhman/color-grading",
