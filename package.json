@@ -60,7 +60,7 @@
     "rimraf": "^3.0.2",
     "sass-loader": "10.2.0",
     "semver": "^7.3.5",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "stylelint": "13.13.1",
     "stylelint-config-standard": "22.0.0",
     "stylelint-webpack-plugin": "2.3.1",
