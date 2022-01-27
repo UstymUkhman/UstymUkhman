@@ -20,7 +20,7 @@
     "animejs": "^3.2.1",
     "breakpoint-sass": "^2.7.1",
     "mobile-detect": "^1.4.5",
-    "three": "^0.127.0",
+    "three": "^0.137.0",
     "vue": "^3.2.26",
     "vue-router": "^4.0.12"
   },
