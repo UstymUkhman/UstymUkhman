@@ -1,0 +1,3 @@
+[submodule "DeeloCloud"]
+	path = DeeloCloud
+	url = https://github.com/UstymUkhman/DeeloCloud.git
