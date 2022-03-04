@@ -156,14 +156,14 @@
           clip-path: polygon(0 0, 100% 0, 100% 33%, 0 66%);
           transform: translate(-0.0125em, -0.025em);
           animation-duration: 0.75s;
-          color: #FFCC00;
+          color: #000080;
         }
 
         h1 span:last-child {
           clip-path: polygon(0 66%, 100% 33%, 100% 100%, 0 100%);
           transform: translate(0.025em, 0.0375em);
           animation-duration: 0.375s;
-          color: #000080;
+          color: #FFCC00;
         }
 
         @media (prefers-reduced-motion: reduce) {
