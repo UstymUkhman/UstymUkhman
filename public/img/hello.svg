@@ -62,14 +62,6 @@
         }
 
         main {
-          transform: translate(-50%, -50%);
-          position: absolute;
-          margin: auto;
-          left: 50%;
-          top: 50%;
-        }
-
-        section {
           -webkit-text-rendering: optimizeLegibility;
           -webkit-tap-highlight-color: transparent;
           -webkit-font-smoothing: antialiased;
@@ -77,7 +69,6 @@
           -webkit-overflow-scrolling: touch;
           -webkit-touch-callout: none;
 
-          font-family: 'BankGothic', monospace;
           text-rendering: optimizeLegibility;
           font-variant-ligatures: none;
           backface-visibility: hidden;
@@ -85,10 +76,11 @@
           text-size-adjust: none;
           letter-spacing: normal;
           line-height: normal;
+          position: absolute;
 
-          font-weight: normal;
           font-kerning: none;
           font-style: normal;
+          font-weight: bold;
 
           user-select: none;
           appearance: none;
@@ -107,19 +99,32 @@
           margin: 0;
         }
 
+        section {
+          transform: translate(-50%, -50%);
+          position: absolute;
+          margin: auto;
+          left: 50%;
+          top: 50%;
+        }
+
         h1 {
+          font-family: 'BankGothic', 'Helvetica', 'Arial',
+            sans-serif, system-ui, monospace;
+
           text-shadow:
              0.05em   0      0 rgba(255,   0,   0, 0.75),
             -0.025em -0.05em 0 rgba(  0, 255,   0, 0.75),
              0.025em  0.05em 0 rgba(  0,   0, 255, 0.75);
 
-          font-size: clamp(36px, 12vw, 120px);
+          font-size: clamp(128px, 15vw, 256px);
           animation: glitch 0.5s infinite;
           backface-visibility: hidden;
           text-transform: uppercase;
 
           text-align: center;
           position: relative;
+
+          font-style: normal;
           font-weight: bold;
 
           display: block;
@@ -155,7 +160,7 @@
         }
 
         h1 span:last-child {
-          clip-path: polygon(0 75%, 100% 33%, 100% 100%, 0 100%);
+          clip-path: polygon(0 66%, 100% 33%, 100% 100%, 0 100%);
           transform: translate(0.025em, 0.0375em);
           animation-duration: 0.375s;
           color: #000080;
