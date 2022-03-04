@@ -20,5 +20,6 @@ logs
 .lock-wscript
 
 dist/
+deploy.sh
 bitnami.pem
 node_modules/

@@ -4,7 +4,7 @@
   "description": "Coffee is never too much.",
   "domain": "http://35.158.218.205/",
   "main": "src/main.ts",
-  "version": "2.6.0",
+  "version": "2.6.5",
   "private": false,
   "scripts": {
     "start": "webpack-dev-server --inline --progress --config webpack/webpack.dev.js --host 0.0.0.0",
@@ -48,7 +48,7 @@
     "mini-css-extract-plugin": "1.6.0",
     "minimist": "^1.2.5",
     "node-notifier": "^10.0.0",
-    "node-sass": "^7.0.0",
+    "node-sass": "^6.0.1",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
     "ora": "5.4.1",
     "postcss": "^8.4.5",
