@@ -23,3 +23,4 @@ dist/
 deploy.sh
 bitnami.pem
 node_modules/
+public/videos/*
