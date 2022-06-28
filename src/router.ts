@@ -56,14 +56,12 @@ export default createRouter({
       name: 'Experiments',
       path: ''
     },
-    ...(experiments as Array<Experiment>).map(experiment => {
-      return {
-        component: (): VueComponent => import(/* webpackChunkName: "experiment-page" */ '@pages/Experiment.vue'),
-        name: experiment.title,
-        path: experiment.route,
-        props: experiment
-      }
-    })]
+    ...(experiments as Array<Experiment>).map(experiment => ({
+      component: (): VueComponent => import(/* webpackChunkName: "experiment-page" */ '@pages/Experiment.vue'),
+      name: experiment.title,
+      path: experiment.route,
+      props: experiment
+    }))]
   }, {
     component: (): VueComponent => import(/* webpackChunkName: "404-page" */ '@pages/404.vue'),
     path: '/404',

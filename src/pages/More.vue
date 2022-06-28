@@ -14,7 +14,7 @@ import { WebGLRenderer } from 'three/src/renderers/WebGLRenderer'
 import { BufferGeometry } from 'three/src/core/BufferGeometry'
 import { AmbientLight } from 'three/src/lights/AmbientLight'
 type JSONModel = import('@/utils/3D/JSONLoader').JSONModel
-import { Loading, Sounds, firePrerender } from '@/utils'
+import { Loading, Speech, firePrerender } from '@/utils'
 
 import { SpotLight } from 'three/src/lights/SpotLight'
 import AssetsLoader from '@/utils/3D/AssetsLoader'
@@ -98,10 +98,10 @@ export default defineComponent({
 
       else {
         clearTimeout(choiceTimeout)
-        Sounds.endSpeach()
         blueFade.pause()
         redFade.pause()
         createChoice()
+        Speech.stop()
       }
     }
 

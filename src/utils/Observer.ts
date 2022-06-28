@@ -62,4 +62,4 @@ export class Observer {
   }
 }
 
-export default new Observer();
+export default new Observer()

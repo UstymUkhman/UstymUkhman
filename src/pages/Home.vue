@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { TouchEventListener, Lettering, Loading, Platform, firePrerender } from '@/utils'
+import { TouchEventListener, Lettering, Loading, Speech, Platform, firePrerender } from '@/utils'
 import { Ref, defineComponent, reactive, ref, onMounted } from 'vue'
 import router from '@/router'
 
@@ -135,6 +135,7 @@ export default defineComponent({
       nextPage.value = true
       pressed.value = false
 
+      nextSection === 3 && Speech.play(3000)
       document.removeEventListener('keyup', onKeyUp, false)
       document.removeEventListener('keydown', onKeyDown, false)
 

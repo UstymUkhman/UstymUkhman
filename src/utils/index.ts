@@ -1,9 +1,9 @@
 import wheel from './Wheel'
-import Sounds from './Sounds'
 import Loading from './Loading'
 import Platform from './Platform'
-
 import Observer from './Observer'
+
+import * as Speech from './Speech'
 import Lettering from './Lettering'
 import { Viewport } from './Viewport'
 import firePrerender from './Prerender'
@@ -60,6 +60,6 @@ export {
   Observer,
   Viewport,
   Loading,
-  Sounds,
+  Speech,
   wheel
 }

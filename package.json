@@ -4,7 +4,7 @@
   "description": "Coffee is never too much.",
   "domain": "http://35.158.218.205/",
   "main": "src/main.ts",
-  "version": "2.6.5",
+  "version": "2.6.8",
   "private": false,
   "scripts": {
     "start": "webpack-dev-server --inline --progress --config webpack/webpack.dev.js --host 0.0.0.0",
