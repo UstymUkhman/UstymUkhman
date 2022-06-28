@@ -8,9 +8,9 @@
 
 <script lang="ts">
 import { Ref, defineComponent, ref, onMounted } from 'vue'
-import facebook from '@/assets/img/facebook.svg'
-import twitter from '@/assets/img/twitter.svg'
-import github from '@/assets/img/github.svg'
+import facebook from '@/assets/images/facebook.svg'
+import twitter from '@/assets/images/twitter.svg'
+import github from '@/assets/images/github.svg'
 
 type Share = (social: string) => void
 

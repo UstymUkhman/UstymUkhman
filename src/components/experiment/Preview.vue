@@ -16,9 +16,9 @@
         </video>
 
         <img
-          :image="`public/img/${experiment.image}`"
+          :image="`public/images/${experiment.image}`"
           itemtype="http://schema.org/ImageObject"
-          :src="`public/img/${experiment.image}`"
+          :src="`public/images/${experiment.image}`"
         />
 
         <div class="experiment-overlay"></div>

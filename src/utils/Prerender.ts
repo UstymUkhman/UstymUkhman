@@ -52,8 +52,8 @@ export default function (data: MetaData = {}): void {
   if (Platform.prerender) {
     const title = data.fullTitle ? fullTitle : data.title ? `${data.title} | ${baseTitle}` : baseTitle
 
-    tags.twitterImage.content = data.image ? `/public/img/${data.image}` : tags.twitterImage.content
-    tags.ogImage.content = data.image ? `/public/img/${data.image}` : tags.ogImage.content
+    tags.twitterImage.content = data.image ? `/public/images/${data.image}` : tags.twitterImage.content
+    tags.ogImage.content = data.image ? `/public/images/${data.image}` : tags.ogImage.content
 
     tags.twitterDescription.content = data.description || tags.twitterDescription.content
     tags.ogDescription.content = data.description || tags.ogDescription.content

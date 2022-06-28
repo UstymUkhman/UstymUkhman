@@ -63,7 +63,7 @@ $mobileBackground: rgba($black, 0.8);
       }
 
       &:last-child {
-        background-image: url('../assets/img/gradient.png');
+        background-image: url('../assets/images/gradient.png');
         background-position: top left;
         background-repeat: repeat-y;
         background-size: contain;

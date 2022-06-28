@@ -12,7 +12,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .screen-overlay {
-  background-image: url('../assets/img/overlay.png');
+  background-image: url('../assets/images/overlay.png');
   background-position: top left;
   background-repeat: repeat;
 

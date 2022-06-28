@@ -2,6 +2,7 @@
 	"settings": {
 		"js-import.plainFileSuffix": "css,scss,sass,less,svg",
     "js-import.filesToScan": "**/*.{vue,ts,tsx,js,jsx}",
+    "editor.bracketPairColorization.enabled": false,
     "vetur.validation.template": false,
     "git.ignoreLimitWarning": true,
     "js-import.semicolon": false,

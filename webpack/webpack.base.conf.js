@@ -53,19 +53,19 @@ module.exports = {
       test: /\.(png|jpe?g|gif)(\?.*)?$/,
       loader: 'url-loader',
       options: {
-        name: utils.assetsPath('img/[name].[hash:7].[ext]'),
+        name: utils.assetsPath('images/[name].[hash:7].[ext]'),
         limit: 10000
       }
     }, {
       test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
       loader: 'url-loader',
       options: {
-        name: utils.assetsPath('media/[name].[hash:7].[ext]'),
+        name: utils.assetsPath('audios/[name].[hash:7].[ext]'),
         limit: 10000
       }
     }, {
       test: /\.(eot|woff2?|otf|ttf|svg)(\?.*)?$/,
-      exclude: /assets(\\|\/)img/,
+      exclude: /assets(\\|\/)images/,
       loader: 'url-loader',
       options: {
         name: utils.assetsPath('fonts/[name].[hash:7].[ext]'),
