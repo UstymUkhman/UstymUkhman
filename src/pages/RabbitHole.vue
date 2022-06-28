@@ -37,10 +37,10 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { PerspectiveCamera } from 'three/src/cameras/PerspectiveCamera'
 import { DirectionalLight } from 'three/src/lights/DirectionalLight'
 
-import { Lettering, Loading, Sounds, firePrerender } from '@/utils'
 import { ShaderMaterial } from 'three/src/materials/ShaderMaterial'
 import { PlaneGeometry } from 'three/src/geometries/PlaneGeometry'
 import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader'
+import { PositionalAudio } from 'three/src/audio/PositionalAudio'
 import { WebGLRenderer } from 'three/src/renderers/WebGLRenderer'
 
 import FRONT_CEILING from '@/assets/textures/front_ceiling.jpg'
@@ -49,10 +49,12 @@ import FLOOR_BOUND from '@/assets/textures/floor_bound.jpg'
 import DOOR_WALL from '@/assets/textures/door_wall.png'
 import FLOOR from '@/assets/textures/floor.jpg'
 import WALL from '@/assets/textures/wall.jpg'
-import MATRIX from '@/assets/img/lut.png'
+import MATRIX from '@/assets/images/lut.png'
 
+import { AudioListener } from 'three/src/audio/AudioListener'
 import ScreenAnimation from '@components/ScreenAnimation.vue'
 import { AmbientLight } from 'three/src/lights/AmbientLight'
+import { Lettering, Loading, firePrerender } from '@/utils'
 import Experiments from '@/assets/data/experiments.json'
 import { Raycaster } from 'three/src/core/Raycaster'
 import { Texture } from 'three/src/textures/Texture'
@@ -70,12 +72,14 @@ import { Viewport, Size } from '@/utils/Viewport'
 import { Vector2 } from 'three/src/math/Vector2'
 import { Group } from 'three/src/objects/Group'
 
+import CLOSE_DOOR from '@/assets/audios/close.mp3'
+import OPEN_DOOR from '@/assets/audios/open.mp3'
+
 import { Scene } from 'three/src/scenes/Scene'
 import { Mesh } from 'three/src/objects/Mesh'
 import { Color } from 'three/src/math/Color'
-
-import vertShader from '@/glsl/main.vert'
-import fragShader from '@/glsl/main.frag'
+import vertShader from '@/shaders/main.vert'
+import fragShader from '@/shaders/main.frag'
 
 import { PI } from '@/utils/Number'
 import router from '@/router'
@@ -112,6 +116,7 @@ export default defineComponent({
       camera = new PerspectiveCamera(4, screen.size.ratio, 1, depth)
       camera.rotation.x = -Math.PI / 4.8825
       camera.position.z = -0.25
+      camera.add(listener)
       scene.add(camera)
     }
 
@@ -307,6 +312,9 @@ export default defineComponent({
       const door = await loader.loadModel(DOOR as JSON)
       const frame = await loader.loadModel(FRAME as JSON)
 
+      const openAudio = await loader.loadAudio(OPEN_DOOR)
+      const closeAudio = await loader.loadAudio(CLOSE_DOOR)
+
       const frameMaterials = [
         (frame.materials![0] as unknown) as MeshPhongMaterial,
         (frame.materials![1] as unknown) as MeshPhongMaterial
@@ -346,11 +354,20 @@ export default defineComponent({
       scene.add(new Object3D().add(pivot))
 
       for (let i = 0, length = Math.ceil(experiments.length / 2) * 2; i < length; i++) {
+        const close = new PositionalAudio(listener)
+        const open = new PositionalAudio(listener)
+
         const frame = frontFrame.clone()
         const door = frontDoor.clone()
 
         const pitch = new Object3D()
         const pivot = new Object3D()
+
+        close.setBuffer(closeAudio)
+        open.setBuffer(openAudio)
+
+        close.setVolume(1.5)
+        open.setVolume(1.5)
 
         let rotation = 8.75
         let rotationY = PI.d2
@@ -379,6 +396,9 @@ export default defineComponent({
         door.userData.index = i
         pivot.rotation.y = 0
 
+        door.add(close)
+        door.add(open)
+
         pivot.add(door)
         pitch.add(pivot)
 
@@ -391,6 +411,19 @@ export default defineComponent({
       }
 
       doorObjects = doors.map(({ door }) => door)
+
+      const close = new PositionalAudio(listener)
+      const open = new PositionalAudio(listener)
+
+      close.setBuffer(closeAudio)
+      open.setBuffer(openAudio)
+
+      close.setVolume(1.5)
+      open.setVolume(1.5)
+
+      frontDoor.add(close)
+      frontDoor.add(open)
+
       return frontDoor
     }
 
@@ -694,8 +727,9 @@ export default defineComponent({
 
     function playDoorSound (door: Mesh): boolean {
       const closed = door.userData.index >= experiments.length
-      closed ? Sounds.closedDoor() : Sounds.openedDoor()
+      const sound = door.children[+!closed] as PositionalAudio
 
+      !sound.isPlaying && sound.play()
       setDoorLight(door)
       return closed
     }
@@ -770,6 +804,7 @@ export default defineComponent({
     const depth = Math.ceil(experiments.length / 2) * 100
 
     const screen = new Viewport(onResize)
+    const listener = new AudioListener()
     const raycaster = new Raycaster()
     const loader = new AssetsLoader()
     const focus = new Vector2(0, 2)

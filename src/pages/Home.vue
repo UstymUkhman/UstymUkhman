@@ -3,7 +3,7 @@
     <div itemtype="http://schema.org/Menu" class="menu-items" itemscope>
       <div v-for="(page, p) in pages" :key="page" class="button-border">
 
-        <div :ref="button => { items[p] = button }" class="button-box" itemtype="https://schema.org/MenuItem"
+        <div :ref="button => { items[p] = button as HTMLDivElement }" class="button-box" itemtype="https://schema.org/MenuItem"
           @touchstart.once="onTouchStart(p)" @touchend.once="onTouchEnd" itemscope :class="{
             'selected': p === settedSection && !nextPage,
             'active': isActiveButton(p),

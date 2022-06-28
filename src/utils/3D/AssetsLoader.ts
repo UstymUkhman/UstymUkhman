@@ -1,14 +1,18 @@
 import { JSONModel, JSONLoader, JSONPromise } from '@/utils/3D/JSONLoader'
 import { LoadingManager } from 'three/src/loaders/LoadingManager'
 import { TextureLoader } from 'three/src/loaders/TextureLoader'
+import { AudioLoader } from 'three/src/loaders/AudioLoader'
 import { Texture } from 'three/src/textures/Texture'
 
+type Loader = TextureLoader | JSONLoader | AudioLoader
+type AudioCallback = (asset: AudioBuffer) => unknown
 type TextureCallback = (asset: Texture) => unknown
 type JSONCallback = (asset: JSONModel) => unknown
-type AssetPromise = Promise<Texture | JSONModel>
+type Asset = Texture | JSONModel | AudioBuffer
 
 export default class AssetsLoader extends LoadingManager {
   private readonly texture = new TextureLoader(this)
+  private readonly audio = new AudioLoader(this)
   private readonly json = new JSONLoader(this)
 
   public onStart = (): void => {
@@ -46,22 +50,37 @@ export default class AssetsLoader extends LoadingManager {
     return asset
   }
 
+  public async loadAudio (audio: string, callback?: AudioCallback): Promise<AudioBuffer> {
+    const asset = await new Promise((resolve, reject) => {
+      const onError = (error: ErrorEvent) => reject(error)
+      const onLoad = (result: AudioBuffer) => resolve(result)
+
+      const onProgress = (progress: ProgressEvent) =>
+        console.log(`Loading... ${progress.loaded * 100 / progress.total}%`)
+
+      this.audio.load(audio, onLoad, onProgress, onError)
+    }) as AudioBuffer
+
+    if (callback) callback(asset)
+    return asset
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private load (loader: TextureLoader | JSONLoader, ...args: any[]): AssetPromise {
+  private load (loader: Loader, ...args: any[]): Promise<Asset> {
     return this.execute(loader, 'load', args)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private parse (loader: TextureLoader | JSONLoader, ...args: any[]): AssetPromise {
+  private parse (loader: Loader, ...args: any[]): Promise<Asset> {
     return this.execute(loader, 'parse', args)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private execute (loader: TextureLoader | JSONLoader, fn: string, args: any[]): AssetPromise {
+  private execute (loader: Loader, fn: string, args: any[]): Promise<Asset> {
     return new Promise((resolve, reject) => {
       const onError = (error: Error) => reject(error)
-      const onLoad = (result: JSONPromise) => resolve(result as AssetPromise)
-      const onProgress = (progress: number) => console.log(`Loading... ${progress}%`, progress)
+      const onLoad = (result: JSONPromise) => resolve(result as Promise<Asset>)
+      const onProgress = (progress: number) => console.log(`Loading... ${progress}%`)
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       resolve((loader as any)[fn](...args.concat(
