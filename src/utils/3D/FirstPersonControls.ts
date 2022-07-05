@@ -1,7 +1,9 @@
 type PerspectiveCamera = import('three/src/cameras/PerspectiveCamera').PerspectiveCamera
+type AudioListener = import('three/src/audio/AudioListener').AudioListener
 type Object3D = import('three/src/core/Object3D').Object3D
 type Scene = import('three/src/scenes/Scene').Scene
 
+import { PositionalAudio } from 'three/src/audio/PositionalAudio'
 import PointerControls from '@/utils/3D/PointerControls'
 import { Vector3 } from 'three/src/math/Vector3'
 
@@ -28,8 +30,12 @@ export class FirstPersonControls {
   private delta = performance.now()
   private velocity = new Vector3()
 
+  private step!: PositionalAudio
+  private stepInterval = 0.0
+
   private activated = false
   private enabled = false
+  private blocked = false
   public error = false
 
   public constructor (scene: Scene, camera: PerspectiveCamera) {
@@ -37,6 +43,12 @@ export class FirstPersonControls {
     scene.add(this.controls.object)
     this.addEventListeners()
     this.enabled = true
+  }
+
+  private stopWalking (): void {
+    (this.move as unknown as Array<boolean>).fill(false)
+    clearInterval(this.stepInterval)
+    this.velocity.setScalar(0.0)
   }
 
   private addEventListeners (): void {
@@ -63,6 +75,7 @@ export class FirstPersonControls {
     console.error('PointerLock error occured:', event)
     document.exitPointerLock()
     this.enable = false
+    this.stopWalking()
   }
 
   private keyHandler (key: string, pressed: boolean): void {
@@ -94,11 +107,37 @@ export class FirstPersonControls {
   }
 
   private onKeyRelease (event: KeyboardEvent): void {
+    if (this.activated && this.isMoving) {
+      this.playStepSound(false)
+    }
+
     this.keyHandler(event.key, false)
+
+    if (!this.isMoving) {
+      clearInterval(this.stepInterval)
+      this.stepInterval = 0.0
+    }
   }
 
   private onKeyPress (event: KeyboardEvent): void {
     this.keyHandler(event.key, true)
+
+    if (this.activated && this.isMoving && !this.stepInterval) {
+      this.playStepSound()
+
+      this.stepInterval = setInterval(() =>
+        this.isMoving && this.playStepSound()
+      , 500)
+    }
+  }
+
+  private playStepSound (press = true): void {
+    const volume = +press * 2 + 1
+    !press && this.step.stop()
+
+    if (this.step.isPlaying || this.blocked) return
+    this.step.setVolume(volume)
+    this.step.play()
   }
 
   private checkCollision (yaw: Object3D): boolean {
@@ -112,6 +151,14 @@ export class FirstPersonControls {
 
   public setBorders (borders: Directions<number>): void {
     this.borders = borders
+  }
+
+  public setStepSound (sound: AudioBuffer, listener: AudioListener): void {
+    const { y } = this.controls.object.position
+    this.step = new PositionalAudio(listener)
+    this.controls.object.add(this.step)
+    this.step.setBuffer(sound)
+    this.step.position.y = -y
   }
 
   public activate (): void {
@@ -151,7 +198,9 @@ export class FirstPersonControls {
     position.translateX(x)
     position.translateZ(z)
 
-    if (this.checkCollision(position)) {
+    this.blocked = this.checkCollision(position)
+
+    if (this.blocked) {
       position.translateX(-x)
       position.translateZ(-z)
 
@@ -184,6 +233,7 @@ export class FirstPersonControls {
 
   public set pointerLock (lock: boolean) {
     lock ? document.body.requestPointerLock() : document.exitPointerLock()
+    if (!lock) this.stopWalking()
     this.enable = lock
   }
 

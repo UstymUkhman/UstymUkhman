@@ -74,6 +74,7 @@ import { Group } from 'three/src/objects/Group'
 
 import CLOSE_DOOR from '@/assets/audios/close.mp3'
 import OPEN_DOOR from '@/assets/audios/open.mp3'
+import STEP from '@/assets/audios/step.mp3'
 
 import { Scene } from 'three/src/scenes/Scene'
 import { Mesh } from 'three/src/objects/Mesh'
@@ -524,8 +525,10 @@ export default defineComponent({
       return lut
     }
 
-    function createControls (): void {
+    async function createControls (): Promise<void> {
       controls = new FirstPersonControls(scene, camera)
+      const step = await loader.loadAudio(STEP)
+      controls.setStepSound(step, listener)
 
       controls.setBorders({
         [Direction.UP]: -5,
@@ -917,6 +920,8 @@ export default defineComponent({
 
   border-radius: 5px;
   position: absolute;
+  text-align: center;
+  line-height: 25px;
 
   padding: 10px;
   bottom: 2.5%;
