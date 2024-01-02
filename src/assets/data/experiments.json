@@ -9,6 +9,16 @@
   "title": "webDOOM",
   "route": "webDOOM"
 }, {
+  "page": "https://ustymukhman.github.io/water-distortion/dist/",
+  "github": "https://github.com/UstymUkhman/water-distortion",
+  "description": "WebGL Water Distortion",
+
+  "image": "WaterDistortion.jpg",
+  "video": "WaterDistortion.mp4",
+
+  "title": "Water Distortion",
+  "route": "water-distortion"
+}, {
   "page": "https://ustymukhman.github.io/ray-marching/dist/",
   "github": "https://github.com/UstymUkhman/ray-marching",
   "description": "GLSL Ray Marching Experiment",
@@ -18,16 +28,6 @@
 
   "title": "Ray Marching",
   "route": "ray-marching"
-}, {
-  "page": "https://ustymukhman.github.io/Stack/Build/",
-  "github": "https://github.com/UstymUkhman/Stack",
-  "description": "Stack game clone",
-
-  "image": "Stack.jpg",
-  "video": "Stack.mp4",
-
-  "title": "Stack",
-  "route": "Stack"
 }, {
   "page": "https://ustymukhman.github.io/infinite-jumper/public/",
   "github": "https://github.com/UstymUkhman/infinite-jumper",
@@ -40,6 +40,16 @@
   "route": "infinite-jumper",
   "newTab": true
 }, {
+  "page": "https://ustymukhman.github.io/Stack/Build/",
+  "github": "https://github.com/UstymUkhman/Stack",
+  "description": "Stack game clone",
+
+  "image": "Stack.jpg",
+  "video": "Stack.mp4",
+
+  "title": "Stack",
+  "route": "Stack"
+}, {
   "github": "https://github.com/UstymUkhman/thriller-dance",
   "description": "AR dance from \"Thriller\" music video",
   "page": "https://tbwax.8thwall.app/thriller/",
@@ -50,16 +60,6 @@
   "title": "Thriller Dance",
   "route": "thriller-dance",
   "newTab": true
-}, {
-  "page": "https://ustymukhman.github.io/color-grading/public/",
-  "github": "https://github.com/UstymUkhman/color-grading",
-  "description": "WebGL Color Grading",
-
-  "image": "ColorGrading.jpg",
-  "video": "ColorGrading.mp4",
-
-  "title": "Color Grading",
-  "route": "color-grading"
 }, {
   "page": "https://ustymukhman.github.io/sound-particles/public/",
   "github": "https://github.com/UstymUkhman/sound-particles",
@@ -80,6 +80,16 @@
 
   "title": "FBO Particles",
   "route": "fbo-particles"  
+}, {
+  "page": "https://ustymukhman.github.io/color-grading/public/",
+  "github": "https://github.com/UstymUkhman/color-grading",
+  "description": "WebGL Color Grading",
+
+  "image": "ColorGrading.jpg",
+  "video": "ColorGrading.mp4",
+
+  "title": "Color Grading",
+  "route": "color-grading"
 }, {
   "page": "https://ustymukhman.github.io/video-transition/public/",
   "github": "https://github.com/UstymUkhman/video-transition",
