@@ -19,6 +19,16 @@
   "title": "Water Distortion",
   "route": "water-distortion"
 }, {
+  "page": "https://ustymukhman.github.io/ray-tracing/dist/",
+  "github": "https://github.com/UstymUkhman/ray-tracing",
+  "description": "Ray Tracing in One Weekend",
+
+  "image": "RayTracing.jpg",
+  "video": "RayTracing.mp4",
+
+  "title": "Ray Tracing",
+  "route": "ray-tracing"
+}, {
   "page": "https://ustymukhman.github.io/ray-marching/dist/",
   "github": "https://github.com/UstymUkhman/ray-marching",
   "description": "GLSL Ray Marching Experiment",
