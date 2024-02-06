@@ -27,7 +27,8 @@
   "video": "RayTracing.mp4",
 
   "title": "Ray Tracing",
-  "route": "ray-tracing"
+  "route": "ray-tracing",
+  "newTab": true
 }, {
   "page": "https://ustymukhman.github.io/ray-marching/dist/",
   "github": "https://github.com/UstymUkhman/ray-marching",
