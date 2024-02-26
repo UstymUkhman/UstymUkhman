@@ -143,10 +143,9 @@
           position: absolute;
 
           display: block;
-          opacity: 0.75;
-
           height: 100%;
           width: 100%;
+          z-index: 1;
 
           left: 0;
           top: 0;
@@ -157,6 +156,10 @@
           transform: translate(-0.0125em, -0.025em);
           animation-duration: 0.75s;
           color: #3178c6;
+        }
+
+        h1 strong {
+          opacity: 0.75;
         }
 
         h1 span:last-child {
@@ -176,7 +179,7 @@
 			<section>
 				<h1>
           <span aria-hidden="true">Hello!</span>
-          Hello!
+          <strong aria-hidden="false">Hello!</strong>
           <span aria-hidden="true">Hello!</span>
         </h1>
 			</section>
