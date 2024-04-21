@@ -40,6 +40,16 @@
   "title": "Ray Marching",
   "route": "ray-marching"
 }, {
+  "page": "https://ustymukhman.github.io/tricky-track/dist/",
+  "github": "https://github.com/UstymUkhman/tricky-track",
+  "description": "Racing game with procedurally generated track",
+
+  "image": "TrickyTrack.jpg",
+  "video": "TrickyTrack.mp4",
+
+  "title": "Tricky Track",
+  "route": "tricky-track"
+}, {
   "page": "https://ustymukhman.github.io/infinite-jumper/public/",
   "github": "https://github.com/UstymUkhman/infinite-jumper",
   "description": "8 bit style infinite jumper game",
