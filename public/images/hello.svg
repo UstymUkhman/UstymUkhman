@@ -143,10 +143,9 @@
           position: absolute;
 
           display: block;
-          opacity: 0.75;
-
           height: 100%;
           width: 100%;
+          z-index: 1;
 
           left: 0;
           top: 0;
@@ -156,14 +155,18 @@
           clip-path: polygon(0 0, 100% 0, 100% 33%, 0 66%);
           transform: translate(-0.0125em, -0.025em);
           animation-duration: 0.75s;
-          color: #000080;
+          color: #3178c6;
+        }
+
+        h1 strong {
+          opacity: 0.75;
         }
 
         h1 span:last-child {
           clip-path: polygon(0 66%, 100% 33%, 100% 100%, 0 100%);
           transform: translate(0.025em, 0.0375em);
           animation-duration: 0.375s;
-          color: #FFCC00;
+          color: #f1e05a;
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -176,7 +179,7 @@
 			<section>
 				<h1>
           <span aria-hidden="true">Hello!</span>
-          Hello!
+          <strong aria-hidden="false">Hello!</strong>
           <span aria-hidden="true">Hello!</span>
         </h1>
 			</section>
