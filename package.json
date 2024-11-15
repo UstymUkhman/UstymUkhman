@@ -1,0 +1,40 @@
+{
+  "name": "UstymUkhman",
+  "description": "Just a regular everyday normal programmer",
+  "homepage": "https://github.com/UstymUkhman/UstymUkhman#readme",
+  "version": "3.0.0",
+  "private": false,
+  "license": "MIT",
+  "type": "module",
+  "author": {
+    "name": "Ustym Ukhman",
+    "email": "ustym.ukhman@gmail.com",
+    "url": "https://github.com/UstymUkhman/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UstymUkhman/UstymUkhman.git"
+  },
+  "bugs": {
+    "url": "https://github.com/UstymUkhman/UstymUkhman/issues",
+    "email": "ustym.ukhman@gmail.com"
+  },
+  "keywords": [
+    "Ustym",
+    "Ukhman",
+    "creative",
+    "front-end",
+    "developer",
+    "programmer",
+    "portfolio",
+    "website"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}
