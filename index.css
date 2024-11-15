@@ -1,0 +1,65 @@
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+:root {
+  --background: #1f1f1f;
+  --color: #e0e0e0;
+}
+
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  -webkit-tap-highlight-color: transparent;
+
+  text-rendering: optimizeLegibility;
+  text-size-adjust: none;
+  font-synthesis: none;
+  touch-action: none;
+
+  color-scheme: light dark;
+
+  overflow: hidden auto;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--color);
+
+  margin: 48px auto;
+  padding: 0 16px;
+
+  width: 64ch;
+  max-width: 650px;
+
+  font: 18px / 1.5
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    Helvetica, sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: Lucida Console,
+    Courier New, monospace;
+}
+
+/* h1 { font-size: 40px } */
+/* h2 { font-size: 32px } */
+/* h3 { font-size: 24px } */
+
+::selection {
+  background-color: var(--color);
+  color: var(--background);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #e0e0e0;
+    --color: #1f1f1f;
+  }
+}
