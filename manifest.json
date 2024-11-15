@@ -1,0 +1,25 @@
+{
+  "scope": "/",
+  "short_name": "Ustym",
+  "name": "Ustym Ukhman",
+
+  "author": "Ustym Ukhman",
+  "start_url": "./index.html",
+  "description": "Just a regular everyday normal programmer.",
+
+  "prefer_related_applications": false,
+  "background_color": "#1f1f1f",
+  "related_applications": [],
+
+  "orientation": "portrait",
+  "theme_color": "#1f1f1f",
+  "display": "browser",
+
+  "icons": [{
+    "src": "./favicons/light.svg",
+    "purpose": "any maskable",
+    "type": "image/svg+xml",
+    "sizes": "512x512",
+    "density": "1.0"
+  }]
+}

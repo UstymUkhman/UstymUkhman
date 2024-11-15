@@ -1,26 +1,6 @@
 {
-	"settings": {
-		"js-import.plainFileSuffix": "css,scss,sass,less,svg",
-    "js-import.filesToScan": "**/*.{vue,ts,tsx,js,jsx}",
-    "editor.bracketPairColorization.enabled": false,
-    "vetur.validation.template": false,
-    "git.ignoreLimitWarning": true,
-    "js-import.semicolon": false,
-
-    "js-import.alias": {
-      "@components": "/src/components",
-      "modernizr$": "modernizr",
-      "vue": "@vue/runtime-dom",
-      "@pages": "/src/pages",
-      "@scss": "/src/scss",
-      "@": "/src"
-    },
-
-    "eslint.validate": [
-      "typescript",
-      "javascript",
-      "vue"
-    ],
+  "settings": {
+    "editor.bracketPairColorization.enabled": false
   },
 
   "folders": [{

@@ -1,7 +1,6 @@
+[*.{html,css}]
+
 root = true
-
-[*.{vue,ts,tsx,js,jsx}]
-
 charset = utf-8
 indent_size = 2
 end_of_line = lf
