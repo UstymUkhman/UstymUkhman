@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img alt="Hello!" src="./public/images/hello.svg" width="800" height="400" />
+  <img alt="Hello!" src="./images/hello.svg" width="800" height="400" />
 </h1>
 
 My name is **Ustym** and I'm a _front-end developer_.
