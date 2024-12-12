@@ -78,9 +78,8 @@
 
           animation: glitch 0.5s infinite;
           text-transform: uppercase;
-
           position: relative;
-          color: #e0e0e0;
+          color: transparent;
         }
 
         h1 span {
@@ -112,12 +111,6 @@
         @media (prefers-reduced-motion: reduce) {
           h1, h1 span {
             animation: none !important;
-          }
-        }
-
-        @media (prefers-color-scheme: light) {
-          h1 {
-            color: #1f1f1f;
           }
         }
 			</style>
