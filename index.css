@@ -7,6 +7,7 @@
 :root {
   --background: #1f1f1f;
   --color: #e0e0e0;
+  --hover: #fff;
 }
 
 html {
@@ -27,20 +28,26 @@ html {
 }
 
 body {
-  background-color: var(--background);
-  color: var(--color);
+  display: grid;
+  place-items: center;
 
-  margin: 48px auto;
-  padding: 0 16px;
+  padding: 48px 16px;
+  margin: auto;
 
   width: 64ch;
   max-width: 650px;
+
+  min-height: 100svh;
+  max-height: 100svh;
 
   font: 18px / 1.5
     system-ui,
     -apple-system,
     BlinkMacSystemFont,
     Helvetica, sans-serif;
+
+  background-color: var(--background);
+  color: var(--color);
 }
 
 h1, h2, h3 {
@@ -51,14 +58,48 @@ h1, h2, h3 {
 /* h2 { font-size: 30px } */
 /* h3 { font-size: 24px } */
 
-::selection {
-  background-color: var(--color);
-  color: var(--background);
+ul.links {
+  display: flex;
+  column-gap: 16px;
+  justify-content: center;
+
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+
+  > li {
+    min-width: 32px;
+
+    > a > svg {
+      display: block;
+
+      &:hover > path {
+        fill: var(--hover);
+      }
+
+      > path {
+        transition: fill 0.25s;
+        fill: var(--color);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  body {
+    width: 100%;
+  }
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     --background: #e0e0e0;
     --color: #1f1f1f;
+    --hover: #000;
   }
+}
+
+::selection {
+  background-color: var(--color);
+  color: var(--background);
 }
