@@ -58,6 +58,73 @@ h1, h2, h3 {
 /* h2 { font-size: 30px } */
 /* h3 { font-size: 24px } */
 
+header {
+  width: 100%;
+  font-size: 1rem;
+  margin-bottom: 48px;
+}
+
+ol.sections {
+  display: flex;
+  justify-content: space-evenly;
+
+  font-family: Lucida Console,
+    Courier New, monospace;
+
+  list-style: none;
+  padding: 0px;
+  margin: 0px;
+
+  > li {
+    position: relative;
+    overflow: hidden;
+    height: 28px;
+
+    > a {
+      transition: color 400ms;
+      text-decoration: none;
+      color: var(--color);
+
+      display: block;
+      height: 100%;
+
+      &:hover {
+        color: var(--hover);
+      }
+    }
+
+    &::after {
+      left: 0px;
+      width: 100%;
+      bottom: 0px;
+      height: 1px;
+      content: "";
+
+      position: absolute;
+      translate: 105% 0 0;
+      will-change: transform;
+
+      backface-visibility: hidden;
+      background-color: var(--hover);
+      transform: translate3d(0, 0, 0);
+
+      transition: transform 400ms ease-in-out,
+        translate 400ms ease-in-out;
+    }
+
+    &:hover::after {
+      translate: -105% 0 0;
+      will-change: transform;
+      transform: translate3d(100%, 0, 0);
+      transition: transform 400ms ease-in-out;
+    }
+  }
+}
+
+main {
+  margin-bottom: 48px;
+}
+
 figure.about {
   position: relative;
   text-wrap: pretty;
@@ -68,7 +135,7 @@ figure.about {
     width: 150px;
 
     border-radius: 50%;
-    margin-inline-end: 32px;
+    margin-inline-end: 24px;
     shape-outside: circle(50%);
 
     &:last-child {
@@ -105,7 +172,7 @@ ul.links {
       }
 
       > path {
-        transition: fill 0.25s;
+        transition: fill 400ms;
         fill: var(--color);
       }
     }
