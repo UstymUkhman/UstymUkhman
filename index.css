@@ -16,14 +16,13 @@ html {
   -webkit-tap-highlight-color: transparent;
 
   text-rendering: optimizeLegibility;
+  color-scheme: light dark;
   text-size-adjust: none;
   font-synthesis: none;
-  touch-action: none;
-
-  color-scheme: light dark;
 
   overflow: hidden auto;
   scroll-behavior: smooth;
+  scroll-padding-top: 48px;
   overscroll-behavior: contain;
 }
 
@@ -50,22 +49,36 @@ body {
   color: var(--color);
 }
 
-h1, h2, h3 {
+h1, h2,
+time, address {
   font-family: Lucida Console,
     Courier New, monospace;
 }
 
-/* h2 { font-size: 30px } */
-/* h3 { font-size: 24px } */
+a {
+  transition: color 400ms;
+  text-decoration: none;
+  color: var(--color);
 
-header {
-  width: 100%;
-  font-size: 1rem;
+  display: block;
+  height: 100%;
+
+  &:hover {
+    color: var(--hover);
+  }
+}
+
+nav,
+main,
+section {
   margin-bottom: 48px;
 }
 
 ol.sections {
   display: flex;
+  font-size: 16px;
+
+  text-transform: uppercase;
   justify-content: space-evenly;
 
   font-family: Lucida Console,
@@ -80,19 +93,6 @@ ol.sections {
     overflow: hidden;
     height: 28px;
 
-    > a {
-      transition: color 400ms;
-      text-decoration: none;
-      color: var(--color);
-
-      display: block;
-      height: 100%;
-
-      &:hover {
-        color: var(--hover);
-      }
-    }
-
     &::after {
       left: 0px;
       width: 100%;
@@ -101,7 +101,7 @@ ol.sections {
       content: "";
 
       position: absolute;
-      translate: 105% 0 0;
+      translate: 100% 0 0;
       will-change: transform;
 
       backface-visibility: hidden;
@@ -113,7 +113,7 @@ ol.sections {
     }
 
     &:hover::after {
-      translate: -105% 0 0;
+      translate: -100% 0 0;
       will-change: transform;
       transform: translate3d(100%, 0, 0);
       transition: transform 400ms ease-in-out;
@@ -121,14 +121,10 @@ ol.sections {
   }
 }
 
-main {
-  margin-bottom: 48px;
-}
-
-figure.about {
+figure#about {
+  margin: 0px 0px 48px;
   position: relative;
   text-wrap: pretty;
-  margin: 0px;
 
   > img {
     float: left;
@@ -149,6 +145,51 @@ figure.about {
 
   &:hover > img:last-child {
     visibility: visible;
+  }
+}
+
+header.heading {
+  display: flex;
+  column-gap: 16px;
+
+  > hr {
+    width: 100%; height: 1px;
+    border: none; margin: auto;
+    background-color: var(--color);
+  }
+
+  > h2 {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: normal;
+    font-size: 24px;
+    margin: 0px;
+  }
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  td {
+    padding: 8px 0px;
+
+    > h3 {
+      font-weight: normal;
+      font-size: 20px;
+      margin: 0px;
+    }
+
+    > time,
+    > address {
+      display: block;
+      font-size: 14px;
+      font-style: normal;
+    }
+
+    &:nth-child(even) {
+      text-align: right;
+    }
   }
 }
 
@@ -182,12 +223,39 @@ ul.links {
 @media screen and (max-width: 1024px) {
   body {
     width: 100%;
+    font-size: 16px;
   }
 
-  figure.about > img {
-    margin-inline-end: 12px;
-    margin-bottom: 8px;
-    width: 95px;
+  ol.sections {
+    font-size: 14px;
+
+    > li::after {
+      display: none;
+    }
+  }
+
+  figure#about > img {
+    margin-bottom: 5px;
+    width: 100px;
+  }
+
+  header.heading > h2 {
+    font-size: 20px;
+  }
+
+  table td {
+    > h3 {
+      font-size: 18px;
+    }
+
+    > i {
+      font-size: 14px;
+    }
+
+    > time,
+    > address {
+      font-size: 10px;
+    }
   }
 }
 
@@ -198,7 +266,7 @@ ul.links {
     --hover: #000;
   }
 
-  figure.about {
+  figure#about {
     > img:last-child {
       visibility: visible;
     }
