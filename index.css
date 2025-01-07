@@ -5,6 +5,7 @@
 }
 
 :root {
+  scrollbar-width: thin;
   --background: #1f1f1f;
   --color: #e0e0e0;
   --hover: #fff;
@@ -59,9 +60,21 @@ a {
   transition: color 400ms;
   text-decoration: none;
   color: var(--color);
-
   display: block;
-  height: 100%;
+
+  > svg {
+    height: 100%;
+    display: block;
+
+    &:hover > path {
+      fill: var(--hover);
+    }
+
+    > path {
+      transition: fill 400ms;
+      fill: var(--color);
+    }
+  }
 
   &:hover {
     color: var(--hover);
@@ -74,7 +87,7 @@ section {
   margin-bottom: 48px;
 }
 
-ol.sections {
+nav.sections {
   display: flex;
   font-size: 16px;
 
@@ -84,21 +97,19 @@ ol.sections {
   font-family: Lucida Console,
     Courier New, monospace;
 
-  list-style: none;
-  padding: 0px;
-  margin: 0px;
-
-  > li {
+  > a {
     position: relative;
     overflow: hidden;
     height: 28px;
 
     &::after {
       left: 0px;
-      width: 100%;
-      bottom: 0px;
-      height: 1px;
+      opacity: 0;
       content: "";
+      bottom: 0px;
+
+      width: 100%;
+      height: 1px;
 
       position: absolute;
       translate: 100% 0 0;
@@ -109,14 +120,15 @@ ol.sections {
       transform: translate3d(0, 0, 0);
 
       transition: transform 400ms ease-in-out,
-        translate 400ms ease-in-out;
+        translate 400ms ease-in-out, opacity 200ms 400ms;
     }
 
     &:hover::after {
-      translate: -100% 0 0;
-      will-change: transform;
+      transition: transform 400ms ease-in-out, opacity 200ms;
       transform: translate3d(100%, 0, 0);
-      transition: transform 400ms ease-in-out;
+      will-change: transform;
+      translate: -100% 0 0;
+      opacity: 1;
     }
   }
 }
@@ -162,7 +174,7 @@ header.heading {
     text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: normal;
-    font-size: 24px;
+    font-size: 16px;
     margin: 0px;
   }
 }
@@ -170,6 +182,10 @@ header.heading {
 table {
   width: 100%;
   border-collapse: collapse;
+
+  tr:last-child > td {
+    padding-bottom: 0px;
+  }
 
   td {
     padding: 8px 0px;
@@ -187,7 +203,21 @@ table {
       font-style: normal;
     }
 
+    > i {
+      display: block;
+      font-size: 16px;
+      text-wrap: balance;
+    }
+
+    > div {
+      height: 24px;
+      display: flex;
+      column-gap: 8px;
+      justify-content: end;
+    }
+
     &:nth-child(even) {
+      vertical-align: top;
       text-align: right;
     }
   }
@@ -204,19 +234,6 @@ ul.links {
 
   > li {
     min-width: 32px;
-
-    > a > svg {
-      display: block;
-
-      &:hover > path {
-        fill: var(--hover);
-      }
-
-      > path {
-        transition: fill 400ms;
-        fill: var(--color);
-      }
-    }
   }
 }
 
@@ -226,10 +243,10 @@ ul.links {
     font-size: 16px;
   }
 
-  ol.sections {
+  nav.sections {
     font-size: 14px;
 
-    > li::after {
+    > a::after {
       display: none;
     }
   }
@@ -240,12 +257,12 @@ ul.links {
   }
 
   header.heading > h2 {
-    font-size: 20px;
+    font-size: 12px;
   }
 
   table td {
     > h3 {
-      font-size: 18px;
+      font-size: 16px;
     }
 
     > i {
@@ -255,6 +272,11 @@ ul.links {
     > time,
     > address {
       font-size: 10px;
+      white-space: nowrap;
+
+      &:first-child {
+        line-height: 24px;
+      }
     }
   }
 }
