@@ -43,7 +43,8 @@ body {
   color: var(--color);
 }
 
-h1, h2,
+h1,
+h2,
 address {
   font-family: Lucida Console,
     Courier New, monospace;
@@ -74,16 +75,20 @@ a {
   }
 }
 
-nav, main, section {
+nav,
+main,
+section {
   margin-bottom: 48px;
 }
 
-nav.sections {
+nav.hide {
   display: flex;
   font-size: 16px;
+  animation-delay: 1s;
 
   text-transform: uppercase;
   justify-content: space-evenly;
+  transform: translate3d(0, -20px, 0);
 
   font-family: Lucida Console,
     Courier New, monospace;
@@ -117,6 +122,7 @@ nav.sections {
     &:hover::after {
       transition: transform 400ms ease-in-out, opacity 200ms;
       transform: translate3d(100%, 0, 0);
+
       will-change: transform;
       translate: -100% 0 0;
       opacity: 1;
@@ -128,12 +134,22 @@ figure#about {
   margin: 0px 0px 48px;
   position: relative;
   text-wrap: pretty;
+  overflow: hidden;
 
   > img {
     float: left;
     border-radius: 50%;
     margin-inline-end: 24px;
     shape-outside: circle(50%);
+
+    &:first-child {
+      animation: 400ms ease-out forwards fade;
+      backface-visibility: hidden;
+      transform-origin: center;
+
+      opacity: 0;
+      scale: 0.8;
+    }
 
     &:last-child {
       visibility: hidden;
@@ -144,14 +160,29 @@ figure#about {
     }
   }
 
+  > figcaption {
+    transform: translate3d(20px, 0, 0);
+  }
+
   &:hover > img:last-child {
     visibility: visible;
   }
 }
 
-header.heading {
+section:first-of-type {
+  > header {
+    animation-delay: 200ms;
+  }
+
+  > table {
+    animation-delay: 400ms;
+  }
+}
+
+header.hide {
   display: flex;
   column-gap: 16px;
+  animation-delay: 600ms;
 
   > hr {
     width: 100%; height: 1px;
@@ -168,8 +199,9 @@ header.heading {
   }
 }
 
-table {
+table.hide {
   width: 100%;
+  animation-delay: 800ms;
   border-collapse: collapse;
 
   tr:last-child > td {
@@ -227,18 +259,32 @@ table {
   }
 }
 
-ul.links {
-  display: flex;
-  column-gap: 16px;
-  justify-content: center;
-
-  padding: 16px 0px 0px;
-  list-style: none;
-  margin: 0px;
-
-  > li {
-    min-width: 32px;
+footer#links {
+  > header {
+    animation-delay: 1s;
   }
+
+  > ul {
+    display: flex;
+    column-gap: 16px;
+    animation-delay: 1.2s;
+    justify-content: center;
+
+    padding: 16px 0px 0px;
+    list-style: none;
+    margin: 0px;
+
+    > li {
+      min-width: 32px;
+    }
+  }
+}
+
+.hide {
+  opacity: 0;
+  backface-visibility: hidden;
+  transform: translate3d(0, 20px, 0);
+  animation: 400ms ease-out forwards slide;
 }
 
 @media screen and (max-width: 1024px) {
@@ -247,7 +293,7 @@ ul.links {
     font-size: 16px;
   }
 
-  nav.sections {
+  nav.hide {
     font-size: 14px;
 
     > a::after {
@@ -261,11 +307,11 @@ ul.links {
     width: 100px;
   }
 
-  header.heading > h2 {
+  header.hide > h2 {
     font-size: 12px;
   }
 
-  table td {
+  table.hide td {
     > h3 {
       font-size: 16px;
     }
@@ -301,6 +347,20 @@ ul.links {
     &:hover > img:last-child {
       visibility: hidden;
     }
+  }
+}
+
+@keyframes slide {
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+@keyframes fade {
+  to {
+    opacity: 1;
+    scale: 1;
   }
 }
 

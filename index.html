@@ -61,7 +61,7 @@
   </head>
 
   <body>
-    <nav class="sections">
+    <nav class="hide">
       <a title="About" href="#about">About</a>
       <a title="Career" href="#career">Career</a>
       <a title="Projects" href="#projects">Projects</a>
@@ -71,16 +71,16 @@
     <main>
       <figure id="about">
         <img alt="Ustym Ukhman" loading="lazy" width="150" height="150" src="images/avatar.webp" />
-        <figcaption><b>Hello!</b> I am a passionate web developer with 10+ years’ experience developing mostly HTML5/WebGL games and advertising websites with a strong attention to details, responsive designs and unique user experiences. I deal with projects’ development, following it from design approval to publication and post-live updates through implementing pixel-perfect UI, solving visual and technical challenges, writing and testing code, focusing on its cleanliness and maintainability to ease future reuses.</figcaption>
+        <figcaption class="hide"><b>Hello!</b> I am a passionate web developer with 10+ years’ experience developing mostly HTML5/WebGL games and advertising websites with a strong attention to details, responsive designs and unique user experiences. I deal with projects’ development, following it from design approval to publication and post-live updates through implementing pixel-perfect UI, solving visual and technical challenges, writing and testing code, focusing on its cleanliness and maintainability to ease future reuses.</figcaption>
         <img alt="Ustym Ukhman" loading="lazy" width="150" height="150" src="data:image/jpeg;base64,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" />
       </figure>
 
       <section id="career">
-        <header class="heading">
+        <header class="hide">
           <hr /><h2>Career</h2><hr />
         </header>
 
-        <table>
+        <table class="hide">
           <tr>
             <td>
               <h3><a title="TBWA\X" href="https://www.tbwa.nl/" rel="external" target="_blank">TBWA\X</a></h3>
@@ -132,11 +132,11 @@
       </section>
 
       <section id="projects">
-        <header class="heading">
+        <header class="hide">
           <hr /><h2>Projects</h2><hr />
         </header>
 
-        <table>
+        <table class="hide">
           <tr>
             <td>
               <h3>UWAL</h3>
@@ -927,11 +927,11 @@
     </main>
 
     <footer id="links">
-      <header class="heading">
+      <header class="hide">
         <hr /><h2>Links</h2><hr />
       </header>
 
-      <ul class="links">
+      <ul class="hide">
         <li>
           <a title="GitHub" href="https://github.com/UstymUkhman/" rel="external" target="_blank">
             <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
