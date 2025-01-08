@@ -5,7 +5,6 @@
 }
 
 :root {
-  scrollbar-width: thin;
   --background: #1f1f1f;
   --color: #e0e0e0;
   --hover: #fff;
@@ -28,12 +27,6 @@ html {
 }
 
 body {
-  display: grid;
-  place-items: center;
-
-  min-height: 100svh;
-  max-height: 100svh;
-
   padding: 48px 16px;
   margin: auto;
 
@@ -50,8 +43,7 @@ body {
   color: var(--color);
 }
 
-h1, h2,
-time, address {
+h1, h2, address {
   font-family: Lucida Console,
     Courier New, monospace;
 }
@@ -81,9 +73,7 @@ a {
   }
 }
 
-nav,
-main,
-section {
+nav, main, section {
   margin-bottom: 48px;
 }
 
@@ -190,23 +180,38 @@ table {
   td {
     padding: 8px 0px;
 
+    &:first-child {
+      padding-right: 16px;
+    }
+
     > h3 {
       font-weight: normal;
       font-size: 20px;
       margin: 0px;
     }
 
-    > time,
-    > address {
-      display: block;
-      font-size: 14px;
-      font-style: normal;
-    }
-
     > i {
       display: block;
       font-size: 16px;
       text-wrap: balance;
+    }
+
+    > time,
+    > address {
+      display: block;
+      font-style: normal;
+      white-space: nowrap;
+    }
+
+    > time {
+      font-size: 16px;
+      line-height: 30px;
+    }
+
+    > address {
+      font-size: 14px;
+      line-height: 24px;
+      translate: 0px 2px;
     }
 
     > div {
@@ -228,8 +233,8 @@ ul.links {
   column-gap: 16px;
   justify-content: center;
 
+  padding: 16px 0px 0px;
   list-style: none;
-  padding: 0px;
   margin: 0px;
 
   > li {
@@ -269,14 +274,14 @@ ul.links {
       font-size: 14px;
     }
 
-    > time,
+    > time {
+      font-size: 12px;
+      line-height: 24px;
+    }
+
     > address {
       font-size: 10px;
-      white-space: nowrap;
-
-      &:first-child {
-        line-height: 24px;
-      }
+      line-height: 21px;
     }
   }
 }
