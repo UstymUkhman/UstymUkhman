@@ -43,7 +43,8 @@ body {
   color: var(--color);
 }
 
-h1, h2, address {
+h1, h2,
+address {
   font-family: Lucida Console,
     Courier New, monospace;
 }
@@ -130,8 +131,6 @@ figure#about {
 
   > img {
     float: left;
-    width: 150px;
-
     border-radius: 50%;
     margin-inline-end: 24px;
     shape-outside: circle(50%);
@@ -258,6 +257,7 @@ ul.links {
 
   figure#about > img {
     margin-bottom: 5px;
+    height: 100px;
     width: 100px;
   }
 
