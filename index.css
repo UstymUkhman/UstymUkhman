@@ -179,6 +179,7 @@ section:first-of-type {
   }
 }
 
+div.hide,
 header.hide {
   display: flex;
   column-gap: 16px;
@@ -260,7 +261,7 @@ table.hide {
 }
 
 footer#links {
-  > header {
+  > div {
     animation-delay: 1s;
   }
 
@@ -307,6 +308,7 @@ footer#links {
     width: 100px;
   }
 
+  div.hide > h2,
   header.hide > h2 {
     font-size: 12px;
   }
