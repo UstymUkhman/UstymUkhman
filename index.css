@@ -68,6 +68,25 @@ a {
       transition: fill 400ms;
       fill: var(--color);
     }
+
+    &.preview {
+      padding: 1px;
+      stroke-width: 2;
+      stroke: var(--color);
+
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: stroke 400ms;
+
+      &:hover {
+        stroke: var(--hover);
+      }
+
+      > path {
+        transition: none;
+        fill: none;
+      }
+    }
   }
 
   &:hover {
