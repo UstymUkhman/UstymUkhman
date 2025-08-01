@@ -51,7 +51,7 @@ address {
 }
 
 a {
-  transition: color 400ms;
+  transition: color 0.4s;
   text-decoration: none;
   color: var(--color);
   display: block;
@@ -65,7 +65,7 @@ a {
     }
 
     > path {
-      transition: fill 400ms;
+      transition: fill 0.4s;
       fill: var(--color);
     }
 
@@ -76,7 +76,7 @@ a {
 
       stroke-linecap: round;
       stroke-linejoin: round;
-      transition: stroke 400ms;
+      transition: stroke 0.4s;
 
       &:hover {
         stroke: var(--hover);
@@ -134,12 +134,12 @@ nav.hide {
       background-color: var(--hover);
       transform: translate3d(0, 0, 0);
 
-      transition: transform 400ms ease-in-out,
-        translate 400ms ease-in-out, opacity 200ms 400ms;
+      transition: transform 0.4s ease-in-out,
+        translate 0.4s ease-in-out, opacity 0.2s 0.4s;
     }
 
     &:hover::after {
-      transition: transform 400ms ease-in-out, opacity 200ms;
+      transition: transform 0.4s ease-in-out, opacity 0.2s;
       transform: translate3d(100%, 0, 0);
 
       will-change: transform;
@@ -162,10 +162,9 @@ figure#about {
     shape-outside: circle(50%);
 
     &:first-child {
-      animation: 400ms ease-out forwards fade;
+      animation: 0.4s ease-out forwards fade;
       backface-visibility: hidden;
       transform-origin: center;
-
       opacity: 0;
       scale: 0.8;
     }
@@ -190,11 +189,11 @@ figure#about {
 
 section:first-of-type {
   > header {
-    animation-delay: 200ms;
+    animation-delay: 0.2s;
   }
 
   > table {
-    animation-delay: 400ms;
+    animation-delay: 0.4s;
   }
 }
 
@@ -202,7 +201,7 @@ div.hide,
 header.hide {
   display: flex;
   column-gap: 16px;
-  animation-delay: 600ms;
+  animation-delay: 0.6s;
 
   > hr {
     width: 100%; height: 1px;
@@ -221,7 +220,7 @@ header.hide {
 
 table.hide {
   width: 100%;
-  animation-delay: 800ms;
+  animation-delay: 0.8s;
   border-collapse: collapse;
 
   tr:last-child > td {
@@ -304,7 +303,7 @@ footer#links {
   opacity: 0;
   backface-visibility: hidden;
   transform: translate3d(0, 20px, 0);
-  animation: 400ms ease-out forwards slide;
+  animation: 0.4s ease-out forwards slide;
 }
 
 @media screen and (max-width: 1024px) {
