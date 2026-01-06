@@ -5,5 +5,5 @@
 <h1 align="center">
   <br /><br />
 
-  [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=UstymUkhman&langs_count=10&hide_title=true&layout=compact&exclude_repo=webDOOM,Tanks&text_color=fff&bg_color=00000040&hide_border=true&locale=en&border_radius=6)](https://github.com/anuraghazra/github-readme-stats)
+  [![Top Langs](https://github-readme-stats-fast.vercel.app/api/top-langs/?username=UstymUkhman&text_color=fff&bg_color=000&hide_border=true&theme=tokyonight&locale=en&border_radius=6&hide=svelte&hide_title=true&layout=compact&langs_count=10&exclude_repo=webDOOM,Tanks)](https://github.com/Pranesh-2005/github-readme-stats)
 </h1>
