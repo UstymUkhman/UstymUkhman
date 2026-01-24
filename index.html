@@ -3,11 +3,17 @@
   <head>
     <base href="./" />
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title>Ustym Ukhman</title>
 
-    <!-- Misc: -->
+    <!-- Links: -->
+    <link rel="stylesheet" href="index.css" type="text/css" />
+    <link rel="canonical" href="https://ustymukhman.github.io/UstymUkhman/" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <!-- Generic: -->
     <meta name="author" content="Ustym Ukhman" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Just a regular everyday normal programmer." />
     <meta name="theme-color" content="#e0e0e0" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#1f1f1f" media="(prefers-color-scheme: dark)" />
@@ -47,17 +53,33 @@
     <!-- Favicons: -->
     <link rel="icon" href="favicons/dark.svg" type="image/svg+xml" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="favicons/light.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
-
     <link rel="apple-touch-icon" href="favicons/dark.png" media="(prefers-color-scheme: light)" />
     <link rel="apple-touch-icon" href="favicons/light.png" media="(prefers-color-scheme: dark)" />
-
     <link rel="icon" href="favicons/dark.ico" sizes="any" media="(prefers-color-scheme: light)" />
     <link rel="icon" href="favicons/light.ico" sizes="any" media="(prefers-color-scheme: dark)" />
 
-    <!-- Links: -->
-    <link rel="canonical" href="https://ustymukhman.github.io/UstymUkhman/" />
-    <link rel="stylesheet" href="index.css" type="text/css" />
-    <link rel="manifest" href="manifest.json" />
+    <!-- Schema.org's JSON-LD: -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Person",
+      "name": "Ustym Ukhman",
+      "image": "./images/avatar.webp",
+      "email": "ustym.ukhman@gmail.com",
+      "jobTitle": "Creative | Front-end | Game developer",
+      "url": "https://ustymukhman.github.io/UstymUkhman/",
+      "sameAs": [
+        "https://www.linkedin.com/in/ustymukhman/",
+        "https://www.youtube.com/@UstymUkhman",
+        "https://github.com/UstymUkhman",
+        "https://codepen.io/UstymUkhman"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "TBWA\\X"
+      }
+    }
+    </script>
   </head>
 
   <body>
@@ -1172,27 +1194,5 @@
         </li>
       </ul>
     </footer>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org/",
-      "@type": "Person",
-      "name": "Ustym Ukhman",
-      "image": "images/avatar.webp",
-      "email": "ustym.ukhman@gmail.com",
-      "jobTitle": "Creative | Front-end | Game developer",
-      "url": "https://ustymukhman.github.io/UstymUkhman/",
-      "sameAs": [
-        "https://www.linkedin.com/in/ustymukhman/",
-        "https://www.youtube.com/@UstymUkhman",
-        "https://codepen.io/UstymUkhman",
-        "https://github.com/UstymUkhman"
-      ],
-      "worksFor": {
-        "@type": "Organization",
-        "name": "TBWA\\X"
-      }
-    }
-    </script>
   </body>
 </html>
