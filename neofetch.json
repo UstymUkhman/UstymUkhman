@@ -1,0 +1,52 @@
+{
+  "imageScale": 0,
+  "backgroundColor": "#1a1b26",
+  "separatorColor": "#7aa2f7",
+  "sections": [
+    {
+      "title": "{{username}}@github",
+      "titleColor": { "text": "#c0caf5", "line": "#7aa2f7" },
+      "fields": [
+        { "key": "Name", "value": "{{name}}" },
+        { "key": "Bio", "value": "{{bio}}" },
+        { "key": "Company", "value": "{{company}}" },
+        { "key": "Location", "value": "{{location}}" },
+        { "key": "Uptime", "value": "{{uptime}}" }
+      ]
+    },
+    {
+      "fields": [
+        { "key": "Languages", "value": "TypeScript, JavaScript, Zig, WGSL" },
+        { "key": "OS", "value": "Omarchy, NothingOS" },
+        { "key": "IDE", "value": "Neovim" }
+      ]
+    },
+    {
+      "fields": [
+        { "key": "Hobbies.Software", "value": "WebGPU, WebGL, Games" },
+        { "key": "Hobbies.!Software", "value": "Cinema, YouTube, Music, Beer" }
+      ]
+    },
+    {
+      "title": "Contact",
+      "fields": [
+        { "key": "Website", "value": "https://ustymukhman.github.io/{{username}}" },
+        { "key": "Site", "value": "{{blog}}" },
+        { "key": "Email", "value": "{{email}}" },
+        { "key": "YouTube", "value": "{{youtube}}" },
+        { "key": "LinkedIn", "value": "{{linkedin}}" }
+      ]
+    }
+  ],
+  "stats": {
+    "title": "GitHub Stats",
+    "titleColor": { "text": "#c0caf5", "line": "#7aa2f7" },
+    "rows": [
+      { "left": { "key": "Stars", "value": "{{stars}}" }, "right": { "key": "Repos", "value": "{{repos}}" } },
+      { "left": { "key": "Followers", "value": "{{followers}}" }, "right": { "key": "Following", "value": "{{following}}" } },
+      { "left": { "key": "Commits", "value": "{{commits}}" }, "right": { "key": "Forks", "value": "{{forks}}" } },
+      { "left": { "key": "Issues", "value": "{{issues}}" }, "right": { "key": "PRs", "value": "{{prs}}" } },
+      "loc"
+    ]
+  }
+}
