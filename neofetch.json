@@ -19,7 +19,7 @@
       "fields": [
         { "key": "IDE", "value": "Neovim" },
         { "key": "OS", "value": "Omarchy, NothingOS" },
-        { "key": "Languages", "value": "TypeScript, JavaScript, Zig, WGSL" },
+        { "key": "Languages", "value": "TypeScript, JavaScript, Zig, WGSL" }
       ]
     },
     {
