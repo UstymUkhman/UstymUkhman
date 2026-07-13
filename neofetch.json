@@ -2,7 +2,9 @@
   "image": "https://raw.githubusercontent.com/UstymUkhman/UstymUkhman/refs/heads/main/favicons/light.svg",
   "backgroundColor": "#1a1b26",
   "separatorColor": "#7aa2f7",
-  "coloredImage": true,
+  "imageColor": "#c0caf5",
+  "imageOffsetY": "5%",
+  "imageScale": 0.8,
   "sections": [
     {
       "title": "{{username}}@github",
@@ -32,8 +34,8 @@
       "title": "Contact",
       "titleColor": { "text": "#c0caf5", "line": "#7aa2f7" },
       "fields": [
-        { "key": "Website", "value": "https://{{blog}}" },
-        { "key": "Email", "value": "{{email}}" },
+        { "key": "Website", "value": "https://ustymukhman.github.io/UstymUkhman" },
+        { "key": "Email", "value": "ustym.ukhman@gmail.com" },
         { "key": "YouTube", "value": "@UstymUkhman" },
         { "key": "LinkedIn", "value": "ustymukhman" }
       ]
@@ -46,7 +48,6 @@
       { "left": { "key": "Stars", "value": "{{stars}}" }, "right": { "key": "Repos", "value": "{{repos}}" } },
       { "left": { "key": "Followers", "value": "{{followers}}" }, "right": { "key": "Following", "value": "{{following}}" } },
       { "left": { "key": "Commits", "value": "{{commits}}" }, "right": { "key": "Forks", "value": "{{forks}}" } },
-      { "left": { "key": "Issues", "value": "{{issues}}" }, "right": { "key": "PRs", "value": "{{prs}}" } },
       "loc"
     ]
   }
