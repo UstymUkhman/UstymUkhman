@@ -1,7 +1,8 @@
 {
-  "imageScale": 0,
+  "image": "https://raw.githubusercontent.com/UstymUkhman/UstymUkhman/refs/heads/main/favicons/light.svg",
   "backgroundColor": "#1a1b26",
   "separatorColor": "#7aa2f7",
+  "coloredImage": true,
   "sections": [
     {
       "title": "{{username}}@github",
@@ -9,16 +10,16 @@
       "fields": [
         { "key": "Name", "value": "{{name}}" },
         { "key": "Bio", "value": "{{bio}}" },
-        { "key": "Company", "value": "{{company}}" },
+        { "key": "Uptime", "value": "{{uptime}}" },
         { "key": "Location", "value": "{{location}}" },
-        { "key": "Uptime", "value": "{{uptime}}" }
+        { "key": "Company", "value": "{{company}}" }
       ]
     },
     {
       "fields": [
-        { "key": "Languages", "value": "TypeScript, JavaScript, Zig, WGSL" },
+        { "key": "IDE", "value": "Neovim" },
         { "key": "OS", "value": "Omarchy, NothingOS" },
-        { "key": "IDE", "value": "Neovim" }
+        { "key": "Languages", "value": "TypeScript, JavaScript, Zig, WGSL" },
       ]
     },
     {
@@ -29,12 +30,12 @@
     },
     {
       "title": "Contact",
+      "titleColor": { "text": "#c0caf5", "line": "#7aa2f7" },
       "fields": [
-        { "key": "Website", "value": "https://ustymukhman.github.io/{{username}}" },
-        { "key": "Site", "value": "{{blog}}" },
+        { "key": "Website", "value": "https://{{blog}}" },
         { "key": "Email", "value": "{{email}}" },
-        { "key": "YouTube", "value": "{{youtube}}" },
-        { "key": "LinkedIn", "value": "{{linkedin}}" }
+        { "key": "YouTube", "value": "@UstymUkhman" },
+        { "key": "LinkedIn", "value": "ustymukhman" }
       ]
     }
   ],
