@@ -3,6 +3,8 @@
   "backgroundColor": "#1a1b26",
   "separatorColor": "#7aa2f7",
   "imageColor": "#c0caf5",
+  "imageScale": 0.85,
+
   "sections": [
     {
       "title": "{{username}}@github",
@@ -39,6 +41,7 @@
       ]
     }
   ],
+
   "stats": {
     "title": "GitHub Stats",
     "titleColor": { "text": "#c0caf5", "line": "#7aa2f7" },
