@@ -3,15 +3,13 @@
   "backgroundColor": "#1a1b26",
   "separatorColor": "#7aa2f7",
   "imageColor": "#c0caf5",
-  "imageOffsetY": "5%",
-  "imageScale": 0.8,
   "sections": [
     {
       "title": "{{username}}@github",
       "titleColor": { "text": "#c0caf5", "line": "#7aa2f7" },
       "fields": [
         { "key": "Name", "value": "{{name}}" },
-        { "key": "Bio", "value": "{{bio}}" },
+        { "key": "Bio", "value": "Creative | Front-End | Game Developer" },
         { "key": "Uptime", "value": "{{uptime}}" },
         { "key": "Location", "value": "{{location}}" },
         { "key": "Company", "value": "{{company}}" }
